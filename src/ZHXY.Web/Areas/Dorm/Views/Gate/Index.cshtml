@@ -36,7 +36,7 @@
             sortname: 'name',
             sortorder: 'asc',
             viewrecords: true,
-             subGrid: true,
+            subGrid: true,
             subGridRowExpanded: showChildGrid
         });
         $("#btn_search").click(function () {
@@ -122,11 +122,25 @@
 
     function showChildGrid(parentRow, parentRowKey) {
         let childGrid = parentRow + "_table";
+        let childGridPagger = parentRow + "_pagger";
         $('#' + parentRow).append('<table class="table-striped" id=' + childGrid + '></table>');
+        $('#' + parentRow).append('<div id=' + childGridPagger + '></div>');
         $("#" + childGrid).jqGrid({
             url: `BoundBuildings?id=${parentRowKey}`,
             mtype: "GET",
             datatype: "json",
+            autoGridWidth: true,
+            width: window.innerWidth * 0.76,
+            height: window.innerHeight * 0.3,
+            footerrow: true,
+            userDataOnFooter: true,
+            rownumbers: true,
+            styleUI: 'Bootstrap',
+            rowNum: -1,
+            sortname: 'createTime',
+            sortorder: 'desc',
+            pagger: $("#" + childGridPagger),
+            toppager:true,
             jsonReader: {
                 root: function (r) { return r.data },
             },
@@ -153,25 +167,44 @@
                     }
                 }
             ],
-            autoGridWidth: true,
-            width: window.innerWidth * 0.76,
-            height: window.innerHeight * 0.3,
-            footerrow: true,
-            userDataOnFooter: true,
-            rownumbers: true,
-             multiselect: true,
-            styleUI: 'Bootstrap',
-            rowNum: -1,
-            sortname: 'createTime',
-            sortorder: 'desc',
+
         });
 
+        $("#" + childGrid).jqGrid('navGrid', `#${childGridPagger}`,
+            {
+                'add': false,
+                'del': false,
+                'edit': false,
+                'search': false,
+                'refresh': false,
+                'cloneToTop': true,
+            }, {}, {}, {})
+        jqNav.navButtonAdd(pager_selector, {
+            caption: "借阅",
+            title: "jiejue",
+            buttonicon: "ace-icon fa fa-globe blue",
+            onClickButton: function () {
+                var s;
+                //多选获取
+                s = jQuery(grid_selector).jqGrid('getGridParam', 'selarrrow');
+                alert(s);
+            },
+            position: "last"
+        })
+        jqNav.navButtonAdd(pager_selector, {
+            caption: "Del",
+            buttonicon: "ace-icon fa fa-pencil blue",
+            onClickButton: function () {
+                alert("Deleting Row");
+            },
+            position: "last"
+        });
     }
 
 
     function unbound(gateId, buildings) {
         $.post(UNBOUND_URL, { id: gateId, buildings: buildings }, function (r) {
-             $("#gridList").jqGrid().trigger('reloadGrid');
+            $("#gridList").jqGrid().trigger('reloadGrid');
         })
     }
 </script>
