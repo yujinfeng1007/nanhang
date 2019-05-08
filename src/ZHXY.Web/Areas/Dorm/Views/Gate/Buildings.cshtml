@@ -1,0 +1,109 @@
+﻿@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+    let gateId = $.request("id");
+
+    function getGrid() { return $("#gridList"); }
+    $(function () {
+        initGrid();
+        $("#btn_search").bind("click", reloadGrid);
+        $("#txt_keyword").bind("input", reloadGrid);
+
+        setInterval(function () {
+            if ($("#txt_keyword").val() != "") {
+                $.keyLight("gridList", $("#txt_keyword").val(), "skyblue");
+            }
+        }, 100);
+
+    })
+
+    // 重载数据表格
+    function reloadGrid() {
+        getGrid().setGridParam(
+            { postData: { keyword: $("#txt_keyword").val() } }
+        ).trigger('reloadGrid');
+    }
+
+    // 初始化列表
+    function initGrid() {
+        getGrid().dataGrid({
+            url: `/Dorm/Gate/FreeBuildings?id=${gateId}`,
+            styleUI: 'Bootstrap',
+            datatype: 'json',
+            sortname: 'id',
+            sortorder: "desc",
+            width:"90%",
+            autowidth: true,
+            height:"90%",
+            rownumbers: true,
+            gridview: true,
+            altRows: true,
+            viewrecords: true,
+            multiselect: true,
+            //开启多选,
+            rowNum: 15,
+            shrinkToFit: true,
+            loadonce: false,
+            jsonReader: {
+                root: function (r) {
+                    return r.data;
+                }
+            },
+            colModel: [
+                { label: "Id", name: "id", width: 150, align: 'left', key: true, hidden: true },
+                { label: '名称', name: 'title' },
+                { label: '所属区域', name: 'area' },
+                { label: "楼栋号", name: "buildingNo" },
+                { label: "楼层号", name: "floorNum" },
+                { label: "单元号", name: "unitNum" },
+                { label: "地址", name: "address" },
+                {
+                    label: '楼栋类型', name: 'buildingType',
+                    formatter: function (cellvalue) {
+                        if (!cellvalue) return "";
+                        return top.clients.dataItems["BuildingType"] == null ? "" : top.clients.dataItems.BuildingType[cellvalue];
+                    }
+                },
+                {
+                    label: '楼栋状态', name: 'buildingStatus', width: 80, align: 'left',
+                    formatter: function (cellvalue) {
+                        if (!cellvalue) return "";
+                        return top.clients.dataItems["BuildingStatus"] == null ? "" : top.clients.dataItems.BuildingStatus[cellvalue];
+                    }
+                }
+            ]
+        });
+    }
+
+
+    function bindBuildings() {
+        let arr = $("#gridList").jqGrid('getGridParam', 'selarrrow');
+        $.post(`/Dorm/Gate/BindBuilding`, { id: gateId, buildings: arr }, function (r) {
+            console.log(r);
+            reloadGrid();
+        })
+    }
+
+</script>
+<div class="topPanel">
+    <div class="search">
+        <table>
+            <tr>
+                <td>
+                    <div class="input-group">
+                        <input id="txt_keyword" type="text" class="form-control" placeholder="名称/编号" style="width: 200px;">
+                        <span class="input-group-btn">
+                            <button id="btn_search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="gridPanel">
+    <table id="gridList"></table>
+    <div id="gridPager"></div>
+</div>

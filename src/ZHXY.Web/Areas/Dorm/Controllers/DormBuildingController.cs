@@ -51,8 +51,7 @@ namespace ZHXY.Web.Dorm.Controllers
             return await Task.Run(() => Resultaat.PagingRst(App.GetList(pagination, keyword), pagination.Records, pagination.Total));
         }
 
-       
 
-        #endregion HttpGet
+               #endregion HttpGet
     }
 }

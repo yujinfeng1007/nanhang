@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using ZHXY.Application;
 using ZHXY.Common;
@@ -13,6 +14,10 @@ namespace ZHXY.Web.Dorm.Controllers
     {
         private GateAppService App { get; }
         public GateController(GateAppService app) => App = app;
+
+        public async Task<ViewResult> Buildings() => await Task.Run(() => View());
+
+
 
         [HttpGet]
         public ActionResult Load(Pagination p, string keyword)
@@ -42,7 +47,10 @@ namespace ZHXY.Web.Dorm.Controllers
         }
 
         [HttpGet]
-        public ActionResult Get(string id) => Resultaat.Success(App.GetById(id));
+        public ActionResult Get(string id)
+        {
+            return Resultaat.Success(App.GetById(id));
+        }
 
         public ActionResult SynDevice()
         {
@@ -56,5 +64,36 @@ namespace ZHXY.Web.Dorm.Controllers
             App.Sync(entity);
             return Resultaat.Success();
         }
+
+        [HttpGet]
+        public ActionResult FreeBuildings(string id)
+        {
+            var data = App.GetNotBoundBuildings(id);
+            return Resultaat.Success(data);
+        }
+
+        [HttpGet]
+        public ActionResult BoundBuildings(string id)
+        {
+            var data = App.GetBoundBuildings(id);
+            return Resultaat.Success(data);
+        }
+
+        [HttpPost]
+        public ActionResult BindBuilding(string id ,string[] buildings)
+        {
+             App.BindBuilding(id,buildings);
+            return Resultaat.Success();
+        }
+
+        [HttpPost]
+        public ActionResult UnbindBuilding(string id, string[] buildings)
+        {
+            App.UnbindBuilding(id, buildings);
+            return Resultaat.Success();
+        }
+
+
+
     }
 }

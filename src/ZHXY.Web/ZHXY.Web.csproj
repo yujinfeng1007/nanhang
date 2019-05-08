@@ -460,6 +460,7 @@
     <Content Include="Areas\Dorm\Views\VisitLimit\Index.cshtml" />
     <Content Include="Areas\Dorm\Views\VisitLog\Form.cshtml" />
     <Content Include="Areas\Dorm\Views\VisitLog\Index.cshtml" />
+    <Content Include="Areas\Dorm\Views\Gate\Buildings.cshtml" />
     <None Include="Configs\system.config.2019.05.05.bak">
       <SubType>Designer</SubType>
     </None>

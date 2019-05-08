@@ -29,8 +29,16 @@
         $.submitForm({
             url: UPDATE_URL,
             param: $("#form1").formSerialize(),
-            success: function () {
-                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            success: function (r) {
+                console.log(r)
+                if (r.state === 'success') {
+                    $.currentWindow().$("#gridList").trigger("reloadGrid");
+                    $.modalMsg('操作成功', 'success');
+                } else {
+                    $.modalMsg(r.message, 'error');
+                }
+               
+
             }
         })
     }

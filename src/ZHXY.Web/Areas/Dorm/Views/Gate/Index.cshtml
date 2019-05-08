@@ -6,6 +6,8 @@
     const GRID_URL = `/Dorm/Gate/Load`;
     const SET_STATUS_URL = `/Dorm/Gate/SetStatus`;
     const FORM_URL = `/Dorm/Gate/Form`;
+    const BUILDINGS_URL = `/Dorm/Gate/Buildings`;
+    const UNBOUND_URL = `/Dorm/Gate/UnbindBuilding`;
     $(function () {
         gridList();
     })
@@ -33,7 +35,9 @@
             pager: "#gridPager",
             sortname: 'name',
             sortorder: 'asc',
-            viewrecords: true
+            viewrecords: true,
+             subGrid: true,
+            subGridRowExpanded: showChildGrid
         });
         $("#btn_search").click(function () {
             $gridList.jqGrid('setGridParam', {
@@ -100,6 +104,76 @@
             }
         });
     }
+
+    function addBuilding() {
+        let rowId = $("#gridList").jqGrid('getGridParam', 'selrow');
+        $.modalOpen({
+            id: "Form",
+            title: "绑定楼栋",
+            url: `${BUILDINGS_URL}?id=${rowId}`,
+            width: "700px",
+            height: "510px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].bindBuildings();
+                $("#gridList").jqGrid().trigger('reloadGrid');
+            }
+        });
+    }
+
+    function showChildGrid(parentRow, parentRowKey) {
+        let childGrid = parentRow + "_table";
+        $('#' + parentRow).append('<table class="table-striped" id=' + childGrid + '></table>');
+        $("#" + childGrid).jqGrid({
+            url: `BoundBuildings?id=${parentRowKey}`,
+            mtype: "GET",
+            datatype: "json",
+            jsonReader: {
+                root: function (r) { return r.data },
+            },
+            colModel: [
+                { label: "Id", name: "id", width: 150, align: 'left', key: true, hidden: true },
+                { label: '名称', name: 'title' },
+                { label: '所属区域', name: 'area' },
+                { label: "楼栋号", name: "buildingNo" },
+                { label: "楼层号", name: "floorNum" },
+                { label: "单元号", name: "unitNum" },
+                { label: "地址", name: "address" },
+                {
+                    label: '楼栋类型', name: 'buildingType',
+                    formatter: function (cellvalue) {
+                        if (!cellvalue) return "";
+                        return top.clients.dataItems["BuildingType"] == null ? "" : top.clients.dataItems.BuildingType[cellvalue];
+                    }
+                },
+                {
+                    label: '楼栋状态', name: 'buildingStatus', width: 80, align: 'left',
+                    formatter: function (cellvalue) {
+                        if (!cellvalue) return "";
+                        return top.clients.dataItems["BuildingStatus"] == null ? "" : top.clients.dataItems.BuildingStatus[cellvalue];
+                    }
+                }
+            ],
+            autoGridWidth: true,
+            width: window.innerWidth * 0.76,
+            height: window.innerHeight * 0.3,
+            footerrow: true,
+            userDataOnFooter: true,
+            rownumbers: true,
+             multiselect: true,
+            styleUI: 'Bootstrap',
+            rowNum: -1,
+            sortname: 'createTime',
+            sortorder: 'desc',
+        });
+
+    }
+
+
+    function unbound(gateId, buildings) {
+        $.post(UNBOUND_URL, { id: gateId, buildings: buildings }, function (r) {
+             $("#gridList").jqGrid().trigger('reloadGrid');
+        })
+    }
 </script>
 
 <div class="topPanel">
@@ -115,6 +189,7 @@
             <ul class="nav nav-pills">
                 <li class="first">已选中<span>1</span>项</li>
                 <li><a id="NF-edit" authorize="yes" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>修改</a></li>
+                <li><a id="NF-edit" authorize="yes" onclick="addBuilding()"><i class="fa fa-pencil-square-o"></i>绑定楼栋</a></li>
                 <li class="split"></li>
                 <li><a class="multi-edit" id="NF-On" authorize="yes" onclick="btn_BatchOn()"><i class="fa fa-arrow-down"></i>常开</a></li>
                 <li><a class="multi-edit" id="NF-Off" authorize="yes" onclick="btn_BatchOff()"><i class="fa fa-arrow-down"></i>常闭</a></li>

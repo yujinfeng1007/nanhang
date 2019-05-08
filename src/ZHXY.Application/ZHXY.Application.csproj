@@ -58,7 +58,6 @@
     <Compile Include="DormServices\Gates\GateAppService.cs" />
     <Compile Include="DormServices\AccessStudentAppService.cs" />
     <Compile Include="DormServices\BedAppService.cs" />
-    <Compile Include="DormServices\ChangeLogsAppService.cs" />
     <Compile Include="DormServices\DormRules\DormRuleService.cs" />
     <Compile Include="DormServices\DormRooms\DormRoomAppService.cs" />
     <Compile Include="DormServices\DormStudentAppService.cs" />

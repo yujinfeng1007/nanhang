@@ -54,7 +54,6 @@ namespace ZHXY.Application
             SaveChanges();
         }
 
-
         public void BindBuilding(string id, string[] buildings)
         {
             foreach (var item in buildings)
@@ -89,5 +88,12 @@ namespace ZHXY.Application
             return list;
         }
 
+
+        public List<Building> GetNotBoundBuildings(string id)
+        {
+            var buildingIds = Read<Relevance>(p => p.Name.Equals(SmartCampusConsts.REL_GATE_BUILDING) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
+            var list = Read<Building>(p => !buildingIds.Contains(p.Id)).ToList();
+            return list;
+        }
     }
 }
