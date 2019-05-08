@@ -6,10 +6,8 @@ namespace ZHXY.Domain
     /// <summary>
     /// 字段定义
     /// </summary>
-    public class FieldDef : EntityBase, ICreationAudited, IDeleteAudited, IModificationAudited
+    public class FieldDef : IEntity
     {
-        #region Declarations
-
         public string F_Id { get; set; }
 
         public string F_TableDef_ID { get; set; }
@@ -113,6 +111,5 @@ namespace ZHXY.Domain
         [Display(Name = "删除者")]
         public string F_DeleteUserId { get; set; }
 
-        #endregion Declarations
     }
 }

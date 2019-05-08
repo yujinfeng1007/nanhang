@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using ZHXY.Common;
-using ZHXY.Data.Extensions;
+using ZHXY.Domain;
 
 namespace TaskApi.DH
 {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace ZHXY.Domain.Extensions
+namespace ZHXY.Domain
 {
     public class SqlHelper
     {

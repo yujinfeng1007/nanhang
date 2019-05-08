@@ -9,12 +9,17 @@
     function gridList() {
         var $gridList = $("#gridList");
         $gridList.dataGrid({
-            url: "/SystemSecurity/FilterIP/GetGridJson",
+            url: "/SystemSecurity/FilterIP/Load",
             height: $(window).height() - 96,
+            jsonReader: {
+                root: function (r) {
+                    return r.data;
+                }
+            },
             colModel: [
-                { label: "主键", name: "F_Id", hidden: true, key: true },
+                { label: "主键", name: "id", hidden: true, key: true },
                 {
-                    label: '策略类型', name: 'F_Type', width: 80, align: 'left',
+                    label: '策略类型', name: 'type', width: 80, align: 'left',
                     formatter: function (cellvalue, options, rowObject) {
                         if (cellvalue == true) {
                             return '<span class=\"label label-success\">允许访问</span>';
@@ -23,14 +28,9 @@
                         }
                     }
                 },
-                { label: '起始IP', name: 'F_StartIP', width: 200, align: 'left' },
-                { label: '结束IP', name: 'F_EndIP', width: 200, align: 'left' },
-                { label: '创建人员', name: 'F_CreatorUserId', width: 100, align: 'left' },
-                {
-                    label: '创建时间', name: 'F_CreatorTime', width: 100, align: 'left',
-                    formatter: "date", formatoptions: { srcformat: 'Y-m-d H:i', newformat: 'Y-m-d H:i' }
-                },
-                { label: '备注', name: 'F_Description', width: 300, align: 'left' }
+                { label: '起始IP', name: 'startWithIp', width: 200, align: 'left' },
+                { label: '结束IP', name: 'endWithIp', width: 200, align: 'left' },
+                { label: '备注', name: 'description', width: 300, align: 'left' }
             ]
         });
         $("#btn_search").click(function () {
@@ -51,26 +51,24 @@
             }
         });
     }
+
     function btn_delete() {
-        var deleteid = $('#gridList').jqGridRowValue('F_Id');
-        var keyValue = "";
-        for (var i = 0; i < deleteid.length; i++) {
-            keyValue += deleteid[i] + "|";
-        }
+        let rowId = $('#gridList').jqGrid('getGridParam','selrow');
         $.deleteForm({
-            url: "/SystemSecurity/FilterIP/DeleteForm",
-            param: { keyValue: keyValue },
+            url: "/SystemSecurity/FilterIP/Delete",
+            param: { id: rowId },
             success: function () {
                 $.currentWindow().$("#gridList").trigger("reloadGrid");
             }
         })
     }
+
     function btn_details() {
-        var keyValue = ($("#gridList").jqGridRowValue('F_Id'))[0];
+         let rowId = $('#gridList').jqGrid('getGridParam','selrow');
         $.modalOpen({
             id: "Details",
             title: "查看策略",
-            url: "/SystemSecurity/FilterIP/Details?keyValue=" + keyValue,
+            url: "/SystemSecurity/FilterIP/Details?id=" + rowId,
             width: "450px",
             height: "520px",
             btn: null,

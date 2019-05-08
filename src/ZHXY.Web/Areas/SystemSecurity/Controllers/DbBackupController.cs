@@ -22,9 +22,9 @@ namespace ZHXY.Web.SystemSecurity.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult SubmitForm(DbBackup dbBackupEntity)
         {
-            dbBackupEntity.F_FilePath = Server.MapPath("~/Resource/DbBackup/" + dbBackupEntity.F_FileName + ".bak");
-            dbBackupEntity.F_FileName = dbBackupEntity.F_FileName + ".bak";
-            App.SubmitForm(dbBackupEntity);
+            dbBackupEntity.FilePath = Server.MapPath("~/Resource/DbBackup/" + dbBackupEntity.FileName + ".bak");
+            dbBackupEntity.FileName = dbBackupEntity.FileName + ".bak";
+            App.Add(dbBackupEntity);
             return Message("操作成功。");
         }
 
@@ -34,7 +34,7 @@ namespace ZHXY.Web.SystemSecurity.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteForm(string keyValue)
         {
-            App.DeleteForm(keyValue);
+            App.Delete(keyValue);
             return Message("删除成功。");
         }
 
@@ -42,9 +42,9 @@ namespace ZHXY.Web.SystemSecurity.Controllers
         [HandlerAuthorize]
         public void DownloadBackup(string keyValue)
         {
-            var data = App.GetForm(keyValue);
-            var filename = Server.UrlDecode(data.F_FileName);
-            var filepath = Server.MapPath(data.F_FilePath);
+            var data = App.GetById(keyValue);
+            var filename = Server.UrlDecode(data.FileName);
+            var filepath = Server.MapPath(data.FilePath);
             if (FileDownHelper.FileExists(filepath))
             {
                 FileDownHelper.DownLoadold(filepath, filename);

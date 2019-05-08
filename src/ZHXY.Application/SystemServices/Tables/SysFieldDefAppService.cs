@@ -63,12 +63,10 @@ namespace ZHXY.Application
         {
             if (!string.IsNullOrEmpty(keyValue))
             {
-                entity.Modify(keyValue);
                 Repository.Update(entity);
             }
             else
             {
-                entity.Create();
                 Repository.Insert(entity);
             }
         }

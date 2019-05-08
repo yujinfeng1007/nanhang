@@ -147,7 +147,7 @@
     <Compile Include="Entity\System\User.cs" />
     <Compile Include="Entity\System\UserRole.cs" />
     <Compile Include="Entity\System\DbBackup.cs" />
-    <Compile Include="Entity\System\FilterIP.cs" />
+    <Compile Include="Entity\System\FilterIp.cs" />
     <Compile Include="Entity\System\SysLog.cs" />
     <Compile Include="Dic\AssetStatus.cs" />
     <Compile Include="Dic\GoodsStatus.cs" />

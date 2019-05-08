@@ -3,27 +3,16 @@
     Layout = "~/Views/Shared/_Index.cshtml";
 }
 <script>
-    var keyValue = $.request("keyValue");
+    const ADD_URL = '/SystemSecurity/FilterIP/Add';
     $(function () {
-        $("#F_Type").bindSelect()
-        if (!!keyValue) {
-            $.ajax({
-                url: "/SystemSecurity/FilterIP/GetFormJson",
-                data: { keyValue: keyValue },
-                dataType: "json",
-                async: false,
-                success: function (data) {
-                    $("#form1").formSerialize(data);
-                }
-            });
-        }
+        $("#type").bindSelect()
     });
     function submitForm() {
         if (!$('#form1').formValid()) {
             return false;
         }
-        var StartIP = $("#F_StartIP").val();
-        var EndIP = $("#F_EndIP").val();
+        var StartIP = $("#startWithIp").val();
+        var EndIP = $("#endWithIp").val();
         if (compareIP(StartIP, EndIP) == -1) {
             $.modalMsg("不在同一个网段内");
             return false;
@@ -33,7 +22,7 @@
             return false;
         }
         $.submitForm({
-            url: "/SystemSecurity/FilterIP/SubmitForm?keyValue=" + keyValue,
+            url: ADD_URL,
             param: $("#form1").formSerialize(),
             success: function () {
                 $.currentWindow().$("#gridList").trigger("reloadGrid");
@@ -64,7 +53,7 @@
             <tr>
                 <th class="formTitle">策略类型</th>
                 <td class="formValue">
-                    <select id="F_Type" name="F_Type" class="form-control required">
+                    <select name="type" class="form-control required">
                         <option value="">==请选择==</option>
                         <option value="true">允许访问</option>
                         <option value="false">拒绝访问</option>
@@ -74,28 +63,22 @@
             <tr>
                 <th class="formTitle">起始IP</th>
                 <td class="formValue">
-                    <input id="F_StartIP" name="F_StartIP" type="text" class="form-control required ip" placeholder="请输入IP地址(IPv4/IPv6)" />
+                    <input id="startWithIp" name="startWithIp" type="text" class="form-control required ip" placeholder="请输入IP地址(IPv4/IPv6)" />
                 </td>
             </tr>
             <tr>
                 <th class="formTitle">结束IP</th>
                 <td class="formValue">
-                    <input id="F_EndIP" name="F_EndIP" type="text" class="form-control required ip" placeholder="请输入IP地址(IPv4/IPv6)" />
+                    <input id="endWithIp" name="endWithIp" type="text" class="form-control required ip" placeholder="请输入IP地址(IPv4/IPv6)" />
                 </td>
             </tr>
+
             <tr>
-                <th class="formTitle" style="height: 35px;">选项</th>
-                <td class="formValue" style="padding-top: 1px;">
-                    <div class="ckbox">
-                        <input id="F_EnabledMark" name="F_EnabledMark" type="checkbox" checked="checked"><label for="F_EnabledMark">有效</label>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <th class="formTitle" valign="top" style="padding-top: 11px;">备注
+                <th class="formTitle" valign="top" style="padding-top: 11px;">
+                    备注
                 </th>
                 <td class="formValue">
-                    <textarea id="F_Description" name="F_Description" class="form-control" style="height: 60px;"></textarea>
+                    <textarea name="description" class="form-control" style="height: 60px;"></textarea>
                 </td>
             </tr>
         </table>

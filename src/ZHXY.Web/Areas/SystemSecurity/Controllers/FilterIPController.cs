@@ -7,47 +7,46 @@ namespace ZHXY.Web.SystemSecurity.Controllers
 {
     public class FilterIPController : ZhxyWebControllerBase
     {
-        private SysFilterIPAppService App { get; }
-        public FilterIPController(SysFilterIPAppService app) => App = app;
+        private FilterIpAppService App { get; }
+        public FilterIPController(FilterIpAppService app) => App = app;
 
         [HttpGet]
         
-        public ActionResult GetGridJson(string keyword)
+        public ActionResult Load(string keyword)
         {
             var data = App.GetList(keyword);
-            return Content(data.ToJson());
+            return Resultaat.Success(data);
         }
 
         [HttpGet]
         
-        public ActionResult GetFormJson(string keyValue)
+        public ActionResult Get(string id)
         {
-            var data = App.GetForm(keyValue);
-            return Content(data.ToJson());
+            var data = App.GetById(id);
+            return Resultaat.Success(data);
         }
 
         [HttpPost]
-        
-        [ValidateAntiForgeryToken]
-        public ActionResult SubmitForm(FilterIP filterIPEntity, string keyValue)
+        public ActionResult Add(AddFilterIpDto input)
         {
-            App.SubmitForm(filterIPEntity, keyValue);
-            return Message("操作成功。");
+            App.Add(input);
+            return Resultaat.Success();
         }
 
+        [HttpPost]
+        public ActionResult Update(UpdateFilterIpDto input)
+        {
+            App.Update(input);
+            return Resultaat.Success();
+        }
         [HttpPost]
         
         [HandlerAuthorize]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteForm(string keyValue)
+        public ActionResult Delete(string id)
         {
-            var F_Id = keyValue.Split('|');
-            for (var i = 0; i < F_Id.Length - 1; i++)
-            {
-                App.DeleteForm(F_Id[i]);
-            }
-            //filterIPApp.DeleteForm(keyValue);
-            return Message("删除成功。");
+            App.Delete(id);
+            return Resultaat.Success();
         }
     }
 }

@@ -1,13 +1,12 @@
 ﻿@{
-    
     Layout = "~/Views/Shared/_Index.cshtml";
 }
 <script>
-    var keyValue = $.request("keyValue");
+    let id = $.request("id");
     $(function () {
         $("#F_Type").bindSelect()
         $.ajax({
-            url: "/SystemSecurity/FilterIP/GetFormJson",
+            url: "/SystemSecurity/FilterIP/Get",
             data: { keyValue: keyValue },
             dataType: "json",
             async: false,
@@ -29,7 +28,7 @@
             <tr>
                 <th class="formTitle">策略类型</th>
                 <td class="formValue">
-                    <select id="F_Type" name="F_Type" class="form-control">
+                    <select  name="type" class="form-control">
                         <option value="">==请选择==</option>
                         <option value="true">允许访问</option>
                         <option value="false">拒绝访问</option>
@@ -39,53 +38,21 @@
             <tr>
                 <th class="formTitle">起始IP</th>
                 <td class="formValue">
-                    <input id="F_StartIP" name="F_StartIP" type="text" class="form-control" />
+                    <input  name="startWithIp" type="text" class="form-control" />
                 </td>
             </tr>
             <tr>
                 <th class="formTitle">结束IP</th>
                 <td class="formValue">
-                    <input id="F_EndIP" name="F_EndIP" type="text" class="form-control" />
+                    <input name="endWithIp" type="text" class="form-control" />
                 </td>
             </tr>
-            <tr>
-                <th class="formTitle" style="height: 35px;">选项</th>
-                <td class="formValue" style="padding-top: 1px;">
-                    <div class="ckbox">
-                        <input id="F_EnabledMark" name="F_EnabledMark" type="checkbox" checked="checked"><label for="F_EnabledMark">有效</label>
-                    </div>
-                </td>
-            </tr>
+           
             <tr>
                 <th class="formTitle" valign="top" style="padding-top: 11px;">备注
                 </th>
                 <td class="formValue">
-                    <textarea id="F_Description" name="F_Description" class="form-control" style="height: 60px;"></textarea>
-                </td>
-            </tr>
-            <tr>
-                <th class="formTitle">创建人员</th>
-                <td class="formValue">
-                    <input id="F_CreatorUserId" name="F_CreatorUserId" type="text" class="form-control" />
-                </td>
-            </tr>
-            <tr>
-
-                <th class="formTitle">创建时间</th>
-                <td class="formValue">
-                    <input id="F_CreatorTime" name="F_CreatorTime" type="text" class="form-control" />
-                </td>
-            </tr>
-            <tr>
-                <th class="formTitle">修改人员</th>
-                <td class="formValue">
-                    <input id="F_LastModifyUserId" name="F_LastModifyUserId" type="text" class="form-control" />
-                </td>
-            </tr>
-            <tr>
-                <th class="formTitle">修改时间</th>
-                <td class="formValue">
-                    <input id="F_LastModifyTime" name="F_LastModifyTime" type="text" class="form-control" />
+                    <textarea id="description" name="description" class="form-control" style="height: 60px;"></textarea>
                 </td>
             </tr>
         </table>
