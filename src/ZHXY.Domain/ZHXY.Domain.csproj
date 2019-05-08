@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7DC886CD-B8A0-44E8-AADD-57FCB0CFECB8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ZHXY.Domain</RootNamespace>
+    <AssemblyName>ZHXY.Domain</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Consts.cs" />
+    <Compile Include="DataAccess\Extensions\DbConnHelper.cs" />
+    <Compile Include="DataAccess\Extensions\DbHelper.cs" />
+    <Compile Include="DataAccess\Extensions\SqlHelper.cs" />
+    <Compile Include="DataAccess\Initializers\CreateTablesIfNotExist.cs" />
+    <Compile Include="DataAccess\Initializers\OtherMaps.cs" />
+    <Compile Include="DataAccess\Repository.T.cs" />
+    <Compile Include="DataAccess\Repоsitory.cs" />
+    <Compile Include="DataAccess\UnitWork.cs" />
+    <Compile Include="DataAccess\ZhxyDbContext.cs" />
+    <Compile Include="Dic\SysRoleType.cs" />
+    <Compile Include="EntityConfig\Dorm\AccessStudentMap.cs" />
+    <Compile Include="EntityConfig\Dorm\BedMap.cs" />
+    <Compile Include="EntityConfig\Dorm\BuilingMap.cs" />
+    <Compile Include="EntityConfig\Dorm\DormMap.cs" />
+    <Compile Include="EntityConfig\Dorm\DormRuleMap.cs" />
+    <Compile Include="EntityConfig\Dorm\DormStudentMap.cs" />
+    <Compile Include="EntityConfig\Dorm\DormVisitLimitMap.cs" />
+    <Compile Include="EntityConfig\Dorm\GateMap.cs" />
+    <Compile Include="EntityConfig\Dorm\InOutReceiveMap.cs" />
+    <Compile Include="EntityConfig\Dorm\LateReturnReportMap.cs" />
+    <Compile Include="EntityConfig\Dorm\NoOutReportMap.cs" />
+    <Compile Include="EntityConfig\Dorm\NoReturnReportMap.cs" />
+    <Compile Include="EntityConfig\Dorm\DormRepairMap.cs" />
+    <Compile Include="EntityConfig\Dorm\VisitLogMap.cs" />
+    <Compile Include="EntityConfig\Dorm\CancelHolidayMap.cs" />
+    <Compile Include="EntityConfig\Dorm\StuHolidayLimitMap.cs" />
+    <Compile Include="EntityConfig\Dorm\LeaveApproveMap.cs" />
+    <Compile Include="EntityConfig\Dorm\SemesterMap.cs" />
+    <Compile Include="EntityConfig\Dorm\StudentMap.cs" />
+    <Compile Include="EntityConfig\Dorm\StuLeaveMap.cs" />
+    <Compile Include="EntityConfig\Dorm\TeacherMap.cs" />
+    <Compile Include="EntityConfig\System\DbBackupMap.cs" />
+    <Compile Include="EntityConfig\System\FieldDefMap.cs" />
+    <Compile Include="EntityConfig\System\FilterIPMap.cs" />
+    <Compile Include="EntityConfig\System\ItemsDetailMap.cs" />
+    <Compile Include="EntityConfig\System\ItemsMap.cs" />
+    <Compile Include="EntityConfig\System\LogMap.cs" />
+    <Compile Include="EntityConfig\System\ModuleButtonMap.cs" />
+    <Compile Include="EntityConfig\System\ModuleMap.cs" />
+    <Compile Include="EntityConfig\System\PlaceAreaMap.cs" />
+    <Compile Include="EntityConfig\System\RelevanceMap.cs" />
+    <Compile Include="EntityConfig\System\RoleAuthorizeMap.cs" />
+    <Compile Include="EntityConfig\System\RoleMap.cs" />
+    <Compile Include="EntityConfig\System\SysOrgLeaderMap.cs" />
+    <Compile Include="EntityConfig\System\SysOrgMap.cs" />
+    <Compile Include="EntityConfig\System\SysTableDefMap.cs" />
+    <Compile Include="EntityConfig\System\UserLogOnMap.cs" />
+    <Compile Include="EntityConfig\System\UserMap.cs" />
+    <Compile Include="EntityConfig\System\UserRoleMap.cs" />
+    <Compile Include="EntityExtensions\ReportEntity.cs" />
+    <Compile Include="Entity\Dorm\AccessStudent.cs" />
+    <Compile Include="Entity\Dorm\DormBed.cs" />
+    <Compile Include="Entity\Dorm\DormRule.cs" />
+    <Compile Include="Entity\Dorm\DormRoom.cs" />
+    <Compile Include="Entity\Dorm\DormStudent.cs" />
+    <Compile Include="Entity\Dorm\DormVisitLimit.cs" />
+    <Compile Include="Entity\Dorm\Gate.cs" />
+    <Compile Include="Entity\Dorm\InOutReceive.cs" />
+    <Compile Include="Entity\Dorm\LateReturnReport.cs" />
+    <Compile Include="Entity\Dorm\NoOutReport.cs" />
+    <Compile Include="Entity\Dorm\NoReturnReport.cs" />
+    <Compile Include="Entity\Dorm\OriginalReport.cs" />
+    <Compile Include="Entity\Dorm\DormRepair.cs" />
+    <Compile Include="Entity\Dorm\VisitApply.cs" />
+    <Compile Include="Entity\Entity.cs" />
+    <Compile Include="EntityExtensions\AdutiEntity.cs" />
+    <Compile Include="EntityExtensions\BaseEntity.cs" />
+    <Compile Include="EntityExtensions\CompleteEntity.cs" />
+    <Compile Include="EntityExtensions\EntityExtensions.cs" />
+    <Compile Include="EntityExtensions\EntityFactory.cs" />
+    <Compile Include="EntityExtensions\ICreateAuditable.cs" />
+    <Compile Include="EntityExtensions\IDeleteAuditable.cs" />
+    <Compile Include="EntityExtensions\IDisable.cs" />
+    <Compile Include="EntityExtensions\IEntity.cs" />
+    <Compile Include="EntityExtensions\IModifiable.cs" />
+    <Compile Include="EntityExtensions\ISortable.cs" />
+    <Compile Include="EntityExtensions\ITreeable.cs" />
+    <Compile Include="Entity\Dorm\CancelHoliday.cs" />
+    <Compile Include="Entity\Dorm\StuHolidayLimit.cs" />
+    <Compile Include="Entity\Dorm\LeaveApprove.cs" />
+    <Compile Include="Entity\Dorm\StuLeaveOrder.cs" />
+    <Compile Include="Entity\System\Relevance.cs" />
+    <Compile Include="Entity\System\OrgLeader.cs" />
+    <Compile Include="Entity\System\UserLogin.cs" />
+    <Compile Include="Entity\Dorm\Semester.cs" />
+    <Compile Include="Entity\Dorm\Student.cs" />
+    <Compile Include="Entity\Dorm\Teacher.cs" />
+    <Compile Include="Entity\System\AreaChild.cs" />
+    <Compile Include="Entity\System\PlaceArea.cs" />
+    <Compile Include="Entity\System\SysDicItem.cs" />
+    <Compile Include="Entity\System\SysDic.cs" />
+    <Compile Include="EntityExtensions\ModuleButtonComparer.cs" />
+    <Compile Include="Entity\System\SysButton.cs" />
+    <Compile Include="EntityExtensions\ModuleComparer.cs" />
+    <Compile Include="Entity\System\SysModule.cs" />
+    <Compile Include="Entity\System\Organize.cs" />
+    <Compile Include="Entity\System\OrganizeGrade.cs" />
+    <Compile Include="Entity\System\RoleAuthorize.cs" />
+    <Compile Include="Entity\System\Role.cs" />
+    <Compile Include="Entity\System\FieldDef.cs" />
+    <Compile Include="Entity\System\TableDef.cs" />
+    <Compile Include="Entity\System\User.cs" />
+    <Compile Include="Entity\System\UserRole.cs" />
+    <Compile Include="Entity\System\DbBackup.cs" />
+    <Compile Include="Entity\System\FilterIP.cs" />
+    <Compile Include="Entity\System\SysLog.cs" />
+    <Compile Include="Dic\AssetStatus.cs" />
+    <Compile Include="Dic\GoodsStatus.cs" />
+    <Compile Include="Dic\OutStorageType.cs" />
+    <Compile Include="Dic\ScoreStatus.cs" />
+    <Compile Include="Dic\StrictType.cs" />
+    <Compile Include="Dic\StudentLeaveType.cs" />
+    <Compile Include="EntityExtensions\EntityBase.cs" />
+    <Compile Include="EntityExtensions\IDataFilterAble.cs" />
+    <Compile Include="EntityExtensions\ICreationAudited.cs" />
+    <Compile Include="EntityExtensions\IDeleteAudited.cs" />
+    <Compile Include="EntityExtensions\IModificationAudited.cs" />
+    <Compile Include="Repos\Interface\IRepоsitory.cs" />
+    <Compile Include="Repos\Interface\IUnitWork.cs" />
+    <Compile Include="Repos\Interface\IClassDutyRepository.cs" />
+    <Compile Include="Repos\Interface\IClassTeacherRepository.cs" />
+    <Compile Include="Repos\Interface\ICourseRepository.cs" />
+    <Compile Include="Repos\Interface\ICourseTeacherRepository.cs" />
+    <Compile Include="Repos\Interface\IGradeCourseRepository.cs" />
+    <Compile Include="Repos\Interface\IZhxyRepository.cs" />
+    <Compile Include="Repos\Interface\ITeacherRepository.cs" />
+    <Compile Include="Repos\Interface\IItemDetailRepository.cs" />
+    <Compile Include="Dic\BuyOfWay.cs" />
+    <Compile Include="Dic\InStorageType.cs" />
+    <Compile Include="Dic\OrderStatus.cs" />
+    <Compile Include="Dic\OrderType.cs" />
+    <Compile Include="Dic\WarehouseStatus.cs" />
+    <Compile Include="Dic\SupplierStatus.cs" />
+    <Compile Include="Dic\SupplierType.cs" />
+    <Compile Include="Repos\Interface\IRepositoryBase.T.cs" />
+    <Compile Include="Repos\Interface\IModuleButtonRepository.cs" />
+    <Compile Include="Repos\Interface\IRoleRepository.cs" />
+    <Compile Include="Repos\Interface\IUserRepository.cs" />
+    <Compile Include="Entity\Dorm\Building.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repos\ClassDutyRepository.cs" />
+    <Compile Include="Repos\ClassTeacherRepository.cs" />
+    <Compile Include="Repos\CourseRepository.cs" />
+    <Compile Include="Repos\CourseTeacherRepository.cs" />
+    <Compile Include="Repos\GradeCourseRepository.cs" />
+    <Compile Include="Repos\TeacherRepository.cs" />
+    <Compile Include="Repos\ItemsDetailRepository.cs" />
+    <Compile Include="Repos\ModuleButtonRepository.cs" />
+    <Compile Include="Repos\RoleRepository.cs" />
+    <Compile Include="Repos\UserRepository.cs" />
+    <Compile Include="DataAccess\ZhxyRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="EntityFramework">
+      <Version>6.2.0</Version>
+    </PackageReference>
+    <PackageReference Include="EntityFramework.zh-Hans">
+      <Version>6.2.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.DependencyValidation.Analyzers">
+      <Version>0.10.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Net.Compilers">
+      <Version>2.10.0</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.1</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ZHXY.Common\ZHXY.Common.csproj">
+      <Project>{DB19CE03-C307-43FE-A209-08AA4AE10E21}</Project>
+      <Name>ZHXY.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

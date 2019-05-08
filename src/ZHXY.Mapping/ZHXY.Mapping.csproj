@@ -1,0 +1,243 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4E642CBE-F6C5-4CB9-9474-6B349652FE77}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ZHXY.Mapping</RootNamespace>
+    <AssemblyName>ZHXY.Mapping</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Asset\AssetScrapDetailMap.cs" />
+    <Compile Include="Asset\AssetTransferDetailMap.cs" />
+    <Compile Include="Asset\AssetRepairDetailMap.cs" />
+    <Compile Include="Asset\AssetRenewalDetailMap.cs" />
+    <Compile Include="Asset\AssetPartMap.cs" />
+    <Compile Include="Asset\AssetBorrowDetailMap.cs" />
+    <Compile Include="Asset\AssetBorrowMap.cs" />
+    <Compile Include="Asset\AssetMap.cs" />
+    <Compile Include="Asset\AssetCategoryMap.cs" />
+    <Compile Include="Asset\AssetOwnerMap.cs" />
+    <Compile Include="Asset\AssetRenewalMap.cs" />
+    <Compile Include="Asset\AssetRepairMap.cs" />
+    <Compile Include="Asset\AssetResumeMap.cs" />
+    <Compile Include="Asset\AssetScrapMap.cs" />
+    <Compile Include="Asset\AssetSupplierMap.cs" />
+    <Compile Include="Asset\AssetTransferMap.cs" />
+    <Compile Include="Asset\GoodsApplyDetailMap.cs" />
+    <Compile Include="Asset\GoodsApplyMap.cs" />
+    <Compile Include="Asset\GoodsCategoryMap.cs" />
+    <Compile Include="Asset\GoodsCheckDetailMap.cs" />
+    <Compile Include="Asset\GoodsCheckMap.cs" />
+    <Compile Include="Asset\GoodsInStorageDetailMap.cs" />
+    <Compile Include="Asset\GoodsInStorageMap.cs" />
+    <Compile Include="Asset\GoodsMap.cs" />
+    <Compile Include="Asset\GoodsOutStorageDetailMap.cs" />
+    <Compile Include="Asset\GoodsOutStorageMap.cs" />
+    <Compile Include="Asset\GoodsPurchaseDetailMap.cs" />
+    <Compile Include="Asset\GoodsPurchaseMap.cs" />
+    <Compile Include="Asset\GoodsScrapDetailMap.cs" />
+    <Compile Include="Asset\GoodsScrapMap.cs" />
+    <Compile Include="Asset\GoodsBatchStockMap.cs" />
+    <Compile Include="Asset\GoodsStockMap.cs" />
+    <Compile Include="Asset\GoodsTransferDetailMap.cs" />
+    <Compile Include="Asset\GoodsTransferMap.cs" />
+    <Compile Include="Asset\SheetCodeMap.cs" />
+    <Compile Include="Asset\WarehouseMap.cs" />
+    <Compile Include="Dorm\AccessStudentMap.cs" />
+    <Compile Include="Dorm\DormVisitLimitMap.cs" />
+    <Compile Include="Dorm\GateChannelMap.cs" />
+    <Compile Include="Dorm\GateMap.cs" />
+    <Compile Include="Dorm\BedMap.cs" />
+    <Compile Include="Dorm\BuildingDeviceMap.cs" />
+    <Compile Include="Dorm\ChangeLogsMap.cs" />
+    <Compile Include="Dorm\DormRuleMap.cs" />
+    <Compile Include="Dorm\DormMap.cs" />
+    <Compile Include="Dorm\DormStudentMap.cs" />
+    <Compile Include="Dorm\InOutReceiveMap.cs" />
+    <Compile Include="Dorm\LateReturnReportMap.cs" />
+    <Compile Include="Dorm\NoOutReportMap.cs" />
+    <Compile Include="Dorm\NoReturnReportMap.cs" />
+    <Compile Include="Dorm\RepairMap.cs" />
+    <Compile Include="Dorm\VisitLogMap.cs" />
+    <Compile Include="Mail\AttachmentMap.cs" />
+    <Compile Include="Mail\ContactMap.cs" />
+    <Compile Include="Moral\ClassScoreMap.cs" />
+    <Compile Include="Moral\FlagRuleMap.cs" />
+    <Compile Include="Moral\FlowRedFlagScoreMap.cs" />
+    <Compile Include="Moral\LevelRuleMap.cs" />
+    <Compile Include="Moral\PointRuleMap.cs" />
+    <Compile Include="Moral\ScoreRuleMap.cs" />
+    <Compile Include="Moral\StudentScoreMap.cs" />
+    <Compile Include="Moral\StudentStrictMap.cs" />
+    <Compile Include="MappingModule.cs" />
+    <Compile Include="Dorm\AccessRecordMap.cs" />
+    <Compile Include="NH\CancelHolidayMap.cs" />
+    <Compile Include="NH\StuHolidayLimitMap.cs" />
+    <Compile Include="Office\OfficeMap.cs" />
+    <Compile Include="Office\OfficeTeacherMap.cs" />
+    <Compile Include="Office\PublichRecordMap.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Schedule\Schedule_ClassStudent_Map.cs" />
+    <Compile Include="Schedule\Schedule_Class_Map.cs" />
+    <Compile Include="Schedule\Schedule_CourseGroup_Map.cs" />
+    <Compile Include="Schedule\Schedule_CourseLayer_Map.cs" />
+    <Compile Include="Schedule\Schedule_CourseLayer_Teachers_Map.cs" />
+    <Compile Include="Schedule\Schedule_Grade_Classroom_Map.cs" />
+    <Compile Include="Schedule\Schedule_MoveClassStudent_Map.cs" />
+    <Compile Include="Schedule\Schedule_MoveClass_Map.cs" />
+    <Compile Include="Schedule\Schedule_Profession_Map.cs" />
+    <Compile Include="Schedule\Schedule_PRule_Teacher_Map.cs" />
+    <Compile Include="Schedule\Schedule_PRule_Course_Map.cs" />
+    <Compile Include="Schedule\Schedule_Task_Map.cs" />
+    <Compile Include="Schedule\Schedule_WCTask_Group_Map.cs" />
+    <Compile Include="Schedule\Schedule_WishCourseGroup_Map.cs" />
+    <Compile Include="Schedule\Schedule_WishCourseTask_Map.cs" />
+    <Compile Include="School\AttendanceRuleMap.cs" />
+    <Compile Include="School\ClassDutyMap.cs" />
+    <Compile Include="School\ClassInfoMap.cs" />
+    <Compile Include="School\ClassroomMap.cs" />
+    <Compile Include="School\ClassTeacherMap.cs" />
+    <Compile Include="School\CourseMap.cs" />
+    <Compile Include="School\CoursePrepareInfoMap.cs" />
+    <Compile Include="School\CourseTeacherMap.cs" />
+    <Compile Include="School\DevicesMap.cs" />
+    <Compile Include="Mail\MailMessageMap.cs" />
+    <Compile Include="School\LeaveApproveMap.cs" />
+    <Compile Include="School\AttendanceStuCountMap.cs" />
+    <Compile Include="School\AttendanceStuFlowMap.cs" />
+    <Compile Include="School\BillMap.cs" />
+    <Compile Include="Schedule\Schedule_Class_PTimetable_Map.cs" />
+    <Compile Include="School\ComeBackRouteMap.cs" />
+    <Compile Include="School\ComeBackRouteTwoMap.cs" />
+    <Compile Include="School\ComeBackSiteMap.cs" />
+    <Compile Include="School\EntrySignUpMap.cs" />
+    <Compile Include="School\EventInfoMap.cs" />
+    <Compile Include="School\ExamReportMap.cs" />
+    <Compile Include="School\ExamMap.cs" />
+    <Compile Include="School\ExamSignUpMap.cs" />
+    <Compile Include="School\ExamTitleMap.cs" />
+    <Compile Include="School\GradeCourseMap.cs" />
+    <Compile Include="School\NewsMap.cs" />
+    <Compile Include="School\ParentStudentMap.cs" />
+    <Compile Include="School\PresenceMap.cs" />
+    <Compile Include="School\ScheduleMap.cs" />
+    <Compile Include="School\ScheduleTimeMap.cs" />
+    <Compile Include="School\SchoolAttachmentMap.cs" />
+    <Compile Include="School\SchoolInfoMap.cs" />
+    <Compile Include="School\NoticeMap.cs" />
+    <Compile Include="School\NoSeedMap.cs" />
+    <Compile Include="School\PersonalCommunicationMap.cs" />
+    <Compile Include="Schedule\Schedule_PRule_Classroom_Map.cs" />
+    <Compile Include="Schedule\Schedule_PRule_CourseExclude_Map.cs" />
+    <Compile Include="Schedule\Schedule_PRule_MergeClass_Map.cs" />
+    <Compile Include="Schedule\Schedule_PRule_TeacherExclude_Map.cs" />
+    <Compile Include="Schedule\Schedule_PRule_TeacherTime_Map.cs" />
+    <Compile Include="Schedule\Schedule_PRule_Weeks_Map.cs" />
+    <Compile Include="School\SalaryMap.cs" />
+    <Compile Include="School\SchoolSupervisorMap.cs" />
+    <Compile Include="School\School_Alarm.cs" />
+    <Compile Include="School\School_ICCardLog_Map.cs" />
+    <Compile Include="School\School_ICCard_Map.cs" />
+    <Compile Include="School\School_Schedules_MoveCourse_Map.cs" />
+    <Compile Include="School\ScreenAdvertiseTypeMap.cs" />
+    <Compile Include="School\ScreenExamTypeMap.cs" />
+    <Compile Include="School\SemesterMap.cs" />
+    <Compile Include="School\MsgBoxMap.cs" />
+    <Compile Include="School\StudentHonorMap.cs" />
+    <Compile Include="School\StudentMap.cs" />
+    <Compile Include="School\StudentsStatusLogMap.cs" />
+    <Compile Include="School\StuLeaveMap.cs" />
+    <Compile Include="School\SubjectArealimitMap.cs" />
+    <Compile Include="School\SubjectMap.cs" />
+    <Compile Include="School\TeacherChangeMap.cs" />
+    <Compile Include="School\TeacherMap.cs" />
+    <Compile Include="Schedule\Schedule_PRule_Grade_Map.cs" />
+    <Compile Include="Schedule\Schedule_TeacherTime_Config_Map.cs" />
+    <Compile Include="School\TeacherHonorMap.cs" />
+    <Compile Include="School\TeacherDailyMap.cs" />
+    <Compile Include="School\WechatConfigMap.cs" />
+    <Compile Include="Dorm\BuilingMap.cs" />
+    <Compile Include="System\FieldDefMap.cs" />
+    <Compile Include="System\ItemsDetailMap.cs" />
+    <Compile Include="System\ItemsMap.cs" />
+    <Compile Include="System\ModuleButtonMap.cs" />
+    <Compile Include="System\ModuleMap.cs" />
+    <Compile Include="System\RelevanceMap.cs" />
+    <Compile Include="System\SysOrgLeaderMap.cs" />
+    <Compile Include="System\SysOrgMap.cs" />
+    <Compile Include="System\PlaceAreaMap.cs" />
+    <Compile Include="System\RoleAuthorizeMap.cs" />
+    <Compile Include="System\RoleMap.cs" />
+    <Compile Include="System\SysTableDefMap.cs" />
+    <Compile Include="System\UserLogOnMap.cs" />
+    <Compile Include="System\UserMap.cs" />
+    <Compile Include="System\DbBackupMap.cs" />
+    <Compile Include="System\FilterIPMap.cs" />
+    <Compile Include="System\LogMap.cs" />
+    <Compile Include="System\UserRoleMap.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ZHXY.Common\ZHXY.Common.csproj">
+      <Project>{DB19CE03-C307-43FE-A209-08AA4AE10E21}</Project>
+      <Name>ZHXY.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ZHXY.Domain\ZHXY.Domain.csproj">
+      <Project>{7dc886cd-b8a0-44e8-aadd-57fcb0cfecb8}</Project>
+      <Name>ZHXY.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="EntityFramework">
+      <Version>6.2.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.DependencyValidation.Analyzers">
+      <Version>0.10.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Net.Compilers">
+      <Version>2.10.0</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Office\readme.md" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

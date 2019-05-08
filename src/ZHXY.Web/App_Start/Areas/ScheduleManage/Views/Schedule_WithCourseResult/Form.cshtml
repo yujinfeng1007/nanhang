@@ -1,0 +1,220 @@
+﻿@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<script>
+    var keyValue = $.request("keyValue");
+    $(function () {
+        initControl();
+        if (!!keyValue) {
+            $.ajax({
+                url: "/ScheduleManage/Schedule_WithCourseResult/GetFormJson",
+                data: { keyValue: keyValue },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    console.log(data);
+                    $("#form1").formSerialize(data);
+                    $("#form1").find('.form-control,select,input').attr('readonly', 'readonly');
+                    $("#form1").find('select').prop("disabled", true);
+                    $("input[name='F_CourseGroups'][value='" + data.F_CourseGroups + "']").attr("checked", true);
+                }
+            });
+        }
+    });
+    function initControl() {
+        $("#F_SemesterId").bindSelect({
+            url: "/SchoolManage/School_Semester/GetGridSelect",
+            id: "F_Id",
+            text: "F_Name"
+        });
+        $("#F_Year").bindSelect({
+            dictionary: 'F_Year',
+            displayBlank: false
+        });
+        $("#F_DivisId").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Division",
+        });
+
+        $("#F_DivisId").change(function () {
+            changeDivis();
+        });
+
+        $("#F_GradeId").change(function () {
+            changeClass();
+            changeTask();
+
+        });
+        $("#F_TaskId").change(function () {
+            changeCourse();
+            changeStudent();
+        });
+        $("#F_ClassId").change(function () {
+            changeStudent();
+        });
+        //changeDivis();
+        $.addRequired('#form1')
+    }
+    function submitForm() {
+        if (!$('#form1').formValid()) {
+            return false;
+        }
+
+        var vals = $('input:radio[name="F_CourseGroups"]:checked').val();
+        //$('input:checkbox:checked').each(function (index, item) {
+        //    vals += $(this).val() + ",";
+        //});
+
+        var postData = { F_StudentID:$("#F_StudentId").val(),F_TaskCourseGroupID:vals,F_TaskId: $("#F_TaskId").val(),keyValue: keyValue };
+        $.loading(true, "正在处理...");
+        $.submitForm({
+            url: "/ScheduleManage/Schedule_WithCourseResult/SubmitForm",
+            param: postData,
+            success: function () {
+                $.loading(false);
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+
+    function changeDivis() {
+
+        $("#F_GradeId").find("option").remove();
+        $("#F_GradeId").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Grade&parentId=" + $("#F_DivisId").val(),
+        });
+        //changeClass();
+    }
+
+    function changeClass() {
+        $("#F_ClassId").find("option").remove();
+        $("#F_ClassId").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Class&parentId=" + $("#F_GradeId").val(),
+        });
+    }
+
+    function changeTask()
+    {
+        $("#F_TaskId").find("option").remove();
+        $("#F_TaskId").bindSelect({
+            url: "/ScheduleManage/Schedule_WishCourseTask/GetSelectJson?F_Type=1&F_Year=" + $("#F_Year").val() + "&F_Semester=" + $("#F_SemesterId").val() + "&F_Divis=" + $("#F_DivisId").val() + "&F_Grade=" + $("#F_GradeId").val(),
+            id: "F_Id",
+            text: "F_TaskName"
+        });
+        //$.ajax({
+        //    url: "/ScheduleManage/Schedule_WishCourseTask/GetSelectJson?F_Type=1&F_Year=" + $("#F_Year").val() + "&F_Semester=" + $("#F_SemesterId").val() + "&F_Divis=" + $("#F_DivisId").val() + "&F_Grade=" + $("#F_GradeId").val(),
+        //    dataType: "json",
+        //    async: false,
+        //    success: function (data) {
+        //        var selectOptions = $.map(data, function (item, i) {
+        //            var state = top.clients.dataItems["WithCourseStatus"][item.F_Status] == undefined ? "" : top.clients.dataItems["WithCourseStatus"][item.F_Status];
+        //            return '<option value=' + item.F_Id + '>' + item.F_TaskName + '(' + state + ')' + '</option>'
+        //        })
+        //        $('#F_TaskId').append(selectOptions.join(''))
+        //    }
+        //});
+
+    }
+
+    function changeCourse()
+    {
+        $('#F_CourseGroups').html('');
+        $.ajax({
+            url: "/ScheduleManage/Schedule_WishCourseTask/GetWishCourseGroupFormJson",
+            data: { keyValue: $("#F_TaskId").val() },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                $.each(data, function (i) {
+                    var $checkbox = $("<div class='rdio'><input  type='radio' value='" + data[i]["F_Id"] + "' name='F_CourseGroups' id='" + data[i]["F_Id"] + "' /><label for='" + data[i]["F_Id"] + "'>" + data[i]["Schedule_CourseGroup_Entity"].F_GroupName + "</label></div>")
+                    if (data[i]['ifChecked']) {
+                        $checkbox.find('input').attr('checked', 'checked')
+                    }
+                    $('#F_CourseGroups').append($checkbox)
+                });
+            }
+        });
+    }
+
+    function changeStudent()
+    {
+        var classId = $("#F_ClassId").val() == null ? "" : $("#F_ClassId").val();
+        $("#F_StudentId").bindSelect({
+            url: "/ScheduleManage/Schedule_WithCourseResult/GetStudentGridJson?F_GradeId=" + $("#F_GradeId").val() + "&F_ClassId=" + classId + "&F_TaskId=" + $("#F_TaskId").val() + "&keyValue=" + keyValue,
+            id: "F_Id",
+            text: "F_Name"
+        });
+    }
+</script>
+<form id="form1">
+    <div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#">基本信息</a></li>
+        </ul>
+        <div style="padding-top: 20px; margin-right: 30px;">
+            <table class="form">
+                <tr>
+                    <th class="formTitle">年度：</th>
+                    <td class="formValue">
+                        <select id="F_Year" name="F_Year" class="form-control required">
+                            <option value="">选择年度</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">学期：</th>
+                    <td class="formValue">
+                        <select id="F_SemesterId" name="F_SemesterId" class="form-control required">
+                            <option value="">选择学期</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">学部：</th>
+                    <td class="formValue">
+                        <select id="F_DivisId" name="F_DivisId" class="form-control required">
+                            <option value="">选择学部</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">年级：</th>
+                    <td class="formValue">
+                        <select id="F_GradeId" name="F_GradeId" class="form-control required">
+                            <option value="">选择年级</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th class="formTitle">任务名称</th>
+                    <td class="formValue">
+                            <select id="F_TaskId" name="F_TaskId" class="form-control required">
+                                <option value="">选择预选任务</option>
+                            </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">预选科目</th>
+                    <td class="formValue" id="F_CourseGroups"></td>
+                </tr>
+                <tr>
+                    <th class="formTitle">班级：</th>
+                    <td class="formValue">
+                        <select id="F_ClassId" name="F_ClassId" class="form-control">
+                            <option value="">选择班级</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">学生姓名</th>
+                    <td class="formValue">
+                            <select id="F_StudentId" name="F_StudentId" class="form-control required">
+                                <option value="">选择学生</option>
+                            </select>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</form>

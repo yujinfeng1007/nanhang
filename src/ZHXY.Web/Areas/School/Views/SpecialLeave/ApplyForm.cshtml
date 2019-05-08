@@ -1,0 +1,90 @@
+﻿@{
+    
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script>
+    $(function () {
+        $("#addStudent").on("click", selectStudent);
+    });
+
+    var selectedStudent = {
+        ids: new Set(),
+        names: new Set()
+    };
+
+    function selectStudent() {
+        $.modalOpen({
+            id: "selectStudent",
+            title: "选择学生",
+            url: `/SchoolManage/SpecialLeave/SelectStudent`,
+            width: "1200px",
+            height: "1000px",
+            btn: ["添加至列表"],
+            callBack: function (id) {
+                top.frames[id].close();
+                let students = top.frames[id].submit();
+                students.forEach(item => {
+                    selectedStudent.names.add(item.name);
+                    selectedStudent.ids.add(item.userId);
+                });
+               $("#leaveersName").val(Array.from(selectedStudent.names).join(","));
+               $("#leaveers").val(Array.from(selectedStudent.ids));
+            }
+        });
+    }
+
+    function submitForm() {
+        if (!$('#applyForm').formValid()) {
+            return false;
+        }
+
+        $.submitForm({
+            url: "apply",
+            param: {
+                reasonForLeave: $("#reasonForLeave").val(),
+                startTime: $("#startTime").val(),
+                endOfTime: $("#endOfTime").val(),
+                leaveers: $("#leaveers").val().split(","),
+            },
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+                 $.modalMsg('申请成功','success');
+                $.modalClose();
+            }
+        })
+    }
+
+
+</script>
+<form class="form-horizontal" id="applyForm" autocomplete="off" style="padding-top:10px;">
+    <div class="form-group">
+        <label for="reasonForLeave" class="col-sm-2 control-label">请假事项</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" id="reasonForLeave" placeholder="请假事项" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="startTime" class="col-sm-2 control-label">开始时间</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control  input-wdatepicker" id="startTime" placeholder="开始时间" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" required>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="endOfTime" class="col-sm-2 control-label">结束时间</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control  input-wdatepicker" id="endOfTime" placeholder="结束时间" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="endOfTime" class="col-sm-2 control-label">请假学生</label>
+        <div class="col-sm-8">
+            <textarea type="text" class="form-control" id="leaveersName" placeholder="请假学生" rows="10" style="resize:none;"></textarea>
+            <input type="hidden" id="leaveers" />
+        </div>
+        <div class="col-sm-1">
+            <span class="btn btn-sm btn-primary glyphicon glyphicon-plus" id="addStudent" style="margin-left:-24px;"></span>
+        </div>
+    </div>
+
+</form>

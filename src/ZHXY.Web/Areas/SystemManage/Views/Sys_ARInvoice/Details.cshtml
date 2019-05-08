@@ -1,0 +1,381 @@
+﻿@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<link href="~/Content/js/simditor/css/simditor.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="~/Content/js/webuploader/webuploader.css" />
+<link rel="stylesheet" type="text/css" href="~/Content/css/framework-custom-webuploader.css" />
+<script type="text/javascript" src="~/Content/js/webuploader/webuploader.js"></script>
+<script type="text/javascript" src="~/Content/js/ImageUpload.js"></script>
+<script type="text/javascript" src="~/Content/js/Fileupload.js"></script>
+<script src="~/Content/js/simditor/js/module.min.js"></script>
+<script src="~/Content/js/simditor/js/hotkeys.min.js"></script>
+<script src="~/Content/js/simditor/js/uploader.min.js"></script>
+<script src="~/Content/js/simditor/js/simditor.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="~/Content/js/doublebox/doublebox.css" />
+<link rel="stylesheet" type="text/css" href="~/Content/js/x-editable/bootstrap-editable.css" />
+<script type="text/javascript" src="~/Content/js/x-editable/bootstrap-editable.min.js"></script>
+<script type="text/javascript" src="~/Content/js/doublebox/doublebox.js"></script>
+<script>
+    var keyValue = $.request("keyValue");
+    $(function () {
+        initControl();
+        $.ajax({
+            url: "/SystemManage/Sys_ARInvoice/GetFormJson",
+            data: { keyValue: keyValue },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                $("#form1").formSerialize(data);
+                $("#form1").find('.form-control,select,input').attr('readonly', 'readonly');
+                $("#form1").find('div.ckbox label').attr('for', '');
+                $("#F_UserPassword").val("******");
+                if (data["F_Tax_Proof"] != null) {
+                    var str = $("#F_Tax_Proof").val()
+                    //if (str.contains('.png') || str.contains('.jpg') || str.contains('jpeg'))
+                    //    {
+                    //$("#fies_hx_label").html(data["F_Tax_Proof"].substr(17));
+                    $("#fies_hx_label").attr("href", "/F_Tax_Proof/DownFile?filePath=" + data["F_Tax_Proof"] + "&fileName=" + data["F_Tax_Proof"].substr(17) + "");
+                    $("#banner_img").attr("style", "width:200px;height:100px;display:block;");
+                    $("#banner_img").attr("src", $("#F_Tax_Proof").val());
+                    $("#banner_img_hidden").attr("src", $("#F_Tax_Proof").val());
+                }
+                if ($("#F_Tax_Proof").val() != "") {
+                    $("#banner_img").attr("style", "width:200px;height:100px;display:block;");
+                    $("#banner_img").attr("src", $("#F_Tax_Proof").val());
+                    $("#banner_img_hidden").attr("src", $("#F_Tax_Proof").val());
+                }
+            }
+        });
+    });
+    $(document).ready(function () {
+        $.initUploader({
+            container: '#uploader',
+            fileInput: '#F_Tax_Proof',
+            thumb: '#files_hx',
+            maxFile: 1,
+            maxSize: "20",
+            accept: {
+                title: 'All',
+                mimeTypes: '*/*'
+            }
+        })
+        $.initUploader({
+            container: '#fileuploader',
+            fileInput: '#F_Tax_Proof',
+            thumb: '#banner_img',
+            maxFile: 1,
+            maxSize: "20",
+            accept: {
+                title: 'Image',
+                extensions: 'gif,jpg,jpeg,bmp,png',
+                mimeTypes: 'image/*'
+            }
+        })
+        $("#banner_img").click(function () {
+            $.modalOpen({
+                title: false,
+                width: $("#banner_img_hidden").width() + "px",
+                height: $("#banner_img_hidden").height() + "px",
+                skin: 'layui-layer-nobg',
+                btn: 0,
+                url: $("#F_Tax_Proof").val()
+            });
+        });
+    });
+    function initControl() {
+        $("#F_Gender").bindSelect({
+            url: "/SystemManage/ItemsData/GetSelectJson?enCode=104"
+        })
+        $("#F_Grade_ID").bindSelect({
+            dictionary: 'F_Year'
+        });
+        $("#F_Divis_ID").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Division",
+        });
+        $("#F_Class_ID").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Class",
+        });
+        $("#F_IsAdministrator").bindSelect()
+        $("#F_EnabledMark").bindSelect()
+        $("#F_OrganizeId").bindSelect({
+            url: "/SystemManage/Organize/GetTreeSelectJson"
+        });
+        $("#F_DepartmentId").bindSelect({
+            url: "/SystemManage/Organize/GetTreeSelectJson?keyword=F_DepartmentId",
+        });
+        $("#F_RoleId").bindSelect({
+            url: "/SystemManage/Role/GetGridJson",
+            id: "F_Id",
+            text: "F_FullName"
+        });
+        $("#F_DutyId").bindSelect({
+            url: "/SystemManage/Duty/GetGridJson",
+            id: "F_Id",
+            text: "F_FullName"
+        });
+    }
+</script>
+
+<form id="form1">
+    <div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#">基本信息</a></li>
+            @*<li ><a href="#">扩展信息</a></li>*@
+        </ul>
+        <div style="padding-top: 20px; margin-right: 30px;">
+            <table class="form">
+                @*<tr>
+                    <th class="formTitle">学部ID</th>
+                    <td class="formValue">
+                        <select id="F_Divis_ID" name="F_Divis_ID" class="form-control required" disabled>
+                            <option value="">==请选择==</option>
+                        </select>
+                    </td>
+                    <th class="formTitle">学号</th>
+                    <td class="formValue">
+                        <input id="F_StudentNum" name="F_StudentNum" type="text" class="form-control required" placeholder="请输入学号" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">年级ID</th>
+                    <td class="formValue">
+                        <select id="F_Grade_ID" name="F_Grade_ID" class="form-control required" disabled>
+                            <option value="">==请选择==</option>
+                        </select>
+                    </td>
+
+                    <th class="formTitle">班级ID</th>
+                    <td class="formValue">
+                        <select id="F_Class_ID" name="F_Class_ID" class="form-control required" disabled>
+                            <option value="">==请选择==</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th class="formTitle">缴费单号</th>
+                    <td class="formValue">
+                        <input id="F_Charge_ID" name="F_Charge_ID" type="text" class="form-control required" placeholder="请输入缴费单号" />
+                    </td>
+                    <th class="formTitle">发票号</th>
+                    <td class="formValue">
+                        <input id="F_ARInvoiceNum" name="F_ARInvoiceNum" type="text" class="form-control required" placeholder="请输入发票号" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">发票抬头</th>
+                    <td class="formValue">
+                        <input id="F_InvoiceDesc" name="F_InvoiceDesc" type="text" class="form-control required" placeholder="请输入发票抬头" />
+                    </td>
+                    <th class="formTitle">发票类型</th>
+                    <td class="formValue">
+                        <input id="F_Type" name="F_Type" type="text" class="form-control required" placeholder="请输入发票类型" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">发票内容</th>
+                    <td class="formValue">
+                        <input id="F_Title" name="F_Title" type="text" class="form-control required" placeholder="请输入发票内容" />
+                    </td>
+                    <th class="formTitle">发票金额</th>
+                    <td class="formValue">
+                        <input id="F_Money" name="F_Money" type="text" class="form-control required" placeholder="请输入发票金额" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">发票税点</th>
+                    <td class="formValue">
+                        <input id="F_TaxRate" name="F_TaxRate" type="text" class="form-control required" placeholder="请输入发票税点" />
+                    </td>
+                    <th class="formTitle">公司税号</th>
+                    <td class="formValue">
+                        <input id="F_TaxNum" name="F_TaxNum" type="text" class="form-control required" placeholder="请输入公司税号" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">公司名称</th>
+                    <td class="formValue">
+                        <input id="F_Company_Name" name="F_Company_Name" type="text" class="form-control required" placeholder="请输入公司名称" />
+                    </td>
+                    <th class="formTitle">公司地址</th>
+                    <td class="formValue">
+                        <input id="F_Company_Addre" name="F_Company_Addre" type="text" class="form-control required" placeholder="请输入公司地址" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">公司电话</th>
+                    <td class="formValue">
+                        <input id="F_Company_Tel" name="F_Company_Tel" type="text" class="form-control required" placeholder="请输入公司电话" />
+                    </td>
+                    <th class="formTitle">发票状态</th>
+                    <td class="formValue">
+                        <input id="F_Statu" name="F_Statu" type="text" class="form-control required" placeholder="请输入发票状态" />
+                    </td>
+                </tr>*@
+                @*<tr>
+                    <th class="formTitle">所属部门</th>
+                    <td class="formValue">
+                        <select id="F_DepartmentId" name="F_DepartmentId" class="form-control required" disabled>
+                            <option value="">==请选择==</option>
+                        </select>
+                    </td>
+
+                    <th class="formTitle">序号</th>
+                    <td class="formValue">
+                        <input id="F_SortCode" name="F_SortCode" type="text" class="form-control required" placeholder="请输入序号" />
+                    </td>
+                </tr>*@
+                <tr>
+                    <th class="formTitle">发票编号</th>
+
+                    <td class="formValue">
+
+                        <input id="F_Tax_Num" name="F_Tax_Num" type="text" class="form-control required" placeholder="请输入发票编号" />
+                    </td>
+                    <th class="formTitle">发票类型</th>
+                    <td class="formValue">
+                        <select required id="F_Type" name="F_Type" class="form-control" disabled>
+                            <option value="">==请选择==</option>
+                            <option value="增值税专用发票">增值税专用发票</option>
+                            <option value="普通发票">普通发票</option>
+                            <option value="增值税专用发票">机打发票</option>
+                            <option value="普通发票">定额发票</option>
+                        </select>
+                    </td>
+                </tr>
+
+             <tr>
+
+            <th class="formTitle">发票抬头</th>
+            <td class="formValue">
+                <input id="F_Title" name="F_Title" type="text" class="form-control required" placeholder="请输入发票抬头" />
+            </td>
+            <th class="formTitle">发票税点</th>
+            <td class="formValue">
+                <input id="F_TaxRate" name="F_TaxRate" type="text" class="form-control required" placeholder="请输入发票税点" />
+            </td>
+        </tr>
+                <tr>
+                    <th class="formTitle">发票内容</th>
+
+                    <td class="formValue" colspan="3">
+
+                        <input id="F_InvoiceDesc" name="F_InvoiceDesc" type="text" class="form-control required" placeholder="请输入发票内容" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">发票金额</th>
+
+                    <td class="formValue">
+
+                        <input id="F_Money" name="F_Money" type="text" class="form-control required" placeholder="请输入发票金额" />
+                    </td>
+                    <th>元</th>
+                </tr>
+                <tr>
+                    @*<th>购买方</th>
+                </tr>
+                <tr>
+                    <th class="formTitle">公司名称</th>
+
+                    <td class="formValue" colspan="3">
+
+                        <input id="F_Company_Name" name="F_Company_Name" type="text" class="form-control required" placeholder="请输入公司名称" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">公司地址</th>
+
+                    <td class="formValue" colspan="3">
+
+                        <input id="F_Company_Addre" name="F_Company_Addre" type="text" class="form-control required" placeholder="请输入公司地址" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <th class="formTitle">公司税号</th>
+                    <td class="formValue" colspan="3">
+                        <input id="F_TaxNum" name="F_TaxNum" type="text" class="form-control required" placeholder="请输入公司税号" />
+                    </td>
+                </tr>
+
+                <tr>
+
+                    <th class="formTitle">公司电话</th>
+
+                    <td class="formValue" colspan="3">
+
+                        <input id="F_Company_Tel" name="F_Company_Tel" type="text" class="form-control required" placeholder="请输入公司电话" />
+                    </td>
+                </tr>*@
+
+                @*<tr>
+
+            <th class="formTitle">发票状态</th>
+
+            <td class="formValue">
+
+                <input id="F_Statu" name="F_Statu" type="text" class="form-control required" placeholder="请输入发票状态" />
+            </td>
+        </tr>*@
+
+                @*<tr>
+                    <th class="formTitle">发票凭证</th>
+                    <td class="formValue">
+                        <input type="hidden" id="F_Tax_Proof" name="F_Tax_Proof" class="form-control required" />
+                        <img id="banner_img" style="width:200px;height:100px;display:none;" />
+                        <img id="banner_img_hidden" style="display:none;" />
+                        <div id="fileuploader" class="wu-example">
+                        </div>
+                        <label id="bannervalid" style="font-size:15px; color: red;"></label>
+                    </td>
+                </tr>*@
+                <tr>
+                    <th class="formTitle">发票凭证</th>
+                    <td class="formValue">
+                        <a target='_blank' id="fies_hx_label" href=""></a>
+                        <img id="banner_img" style="width:200px;height:100px;display:none;" />
+                        <img id="banner_img_hidden" style="display:none;" />
+                        <input type="hidden" id="F_Tax_Proof" name="F_Tax_Proof" />
+                        @*<div id="uploader" class="wu-example">
+                        </div>*@
+                    </td>
+                </tr>
+                <tr style="float:right; margin-right:-50px;">
+                    <td class="formValue" margin-left:10px>
+                        <input id="F_Statu" name="F_Statu" class="checkbox" type="checkbox" style="float:left;">
+                        <span>已开票</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">备注</th>
+                    <td class="formValue" colspan="3">
+                        <textarea id="F_Remark" name="F_Remark" type="text" class="form-control required" placeholder="请输入备注" style="height: 60px;width:535px;"></textarea>
+                    </td>
+                </tr>
+                @*<tr>
+                    <th class="formTitle">创建人员</th>
+                    <td class="formValue">
+                        <input id="F_CreatorUserId" name="F_CreatorUserId" type="text" class="form-control" />
+                    </td>
+                    <th class="formTitle">创建时间</th>
+                    <td class="formValue">
+                        <input id="F_CreatorTime" name="F_CreatorTime" type="text" class="form-control" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">修改人员</th>
+                    <td class="formValue">
+                        <input id="F_LastModifyUserId" name="F_LastModifyUserId" type="text" class="form-control" />
+                    </td>
+                    <th class="formTitle">修改时间</th>
+                    <td class="formValue">
+                        <input id="F_LastModifyTime" name="F_LastModifyTime" type="text" class="form-control" />
+                    </td>
+                </tr>*@
+            </table>
+        </div>
+    </div>
+</form>

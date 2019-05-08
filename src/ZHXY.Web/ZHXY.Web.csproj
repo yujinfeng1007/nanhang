@@ -1,0 +1,1928 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.Net.Compilers.3.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.3.0.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BEF1F2C9-1903-4AC4-93BD-08452BFA37A3}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ZHXY.Web</RootNamespace>
+    <AssemblyName>ZHXY.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+    <TargetFrameworkProfile />
+    <Use64BitIISExpress />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NH</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <DocumentationFile>bin\ZHXY.Web.xml</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+    <LangVersion>7.1</LangVersion>
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
+    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>True</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptSourceMap>True</TypeScriptSourceMap>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac, Version=4.9.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.9.2\lib\net45\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Extensions.DependencyInjection, Version=4.4.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Extensions.DependencyInjection.4.4.0\lib\netstandard1.1\Autofac.Extensions.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Mvc5.4.0.2\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper, Version=7.0.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.7.0.1\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging, Version=3.4.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.3.4.1\lib\net40\Common.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging.Core, Version=3.4.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.Core.3.4.1\lib\net40\Common.Logging.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.Core, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetOpenAuth.Core.4.3.4.13329\lib\net45-full\DotNetOpenAuth.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetOpenAuth.OAuth.Core.4.3.4.13329\lib\net45-full\DotNetOpenAuth.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth.Common, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetOpenAuth.OAuth.Common.4.3.4.13329\lib\net45-full\DotNetOpenAuth.OAuth.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth2, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetOpenAuth.OAuth2.Core.4.3.4.13329\lib\net45-full\DotNetOpenAuth.OAuth2.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth2.AuthorizationServer, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetOpenAuth.OAuth2.AuthorizationServer.4.3.4.13329\lib\net45-full\DotNetOpenAuth.OAuth2.AuthorizationServer.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth2.Client, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetOpenAuth.OAuth2.Client.4.3.4.13329\lib\net45-full\DotNetOpenAuth.OAuth2.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth2.Client.UI, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetOpenAuth.OAuth2.Client.UI.4.3.4.13329\lib\net45-full\DotNetOpenAuth.OAuth2.Client.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth2.ClientAuthorization, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetOpenAuth.OAuth2.ClientAuthorization.4.3.4.13329\lib\net45-full\DotNetOpenAuth.OAuth2.ClientAuthorization.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth2.ResourceServer, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetOpenAuth.OAuth2.ResourceServer.4.3.4.13329\lib\net45-full\DotNetOpenAuth.OAuth2.ResourceServer.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=1.1.0.145, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.1.1.0\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=1.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.1.1.0\lib\netstandard1.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI, Version=2.4.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.4.1\lib\net45\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OOXML, Version=2.4.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.4.1\lib\net45\NPOI.OOXML.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXml4Net, Version=2.4.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.4.1\lib\net45\NPOI.OpenXml4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXmlFormats, Version=2.4.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.4.1\lib\net45\NPOI.OpenXmlFormats.dll</HintPath>
+    </Reference>
+    <Reference Include="Quartz, Version=2.6.1.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Quartz.2.6.1\lib\net40\Quartz.dll</HintPath>
+    </Reference>
+    <Reference Include="SSO_ClientSDK">
+      <HintPath>..\RefDlls\SSO_ClientSDK.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Linq.Dynamic, Version=1.0.6132.35681, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.Dynamic.1.0.7\lib\net40\System.Linq.Dynamic.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Cors, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.7\lib\net45\System.Web.Cors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.7\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.2.0\lib\net40\WebActivatorEx.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Areas\Dorm\Controllers\AccessStudentController.cs" />
+    <Compile Include="Areas\Dorm\Controllers\BedController.cs" />
+    <Compile Include="Areas\Dorm\Controllers\DormBuildingController.cs" />
+    <Compile Include="Areas\Dorm\Controllers\DormRoomController.cs" />
+    <Compile Include="Areas\Dorm\Controllers\DormRuleController.cs" />
+    <Compile Include="Areas\Dorm\Controllers\DormStudentController.cs" />
+    <Compile Include="Areas\Dorm\Controllers\GateController.cs" />
+    <Compile Include="Areas\Dorm\Controllers\InOutController.cs" />
+    <Compile Include="Areas\Dorm\Controllers\InOutReceiveController.cs" />
+    <Compile Include="Areas\Dorm\Controllers\RepairController.cs" />
+    <Compile Include="Areas\Dorm\Controllers\ReportController.cs" />
+    <Compile Include="Areas\Dorm\Controllers\VisitLimitController.cs" />
+    <Compile Include="Areas\Dorm\Controllers\VisitLogController.cs" />
+    <Compile Include="Areas\Dorm\DormAreaRegistration.cs" />
+    <Compile Include="Areas\Performance\Controllers\PerformanceController.cs" />
+    <Compile Include="Areas\Performance\PerformanceAreaRegistration.cs" />
+    <Compile Include="Areas\Report\Controllers\HighchartsController.cs" />
+    <Compile Include="Areas\Report\ReportManageAreaRegistration.cs" />
+    <Compile Include="Areas\School\Controllers\LeaveController.cs" />
+    <Compile Include="Areas\School\Controllers\SpecialLeaveController.cs" />
+    <Compile Include="Areas\School\Controllers\ParentController.cs" />
+    <Compile Include="Areas\School\Controllers\School_StudentsController.cs" />
+    <Compile Include="Areas\School\Controllers\School_TeachersController.cs" />
+    <Compile Include="Areas\School\SchoolManageAreaRegistration.cs" />
+    <Compile Include="Areas\SystemManage\Controllers\AreaController.cs" />
+    <Compile Include="Areas\SystemManage\Controllers\DutyController.cs" />
+    <Compile Include="Areas\SystemManage\Controllers\CurrentUserController.cs" />
+    <Compile Include="Areas\SystemManage\Controllers\ItemsDataController.cs" />
+    <Compile Include="Areas\SystemManage\Controllers\ModuleButtonController.cs" />
+    <Compile Include="Areas\SystemManage\Controllers\ModuleController.cs" />
+    <Compile Include="Areas\SystemManage\Controllers\OrganizeController.cs" />
+    <Compile Include="Areas\SystemManage\Controllers\OrgLeaderController.cs" />
+    <Compile Include="Areas\SystemManage\Controllers\RoleAuthorizeController.cs" />
+    <Compile Include="Areas\SystemManage\Controllers\RoleController.cs" />
+    <Compile Include="Areas\SystemManage\Controllers\TableDefController.cs" />
+    <Compile Include="Areas\SystemManage\Controllers\UserRoleController.cs" />
+    <Compile Include="Areas\SystemManage\Controllers\UserController.cs" />
+    <Compile Include="Areas\SystemManage\Controllers\ItemsTypeController.cs" />
+    <Compile Include="Areas\SystemManage\SystemManageAreaRegistration.cs" />
+    <Compile Include="Areas\SystemSecurity\Controllers\DbBackupController.cs" />
+    <Compile Include="Areas\SystemSecurity\Controllers\FilterIPController.cs" />
+    <Compile Include="Areas\SystemSecurity\Controllers\LogController.cs" />
+    <Compile Include="Areas\SystemSecurity\SystemSecurityAreaRegistration.cs" />
+    <Compile Include="Controllers\ClientDataController.cs" />
+    <Compile Include="Controllers\ConfigController.cs" />
+    <Compile Include="Controllers\SelectController.cs" />
+    <Compile Include="Controllers\FileController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\css\framework-font.css" />
+    <Content Include="Content\css\framework-ui.css" />
+    <Content Include="Content\css\framework-login.css" />
+    <Content Include="Content\css\framework-theme.css" />
+    <Content Include="Content\css\framework-about.css" />
+    <Content Include="Content\css\select2.css" />
+    <Content Include="Content\css\select2.min.css" />
+    <Content Include="Content\dots.css" />
+    <Content Include="Content\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\fonts\weathericons-regular-webfont.svg" />
+    <Content Include="Content\img\ajax-loader.gif" />
+    <Content Include="Content\img\alipay.jpg" />
+    <Content Include="Content\img\alipayimg.png" />
+    <Content Include="Content\img\bg.png" />
+    <Content Include="Content\img\bp\huodong.png" />
+    <Content Include="Content\img\bp\shipingfc.png" />
+    <Content Include="Content\img\bp\shishengfc.png" />
+    <Content Include="Content\img\bp\weixiuzhong.png" />
+    <Content Include="Content\img\bp\xinwen.png" />
+    <Content Include="Content\img\bp\yiguanji.png" />
+    <Content Include="Content\img\bp\yitingyong.png" />
+    <Content Include="Content\img\bp\yunxingzhong.png" />
+    <Content Include="Content\img\button_pm_close.png" />
+    <Content Include="Content\img\class-tag.png" />
+    <Content Include="Content\img\cmp\cmps.png" />
+    <Content Include="Content\img\cover\cover1.jpg" />
+    <Content Include="Content\img\cover\cover2.jpg" />
+    <Content Include="Content\img\cover\cover3.jpg" />
+    <Content Include="Content\img\cy-reward-title-bg.jpg" />
+    <Content Include="Content\img\default-logo.png" />
+    <Content Include="Content\img\file.png" />
+    <Content Include="Content\img\file.svg" />
+    <Content Include="Content\img\fileico_v5.png" />
+    <Content Include="Content\img\loading.gif" />
+    <Content Include="Content\img\logo.png" />
+    <Content Include="Content\img\radio1.jpg" />
+    <Content Include="Content\img\radio2.jpg" />
+    <Content Include="Content\img\samples\angelina-300.jpg" />
+    <Content Include="Content\img\samples\emma-300.jpg" />
+    <Content Include="Content\img\samples\emma.png" />
+    <Content Include="Content\img\samples\george.png" />
+    <Content Include="Content\img\samples\head_120.png" />
+    <Content Include="Content\img\samples\jessica.jpg" />
+    <Content Include="Content\img\samples\kunis-300.jpg" />
+    <Content Include="Content\img\samples\kunis.png" />
+    <Content Include="Content\img\samples\lima-300.jpg" />
+    <Content Include="Content\img\samples\messages-photo-1.png" />
+    <Content Include="Content\img\samples\messages-photo-2.png" />
+    <Content Include="Content\img\samples\messages-photo-3.png" />
+    <Content Include="Content\img\samples\miranda-560-300.png" />
+    <Content Include="Content\img\samples\robert-300.jpg" />
+    <Content Include="Content\img\samples\robert.png" />
+    <Content Include="Content\img\samples\ryan-300.jpg" />
+    <Content Include="Content\img\samples\ryan.png" />
+    <Content Include="Content\img\samples\scarlet-159.png" />
+    <Content Include="Content\img\samples\scarlet.png" />
+    <Content Include="Content\img\samples\scarlett-300.jpg" />
+    <Content Include="Content\img\signet.gif" />
+    <Content Include="Content\img\sso-login.jpg" />
+    <Content Include="Content\img\teacher-checkbox.png" />
+    <Content Include="Content\img\wechat.jpg" />
+    <Content Include="Content\img\weipayimg.png" />
+    <Content Include="Content\img\weixin_nfine.png" />
+    <Content Include="Content\js\bootstrap-fileinput-master\css\fileinput-rtl.css" />
+    <Content Include="Content\js\bootstrap-fileinput-master\css\fileinput-rtl.min.css" />
+    <Content Include="Content\js\bootstrap-fileinput-master\css\fileinput.css" />
+    <Content Include="Content\js\bootstrap-fileinput-master\css\fileinput.min.css" />
+    <Content Include="Content\js\bootstrap-fileinput-master\examples\index.html" />
+    <Content Include="Content\js\bootstrap-fileinput-master\img\loading-sm.gif" />
+    <Content Include="Content\js\bootstrap-fileinput-master\img\loading.gif" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\fileinput.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\fileinput.min.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\ar.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\az.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\bg.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\ca.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\cr.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\cs.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\da.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\de.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\el.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\es.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\et.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\fa.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\fi.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\fr.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\gl.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\hu.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\id.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\it.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\ja.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\ka.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\kr.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\kz.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\LANG.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\lt.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\nl.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\no.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\pl.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\pt-BR.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\pt.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\ro.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\ru.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\sk.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\sl.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\sv.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\th.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\tr.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\uk.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\vi.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\zh-TW.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\locales\zh.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\plugins\piexif.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\plugins\piexif.min.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\plugins\purify.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\plugins\purify.min.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\plugins\sortable.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\js\plugins\sortable.min.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\themes\explorer-fa\theme.css" />
+    <Content Include="Content\js\bootstrap-fileinput-master\themes\explorer-fa\theme.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\themes\explorer-fa\theme.min.css" />
+    <Content Include="Content\js\bootstrap-fileinput-master\themes\explorer-fa\theme.min.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\themes\explorer\theme.css" />
+    <Content Include="Content\js\bootstrap-fileinput-master\themes\explorer\theme.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\themes\explorer\theme.min.css" />
+    <Content Include="Content\js\bootstrap-fileinput-master\themes\explorer\theme.min.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\themes\fa\theme.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\themes\fa\theme.min.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\themes\gly\theme.js" />
+    <Content Include="Content\js\bootstrap-fileinput-master\themes\gly\theme.min.js" />
+    <Content Include="Content\js\bootstrap\bootstrap.js" />
+    <Content Include="Areas\SystemManage\Views\StudentChange\Index.cshtml" />
+    <Content Include="Areas\Performance\Views\web.config" />
+    <Content Include="Areas\Performance\Views\Performance\SysLogin.cshtml" />
+    <Content Include="Areas\Performance\Views\Performance\BuildingAccess.cshtml" />
+    <Content Include="Areas\SystemManage\Views\OrgLeader\Select.cshtml" />
+    <Content Include="Areas\SystemSecurity\Views\Log\Index.cshtml" />
+    <Content Include="Areas\SystemSecurity\Views\Log\LoginHis.cshtml" />
+    <Content Include="ApplicationInsights.config" />
+    <Content Include="Areas\Dorm\Views\web.config" />
+    <Content Include="Areas\Dorm\Views\AccessStudent\Form.cshtml" />
+    <Content Include="Areas\Dorm\Views\AccessStudent\Index.cshtml" />
+    <Content Include="Areas\Dorm\Views\Bed\Form.cshtml" />
+    <Content Include="Areas\Dorm\Views\Bed\Index.cshtml" />
+    <Content Include="Areas\Dorm\Views\ChangeLogs\Form.cshtml" />
+    <Content Include="Areas\Dorm\Views\ChangeLogs\Index.cshtml" />
+    <Content Include="Areas\Dorm\Views\DormBuilding\Form.cshtml" />
+    <Content Include="Areas\Dorm\Views\DormBuilding\Index.cshtml" />
+    <Content Include="Areas\Dorm\Views\DormRoom\Form.cshtml" />
+    <Content Include="Areas\Dorm\Views\DormRoom\Index.cshtml" />
+    <Content Include="Areas\Dorm\Views\DormRule\Index.cshtml" />
+    <Content Include="Areas\Dorm\Views\DormStudent\Form.cshtml" />
+    <Content Include="Areas\Dorm\Views\DormStudent\Index.cshtml" />
+    <Content Include="Areas\Dorm\Views\Gate\Form.cshtml" />
+    <Content Include="Areas\Dorm\Views\Gate\Index.cshtml" />
+    <Content Include="Areas\Dorm\Views\InOutReceive\Form.cshtml" />
+    <Content Include="Areas\Dorm\Views\InOutReceive\Index.cshtml" />
+    <Content Include="Areas\Dorm\Views\Repair\Form.cshtml" />
+    <Content Include="Areas\Dorm\Views\Repair\Index.cshtml" />
+    <Content Include="Areas\Dorm\Views\Report\LateReturn.cshtml" />
+    <Content Include="Areas\Dorm\Views\Report\NoOut.cshtml" />
+    <Content Include="Areas\Dorm\Views\Report\NoReturn.cshtml" />
+    <Content Include="Areas\Dorm\Views\Report\Original.cshtml" />
+    <Content Include="Areas\Dorm\Views\VisitLimit\Form.cshtml" />
+    <Content Include="Areas\Dorm\Views\VisitLimit\Index.cshtml" />
+    <Content Include="Areas\Dorm\Views\VisitLog\Form.cshtml" />
+    <Content Include="Areas\Dorm\Views\VisitLog\Index.cshtml" />
+    <None Include="Configs\system.config.2019.05.05.bak">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Content\js\bootstrap\bootstrap.min.css.bak" />
+    <Content Include="Content\js\bootstrap\bootstrap.min.css" />
+    <Content Include="Content\js\charts\Chart.js" />
+    <Content Include="Content\js\charts\Chart.min.js" />
+    <Content Include="Content\js\datepicker\calendar.js" />
+    <Content Include="Content\js\datepicker\DatePicker.js" />
+    <Content Include="Content\js\datepicker\lang\en.js" />
+    <Content Include="Content\js\datepicker\lang\zh-cn.js" />
+    <Content Include="Content\js\datepicker\lang\zh-tw.js" />
+    <Content Include="Content\js\datepicker\skin\datePicker.gif" />
+    <Content Include="Content\js\datepicker\skin\datePicker.png" />
+    <Content Include="Content\js\datepicker\skin\datepicker_icon.png" />
+    <Content Include="Content\js\datepicker\skin\default\datepicker-dev.css" />
+    <Content Include="Content\js\datepicker\skin\default\datepicker.css" />
+    <Content Include="Content\js\datepicker\skin\default\img.gif" />
+    <Content Include="Content\js\datepicker\skin\default\img.png" />
+    <Content Include="Content\js\datepicker\skin\WdatePicker.css" />
+    <Content Include="Content\js\datepicker\skin\whyGreen\bg.jpg" />
+    <Content Include="Content\js\datepicker\skin\whyGreen\datepicker.css" />
+    <Content Include="Content\js\datepicker\skin\whyGreen\img.gif" />
+    <Content Include="Content\js\datepicker\WdatePicker.js" />
+    <Content Include="Content\js\datepicker\开发包\lang\en.js" />
+    <Content Include="Content\js\datepicker\开发包\lang\zh-cn.js" />
+    <Content Include="Content\js\datepicker\开发包\lang\zh-tw.js" />
+    <Content Include="Content\js\datepicker\开发包\readme.txt" />
+    <Content Include="Content\js\datepicker\开发包\skin\datePicker.gif" />
+    <Content Include="Content\js\datepicker\开发包\skin\datePicker.png" />
+    <Content Include="Content\js\datepicker\开发包\skin\default\datepicker.css" />
+    <Content Include="Content\js\datepicker\开发包\skin\default\img.gif" />
+    <Content Include="Content\js\datepicker\开发包\skin\WdatePicker.css" />
+    <Content Include="Content\js\datepicker\开发包\skin\whyGreen\bg.jpg" />
+    <Content Include="Content\js\datepicker\开发包\skin\whyGreen\datepicker.css" />
+    <Content Include="Content\js\datepicker\开发包\skin\whyGreen\img.gif" />
+    <Content Include="Content\js\department.js" />
+    <None Include="Content\js\dialog\dialog.css.bak" />
+    <Content Include="Content\js\dialog\dialog.css" />
+    <Content Include="Content\js\dialog\dialog.js" />
+    <Content Include="Content\js\dialog\img\icon-ext.png" />
+    <Content Include="Content\js\dialog\img\icon.png" />
+    <Content Include="Content\js\dialog\img\loading-0.gif" />
+    <Content Include="Content\js\dialog\img\loading-1.gif" />
+    <Content Include="Content\js\dialog\img\loading-2.gif" />
+    <Content Include="Content\js\doublebox\doublebox.css" />
+    <Content Include="Content\js\doublebox\doublebox.js" />
+    <Content Include="Content\js\Fileupload.js" />
+    <Content Include="Content\js\handlebars\handlebars-runtime.js" />
+    <Content Include="Content\js\handlebars\handlebars.js" />
+    <Content Include="Content\js\ImageUpload.js" />
+    <Content Include="Content\js\index2.js" />
+    <Content Include="Content\js\index.js" />
+    <Content Include="Content\js\indextab.js" />
+    <Content Include="Content\js\framework-ui.js" />
+    <Content Include="Content\js\jqgrid\grid.locale-cn.js" />
+    <Content Include="Content\js\jqgrid\jqgrid.css" />
+    <Content Include="Content\js\jqgrid\jqgrid.min.js" />
+    <Content Include="Content\js\jqprint\jquery.jqprint-0.3.js" />
+    <Content Include="Content\js\jqprint\jquery.jqprint.css" />
+    <Content Include="Content\js\jquery-contextmenu\jquery-contextmenu.min.css" />
+    <Content Include="Content\js\jquery-contextmenu\jquery-contextmenu.min.js" />
+    <Content Include="Content\js\jquery-pagination\jquery-pagination.css" />
+    <Content Include="Content\js\jquery-pagination\jquery-pagination.js" />
+    <Content Include="Content\js\JSLINQ.js" />
+    <Content Include="Content\js\layout\jquery.layout.js" />
+    <Content Include="Content\js\loading\pace.min.js" />
+    <Content Include="Content\js\lodash\lodash.js" />
+    <Content Include="Content\js\mail-uploader.js" />
+    <Content Include="Content\js\md5\jquery.md5.js" />
+    <Content Include="Content\js\pageConfig.js" />
+    <Content Include="Content\js\qrcode\jquery.qrcode.js" />
+    <Content Include="Content\js\qrcode\qrcode.js" />
+    <Content Include="Content\js\resizeEnd\jquery.resizeend.js" />
+    <Content Include="Content\js\simditor\css\simditor.css" />
+    <Content Include="Content\js\simditor\js\hotkeys.js" />
+    <Content Include="Content\js\simditor\js\hotkeys.min.js" />
+    <Content Include="Content\js\simditor\js\module.js" />
+    <Content Include="Content\js\simditor\js\module.min.js" />
+    <Content Include="Content\js\simditor\js\simditor.js" />
+    <Content Include="Content\js\simditor\js\simditor.min.js" />
+    <Content Include="Content\js\simditor\js\uploader.js" />
+    <Content Include="Content\js\simditor\js\uploader.min.js" />
+    <Content Include="Content\js\swiper-4.4.2\dist\css\swiper.css" />
+    <Content Include="Content\js\swiper-4.4.2\dist\css\swiper.min.css" />
+    <Content Include="Content\js\swiper-4.4.2\dist\js\swiper.esm.bundle.js" />
+    <Content Include="Content\js\swiper-4.4.2\dist\js\swiper.esm.js" />
+    <Content Include="Content\js\swiper-4.4.2\dist\js\swiper.js" />
+    <Content Include="Content\js\swiper-4.4.2\dist\js\swiper.min.js" />
+    <Content Include="Content\js\tinymce\changelog.txt" />
+    <Content Include="Content\js\tinymce\js\tinymce\jquery.tinymce.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\license.txt" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\advlist\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\anchor\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\autolink\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\autoresize\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\autosave\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\bbcode\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\charmap\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\codesample\css\prism.css" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\codesample\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\code\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\colorpicker\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\contextmenu\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\directionality\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\emoticons\img\smiley-cool.gif" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\emoticons\img\smiley-cry.gif" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\emoticons\img\smiley-embarassed.gif" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\emoticons\img\smiley-foot-in-mouth.gif" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\emoticons\img\smiley-frown.gif" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\emoticons\img\smiley-innocent.gif" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\emoticons\img\smiley-kiss.gif" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\emoticons\img\smiley-laughing.gif" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\emoticons\img\smiley-money-mouth.gif" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\emoticons\img\smiley-sealed.gif" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\emoticons\img\smiley-smile.gif" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\emoticons\img\smiley-surprised.gif" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\emoticons\img\smiley-tongue-out.gif" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\emoticons\img\smiley-undecided.gif" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\emoticons\img\smiley-wink.gif" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\emoticons\img\smiley-yell.gif" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\emoticons\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\fullpage\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\fullscreen\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\help\img\logo.png" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\help\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\hr\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\imagetools\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\image\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\importcss\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\insertdatetime\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\legacyoutput\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\link\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\lists\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\media\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\nonbreaking\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\noneditable\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\pagebreak\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\paste\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\preview\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\print\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\save\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\searchreplace\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\spellchecker\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\tabfocus\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\table\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\template\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\textcolor\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\textpattern\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\toc\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\visualblocks\css\visualblocks.css" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\visualblocks\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\visualchars\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\plugins\wordcount\plugin.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\skins\lightgray\content.inline.min.css" />
+    <Content Include="Content\js\tinymce\js\tinymce\skins\lightgray\content.min.css" />
+    <Content Include="Content\js\tinymce\js\tinymce\skins\lightgray\content.mobile.min.css" />
+    <Content Include="Content\js\tinymce\js\tinymce\skins\lightgray\fonts\tinymce-small.svg" />
+    <Content Include="Content\js\tinymce\js\tinymce\skins\lightgray\fonts\tinymce.svg" />
+    <Content Include="Content\js\tinymce\js\tinymce\skins\lightgray\img\anchor.gif" />
+    <Content Include="Content\js\tinymce\js\tinymce\skins\lightgray\img\loader.gif" />
+    <Content Include="Content\js\tinymce\js\tinymce\skins\lightgray\img\object.gif" />
+    <Content Include="Content\js\tinymce\js\tinymce\skins\lightgray\img\trans.gif" />
+    <Content Include="Content\js\tinymce\js\tinymce\skins\lightgray\skin.min.css" />
+    <Content Include="Content\js\tinymce\js\tinymce\skins\lightgray\skin.mobile.min.css" />
+    <Content Include="Content\js\tinymce\js\tinymce\themes\inlite\theme.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\themes\mobile\theme.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\themes\modern\theme.min.js" />
+    <Content Include="Content\js\tinymce\js\tinymce\tinymce.min.js" />
+    <Content Include="Content\js\tinymce\LICENSE.TXT" />
+    <Content Include="Content\js\validate\jquery.validate.min.js" />
+    <Content Include="Content\js\validate\message_zh.js" />
+    <Content Include="Content\js\wdtree\images\icons\add.png" />
+    <Content Include="Content\js\wdtree\images\icons\addStep.gif" />
+    <Content Include="Content\js\wdtree\images\icons\addStep_dsbl.gif" />
+    <Content Include="Content\js\wdtree\images\icons\btn-arrow.gif" />
+    <Content Include="Content\js\wdtree\images\icons\Btn.Close.gif" />
+    <Content Include="Content\js\wdtree\images\icons\Btn.Refresh.gif" />
+    <Content Include="Content\js\wdtree\images\icons\cal.gif" />
+    <Content Include="Content\js\wdtree\images\icons\checkbox_0.gif" />
+    <Content Include="Content\js\wdtree\images\icons\checkbox_0.png" />
+    <Content Include="Content\js\wdtree\images\icons\checkbox_1.gif" />
+    <Content Include="Content\js\wdtree\images\icons\checkbox_1.png" />
+    <Content Include="Content\js\wdtree\images\icons\checkbox_2.gif" />
+    <Content Include="Content\js\wdtree\images\icons\checkbox_2.png" />
+    <Content Include="Content\js\wdtree\images\icons\circle_animation.gif" />
+    <Content Include="Content\js\wdtree\images\icons\delete.png" />
+    <Content Include="Content\js\wdtree\images\icons\delItem.gif" />
+    <Content Include="Content\js\wdtree\images\icons\delItem_dsbl.gif" />
+    <Content Include="Content\js\wdtree\images\icons\edit.png" />
+    <Content Include="Content\js\wdtree\images\icons\folder_close.gif" />
+    <Content Include="Content\js\wdtree\images\icons\ico1.gif" />
+    <Content Include="Content\js\wdtree\images\icons\ico2.gif" />
+    <Content Include="Content\js\wdtree\images\icons\ico3.gif" />
+    <Content Include="Content\js\wdtree\images\icons\ico4-1-1.gif" />
+    <Content Include="Content\js\wdtree\images\icons\ico4-1.gif" />
+    <Content Include="Content\js\wdtree\images\icons\ico4-2.gif" />
+    <Content Include="Content\js\wdtree\images\icons\ico4-3.gif" />
+    <Content Include="Content\js\wdtree\images\icons\ico4-4.gif" />
+    <Content Include="Content\js\wdtree\images\icons\ico4.gif" />
+    <Content Include="Content\js\wdtree\images\icons\ico5.gif" />
+    <Content Include="Content\js\wdtree\images\icons\ico6-1.gif" />
+    <Content Include="Content\js\wdtree\images\icons\ico6-2.gif" />
+    <Content Include="Content\js\wdtree\images\icons\ico6.gif" />
+    <Content Include="Content\js\wdtree\images\icons\indicator.gif" />
+    <Content Include="Content\js\wdtree\images\icons\information.png" />
+    <Content Include="Content\js\wdtree\images\icons\Item.Add.gif" />
+    <Content Include="Content\js\wdtree\images\icons\Item.Delete.gif" />
+    <Content Include="Content\js\wdtree\images\icons\Item.Edit.gif" />
+    <Content Include="Content\js\wdtree\images\icons\Item.Input.gif" />
+    <Content Include="Content\js\wdtree\images\icons\Item.Save.gif" />
+    <Content Include="Content\js\wdtree\images\icons\Item.Search.gif" />
+    <Content Include="Content\js\wdtree\images\icons\none.gif" />
+    <Content Include="Content\js\wdtree\images\icons\note.gif" />
+    <Content Include="Content\js\wdtree\images\icons\rowdelete.png" />
+    <Content Include="Content\js\wdtree\images\icons\s.gif" />
+    <Content Include="Content\js\wdtree\images\icons\table_refresh.png" />
+    <Content Include="Content\js\wdtree\images\icons\view.png" />
+    <Content Include="Content\js\wdtree\images\tree\arrows.gif" />
+    <Content Include="Content\js\wdtree\images\tree\cbs.gif" />
+    <Content Include="Content\js\wdtree\images\tree\drop-yes.gif" />
+    <Content Include="Content\js\wdtree\images\tree\elbow-end-minus-nl.gif" />
+    <Content Include="Content\js\wdtree\images\tree\elbow-end-minus.gif" />
+    <Content Include="Content\js\wdtree\images\tree\elbow-end-plus-nl.gif" />
+    <Content Include="Content\js\wdtree\images\tree\elbow-end-plus.gif" />
+    <Content Include="Content\js\wdtree\images\tree\elbow-end.gif" />
+    <Content Include="Content\js\wdtree\images\tree\elbow-line.gif" />
+    <Content Include="Content\js\wdtree\images\tree\elbow-minus-nl.gif" />
+    <Content Include="Content\js\wdtree\images\tree\elbow-minus.gif" />
+    <Content Include="Content\js\wdtree\images\tree\elbow-plus-nl.gif" />
+    <Content Include="Content\js\wdtree\images\tree\elbow-plus.gif" />
+    <Content Include="Content\js\wdtree\images\tree\elbow.gif" />
+    <Content Include="Content\js\wdtree\images\tree\folder-open.gif" />
+    <Content Include="Content\js\wdtree\images\tree\folder.gif" />
+    <Content Include="Content\js\wdtree\images\tree\leaf.gif" />
+    <Content Include="Content\js\wdtree\images\tree\loading.gif" />
+    <Content Include="Content\js\wdtree\tree.css" />
+    <Content Include="Content\js\wdtree\tree.js" />
+    <Content Include="Content\js\webuploader\Uploader.swf" />
+    <Content Include="Content\js\webuploader\webuploader.css" />
+    <Content Include="Content\js\webuploader\webuploader.custom.js" />
+    <Content Include="Content\js\webuploader\webuploader.custom.min.js" />
+    <Content Include="Content\js\webuploader\webuploader.fis.js" />
+    <Content Include="Content\js\webuploader\webuploader.flashonly.js" />
+    <Content Include="Content\js\webuploader\webuploader.flashonly.min.js" />
+    <Content Include="Content\js\webuploader\webuploader.html5only.js" />
+    <Content Include="Content\js\webuploader\webuploader.html5only.min.js" />
+    <Content Include="Content\js\webuploader\webuploader.js" />
+    <Content Include="Content\js\webuploader\webuploader.min.js" />
+    <Content Include="Content\js\webuploader\webuploader.noimage.js" />
+    <Content Include="Content\js\webuploader\webuploader.noimage.min.js" />
+    <Content Include="Content\js\webuploader\webuploader.nolog.js" />
+    <Content Include="Content\js\webuploader\webuploader.nolog.min.js" />
+    <Content Include="Content\js\webuploader\webuploader.withoutimage.js" />
+    <Content Include="Content\js\webuploader\webuploader.withoutimage.min.js" />
+    <Content Include="Content\js\wizard\wizard.css" />
+    <Content Include="Content\js\wizard\wizard.js" />
+    <Content Include="Content\js\framework-clientdata.js" />
+    <Content Include="Content\js\x-editable\bootstrap-editable.css" />
+    <Content Include="Content\js\x-editable\bootstrap-editable.min.js" />
+    <Content Include="Content\js\x-editable\selectInput.js" />
+    <Content Include="Content\js\zoom\zoom.css" />
+    <Content Include="Content\js\zoom\zoom.js" />
+    <Content Include="Content\js\zsign\jquery.zsign.css" />
+    <Content Include="Content\js\zsign\jquery.zsign.js" />
+    <Content Include="Content\js\zsign\signet.gif" />
+    <Content Include="Content\Site.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="indexFrame.html" />
+    <Content Include="iPadFrame.html" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\highcharts\6.2.0\css\highcharts.css" />
+    <Content Include="Scripts\highcharts\6.2.0\css\themes\dark-unica.css" />
+    <Content Include="Scripts\highcharts\6.2.0\css\themes\grid-light.css" />
+    <Content Include="Scripts\highcharts\6.2.0\css\themes\sand-signika.css" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\error.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\highcharts-3d.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\highcharts-more.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\highcharts.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\accessibility.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\annotations.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\arrow-symbols.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\boost-canvas.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\boost.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\broken-axis.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\bullet.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\current-date-indicator.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\data.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\drag-panes.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\draggable-points.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\drilldown.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\export-data.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\exporting.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\funnel.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\gantt.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\grid-axis.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\heatmap.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\histogram-bellcurve.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\item-series.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\no-data-to-display.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\offline-exporting.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\oldie.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\overlapping-datalabels.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\parallel-coordinates.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\pareto.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\pathfinder.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\pattern-fill.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\sankey.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\series-label.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\solid-gauge.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\static-scale.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\stock.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\streamgraph.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\sunburst.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\tilemap.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\treegrid.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\treemap.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\variable-pie.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\variwide.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\vector.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\windbarb.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\wordcloud.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\modules\xrange.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\themes\avocado.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\themes\avocado.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\themes\dark-blue.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\themes\dark-green.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\themes\dark-unica.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\themes\gray.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\themes\grid-light.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\themes\grid.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\themes\sand-signika.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\themes\skies.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\themes\sunset.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\masters\themes\sunset.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\mixins\ajax.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\mixins\centered-series.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\mixins\derived-series.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\mixins\draw-point.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\mixins\on-series.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\mixins\polygon.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\mixins\tree-series.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\a11y-i18n.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\annotations.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\bellcurve.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\boost-canvas.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\boost.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\broken-axis.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\bullet.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\data.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\drag-panes.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\draggable-points.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\drilldown.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\export-data.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\exporting.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\funnel.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\histogram.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\item-series.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\keyboard-navigation.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\no-data-to-display.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\offline-exporting.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\oldie.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\overlapping-datalabels.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\parallel-coordinates.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\pareto.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\pattern-fill.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\sankey.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\screen-reader.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\series-label.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\solid-gauge.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\static-scale.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\streamgraph.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\sunburst.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\tilemap.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\treemap.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\variable-pie.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\variwide.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\vector.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\windbarb.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\wordcloud.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\modules\xrange.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-3d\Axis.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-3d\Chart.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-3d\Column.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-3d\Globals.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-3d\Math.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-3d\Pie.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-3d\Scatter.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-3d\Series.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-3d\SVGRenderer.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-3d\VMLRenderer.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-gantt\ArrowSymbols.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-gantt\CurrentDateIndicator.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-gantt\GanttChart.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-gantt\GanttSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-gantt\GridAxis.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-gantt\Pathfinder.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-gantt\PathfinderAlgorithms.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-gantt\Tree.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-gantt\TreeGrid.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-map\ColorAxis.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-map\ColorSeriesMixin.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-map\GeoJSON.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-map\HeatmapSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-map\Map.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-map\MapAxis.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-map\MapBubbleSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-map\MapLineSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-map\MapNavigation.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-map\MapPointer.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-map\MapPointSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-map\MapSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-more\AreaRangeSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-more\AreaSplineRangeSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-more\BoxPlotSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-more\BubbleSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-more\ColumnRangeSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-more\ErrorBarSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-more\GaugeSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-more\Pane.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-more\Polar.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-more\PolygonSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-more\RadialAxis.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts-more\WaterfallSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\AreaSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\AreaSplineSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\Axis.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\BarSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\CandlestickSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\Chart.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\Color.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\ColumnSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\DataGrouping.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\DataLabels.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\DateTimeAxis.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\Dynamics.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\FlagsSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\Globals.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\Html.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\Interaction.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\Legend.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\LogarithmicAxis.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\MSPointer.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\Navigator.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\OHLCSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\Options.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\OrdinalAxis.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\PieSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\PlotBandSeries.experimental.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\PlotLineOrBand.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\Point.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\Pointer.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\RangeSelector.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\Responsive.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\ScatterSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\ScrollablePlotArea.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\Scrollbar.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\Series.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\SplineSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\Stacking.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\StockChart.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\SvgRenderer.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\Tick.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\Time.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\Tooltip.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\TouchPointer.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\parts\Utilities.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\supplemental.docs.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\themes\avocado.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\themes\dark-blue.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\themes\dark-green.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\themes\dark-unica.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\themes\gray.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\themes\grid-light.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\themes\grid.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\themes\sand-signika.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\themes\skies.js" />
+    <Content Include="Scripts\highcharts\6.2.0\es-modules\themes\sunset.js" />
+    <Content Include="Scripts\highcharts\6.2.0\highcharts-3d.js" />
+    <Content Include="Scripts\highcharts\6.2.0\highcharts-3d.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\highcharts-more.js" />
+    <Content Include="Scripts\highcharts\6.2.0\highcharts-more.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\highcharts.js" />
+    <Content Include="Scripts\highcharts\6.2.0\highcharts.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\error.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\highcharts-3d.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\highcharts-more.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\highcharts.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\accessibility.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\annotations.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\arrow-symbols.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\boost-canvas.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\boost.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\broken-axis.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\bullet.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\current-date-indicator.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\data.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\drag-panes.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\draggable-points.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\drilldown.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\export-data.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\exporting.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\funnel.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\gantt.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\grid-axis.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\heatmap.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\histogram-bellcurve.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\item-series.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\no-data-to-display.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\offline-exporting.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\oldie.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\overlapping-datalabels.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\parallel-coordinates.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\pareto.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\pathfinder.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\pattern-fill.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\sankey.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\series-label.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\solid-gauge.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\static-scale.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\stock.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\streamgraph.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\sunburst.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\tilemap.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\treegrid.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\treemap.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\variable-pie.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\variwide.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\vector.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\windbarb.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\wordcloud.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\modules\xrange.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\themes\avocado.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\themes\avocado.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\themes\dark-blue.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\themes\dark-green.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\themes\dark-unica.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\themes\gray.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\themes\grid-light.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\themes\grid.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\themes\sand-signika.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\themes\skies.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\themes\sunset.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\masters\themes\sunset.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\mixins\ajax.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\mixins\centered-series.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\mixins\derived-series.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\mixins\draw-point.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\mixins\on-series.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\mixins\polygon.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\mixins\tree-series.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\a11y-i18n.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\annotations.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\bellcurve.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\boost-canvas.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\boost.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\broken-axis.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\bullet.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\data.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\drag-panes.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\draggable-points.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\drilldown.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\export-data.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\exporting.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\funnel.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\histogram.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\item-series.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\keyboard-navigation.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\no-data-to-display.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\offline-exporting.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\oldie.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\overlapping-datalabels.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\parallel-coordinates.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\pareto.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\pattern-fill.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\sankey.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\screen-reader.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\series-label.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\solid-gauge.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\static-scale.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\streamgraph.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\sunburst.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\tilemap.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\treemap.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\variable-pie.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\variwide.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\vector.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\windbarb.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\wordcloud.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\modules\xrange.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-3d\Axis.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-3d\Chart.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-3d\Column.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-3d\Globals.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-3d\Math.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-3d\Pie.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-3d\Scatter.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-3d\Series.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-3d\SVGRenderer.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-3d\VMLRenderer.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-gantt\ArrowSymbols.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-gantt\CurrentDateIndicator.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-gantt\GanttChart.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-gantt\GanttSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-gantt\GridAxis.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-gantt\Pathfinder.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-gantt\PathfinderAlgorithms.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-gantt\Tree.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-gantt\TreeGrid.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-map\ColorAxis.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-map\ColorSeriesMixin.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-map\GeoJSON.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-map\HeatmapSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-map\Map.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-map\MapAxis.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-map\MapBubbleSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-map\MapLineSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-map\MapNavigation.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-map\MapPointer.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-map\MapPointSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-map\MapSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-more\AreaRangeSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-more\AreaSplineRangeSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-more\BoxPlotSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-more\BubbleSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-more\ColumnRangeSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-more\ErrorBarSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-more\GaugeSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-more\Pane.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-more\Polar.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-more\PolygonSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-more\RadialAxis.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts-more\WaterfallSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\AreaSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\AreaSplineSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\Axis.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\BarSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\CandlestickSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\Chart.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\Color.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\ColumnSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\DataGrouping.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\DataLabels.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\DateTimeAxis.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\Dynamics.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\FlagsSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\Globals.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\Html.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\Interaction.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\Legend.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\LogarithmicAxis.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\MSPointer.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\Navigator.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\OHLCSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\Options.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\OrdinalAxis.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\PieSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\PlotBandSeries.experimental.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\PlotLineOrBand.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\Point.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\Pointer.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\RangeSelector.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\Responsive.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\ScatterSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\ScrollablePlotArea.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\Scrollbar.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\Series.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\SplineSeries.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\Stacking.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\StockChart.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\SvgRenderer.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\Tick.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\Time.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\Tooltip.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\TouchPointer.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\parts\Utilities.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\supplemental.docs.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\themes\avocado.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\themes\dark-blue.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\themes\dark-green.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\themes\dark-unica.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\themes\gray.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\themes\grid-light.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\themes\grid.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\themes\sand-signika.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\themes\skies.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\es-modules\themes\sunset.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\highcharts-3d.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\highcharts-3d.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\highcharts-more.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\highcharts-more.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\highcharts.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\highcharts.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\accessibility.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\accessibility.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\annotations.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\annotations.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\arrow-symbols.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\arrow-symbols.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\boost-canvas.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\boost-canvas.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\boost.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\boost.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\broken-axis.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\broken-axis.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\bullet.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\bullet.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\current-date-indicator.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\current-date-indicator.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\data.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\data.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\drag-panes.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\drag-panes.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\draggable-points.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\draggable-points.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\drilldown.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\drilldown.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\export-data.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\export-data.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\exporting.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\exporting.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\funnel.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\funnel.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\gantt.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\gantt.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\grid-axis.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\grid-axis.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\heatmap.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\heatmap.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\histogram-bellcurve.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\histogram-bellcurve.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\item-series.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\item-series.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\no-data-to-display.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\no-data-to-display.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\offline-exporting.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\offline-exporting.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\oldie.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\oldie.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\overlapping-datalabels.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\overlapping-datalabels.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\parallel-coordinates.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\parallel-coordinates.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\pareto.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\pareto.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\pathfinder.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\pathfinder.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\pattern-fill.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\pattern-fill.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\sankey.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\sankey.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\series-label.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\series-label.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\solid-gauge.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\solid-gauge.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\static-scale.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\static-scale.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\stock.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\stock.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\streamgraph.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\streamgraph.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\sunburst.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\sunburst.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\tilemap.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\tilemap.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\treegrid.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\treegrid.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\treemap.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\treemap.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\variable-pie.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\variable-pie.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\variwide.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\variwide.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\vector.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\vector.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\windbarb.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\windbarb.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\wordcloud.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\wordcloud.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\xrange.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\xrange.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\themes\avocado.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\themes\avocado.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\themes\dark-blue.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\themes\dark-blue.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\themes\dark-green.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\themes\dark-green.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\themes\dark-unica.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\themes\dark-unica.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\themes\gray.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\themes\gray.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\themes\grid-light.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\themes\grid-light.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\themes\grid.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\themes\grid.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\themes\sand-signika.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\themes\sand-signika.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\themes\skies.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\themes\skies.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\themes\sunset.js" />
+    <Content Include="Scripts\highcharts\6.2.0\js\themes\sunset.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\lib\canvg.js" />
+    <Content Include="Scripts\highcharts\6.2.0\lib\canvg.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\lib\jspdf.js" />
+    <Content Include="Scripts\highcharts\6.2.0\lib\jspdf.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\lib\rgbcolor.js" />
+    <Content Include="Scripts\highcharts\6.2.0\lib\rgbcolor.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\lib\svg2pdf.js" />
+    <Content Include="Scripts\highcharts\6.2.0\lib\svg2pdf.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\accessibility.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\accessibility.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\annotations.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\annotations.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\arrow-symbols.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\arrow-symbols.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\boost-canvas.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\boost-canvas.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\boost.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\boost.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\broken-axis.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\broken-axis.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\bullet.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\bullet.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\current-date-indicator.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\current-date-indicator.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\data.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\data.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\drag-panes.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\drag-panes.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\draggable-points.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\draggable-points.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\drilldown.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\drilldown.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\export-data.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\export-data.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\exporting.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\exporting.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\funnel.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\funnel.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\gantt.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\gantt.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\grid-axis.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\grid-axis.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\heatmap.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\heatmap.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\histogram-bellcurve.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\histogram-bellcurve.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\item-series.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\item-series.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\no-data-to-display.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\no-data-to-display.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\offline-exporting.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\offline-exporting.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\oldie.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\oldie.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\overlapping-datalabels.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\overlapping-datalabels.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\parallel-coordinates.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\parallel-coordinates.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\pareto.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\pareto.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\pathfinder.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\pathfinder.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\pattern-fill.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\pattern-fill.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\sankey.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\sankey.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\series-label.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\series-label.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\solid-gauge.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\solid-gauge.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\static-scale.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\static-scale.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\stock.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\stock.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\streamgraph.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\streamgraph.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\sunburst.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\sunburst.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\tilemap.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\tilemap.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\treegrid.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\treegrid.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\treemap.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\treemap.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\variable-pie.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\variable-pie.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\variwide.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\variwide.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\vector.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\vector.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\windbarb.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\windbarb.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\wordcloud.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\wordcloud.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\xrange.js" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\xrange.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\themes\avocado.js" />
+    <Content Include="Scripts\highcharts\6.2.0\themes\avocado.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\themes\dark-blue.js" />
+    <Content Include="Scripts\highcharts\6.2.0\themes\dark-blue.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\themes\dark-green.js" />
+    <Content Include="Scripts\highcharts\6.2.0\themes\dark-green.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\themes\dark-unica.js" />
+    <Content Include="Scripts\highcharts\6.2.0\themes\dark-unica.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\themes\gray.js" />
+    <Content Include="Scripts\highcharts\6.2.0\themes\gray.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\themes\grid-light.js" />
+    <Content Include="Scripts\highcharts\6.2.0\themes\grid-light.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\themes\grid.js" />
+    <Content Include="Scripts\highcharts\6.2.0\themes\grid.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\themes\sand-signika.js" />
+    <Content Include="Scripts\highcharts\6.2.0\themes\sand-signika.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\themes\skies.js" />
+    <Content Include="Scripts\highcharts\6.2.0\themes\skies.src.js" />
+    <Content Include="Scripts\highcharts\6.2.0\themes\sunset.js" />
+    <Content Include="Scripts\highcharts\6.2.0\themes\sunset.src.js" />
+    <Content Include="Scripts\i18n\af.js" />
+    <Content Include="Scripts\i18n\ar.js" />
+    <Content Include="Scripts\i18n\az.js" />
+    <Content Include="Scripts\i18n\bg.js" />
+    <Content Include="Scripts\i18n\bs.js" />
+    <Content Include="Scripts\i18n\ca.js" />
+    <Content Include="Scripts\i18n\cs.js" />
+    <Content Include="Scripts\i18n\da.js" />
+    <Content Include="Scripts\i18n\de.js" />
+    <Content Include="Scripts\i18n\dsb.js" />
+    <Content Include="Scripts\i18n\el.js" />
+    <Content Include="Scripts\i18n\en.js" />
+    <Content Include="Scripts\i18n\es.js" />
+    <Content Include="Scripts\i18n\et.js" />
+    <Content Include="Scripts\i18n\eu.js" />
+    <Content Include="Scripts\i18n\fa.js" />
+    <Content Include="Scripts\i18n\fi.js" />
+    <Content Include="Scripts\i18n\fr.js" />
+    <Content Include="Scripts\i18n\gl.js" />
+    <Content Include="Scripts\i18n\he.js" />
+    <Content Include="Scripts\i18n\hi.js" />
+    <Content Include="Scripts\i18n\hr.js" />
+    <Content Include="Scripts\i18n\hsb.js" />
+    <Content Include="Scripts\i18n\hu.js" />
+    <Content Include="Scripts\i18n\hy.js" />
+    <Content Include="Scripts\i18n\id.js" />
+    <Content Include="Scripts\i18n\is.js" />
+    <Content Include="Scripts\i18n\it.js" />
+    <Content Include="Scripts\i18n\ja.js" />
+    <Content Include="Scripts\i18n\km.js" />
+    <Content Include="Scripts\i18n\ko.js" />
+    <Content Include="Scripts\i18n\lt.js" />
+    <Content Include="Scripts\i18n\lv.js" />
+    <Content Include="Scripts\i18n\mk.js" />
+    <Content Include="Scripts\i18n\ms.js" />
+    <Content Include="Scripts\i18n\nb.js" />
+    <Content Include="Scripts\i18n\nl.js" />
+    <Content Include="Scripts\i18n\pl.js" />
+    <Content Include="Scripts\i18n\ps.js" />
+    <Content Include="Scripts\i18n\pt-BR.js" />
+    <Content Include="Scripts\i18n\pt.js" />
+    <Content Include="Scripts\i18n\ro.js" />
+    <Content Include="Scripts\i18n\ru.js" />
+    <Content Include="Scripts\i18n\sk.js" />
+    <Content Include="Scripts\i18n\sl.js" />
+    <Content Include="Scripts\i18n\sr-Cyrl.js" />
+    <Content Include="Scripts\i18n\sr.js" />
+    <Content Include="Scripts\i18n\sv.js" />
+    <Content Include="Scripts\i18n\th.js" />
+    <Content Include="Scripts\i18n\tr.js" />
+    <Content Include="Scripts\i18n\uk.js" />
+    <Content Include="Scripts\i18n\vi.js" />
+    <Content Include="Scripts\i18n\zh-CN.js" />
+    <Content Include="Scripts\i18n\zh-TW.js" />
+    <Content Include="Areas\School\Views\SpecialLeave\ApplyForm.cshtml" />
+    <Content Include="Areas\School\Views\SpecialLeave\Index.cshtml" />
+    <Content Include="Areas\School\Views\SpecialLeave\SelectStudent.cshtml" />
+    <Content Include="Areas\School\Views\School_Students\CollegeIndex.cshtml" />
+    <Content Include="Areas\School\Views\School_Students\CollegeDetails.cshtml" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="libman.json" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Scripts\jquery-2.1.1.intellisense.js" />
+    <Content Include="Scripts\jquery-2.1.1.js" />
+    <Content Include="Scripts\jquery-2.1.1.min.js" />
+    <Content Include="Scripts\jquery.cookie-1.4.1.min.js" />
+    <Content Include="Scripts\jquery.cookie.js" />
+    <Content Include="Scripts\laydate.js" />
+    <Content Include="Scripts\main.js" />
+    <Content Include="Scripts\select2.js" />
+    <Content Include="Scripts\select2.min.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\Select\SelectOrgUser.cshtml" />
+    <Content Include="Areas\SystemManage\Views\OrgLeader\Index.cshtml" />
+    <Content Include="Views\Shared\_Script.cshtml" />
+    <Content Include="Views\Shared\Components\SelectUser.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_Layout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Content\fonts\glyphicons-halflings-regulard41d.eot" />
+    <Content Include="Content\fonts\weathericons-regular-webfont.eot" />
+    <Content Include="Content\fonts\weathericons-regular-webfont.ttf" />
+    <Content Include="Content\fonts\weathericons-regular-webfont.woff" />
+    <Content Include="Content\fonts\weathericons-regular-webfontd41d.eot" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Login\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Configs\log4net.config" />
+    <Content Include="Configs\system.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemManage\Views\Module\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemManage\Views\Module\Form.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemManage\Views\Module\Details.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemManage\Views\ModuleButton\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemManage\Views\ModuleButton\Form.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemManage\Views\ModuleButton\CloneButton.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemManage\Views\ModuleButton\Details.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemManage\Views\Area\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemManage\Views\ItemsData\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemManage\Views\ItemsType\Form.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemManage\Views\ItemsType\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemManage\Views\ItemsData\Form.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemManage\Views\ItemsType\Details.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemManage\Views\ItemsData\Details.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemManage\Views\Organize\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemManage\Views\Organize\Form.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemManage\Views\Organize\Details.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemManage\Views\Role\Form.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemManage\Views\Role\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemManage\Views\Area\Form.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemManage\Views\User\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\fonts\FontAwesome.otf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemManage\Views\User\Form.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemManage\Views\User\RevisePassword.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemManage\Views\Duty\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemManage\Views\Duty\Form.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemManage\Views\Duty\Details.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemManage\Views\Role\Details.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemManage\Views\User\Details.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemSecurity\Views\DbBackup\Form.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemSecurity\Views\DbBackup\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemSecurity\Views\FilterIP\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemSecurity\Views\FilterIP\Form.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemSecurity\Views\FilterIP\Details.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemSecurity\Views\ServerMonitoring\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Areas\Report\Views\Highcharts\Sample1.cshtml" />
+    <Content Include="Areas\Report\Views\Highcharts\Sample10.cshtml" />
+    <Content Include="Areas\Report\Views\Highcharts\Sample11.cshtml" />
+    <Content Include="Areas\Report\Views\Highcharts\Sample12.cshtml" />
+    <Content Include="Areas\Report\Views\Highcharts\Sample13.cshtml" />
+    <Content Include="Areas\Report\Views\Highcharts\Sample14.cshtml" />
+    <Content Include="Areas\Report\Views\Highcharts\Sample15.cshtml" />
+    <Content Include="Areas\Report\Views\Highcharts\Sample16.cshtml" />
+    <Content Include="Areas\Report\Views\Highcharts\Sample2.cshtml" />
+    <Content Include="Areas\Report\Views\Highcharts\Sample3.cshtml" />
+    <Content Include="Areas\Report\Views\Highcharts\Sample4.cshtml" />
+    <Content Include="Areas\Report\Views\Highcharts\Sample5.cshtml" />
+    <Content Include="Areas\Report\Views\Highcharts\Sample6.cshtml" />
+    <Content Include="Areas\Report\Views\Highcharts\Sample7.cshtml" />
+    <Content Include="Areas\Report\Views\Highcharts\Sample8.cshtml" />
+    <Content Include="Areas\Report\Views\Highcharts\Sample9.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\Default.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\js\simditor\css\editor.scss" />
+    <Content Include="Content\js\simditor\css\fonticon.scss" />
+    <Content Include="Content\js\simditor\css\simditor.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\SystemManage\Views\User\Info.cshtml" />
+    <Content Include="Content\js\webuploader\README.md" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Areas\School\Views\School_Teachers\Details.cshtml" />
+    <Content Include="Areas\School\Views\School_Teachers\Form.cshtml" />
+    <Content Include="Areas\School\Views\School_Teachers\Index.cshtml" />
+    <Content Include="Areas\SystemManage\Views\UserRole\Sys_User_Role.Details.cshtml" />
+    <Content Include="Areas\SystemManage\Views\UserRole\Sys_User_Role.Form.cshtml" />
+    <Content Include="Areas\SystemManage\Views\UserRole\Sys_User_Role.Index.cshtml" />
+    <Content Include="Areas\SystemManage\Views\TableDef\FieldForm.cshtml" />
+    <Content Include="Areas\SystemManage\Views\TableDef\Form.cshtml" />
+    <Content Include="Areas\SystemManage\Views\TableDef\index.cshtml" />
+    <Content Include="Areas\School\Views\Parent\Details.cshtml" />
+    <Content Include="Areas\School\Views\Parent\Index.cshtml" />
+    <Content Include="Areas\School\Views\School_Students\Form.cshtml" />
+    <Content Include="Areas\School\Views\School_Students\index.cshtml" />
+    <Content Include="Areas\School\Views\Parent\Form.cshtml" />
+    <Content Include="Areas\School\Views\Parent\RevisePassword.cshtml" />
+    <Content Include="Areas\School\Views\School_Students\_FromBasePartial.cshtml" />
+    <Content Include="Areas\School\Views\School_Students\_FromEnrolPartial.cshtml" />
+    <Content Include="Areas\School\Views\School_Students\_FromRegPartial.cshtml" />
+    <Content Include="Areas\School\Views\School_Students\_FromFamilyPartial.cshtml" />
+    <Content Include="Areas\School\Views\School_Students\_FromHealthPartial.cshtml" />
+    <Content Include="Areas\School\Views\School_Students\_FromOtherPartial.cshtml" />
+    <Content Include="Areas\School\Views\School_Students\_FromLifePartial.cshtml" />
+    <Content Include="Areas\School\Views\School_Students\Details.cshtml" />
+    <Content Include="Areas\School\Views\School_Students\UpdCurStatu.cshtml" />
+    <Content Include="Areas\School\Views\School_Students\DetailsReadonly.cshtml" />
+    <Content Include="Areas\School\Views\School_Students\_FromStatuLog.cshtml" />
+    <Content Include="Areas\SystemManage\Views\Organize\Class_Form.cshtml" />
+    <Content Include="Areas\SystemManage\Views\Organize\Divis_Form.cshtml" />
+    <Content Include="Areas\SystemManage\Views\Organize\Grade_Form.cshtml" />
+    <Content Include="Areas\School\Views\School_Students\UpdXjStatu.cshtml" />
+    <Content Include="Areas\School\Views\School_Students\UpdSchool_Index.cshtml" />
+    <Content Include="Areas\School\Views\School_Teachers\_FromOnePartial.cshtml" />
+    <Content Include="Areas\School\Views\School_Teachers\_FromTwolPartial.cshtml" />
+    <Content Include="Areas\School\Views\School_Semester\Details.cshtml" />
+    <Content Include="Areas\School\Views\School_Semester\Form.cshtml" />
+    <Content Include="Areas\School\Views\School_Semester\Index.cshtml" />
+    <Content Include="Areas\Report\Views\web.config" />
+    <Content Include="Areas\School\Views\School_Teachers\_FromThreelPartial.cshtml" />
+    <Content Include="Areas\SystemManage\Views\Organize\Class_Details.cshtml" />
+    <Content Include="Areas\SystemManage\Views\Organize\Divis_Details.cshtml" />
+    <Content Include="Areas\SystemManage\Views\Organize\Grade_Details.cshtml" />
+    <Content Include="Views\Home\Import.cshtml" />
+    <Content Include="Views\Login\MobileIndex.cshtml" />
+    <Content Include="Views\Web.config" />
+    <Content Include="Content\js\bootstrap-fileinput-master\.github\CODE_OF_CONDUCT.md" />
+    <Content Include="Content\js\bootstrap-fileinput-master\.github\CONTRIBUTING.md" />
+    <Content Include="Content\js\bootstrap-fileinput-master\.github\ISSUE_TEMPLATE.md" />
+    <Content Include="Content\js\bootstrap-fileinput-master\.github\PULL_REQUEST_TEMPLATE.md" />
+    <Content Include="Content\js\bootstrap-fileinput-master\.gitignore" />
+    <Content Include="Content\js\bootstrap-fileinput-master\bower.json" />
+    <Content Include="Content\js\bootstrap-fileinput-master\CHANGE.md" />
+    <Content Include="Content\js\bootstrap-fileinput-master\composer.json" />
+    <Content Include="Content\js\bootstrap-fileinput-master\LICENSE.md" />
+    <Content Include="Content\js\bootstrap-fileinput-master\nuget\build.bat" />
+    <Content Include="Content\js\bootstrap-fileinput-master\nuget\Package.nuspec" />
+    <Content Include="Content\js\bootstrap-fileinput-master\package.json" />
+    <Content Include="Content\js\bootstrap-fileinput-master\README.md" />
+    <Content Include="Content\js\bootstrap-fileinput-master\scss\fileinput-rtl.scss" />
+    <Content Include="Content\js\bootstrap-fileinput-master\scss\fileinput.scss" />
+    <Content Include="Content\js\bootstrap-fileinput-master\scss\themes\explorer-fa\theme.scss" />
+    <Content Include="Content\js\bootstrap-fileinput-master\scss\themes\explorer\theme.scss" />
+    <Content Include="Content\js\tinymce\js\tinymce\langs\readme.md" />
+    <Content Include="Content\js\tinymce\js\tinymce\skins\lightgray\fonts\tinymce-mobile.woff" />
+    <Content Include="Content\js\tinymce\js\tinymce\skins\lightgray\fonts\tinymce-small.eot" />
+    <Content Include="Content\js\tinymce\js\tinymce\skins\lightgray\fonts\tinymce-small.ttf" />
+    <Content Include="Content\js\tinymce\js\tinymce\skins\lightgray\fonts\tinymce-small.woff" />
+    <Content Include="Content\js\tinymce\js\tinymce\skins\lightgray\fonts\tinymce.eot" />
+    <Content Include="Content\js\tinymce\js\tinymce\skins\lightgray\fonts\tinymce.ttf" />
+    <Content Include="Content\js\tinymce\js\tinymce\skins\lightgray\fonts\tinymce.woff" />
+    <Content Include="Views\Select\SelectUser.cshtml" />
+    <Content Include="Views\Select\SelectSupplier.cshtml" />
+    <Content Include="Views\Select\SelectWarehouse.cshtml" />
+    <Content Include="Views\Select\SelectOwner.cshtml" />
+    <Content Include="Views\Select\SelectDept.cshtml" />
+    <Content Include="Views\Select\SelectAssetCategory.cshtml" />
+    <Content Include="Views\Select\SelectGoods.cshtml" />
+    <Content Include="Views\Select\SelectGoodsCategory.cshtml" />
+    <Content Include="Views\Select\SelectCanOutGoods.cshtml" />
+    <Content Include="Areas\School\Views\School_Students\index_gb.cshtml" />
+    <Content Include="Areas\School\Views\School_Students\Form_gb.cshtml" />
+    <Content Include="Areas\School\Views\School_Students\_FromBasePartial_gb.cshtml" />
+    <Content Include="Areas\School\Views\School_Students\_FromEnrolPartial_gb.cshtml" />
+    <Content Include="Areas\School\Views\School_Students\_FromFamilyPartial_gb.cshtml" />
+    <Content Include="Areas\School\Views\School_Students\_FromHealthPartial_gb.cshtml" />
+    <Content Include="Areas\School\Views\School_Students\_FromLifePartial_gb.cshtml" />
+    <Content Include="Areas\School\Views\School_Students\_FromOtherPartial_gb.cshtml" />
+    <Content Include="Areas\School\Views\School_Students\_FromRegPartial_gb.cshtml" />
+    <Content Include="Areas\School\Views\School_Students\_FromStatuLog_gb.cshtml" />
+    <Content Include="Areas\School\Views\School_Students\Details_gb.cshtml" />
+    <Content Include="Content\js\swiper-4.4.2\dist\js\swiper.min.js.map" />
+    <Content Include="Content\img\fullCalendar.rar" />
+    <Content Include="Areas\School\Views\web.config" />
+    <Content Include="Areas\SystemManage\Views\web.config" />
+    <Content Include="Areas\SystemSecurity\Views\web.config" />
+    <Content Include="Areas\School\Views\Leave\ApproveForm.cshtml" />
+    <Content Include="Areas\School\Views\Leave\Index.cshtml" />
+    <Content Include="Views\Select\SelectStudent.cshtml" />
+    <Content Include="Views\Select\SelectUserByType.cshtml" />
+    <Content Include="Views\Select\TeacherSelect.cshtml" />
+    <Content Include="Views\Login\pcSSO.cshtml" />
+    <Content Include="Views\Login\mobileSSO.cshtml" />
+    <Content Include="Views\Home\Kq.cshtml" />
+    <Content Include="Views\Select\SelectClassRoom.cshtml" />
+    <Content Include="Scripts\highcharts\6.2.0\themes\sunset.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\themes\skies.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\themes\sand-signika.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\themes\grid.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\themes\grid-light.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\themes\gray.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\themes\dark-unica.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\themes\dark-green.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\themes\dark-blue.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\themes\avocado.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\xrange.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\wordcloud.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\windbarb.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\vector.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\variwide.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\variable-pie.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\treemap.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\treegrid.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\tilemap.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\sunburst.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\streamgraph.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\stock.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\static-scale.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\solid-gauge.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\series-label.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\sankey.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\pattern-fill.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\pathfinder.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\pareto.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\parallel-coordinates.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\overlapping-datalabels.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\oldie.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\offline-exporting.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\no-data-to-display.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\item-series.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\histogram-bellcurve.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\heatmap.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\grid-axis.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\gantt.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\funnel.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\exporting.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\export-data.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\drilldown.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\draggable-points.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\drag-panes.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\data.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\current-date-indicator.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\bullet.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\broken-axis.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\boost.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\boost-canvas.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\arrow-symbols.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\annotations.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\modules\accessibility.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\themes\sunset.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\themes\skies.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\themes\sand-signika.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\themes\grid.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\themes\grid-light.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\themes\gray.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\themes\dark-unica.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\themes\dark-green.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\themes\dark-blue.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\themes\avocado.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\xrange.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\wordcloud.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\windbarb.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\vector.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\variwide.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\variable-pie.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\treemap.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\treegrid.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\tilemap.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\sunburst.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\streamgraph.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\stock.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\static-scale.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\solid-gauge.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\series-label.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\sankey.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\pattern-fill.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\pathfinder.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\pareto.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\parallel-coordinates.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\overlapping-datalabels.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\oldie.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\offline-exporting.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\no-data-to-display.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\item-series.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\histogram-bellcurve.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\heatmap.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\grid-axis.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\gantt.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\funnel.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\exporting.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\export-data.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\drilldown.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\draggable-points.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\drag-panes.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\data.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\current-date-indicator.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\bullet.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\broken-axis.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\boost.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\boost-canvas.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\arrow-symbols.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\annotations.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\modules\accessibility.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\highcharts.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\highcharts-more.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\js\highcharts-3d.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\highcharts.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\highcharts-more.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\highcharts-3d.js.map" />
+    <Content Include="Scripts\highcharts\6.2.0\css\highcharts.scss" />
+    <Content Include="Scripts\jquery-2.1.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ZHXY.Application\ZHXY.Application.csproj">
+      <Project>{f2035ee2-b73d-4fb8-a433-cab465de6a2a}</Project>
+      <Name>ZHXY.Application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ZHXY.Common\ZHXY.Common.csproj">
+      <Project>{db19ce03-c307-43fe-a209-08aa4ae10e21}</Project>
+      <Name>ZHXY.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ZHXY.Domain\ZHXY.Domain.csproj">
+      <Project>{7dc886cd-b8a0-44e8-aadd-57fcb0cfecb8}</Project>
+      <Name>ZHXY.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ZHXY.Module\Dorm\ZHXY.Dorm.Device\ZHXY.Dorm.Device.csproj">
+      <Project>{2175A722-2E8A-4E1C-A6E8-10710506DAD2}</Project>
+      <Name>ZHXY.Dorm.Device</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\Microsoft.DependencyValidation.Analyzers.0.10.0\analyzers\dotnet\cs\Microsoft.DependencyValidation.Analyzers.resources.dll" />
+    <Analyzer Include="..\packages\Microsoft.DependencyValidation.Analyzers.0.10.0\analyzers\dotnet\Microsoft.DependencyValidation.Analyzers.dll" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>
+          </DevelopmentServerVPath>
+          <IISUrl>http://localhost:8082/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.3.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.3.0.0\build\Microsoft.Net.Compilers.props'))" />
+  </Target>
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

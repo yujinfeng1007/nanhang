@@ -1,0 +1,122 @@
+﻿@{Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<script>
+    const GRID_URL = `/SystemManage/User/GetByOrg`;
+    const TREE_URL = `/SystemManage/Organize/GetTeacherOrg`;
+    const ADD_URL = `/SystemManage/OrgLeader/Add`;
+
+
+
+    $(function () {
+        $('#layout').layout({
+            west__resizable: false
+        }).sizePane("west", 400);
+
+        gridList();
+        gridTree();
+
+        $("#search").bind('click',()=>reloadGrid());
+    })
+
+    function add() {
+        let orgId = $.request("orgId");
+        let users = $("#gridList").jqGrid('getGridParam', 'selarrrow');
+        $.post(ADD_URL, { orgId: orgId, users: users }, function (result) {
+            if (result.state === 'success') {
+                $.modalMsg('添加成功', 'success');
+                $(top.window.gridList).jqGrid().trigger('reload');
+            } else {
+                 $.modalMsg(result.message, 'error');
+            }
+        })
+    }
+
+    function gridList() {
+        $("#gridList").dataGrid({
+            url: GRID_URL,
+            autoGridHeight: () => window.innerHeight * 0.6,
+            jsonReader: {
+                root: function (r) {
+                    return r.data;
+                }
+            },
+            colModel: [
+                { label: "主键", name: "userId", hidden: true, key: true },
+                { label: '姓名', name: 'userName' },
+                { label: '机构名称', name: 'orgName' },
+            ],
+            autoGridWidth: true,
+            multiselect: true,
+            loadonce: false,
+            viewrecords: true,
+        });
+    }
+
+    function reloadGrid(rowId) {
+        $("#gridList").jqGrid('setGridParam', {
+            postData: {
+                orgId: rowId,
+                keyword: $("#keyword").val()
+            },
+        }).trigger('reloadGrid');
+    }
+
+    function gridTree() {
+        $("#treeGrid").jqGrid({
+            styleUI: 'Bootstrap',
+            treeGrid: true,
+            url: TREE_URL,
+            treeGridModel: "adjacency",
+            datatype: "json",
+            gridview: true,
+            altRows: true,
+            viewrecords: true,
+            autoGridWidth: true,
+            rowNum: 15,
+            shrinkToFit: true,
+            autoGridHeight: true,
+            jsonReader: {
+                root: function (r) { return r.data; }
+            },
+            height: window.innerHeight * 0.9,
+            width: top.window.innerWidth * 0.2,
+            ExpandColumn: 'name',
+            ExpandColClick: false,
+            onSelectRow: reloadGrid,
+            colModel: [
+                { label: '机构名称', name: 'name', width: 100, align: 'left', sortable: false },
+                { label: '主键', name: "id", width: 150, align: 'left', key: true, hidden: true },
+                { label: 'level', name: "level", hidden: true },
+            ],
+            multiselect: false,
+            rowNum: "all",
+        });
+    }
+</script>
+
+<div class="ui-layout" id="layout" style="height: 100%; width: 100%;">
+    <div class="ui-layout-west" style="height: 100%; width: 100%;">
+        <table id="treeGrid"></table>
+    </div>
+    <div class="ui-layout-center" style="height: 100%; width: 100%;">
+        <div class="topPanel">
+            <div class="search">
+                <div class="input-group" style="padding-right:4px;">
+                    <input id="keyword" type="text" class="form-control" placeholder="姓名" style="width: 200px;">
+                    <button id="search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
+                    <button class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></button>
+                </div>
+            </div>
+        </div>
+        <div class="gridPanel">
+            <table id="gridList"></table>
+            <div id="gridPager"></div>
+        </div>
+    </div>
+</div>
+
+<style scoped>
+    .input-group > button {
+        margin-right: 10px;
+    }
+</style>

@@ -1,0 +1,106 @@
+﻿@{
+    ViewBag.Title = "Import";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<style>
+    .Down_Mod {
+        display:none;
+    }
+</style>
+<link rel="stylesheet" type="text/css" href="~/Content/js/webuploader/webuploader.css" />
+<link rel="stylesheet" type="text/css" href="~/Content/css/framework-custom-webuploader.css" />
+<link rel="stylesheet" type="text/css" href="~/Content/js/doublebox/doublebox.css" />
+<link rel="stylesheet" type="text/css" href="~/Content/js/x-editable/bootstrap-editable.css" />
+<script type="text/javascript" src="~/Content/js/webuploader/webuploader.js"></script>
+<script type="text/javascript" src="~/Content/js/ImageUpload.js"></script>
+<script type="text/javascript" src="~/Content/js/Fileupload.js"></script>
+<script type="text/javascript" src="~/Content/js/x-editable/bootstrap-editable.min.js"></script>
+<script type="text/javascript" src="~/Content/js/doublebox/doublebox.js"></script>
+<script type="text/javascript">
+    var keyValue = $.request("keyValue");
+    var F_Semester=null;
+    var F_Divis=null;
+    var F_Grade=null;
+    var F_Year=null;
+    $(document).ready(function () {
+        $.initUploader({
+            container: '#uploader',
+            fileInput: '#Files',
+            thumb: '#files_hx',
+            maxFile: 1,
+            accept: {
+                title: '@Request["title"].ToString()',
+                extensions: '@Request["extensions"].ToString()',
+                mimeTypes: '@Request["mimeTypes"].ToString()'
+            },
+            server: '/File/FileUpload?moban=1'
+        })
+        var fileName = '@Request["fileName"]';
+
+        if (!!keyValue) {
+            $.ajax({
+                url: "/ScheduleManage/Schedule_WishCourseTask/GetFormJson",
+                data: { keyValue: keyValue },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    F_Semester = data.F_SemesterId;
+                    F_Divis = data.F_DivisId;
+                    F_Grade = data.F_GradeId;
+                    F_Year = data.F_Year;
+
+                    if (fileName != "") {
+                        $("#Mod").html(fileName);
+                        $("#Mod").attr("href", "/ScheduleManage/Schedule_CourseTask/exportStudent?F_Semester=" + F_Semester + "&F_Year=" + F_Year + "&F_Divis=" + F_Divis + "&F_Grade=" + F_Grade);
+                        //$("#Mod2").html("数据字典模版.xls");
+                        //$("#Mod2").attr("href", "/File/DownFile?filePath=/UpLoad/Down_Mod/数据字典模版.xls&fileName=数据字典模版.xls&moban=1");
+                        $(".Down_Mod").attr("class", "")
+                    }
+
+                }
+            });
+        }
+    })
+
+    //function changeDivis() {
+    //    $("#F_Grade_ID").find("option").remove();
+    //    $("#F_Grade_ID").bindSelect({
+    //        url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Grade&parentId=" + $("#F_Divis_ID").val(),
+    //    });
+    //}
+
+    function submitForm() {
+        $.modalClose();
+
+        return  {
+            filePath: $("#Files").val()
+            ,
+            F_Semester: F_Semester,
+            F_Divis: F_Divis,
+            F_Grade: F_Grade,
+            F_Year: F_Year
+        };
+    }
+</script>
+
+<div style="padding-top: 20px; margin-right: 20px;">
+    <table class="form">
+
+        <tr class="Down_Mod">
+            <th class="formTitle">模版：</th>
+            <td class="formValue">
+                <label >&nbsp;<a target='_blank' id="Mod" href=""></a>&nbsp;&nbsp;&nbsp;<a target='_blank' id="Mod2" href=""></a></label>
+            </td>
+        </tr>
+
+        <tr>
+            <th class="formTitle">导入文件：</th>
+            <td class="formValue">
+                <input type="hidden" id="Files" name="Files" />
+                <div id="uploader" class="wu-example">
+                </div>
+            </td>
+        </tr>
+    </table>
+    @*<select multiple="multiple" size="10" name="doublebox" class="demo">*@
+</div>

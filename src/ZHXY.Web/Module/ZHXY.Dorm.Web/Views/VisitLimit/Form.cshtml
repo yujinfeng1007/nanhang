@@ -1,0 +1,209 @@
+﻿@{
+    
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script>
+
+    var OrganName = null, OrganGrade = null, OrganCourts = null, OrganClass = null;
+    var OrganId = null, GradeId = null, CourtsId = null, ClassId = null;
+    $(function () {
+        $.addRequired('#form1')
+
+        $("#Organ").select2({
+            allowClear: true,
+            placeholder: "请选择学院",
+            ajax: {
+                url: "/Dorm/VisitLimit/FindOrgan",
+                dataType: "json",
+                data: function (param) {
+                    return {
+                        OrganName: param.term
+                    }
+                },
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                },
+                delay: 100
+            }
+        });
+
+        $("#OrganGrade").select2({
+            allowClear: true,
+            placeholder: "请选择年级",
+            ajax: {
+                url: "/Dorm/VisitLimit/FindOrganGrade",
+                dataType: "json",
+                data: function (param) {
+                    return {
+                        GradeName: param.term,
+                        OrganId: OrganId
+                    }
+                },
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                },
+                delay: 100
+            }
+        });
+
+        $("#OrganCourts").select2({
+            allowClear: true,
+            placeholder: "请选择分院",
+            ajax: {
+                url: "/Dorm/VisitLimit/FindOrganCourts",
+                dataType: "json",
+                data: function (param) {
+                    return {
+                        CourtName: param.term,
+                        GradeId: GradeId 
+                    }
+                },
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                },
+                delay: 100
+            }
+        });
+
+        $("#OrganClass").select2({
+            allowClear: true,
+            placeholder: "请选择班级",
+            ajax: {
+                url: "/Dorm/VisitLimit/FindOrganClass",
+                dataType: "json",
+                data: function (param) {
+                    return {
+                        ClassName: param.term,
+                        CourtsId: CourtsId
+                    }
+                },
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                },
+                delay: 100
+            }
+        });
+
+        //判断是否选中组织机构相关
+        $("#Organ").on('change', function () {
+            OrganId = $("#Organ").val();
+            OrganName = $("#Organ").text();
+            $('#OrganGrade').attr('disabled', false);
+        });
+        $("#OrganGrade").on('change', function () {
+            GradeId = $("#OrganGrade").val();
+            OrganGrade = $("#OrganGrade").text();
+            $('#OrganCourts').attr('disabled', false);
+        });
+        $("#OrganCourts").on('change', function () {
+            CourtsId = $("#OrganCourts").val();
+            OrganCourts = $("#OrganCourts").text();
+            $('#OrganClass').attr('disabled', false);
+        });
+        $("#OrganClass").on('change', function () {
+            ClassId = $("#OrganClass").val();
+            OrganClass = $("#OrganClass").text();
+        });
+
+
+
+        $("#AutoSet").click(function () {
+            $("#NotAutoSet").attr("checked", false);
+        });
+        $("#NotAutoSet").click(function () {
+            $("#AutoSet").attr("checked", false);
+        });
+    });
+
+    function submitForm() {
+        var re = /^[1-9]+[0-9]*]*$/;
+        var VisitTimes = $('#TimesOfWeek').val();
+        if (!re.test(VisitTimes)) {
+            alert("访问额度：请输入不为0的数字");
+            return;
+        }
+        if (!$('#form1').formValid()) {
+            return false;
+        }
+        $.submitForm({
+            url: "/Dorm/VisitLimit/SubmitForm",
+            param: $("#form1").formSerialize(),
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        });
+
+       
+    }
+
+</script>
+<form id="form1">
+    <div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#">基本信息</a></li>
+        </ul>
+        <div style="padding-top: 20px; margin-right: 30px;">
+            <table class="form">
+                <tr>
+                    <th class="formTitle">访问额度</th>
+                    <td class="formValue">
+                        <div class="input-group" style="margin-right:10px;width:200px;">
+                            <input id="TimesOfWeek" name="TimesOfWeek" type="text" /> 次/每周
+                        </div>
+                    </td>
+                 </tr>
+                <tr>
+                    <th class="formTitle"> 请选择学院</th>
+                    <td class="formValue">
+                        <div class="input-group" style="margin-right:10px; width:200px;">
+                            <select id="Organ" name="Organ" class="form-control"></select>
+                        </div>
+                    </td>
+                    <th class="formTitle"> 请选择年级</th>
+                    <td class="formValue">
+                        <div class="input-group" style="margin-right:10px; width:200px;">
+                            <select id="OrganGrade" name="OrganGrade" class="form-control" disabled></select>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle"> 请选择分院</th>
+                    <td class="formValue">
+                        <div class="input-group" style="margin-right:10px; width:200px;">
+                            <select id="OrganCourts" name="OrganCourts" class="form-control" disabled></select>
+                        </div>
+                    </td>
+                    <th class="formTitle"> 请选择班级</th>
+                    <td class="formValue">
+                        <div class="input-group" style="margin-right:10px; width:200px;">
+                            <select id="OrganClass" name="OrganClass" class="form-control" disabled></select>
+                        </div>
+                    </td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <th class="formTitle">系统每周自动重置额度</th>
+                    <td class="formValue">
+                        <div class="input-group" style="margin-left:100px; width:200px;">
+                            是:<input type="radio" id="AutoSet" name="AutoSet" value="0" />
+                        </div>
+                    </td>
+                    <th></th>
+                    <td class="formValue">
+                        <div class="input-group" style="margin-left:50px; width:200px;">
+                            否:<input type="radio" id="NotAutoSet" name="AutoSet" value="1" />
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</form>

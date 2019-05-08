@@ -1,0 +1,237 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script>
+    var F_Status = $.request("F_Status");
+    $(function () {
+        var $gridList = $("#gridList");
+        gridList($gridList);
+        $("#F_Year").bindSelect({
+            dictionary: 'F_Year',
+            displayBlank: false
+        })
+        $("#dsh,#shtg,#shbtg").click(function (item) {
+            var fyzt = "";
+            switch (item.currentTarget.defaultValue) {
+                case "待审核":
+                    fyzt = "4";
+                    break;
+                case "审核通过":
+                    fyzt = "5";
+                    break;
+                case "审核不通过":
+                    fyzt = "6";
+                    break;
+            }
+            $gridList.jqGrid('setGridParam', {
+                postData: { keyword: $("#txt_keyword").val(), F_Auditor_Name: $("#F_Auditor_Name").val(), F_Year: $("#F_Year").val(), fyzt: fyzt },
+            }).trigger('reloadGrid');
+        });
+    })
+    function gridList($gridList) {
+        //var $gridList = $("#gridList");
+        $gridList.dataGrid({
+            url: "/SchoolManage/School_MoneyChangeList/GetGridJson?F_Status=" + F_Status,
+            height: $(window).height() - 128,
+            colModel: [
+              			{ label: '主键', name: 'F_Id', hidden: true },
+                        {
+                            label: '学生姓名', name: 'F_Student_Name', width: 80, align: 'left'
+                        },
+                        {
+                            label: '学号', name: 'F_Student_Num', width: 80, align: 'left'
+                        },
+                        {
+                            label: '费用调整申请编号', name: 'F_FreeNum', width: 160, align: 'left'
+                        },
+                        {
+                            label: '年度', name: 'F_Year', width: 80, align: 'left', formatter: function (cellvalue) {
+                                return top.clients.dataItems["F_Year"][cellvalue] == undefined ? "" : top.clients.dataItems["F_Year"][cellvalue];
+                            }
+                        },
+                        {
+                            label: '缴费学期', name: 'F_Year_Period', width: 80, align: 'left', formatter: function (cellvalue) {
+                                return top.clients.dataItems["Semester"][cellvalue] == undefined ? "" : top.clients.dataItems["Semester"][cellvalue];
+                            }
+                        },
+                        {
+                            label: '调整类型', name: 'F_Change_Type', width: 80, align: 'left', formatter: function (cellvalue) {
+                                return top.clients.dataItems["F_Change_Type"][cellvalue] == undefined ? "" : top.clients.dataItems["F_Change_Type"][cellvalue];
+                            }
+                        },
+                        {
+                            label: '调整项目', name: 'F_Change_Item', width: 80, align: 'left', formatter: function (cellvalue) {
+                                return top.clients.dataItems["F_Change_Item"][cellvalue] == undefined ? "" : top.clients.dataItems["F_Change_Item"][cellvalue];
+                            }
+                        },
+                        {
+                            label: '调整金额', name: 'F_Change', width: 80, align: 'left'
+                        },
+                        {
+                            label: '申请人', name: 'F_Creator_Name', width: 80, align: 'left'
+                        },
+                        {
+                            label: '申请时间', name: 'F_CreatorTime', width: 80, align: 'left',
+                            formatter: "date", formatoptions: { srcformat: 'Y-m-d H:i:s', newformat: 'Y-m-d H:i:s' }
+                        },
+                        {
+                            label: '审核人', name: 'F_Auditor_Name', width: 80, align: 'left'
+                        },
+                        {
+                            label: '协议ID', name: 'F_Sign_Id', width: 80, align: 'left',hidden:true
+                        },
+                        {
+                            label: '审核时间', name: 'F_Audit_Time', width: 80, align: 'left',
+                            formatter: "date", formatoptions: { srcformat: 'Y-m-d H:i:s', newformat: 'Y-m-d H:i:s' }
+                        },
+                  		//{ label: '审核意见', name: 'F_Audit_Memo', width: 160, align: 'left' },
+                        {
+                            label: '缴费账单编号', name: 'F_Bill_No', width: 80, align: 'left'
+                        },
+                        {
+                            label: '费用调整编号', name: 'F_Bill_ChangeNo', width: 80, align: 'left'
+                        },
+            ],
+            pager: "#gridPager",
+            sortname: 'F_DepartmentId asc,F_CreatorTime desc',
+            viewrecords: true
+        });
+        $("#btn_search").click(function () {
+            $gridList.jqGrid('setGridParam', {
+                postData: { keyword: $("#txt_keyword").val(), F_Auditor_Name: $("#F_Auditor_Name").val(), F_Year: $("#F_Year").val() },
+            }).trigger('reloadGrid');
+        });
+    }
+    function btn_add() {
+        var xyid = $.request("keyValue");
+        $.modalOpen({
+            id: "Form1",
+            title: "申请调整",
+            url: "/SchoolManage/School_MoneyChangeList/Form?xyid=" + xyid,
+            width: "700px",
+            height: "510px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm();
+            }
+        });
+    }
+    function btn_edit() {
+        var xyId = $.request("keyValue");
+        var keyValue = ($("#gridList").jqGridRowValue('F_Id'))[0];
+        $.modalOpen({
+            id: "Form",
+            title: "修改",
+            url: "/SchoolManage/School_MoneyChangeList/Form?keyValue=" + keyValue + "&xyId=" + xyId,
+            width: "700px",
+            height: "510px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm();
+            }
+        });
+    }
+    function btn_delete() {
+        var deleteid = $('#gridList').jqGridRowValue('F_Id');
+        var keyValue = "";
+        for (var i = 0; i < deleteid.length; i++) {
+            keyValue += deleteid[i] + "|";
+        }
+        $.deleteForm({
+            url: "/SchoolManage/School_MoneyChangeList/DeleteForm",
+            param: { keyValue: keyValue },
+            success: function () {
+                //$.currentWindow().$("#gridList").trigger("reloadGrid");
+                parent.top.frames["Daily"].$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+    function btn_details() {
+        var keyValue = ($("#gridList").jqGridRowValue('F_Id'))[0];
+        var xyid = ($("#gridList").jqGridRowValue('F_Sign_Id'))[0];
+        $.modalOpen({
+            id: "Details",
+            title: "查看",
+            url: "/SchoolManage/School_MoneyChangeList/Details?xyid=" + xyid + "&keyValue=" + keyValue,
+            width: "900px",
+            height: "650px",
+            btn: null,
+        });
+    }
+
+    function btn_auditor() {
+        var keyValue = ($("#gridList").jqGridRowValue('F_Id'))[0];
+        var xyid = ($("#gridList").jqGridRowValue('F_Sign_Id'))[0];
+        $.modalOpen({
+            id: "Aud",
+            title: "审核",
+            url: "/SchoolManage/School_MoneyChangeList/Auditor?xyid=" + xyid + "&keyValue=" + keyValue,
+            width: "900px",
+            height: "750px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm();
+            }
+        });
+    }
+</script>
+
+<div class="topPanel">
+    <div class="toolbar">
+        <div class="btn-group">
+            <a class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
+        </div>
+        @*<div class="btn-group">
+            <a id="NF-add" authorize="false" class="btn btn-primary dropdown-text" onclick="btn_add()"><i class="fa fa-plus"></i>审核</a>
+        </div>*@
+        <div class="operate">
+            <ul class="nav nav-pills">
+                <li class="first">已选中<span>1</span>项</li>
+                @*<li><a id="NF-edit" authorize="false" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>修改</a></li>
+                    <li><a class="multi-edit" id="NF-delete" authorize="false" onclick="btn_delete()"><i class="fa fa-trash-o"></i>删除</a></li>*@
+                <li><a id="NF-Details" authorize="false" onclick="btn_details()"><i class="fa fa-search-plus"></i>查看</a></li>
+                <li class="split"></li>
+                <li><a class="mutil-edit" id="NF-auditor" authorize="yes" onclick="btn_auditor()"><i class="fa fa-search-plus"></i>审核</a></li>
+            </ul>
+            <a href="javascript:;" class="close"></a>
+        </div>
+        <script>$('.toolbar').authorizeButton()</script>
+        @if (!string.IsNullOrEmpty(Request["F_Status"]))
+        {
+            if (Request["F_Status"].ToString() == "4")
+            {
+                <input type="button" id="dsh" value="待审核" class="btn btn-primary dropdown-text" />
+                <input type="button" id="shtg" value="审核通过" class="btn btn-primary dropdown-text" />
+                <input type="button" id="shbtg" value="审核不通过" class="btn btn-primary dropdown-text" />}
+        }
+    </div>
+    <div class="search">
+        <table>
+            <tr>
+                <th class="formTitle">搜索：</th>
+                <td>
+                    <div class="input-group" style="margin-right:10px;width:200px;">
+                        <select id="F_Year" name="F_Year" class="form-control">
+                            <option value="">选择年度</option>
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group" style="margin-right:10px;width:200px;">
+                        <input id="F_Auditor_Name" type="text" class="form-control" placeholder="审核人" style="width: 250px;">
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group">
+                        <input id="txt_keyword" type="text" class="form-control" placeholder="姓名|学号|变更账单编号" style="width: 150px;">
+                        <span class="input-group-btn">
+                            <button id="btn_search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="gridPanel">
+    <table id="gridList"></table>
+    <div id="gridPager"></div>
+</div>

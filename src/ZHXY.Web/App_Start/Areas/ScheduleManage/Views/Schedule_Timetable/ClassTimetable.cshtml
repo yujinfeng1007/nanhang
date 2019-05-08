@@ -1,0 +1,439 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script src="/js/moment.js"></script>
+<script src="/js/calendar.js"></script>
+<script src="/js/locale.js"></script>
+<script src="~/Content/js/JSLINQ.js"></script>
+<link rel="stylesheet" href="/css/calendar.css" />
+<style>
+.schedule-grid:after {
+  content: ".";
+  clear: both;
+  display: block;
+  overflow: hidden;
+  font-size: 0;
+  height: 0;
+}
+.stock, #class-table {
+  float: left;
+}
+.stock {
+  width: 20%;
+}
+#stock .item, #time-helper .item {
+    margin: 2px auto;
+    width: 120px;
+    background-color: #eee;
+    text-align: center;
+    min-height: 24px;
+    line-height: 24px;
+    cursor: pointer;
+    border: 1px solid #393;
+    border-radius: 10px;
+}
+#class-table {
+  width: 80%;
+}
+#class-table table {
+  width: 100%;
+  border: 1px solid #cdcdcd;
+  border-collapse: separate;
+}
+#class-table table thead tr {
+  background-color: #525252;
+  color: #fff;
+  font-weight: normal;
+}
+#class-table table thead tr th {
+  height: 30px;
+  padding: 3px 6px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+  border: 1px solid #ccc;
+  font-weight: bold;
+}
+#class-table table tbody tr td {
+  border: 1px solid #ccc;
+  vertical-align: top;
+  padding: 2px;
+  text-align: center;
+  height: 36px;
+  text-align: center;
+  vertical-align: middle !important;
+}
+#class-table table tbody tr td.error {
+  background: #FF4747;
+}
+#class-table table tbody tr td.success {
+  background: #5FE05F;
+}
+#class-table table tbody .item {
+    margin: 2px auto;
+    background-color: #eee;
+    text-align: center;
+    min-height: 24px;
+    line-height: 24px;
+    cursor: pointer;
+    border: 1px solid #393;
+    border-radius: 10px;
+}
+#time-helper {
+  position: absolute;
+}
+</style>
+<script type="text/javascript">
+    $(function () {
+
+        $("#F_Semester").bindSelect({
+            url: "/SchoolManage/School_Semester/GetGridSelect",
+            id: "F_Id",
+            text: "F_Name"
+        });
+        $("#F_Year").bindSelect({
+            dictionary: 'F_Year',
+            displayBlank: false
+        });
+        $("#F_Divis_ID").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Division",
+        });
+
+        $("#F_Divis_ID").change(function () {
+            changeDivis();
+        });
+
+        $("#F_Grade_ID").change(function () {
+            //changeClass();
+            //scheduleByHand.tableInstance.loadClassHour(getTimeJson(), false);
+        });
+
+       
+        $("#btn_search").click(function () {
+            if ($("#F_Grade_ID").val() == "") {
+                $.modalAlert("请选择年级！", "warning");
+                return;
+            }
+            if ($("#F_Year").val() == "") {
+                $.modalAlert("请选择年度！", "warning");
+                return;
+            }
+            if ($("#F_Semester").val() == "") {
+                $.modalAlert("请选择学期！", "warning");
+                return;
+            }
+            //if ($("#F_Class_ID").val() == "") {
+            //    $.modalAlert("请选择班级！", "warning");
+            //    return;
+            //}
+            changeClass();
+            scheduleByHand.tableInstance.loadClassHour(getTimeJson(), false);
+
+        });
+        scheduleByHand.init();
+        gridList();
+    });
+
+    function changeDivis() {
+        $("#F_Grade_ID").find("option").remove();
+        $("#F_Grade_ID").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Grade&parentId=" + $("#F_Divis_ID").val(),
+        });
+    }
+
+    function changeClass() {
+        var $gridList = $("#gridLists");
+        $gridList.jqGrid('setGridParam', {
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Class&parentId=" + $("#F_Grade_ID").val(),
+        }).trigger('reloadGrid');
+
+        //$("#F_Class_ID").find("option").remove();
+        //$("#F_Class_ID").bindSelect({
+        //    url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Class&parentId=" + $("#F_Grade_ID").val(),
+        //});
+    }
+
+    function InitTimeTable()
+    {
+        //var tclassTable = new classTable();
+        //tclassTable.timeSpanCn = { 'MN': '早晨', 'AM': '上午', 'CM': '中午', 'PM': '下午', 'EN': '晚上' };
+        //tclassTable.classHour = getTimeJson();
+        //scheduleByHand.tableInstance = tclassTable
+
+        var data = getData()
+        //scheduleByHand.bindNotData(data.notdata);
+        scheduleByHand.bindYetData(data.yetdata);
+    }
+
+    function getTimeJson()
+    {
+        var F_Semester = $("#F_Semester").val();
+        var F_Divis = $("#F_Divis_ID").val();
+        var F_Grade = $("#F_Grade_ID").val();
+        var F_Year = $("#F_Year").val();
+
+        var hours = { MN:[],AM: [],CM:[], PM: [], EN: [] };
+        $.ajax({
+            url: "/ScheduleManage/School_ClassArrange/GetTimeJson",
+            data: {F_Semester: F_Semester, F_Divis: F_Divis, F_Grade: F_Grade, F_Year: F_Year },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                if (data == null)
+                    return hours;
+                hours = gethoursTimeJson(hours, 1, data.F_TimeSpan1, data.F_Course_StartTime1, data.F_Course_EndTime1);
+                hours = gethoursTimeJson(hours, 2, data.F_TimeSpan2, data.F_Course_StartTime2, data.F_Course_EndTime2);
+                hours = gethoursTimeJson(hours, 3, data.F_TimeSpan3, data.F_Course_StartTime3, data.F_Course_EndTime3);
+                hours = gethoursTimeJson(hours, 4, data.F_TimeSpan4, data.F_Course_StartTime4, data.F_Course_EndTime4);
+                hours = gethoursTimeJson(hours, 5, data.F_TimeSpan5, data.F_Course_StartTime5, data.F_Course_EndTime5);
+                hours = gethoursTimeJson(hours, 6, data.F_TimeSpan6, data.F_Course_StartTime6, data.F_Course_EndTime6);
+                hours = gethoursTimeJson(hours, 7, data.F_TimeSpan7, data.F_Course_StartTime7, data.F_Course_EndTime7);
+                hours = gethoursTimeJson(hours, 8, data.F_TimeSpan8, data.F_Course_StartTime8, data.F_Course_EndTime8);
+                hours = gethoursTimeJson(hours, 9, data.F_TimeSpan9, data.F_Course_StartTime9, data.F_Course_EndTime9);
+                hours = gethoursTimeJson(hours, 10, data.F_TimeSpan10, data.F_Course_StartTime10, data.F_Course_EndTime10);
+                hours = gethoursTimeJson(hours, 11, data.F_TimeSpan11, data.F_Course_StartTime11, data.F_Course_EndTime11);
+                hours = gethoursTimeJson(hours, 12, data.F_TimeSpan12, data.F_Course_StartTime12, data.F_Course_EndTime12);
+            }
+        });
+        return hours;
+    }
+    function gethoursTimeJson(hours, index, timeSpan, timestart, timeend)
+    {
+        if (timeSpan == "MN")
+            hours.MN.push({ ClassHour: index, ClassHourCh: "第" + index + "节", ClassTime: timestart + "-" + timeend });
+        if (timeSpan == "CM")
+            hours.CM.push({ ClassHour: index, ClassHourCh: "第" + index + "节", ClassTime: timestart + "-" + timeend });
+        if (timeSpan == "AM")
+            hours.AM.push({ ClassHour: index, ClassHourCh: "第" + index + "节", ClassTime: timestart + "-" + timeend });
+        if (timeSpan == "PM")
+            hours.PM.push({ ClassHour: index, ClassHourCh: "第" + index + "节", ClassTime: timestart + "-" + timeend });
+        if (timeSpan == "EN")
+            hours.EN.push({ ClassHour: index, ClassHourCh: "第" + index + "节", ClassTime: timestart + "-" + timeend });
+        return hours;
+    }
+
+    function getData()
+    {
+        var student = $("#gridLists").jqGridRowValue()["id"]
+        var obj = { notdata: [], yetdata: [] };
+        $.ajax({
+            url: "/ScheduleManage/Schedule_Timetable/GetClassPTimetable?F_Semester=" + $("#F_Semester").val() + "&F_Divis=" + $("#F_Divis_ID").val() + "&F_Grade=" + $("#F_Grade_ID").val() + "&F_Year=" + $("#F_Year").val() + "&F_Class=" + student,
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                if (data.length <= 0)
+                    return obj;
+                var items = data;
+                for(var i=0;i<items.length;i++)
+                {
+                    if (!items[i].F_WeekN) {
+                        obj.notdata.push({
+                            id: items[i].F_CourseId,
+                            teacherId: items[i].F_TeacherId,
+                            courseId: items[i].F_CourseId,
+                            courseName: items[i].F_CourseName,
+                            teacherName: items[i].F_Teacher
+                            //,
+                            //roomId: 34,
+                            //roomName: 'B班5教室',
+                        });
+                    }
+                    else {
+                        obj.yetdata.push({
+                            dateIndex: items[i].F_WeekN,
+                            lessonIndex: items[i].F_CourseIndex,
+                            courseName: items[i].F_CourseName,
+                            courseId: items[i].F_CourseId,
+                            teacherName: items[i].F_Teacher,
+                            teacherId: items[i].F_TeacherId
+                            //,
+                            //roomName: 'B班3教室',
+                            //roomId: 114
+                        });
+                    }
+
+                }
+            }
+        });
+        console.log(obj)
+        return obj;
+    }
+
+    function gridList() {
+        var grade = $("#F_Grade_ID").val();
+        var year = $("#F_Year").val();
+        var semester = $("#F_Semester").val();
+        var courseid = $("#F_Course_ID").val();
+
+        var $gridList = $("#gridLists");
+        $gridList.dataGrid({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Class&parentId=" + $("#F_Grade_ID").val(),
+            height: $(window).height() - 128,
+            autoGridHeight: function () {
+                return 560
+            },
+            colModel: [
+			 	 { label: '主键', name: 'id', hidden: true },
+                 { label: '班级名称', name: 'text', align: 'left' }
+            ],
+            onCustomSelectRow: DispalyGrid,
+            multiselect: false,
+            rowNum: -1
+        });
+    }
+
+    function DispalyGrid(rowid) {
+        InitTimeTable();
+    }
+
+    function btn_export() {
+        if ($("#F_Grade_ID").val() == "") {
+            $.modalAlert("请选择年级！", "warning");
+            return;
+        }
+        if ($("#F_Year").val() == "") {
+            $.modalAlert("请选择年度！", "warning");
+            return;
+        }
+        if ($("#F_Semester").val() == "") {
+            $.modalAlert("请选择学期！", "warning");
+            return;
+        }
+        var student = $("#gridLists").jqGridRowValue()["id"]
+        if (student == "") {
+            $.modalAlert("请选择班级！", "warning");
+            return;
+        }
+        document.location = "/ScheduleManage/Schedule_Timetable/export?F_Semester=" + $("#F_Semester").val() + "&F_Divis=" + $("#F_Divis_ID").val() + "&F_Grade=" + $("#F_Grade_ID").val() + "&F_Year=" + $("#F_Year").val() + "&F_Class=" + student;
+    }
+</script>
+<div class="topPanel">
+    <div class="toolbar">
+        <div class="btn-group">
+            <a class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
+            <div class="btn-group"><a id="NF-export" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_export()"><i class="fa fa-arrow-down"></i>导出</a></div>
+        </div>
+    </div>
+    <div class="search">
+        <table>
+            <tr>
+                <th class="formTitle">搜索：</th>
+                <td>
+                    <div class="input-group" style="margin-right:10px;width:180px;">
+                        <select id="F_Year" name="F_Year" class="form-control">
+                            <option value="">选择年度</option>
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group" style="margin-right:10px;width:180px;">
+                        <select id="F_Semester" name="F_Semester" class="form-control">
+                            <option value="">选择学期</option>
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group" style="margin-right:10px;width:180px;">
+                        <select id="F_Divis_ID" name="F_Divis_ID" class="form-control">
+                            <option value="">选择学部</option>
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group" style="margin-right:10px;width:180px;">
+                        <select id="F_Grade_ID" name="F_Grade_ID" class="form-control">
+                            <option value="">选择年级</option>
+                        </select>
+                    </div>
+                </td>
+                @*<td>
+        <div class="input-group" style="margin-right:10px;width:180px;">
+            <select id="F_Class_ID" name="F_Class_ID" class="form-control">
+                <option value="">选择班级</option>
+            </select>
+        </div>
+    </td>*@
+                <td>
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <button id="btn_search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="topPanel">
+    <div id="calc-height" class="schedule-grid">
+        <div class="stock">
+            <div id="stock" class="over-flow-div">
+                <div class="gridPanel">
+                    <table id="gridLists"></table>
+                    <div id="gridPager"></div>
+                </div>
+            </div>
+        </div>
+        <div id="class-table">
+        </div>
+        <div id="time-helper">
+        </div>
+    </div>
+    </div>
+    <script>
+
+        var scheduleByHand = {
+            stockRoom: $('#stock'),
+            tableRoom: $('#class-table'),
+            helper: $('#time-helper'),
+            tableInstance: new classTable(),
+            pickState: 0, // 0为放下，1为从td拾起 . 2 为从仓库拾起
+            curCell: null,
+            preCell: null,
+            append: false, // 放下是替换还是添加
+            offsetTop: 71,
+
+            //绑定已拍
+            bindYetData: function (classes) {
+
+                this.tableInstance.setClasses(classes)
+            },
+
+            init: function () {
+                var that = this
+                this.tableInstance.init({
+                    $container: this.tableRoom
+                })
+                function resizeH() {
+                    var tdHeitht = $("#calc-height").height();
+                    $(".over-flow-div").height(tdHeitht);
+                }
+
+                resizeH();
+                window.onresize = resizeH;
+                this.stockRoom.off('click').on('click', function (evt) {
+                    if (that.pickState) {
+                        that.addItemIntoStock()
+                    }
+                }).off('contextmenu').on('contextmenu', function (evt) {
+                    evt.preventDefault()
+                    if (that.pickState == 2) {
+                        that.putBackItemToStock(evt)
+                    }
+                    return false
+                }).on('contextmenu', '.item', function (evt) {
+                    evt.preventDefault()
+                    if (that.pickState === 2) {
+                        that.putBackItemToStock(evt)
+                    }
+                    else {
+                        that.pickUpItemFromStock($(evt.target), evt)
+                    }
+                    return false
+                })
+
+            }
+        }
+    </script>

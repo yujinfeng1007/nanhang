@@ -1,0 +1,223 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div>
+    <div class="search-params">
+        <div class="params">
+            <label>学部:</label>
+            <select id="F_Divis"></select>
+        </div>
+        <div class="params">
+            <label>年级:</label>
+            <select id="F_Grande"></select>
+        </div>
+        <div class="params">
+            <label>学期:</label>
+            <select id="F_Semester"></select>
+        </div>
+        <button id="search-btn" class="btn btn-primary">搜索</button>
+    </div>
+    <div id="class-list">
+    </div>
+    <div class="submit-area">
+        <button class="btn btn-primary">提 交</button>
+    </div>
+</div>
+<style>
+    #class-list ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        #class-list ul:after {
+            content: ".";
+            clear: both;
+            display: block;
+            overflow: hidden;
+            font-size: 0;
+            height: 0;
+        }
+
+        #class-list ul li {
+            width: 25%;
+            float: left;
+            border: 1px solid #EDEDED;
+        }
+
+        #class-list ul .title {
+            text-align: center;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #1ABC9C;
+        }
+
+        #class-list ul .operate-section {
+            text-align: center;
+            padding: 10px;
+            font-size: 15px;
+            background: #F5F5F5;
+            cursor: pointer;
+        }
+
+    .search-params {
+        width: 100%;
+        text-align: center;
+    }
+
+        .search-params:after {
+            content: ".";
+            clear: both;
+            display: block;
+            overflow: hidden;
+            font-size: 0;
+            height: 0;
+        }
+
+        .search-params .params {
+            display: inline-block;
+        }
+
+    .submit-area {
+        text-align: center;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+        .submit-area button {
+            width: 200px;
+        }
+</style>
+<script>
+    var classTime = function (options) {
+        this.$container = options.$container
+    }
+    classTime.prototype = {
+        _getClassList: function () {
+            var html = '<ul>'
+            for (var i = 0 ; i <= 11 ; i++) {
+                html += '<li data-index=' + (i + 1) + ' class="list-' + (i + 1) + '">'
+                html += '<div class="title">第' + (i + 1) + '节课</div>'
+                html += '<div class="operate-section">设置时间段</div>'
+                html += '<div class="flag"></div>'
+                html += '</li>'
+            }
+            html += '</ul>'
+            this.$container.html(html)
+        },
+        _bindEvent: function () {
+            var _this = this
+            this.$container.find('.operate-section').on('click', function () {
+                var that = this
+                var startDate = $(this).parent().find('.flag').attr('data-start') || ''
+                var endDate = $(this).parent().find('.flag').attr('data-end') || ''
+                var timeSpan = $(this).parent().find('.flag').attr('data-timespan') || ''
+                var sindex = Number($(this).parents('li').attr('data-index'))
+                top.layer.open({
+                    type: 1,
+                    btn: ['确认', '取消'],
+                    btnclass: ['btn btn-primary', 'btn btn-danger'],
+                    yes: function (index, layero) {
+                        var sDate = layero.find('#clockpicker-start').val()
+                        var eDate = layero.find('#clockpicker-end').val()
+                        var tSpan = layero.find('#timeSpan').val()
+                        if (sDate && eDate) {
+                            _this._updateTime(sindex, sDate, eDate, tSpan)
+                        }
+                        top.layer.close(index)
+                    },
+                    content: '<div><div class="start">开始时间: <input id="clockpicker-start" /></div><div class="end">结束时间: <input id="clockpicker-end" /></div><div class="timeSpan">时间段:<select id="timeSpan"></select></div></div>',
+                    success: function (layero, index) {
+                        layero.find('#clockpicker-start').val(startDate).clockpicker({
+                            autoclose: true
+                        })
+                        layero.find('#clockpicker-end').val(endDate).clockpicker({
+                            autoclose: true
+                        })
+                        layero.find('#timeSpan').val(timeSpan)
+                        layero.find('#timeSpan').bindSelect({
+                            dictionary: 'F_TimeSpan'
+                        })
+                    }
+                })
+            })
+        },
+        _updateTime: function (index, sDate, eDate, timeSpan) {
+            var $dom = this.$container.find('.list-' + index)
+            $dom.find('.operate-section').html(sDate + '-' + eDate + '<div>' + top.clients.dataItems.F_TimeSpan[timeSpan] + '</div>')
+            $dom.find('.flag').attr('data-start', sDate).attr('data-end', eDate).attr('data-timespan', timeSpan)
+        },
+        setTimeList: function (data) {
+            for (var i = 0 ; i <= 11 ; i++) {
+                var index = Number(i) + 1
+                this._updateTime((Number(i) + 1), data['F_Course_StartTime' + index], data['F_Course_EndTime' + index], data['F_TimeSpan' + index])
+            }
+        },
+        init: function (options) {
+            this._getClassList()
+            this._bindEvent()
+        }
+    }
+    $(function () {
+        $("#F_Divis").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Division",
+        });
+        $("#F_Divis").change(function () {
+            $("#F_Grande").find("option").remove();
+            $("#F_Grande").append("<option value=''>选择年级</option>");
+            $("#F_Grande").bindSelect({
+                url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Grade&parentId=" + $("#F_Divis").val(),
+            });
+        });
+        $("#F_Semester").bindSelect({
+            url: "/SchoolManage/School_Semester/GetGridSelect",
+            id: "F_Id",
+            text: "F_Name"
+        });
+        $('#search-btn').click(function () {
+            $.ajax({
+                url: '/SchoolManage/School_Schedules_Time/GetFormJson',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    F_Divis: $('#F_Divis').val(),
+                    F_Grande: $('#F_Grande').val(),
+                    F_Semester: $('#F_Semester').val()
+                },
+                success: function (data) {
+                    var cTime = new classTime({
+                        $container: $('#class-list')
+                    })
+                    cTime.init()
+                    cTime.setTimeList(data)
+                }
+            })
+        })
+        $('.submit-area button').click(function () {
+            var postData = {
+
+            }
+            $('#class-list ul').find('li').each(function (i, item) {
+                var index = Number(i) + 1
+                var sDate = $(this).find('.flag').attr('data-start')
+                var eDate = $(this).find('.flag').attr('data-end')
+                var tSpan = $(this).find('.flag').attr('data-timespan')
+                postData['F_Course_StartTime' + index] = sDate
+                postData['F_Course_EndTime' + index] = sDate
+                postData['F_TimeSpan' + index] = tSpan
+            })
+            console.log(postData)
+            $.ajax({
+                url: '/SchoolManage/School_Schedules_Time/SubmitForm',
+                type: 'POST',
+                dataType: 'json',
+                data: postData,
+                success: function (data) {
+                    console.log(data)
+                }
+            })
+        })
+    })
+</script>

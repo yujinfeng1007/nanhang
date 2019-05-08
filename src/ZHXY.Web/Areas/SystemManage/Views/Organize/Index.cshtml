@@ -1,0 +1,262 @@
+﻿@{
+    
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script>
+    $(function () {
+        gridList();
+    })
+    function gridList() {
+        var $gridList = $("#gridList");
+        $gridList.dataGrid({
+            treeGrid: true,
+            treeGridModel: "adjacency",// nested
+            ExpandColumn: "F_EnCode",
+            ExpandColClick: true,
+            url: "/SystemManage/Organize/GetTreeGridJson",
+            colModel: [
+                { label: '名称', name: 'F_FullName', width: 200, align: 'left' },
+                { label: '编号', name: 'F_EnCode', width: 150, align: 'left', hidden: true },
+                { label: "主键", name: "F_Id", width: 150, align: 'left', key: true, hidden: true },
+                {
+                    label: '分类', name: 'F_CategoryId', width: 80, align: 'left',
+                    formatter: function (cellvalue) {
+                        return top.clients.dataItems["OrganizeCategory"][cellvalue] == null ? "" : top.clients.dataItems["OrganizeCategory"][cellvalue];
+                    }
+                },
+                //{
+                //    label: '班级类型', name: 'F_Class_Type', width: 80, align: 'left',
+                //},
+                {
+                    label: '创建时间', name: 'F_CreatorTime', width: 80, align: 'left',
+                    formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' }
+                },
+                //{
+                //    label: "有效", name: "F_EnabledMark", width: 60, align: "center",
+                //    formatter: function (cellvalue) {
+                //        return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
+                //    }
+                //},
+                { label: '备注', name: 'F_Description', width: 300, align: 'left' }
+            ]
+
+        });
+        $("#btn_search").click(function () {
+            $gridList.jqGrid('setGridParam', {
+                postData: { keyword: $("#txt_keyword").val() },
+            }).trigger('reloadGrid');
+        });
+    }
+    function btn_add() {
+        $.modalOpen({
+            id: "Form",
+            title: "新增机构",
+            url: "/SystemManage/Organize/Form",
+            width: "700px",
+            height: "520px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm();
+            }
+        });
+    }
+
+    function btn_add_Divis() {
+        $.modalOpen({
+            id: "Form",
+            title: "新增学部",
+            url: "/SystemManage/Organize/Divis_Form",
+            width: "700px",
+            height: "520px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm();
+            }
+        });
+    }
+
+    function btn_add_Grade() {
+        $.modalOpen({
+            id: "Form",
+            title: "新增年级",
+            url: "/SystemManage/Organize/Grade_Form",
+            width: "700px",
+            height: "520px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm();
+            }
+        });
+    }
+
+    function btn_add_Class() {
+        $.modalOpen({
+            id: "Form",
+            title: "新增班级",
+            url: "/SystemManage/Organize/Class_Form",
+            width: "700px",
+            height: "520px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm();
+            }
+        });
+    }
+    function btn_edit() {
+        var keyValue = $("#gridList").jqGridRowValue().F_Id;
+        $.modalOpen({
+            id: "Form",
+            title: "修改机构",
+            url: "/SystemManage/Organize/editForm?keyValue=" + keyValue,
+            width: "700px",
+            height: "520px",
+            callBack: function (iframeId) {
+                var a = top.frames[iframeId].submitForm();
+            }
+        });
+    }
+    //function btn_edit_Divis() {
+    //    var keyValue = $("#gridList").jqGridRowValue().F_Id;
+    //    $.modalOpen({
+    //        id: "Form",
+    //        title: "修改学部",
+    //        url: "/SystemManage/Organize/Divis_Form?keyValue=" + keyValue,
+    //        width: "700px",
+    //        height: "520px",
+    //        callBack: function (iframeId) {
+    //            top.frames[iframeId].submitForm();
+    //        }
+    //    });
+    //}
+    //function btn_edit_Grade() {
+    //    var keyValue = $("#gridList").jqGridRowValue().F_Id;
+    //    $.modalOpen({
+    //        id: "Form",
+    //        title: "修改年级",
+    //        url: "/SystemManage/Organize/Grade_Form?keyValue=" + keyValue,
+    //        width: "700px",
+    //        height: "520px",
+    //        callBack: function (iframeId) {
+    //            top.frames[iframeId].submitForm();
+    //        }
+    //    });
+    //}
+    //function btn_edit_Class() {
+    //    var keyValue = $("#gridList").jqGridRowValue().F_Id;
+    //    $.modalOpen({
+    //        id: "Form",
+    //        title: "修改班级",
+    //        url: "/SystemManage/Organize/Class_Form?keyValue=" + keyValue,
+    //        width: "700px",
+    //        height: "520px",
+    //        callBack: function (iframeId) {
+    //            top.frames[iframeId].submitForm();
+    //        }
+    //    });
+    //}
+    function btn_delete() {
+        $.deleteForm({
+            url: "/SystemManage/Organize/DeleteForm",
+            param: { keyValue: $("#gridList").jqGridRowValue().F_Id },
+            success: function () {
+                $.currentWindow().$("#gridList").resetSelection();
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+    function btn_details() {
+        var keyValue = $("#gridList").jqGridRowValue().F_Id;
+        $.modalOpen({
+            id: "Details",
+            title: "查看机构",
+            url: "/SystemManage/Organize/editDetails?keyValue=" + keyValue,
+            width: "700px",
+            height: "560px",
+            btn: null,
+        });
+    }
+
+    function btn_export() {
+        var keyValue = $("#txt_keyword").val();
+        document.location = "/SystemManage/Organize/export?keyword="
+            + keyValue
+            + "&F_DepartmentId=" + $("#F_Divis_ID").val()
+            + "&F_Grade=" + $("#F_Grade_ID").val()
+            + "&F_Class=" + $("#F_Class_ID").val()
+            + "&F_Year=" + $("#F_Year").val();
+    }
+    function btn_import() {
+        var title = 'Excel';
+        var extensions = 'xls,xlsx';
+        var mimeTypes = 'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+        $.modalOpen({
+            id: "Form",
+            title: "导入",
+            url: "/Home/Import?title=" + title + "&extensions=" + extensions + "&mimeTypes=" + mimeTypes + "&fileName=机构组织模版.xls",
+            width: "500px",
+            height: "300px",
+            callBack: function (iframeId) {
+                var filePath = top.frames[iframeId].submitForm();
+                importAcrion(filePath);
+            }
+        });
+    }
+
+    function importAcrion(filePath) {
+        $.submitForm({
+            url: "/SystemManage/Organize/import",
+            param: { filePath: filePath },
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+</script>
+
+<div class="topPanel">
+    <div class="toolbar">
+        <div class="btn-group">
+            <a class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
+        </div>
+        <div class="btn-group">
+            <a id="NF-add" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_add()"><i class="fa fa-plus"></i>新建机构</a>
+        </div>
+        <div class="btn-group">
+            <a id="NF-add-Divis" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_add_Divis()"><i class="fa fa-plus"></i>新建学部</a>
+        </div>
+        <div class="btn-group">
+            <a id="NF-add-Grade" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_add_Grade()"><i class="fa fa-plus"></i>新建年级</a>
+        </div>
+        <div class="btn-group">
+            <a id="NF-add-Class" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_add_Class()"><i class="fa fa-plus"></i>新建班级</a>
+        </div>
+        <div class="btn-group"><a id="NF-export" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_export()"><i class="fa fa-arrow-down"></i>导出</a></div>
+        <div class="btn-group"><a id="NF-import" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_import()"><i class="fa fa-arrow-up"></i>导入</a></div>
+        <div class="operate">
+            <ul class="nav nav-pills">
+                <li class="first">已选中<span>1</span>项</li>
+                <li><a id="NF-edit" authorize="yes" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>修改机构</a></li>
+                @*<li><a id="NF-edit-Divis" authorize="yes" onclick="btn_edit_Divis()"><i class="fa fa-pencil-square-o"></i>修改学部</a></li>
+                    <li><a id="NF-edit-Grade" authorize="yes" onclick="btn_edit_Grade()"><i class="fa fa-pencil-square-o"></i>修改年级</a></li>
+                    <li><a id="NF-edit-Class" authorize="yes" onclick="btn_edit_Class()"><i class="fa fa-pencil-square-o"></i>修改班级</a></li>*@
+                <li><a id="NF-delete" authorize="yes" onclick="btn_delete()"><i class="fa fa-trash-o"></i>删除机构</a></li>
+                <li><a id="NF-Details" authorize="yes" onclick="btn_details()"><i class="fa fa-search-plus"></i>查看机构</a></li>
+            </ul>
+            <a href="javascript:;" class="close"></a>
+        </div>
+        <script>$('.toolbar').authorizeButton()</script>
+    </div>
+    <div class="search">
+        <table>
+            <tr>
+                <td>
+                    <div class="input-group">
+                        <input id="txt_keyword" type="text" class="form-control" placeholder="请输入要查询关键字" style="width: 200px;">
+                        <span class="input-group-btn">
+                            <button id="btn_search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="gridPanel">
+    <table id="gridList"></table>
+</div>

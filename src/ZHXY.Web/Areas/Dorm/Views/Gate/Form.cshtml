@@ -1,0 +1,81 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script>
+    const GET_URL = `/Dorm/Gate/Get`;
+    const UPDATE_URL = `/Dorm/Gate/update`;
+    let id = $.request("id");
+    $(function () {
+        initControl();
+        if (!!id) {
+            $.ajax({
+                url: GET_URL,
+                data: { id: id },
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    $("#form1").formSerialize(result.data)
+                }
+            });
+        }
+    });
+    function initControl() {
+		$.addRequired('#form1')
+    }
+    function submitForm() {
+        if (!$('#form1').formValid()) {
+            return false;
+        }
+        $.submitForm({
+            url: UPDATE_URL,
+            param: $("#form1").formSerialize(),
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+    
+</script>
+<form id="form1">
+    <div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#">基本信息</a></li>
+         
+        </ul>
+        <div style="padding-top: 20px; margin-right: 30px;">
+            <table class="form">
+                <tr>
+                    <th class="formTitle">设备编号</th>
+                    <td class="formValue">
+                        <input name="deviceNumber" type="text" class="form-control" readonly="readonly" placeholder="" />
+                        <input name="id" type="hidden" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">设备名称</th>
+                    <td class="formValue">
+                        <input name="name" type="text" class="form-control required" placeholder="" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">安装地点</th>
+                    <td class="formValue">
+                        <input name="location" type="text" class="form-control required" placeholder="" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">IP地址</th>
+                    <td class="formValue">
+                        <input name="ip" type="text" class="form-control" readonly="readonly" placeholder="" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">MAC地址</th>
+                    <td class="formValue">
+                        <input name="mac" type="text" class="form-control" readonly="readonly" placeholder="" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</form>

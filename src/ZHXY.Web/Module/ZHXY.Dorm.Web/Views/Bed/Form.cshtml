@@ -1,0 +1,163 @@
+﻿﻿@{
+    
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script>
+    var keyValue = $.request("keyValue");
+    $(function () {
+        initControl();
+        if (!!keyValue) {
+            $.ajax({
+                url: "/Dorm/Bed/GetFormJson",
+                data: { keyValue: keyValue },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    $("#form1").formSerialize(data)
+                }
+            });
+        }
+    });
+    function initControl() {
+           $("#F_SemesterId").bindSelect({
+            url: "/SchoolManage/School_Semester/GetGridSelect",
+            id: "F_Id",
+            text: "F_Name"
+        });
+        $("#F_Year").bindSelect({
+            dictionary: 'F_Year',
+            displayBlank: false
+        });
+        $("#F_Divis_ID").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Division",
+        });
+
+        $("#F_Divis_ID").change(function () {
+            changeDivis();
+        });
+
+        $("#F_GradeId").change(function () {
+            changeClass();
+        });
+
+		$.addRequired('#form1')
+    }
+    function submitForm() {
+        if (!$('#form1').formValid()) {
+            return false;
+        }
+        $.submitForm({
+            url: "/Dorm/Bed/SubmitForm?keyValue=" + keyValue,
+            param: $("#form1").formSerialize(),
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+    
+     function changeDivis() {
+        $("#F_GradeId").find("option").remove();
+        $("#F_GradeId").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Grade&parentId=" + $("#F_Divis_ID").val(),
+        });
+        changeClass();
+    }
+
+    function changeClass() {
+        $("#F_ClassId").find("option").remove();
+        $("#F_ClassId").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Class&parentId=" + $("#F_GradeId").val(),
+        });
+    }
+</script>
+<form id="form1">
+    <div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#">基本信息</a></li>
+         
+        </ul>
+        <div style="padding-top: 20px; margin-right: 30px;">
+            <table class="form">
+                <tr>
+                    <th class="formTitle">床位编号</th>
+	                <td class="formValue">
+	                          <input id="床位编号" name="床位编号" type="text" class="form-control required" placeholder="请输入床位编号" />
+	                </td>
+                    
+
+                    <th class="formTitle">校区</th>
+	                <td class="formValue">
+	                          <input id="F_Area" name="F_Area" type="text" class="form-control required" placeholder="请输入校区" />
+	                </td>
+                    </tr>
+                <tr>
+                    <th class="formTitle">楼编号</th>
+	                <td class="formValue">
+	                          <input id="F_Building_No" name="F_Building_No" type="text" class="form-control required" placeholder="请输入楼编号" />
+	                </td>
+                    
+
+                    <th class="formTitle">楼层号</th>
+	                <td class="formValue">
+	                          <input id="F_Floor_No" name="F_Floor_No" type="text" class="form-control required" placeholder="请输入楼层号" />
+	                </td>
+                    </tr>
+                <tr>
+                    <th class="formTitle">宿舍类型（单人间、多人间、带卫生间）</th>
+	                <td class="formValue">
+	                          <input id="F_Dorm_Type" name="F_Dorm_Type" type="text" class="form-control required" placeholder="请输入宿舍类型（单人间、多人间、带卫生间）" />
+	                </td>
+                    
+
+                    <th class="formTitle">教室编号</th>
+	                <td class="formValue">
+	                          <input id="F_Dorm_No" name="F_Dorm_No" type="text" class="form-control required" placeholder="请输入教室编号" />
+	                </td>
+                    </tr>
+                <tr>
+                    <th class="formTitle">床位类型（上铺、下铺、单人床）</th>
+	                <td class="formValue">
+	                          <input id="F_Bed_Type" name="F_Bed_Type" type="text" class="form-control required" placeholder="请输入床位类型（上铺、下铺、单人床）" />
+	                </td>
+                    
+
+                    <th class="formTitle">状态（正常使用、检修中、已停用）</th>
+	                <td class="formValue">
+	                          <input id="F_Classroom_Status" name="F_Classroom_Status" type="text" class="form-control required" placeholder="请输入状态（正常使用、检修中、已停用）" />
+	                </td>
+                    </tr>
+
+
+                <tr>
+                    <th class="formTitle">序号</th>
+	                <td class="formValue">
+	                          <input id="F_SortCode" name="F_SortCode" type="text" class="form-control required" placeholder="请输入序号" />
+	                </td>
+                    
+
+                    <th class="formTitle">所属部门</th>
+	                <td class="formValue">
+	                     	<select id="F_DepartmentId" name="F_DepartmentId" class="form-control required">
+                            <option value="">==请选择==</option>
+                        	</select>
+	                </td>
+                    </tr>
+
+
+
+
+
+                <tr>
+                    <th class="formTitle">备注</th>
+	                <td class="formValue">
+	                          <input id="F_Memo" name="F_Memo" type="text" class="form-control required" placeholder="请输入备注" />
+	                </td>
+                    
+
+
+             </tr>
+            
+            </table>
+        </div>
+    </div>
+</form>

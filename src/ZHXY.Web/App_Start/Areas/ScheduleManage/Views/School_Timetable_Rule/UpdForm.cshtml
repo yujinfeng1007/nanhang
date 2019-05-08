@@ -1,0 +1,180 @@
+﻿@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<script>
+    var keyValue = $.request("keyValue");
+    $(function () {
+        $("#F_SemesterId").bindSelect({
+            url: "/SchoolManage/School_Semester/GetGridSelect",
+            id: "F_Id",
+            text: "F_Name"
+        });
+        $("#F_Year").bindSelect({
+            dictionary: 'F_Year',
+            displayBlank: false
+        });
+        $("#F_Divis_ID").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Division",
+        });
+
+        $("#F_Divis_ID").change(function () {
+            changeTeacher();
+        });
+
+        //$("#F_GradeId").change(function () {
+        //    changeCourse();
+        //});
+        //$("#F_CourseId").change(function () {
+        //    changeTeacher();
+        //});
+        $.addRequired('#form1');
+        if (!!keyValue) {
+            $.ajax({
+                url: "/ScheduleManage/School_Timetable_Rule/GetFormJson",
+                data: { keyValue: keyValue },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    $("#form1").formSerialize(data)
+                }
+            });
+        }
+
+    });
+
+    //function changeDivis() {
+    //    $("#F_GradeId").find("option").remove();
+    //    $("#F_GradeId").bindSelect({
+    //        url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Grade&parentId=" + $("#F_Divis_ID").val(),
+    //    });
+    //    changeCourse();
+    //}
+
+    //function changeCourse() {
+    //    $("#F_CourseId").bindSelect({
+    //        url: "/SchoolManage/School_Grade_Course/GetCourseSelectJson?Grade_ID=" + $("#F_GradeId").val(),
+    //        id: "F_Id",
+    //        text: "F_Name"
+    //    });
+    //}
+    function changeTeacher() {
+        $("#F_TeacherId").find("option").remove();
+        $("#F_TeacherId").bindSelect({
+            url: "/SchoolManage/School_Teachers/GetDivisTeacher?F_Divis_ID=" + $("#F_Divis_ID").val(),
+            id: "F_Id",
+            text: "F_Name"
+        });
+    }
+
+    function submitForm(callback) {
+
+        if (!$('#form1').formValid()) {
+            return false;
+        }
+        $.submitForm({
+            url: "/ScheduleManage/School_Timetable_Rule/SubmitForm?keyValue=" + keyValue,
+            param: $("#form1").formSerialize(),
+            success: function () {
+                callback();
+                //$.currentWindow().$("#gridLists").trigger("reloadGrid");
+            }
+        })
+    }
+</script>
+<form id="form1">
+    <div style="padding-top: 30px; margin-right: 40px;">
+        <table class="form" id="tabform">
+            <tr>
+                <th class="formTitle">年度：</th>
+                <td class="formValue">
+                    <select id="F_Year" name="F_Year" class="form-control required">
+                        <option value="">选择年度</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th class="formTitle">学期：</th>
+                <td class="formValue">
+                    <select id="F_SemesterId" name="F_SemesterId" class="form-control required">
+                        <option value="">选择学期</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th class="formTitle">学部：</th>
+                <td class="formValue">
+                    <select id="F_Divis_ID" name="F_Divis_ID" class="form-control required">
+                        <option value="">选择学部</option>
+                    </select>
+                </td>
+            </tr>
+            @*<tr>
+                <th class="formTitle">年级：</th>
+                <td class="formValue">
+                    <select id="F_GradeId" name="F_GradeId" class="form-control required">
+                        <option value="">选择年级</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th class="formTitle">科目：</th>
+                <td class="formValue">
+                    <select id="F_CourseId" name="F_CourseId" class="form-control required">
+                        <option value="">选择科目</option>
+                    </select>
+                </td>
+            </tr>*@
+            <tr>
+                <th class="formTitle">教师：</th>
+                <td class="formValue">
+                    <select id="F_TeacherId" name="F_TeacherId" class="form-control  required">
+                        <option value="">选择教师</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th class="formTitle">周一：</th>
+                <td class="formValue">
+                    <input id="F_Day1CourseTime" name="F_Day1CourseTime" type="text" class="form-control required" placeholder="请输入" />
+                </td>
+            </tr>
+            <tr>
+                <th class="formTitle">周二：</th>
+                <td class="formValue">
+                    <input id="F_Day2CourseTime" name="F_Day2CourseTime" type="text" class="form-control required" placeholder="请输入" />
+                </td>
+            </tr>
+            <tr>
+                <th class="formTitle">周三：</th>
+                <td class="formValue">
+                    <input id="F_Day3CourseTime" name="F_Day3CourseTime" type="text" class="form-control required" placeholder="请输入" />
+                </td>
+            </tr>
+            <tr>
+                <th class="formTitle">周四：</th>
+                <td class="formValue">
+                    <input id="F_Day4CourseTime" name="F_Day4CourseTime" type="text" class="form-control required" placeholder="请输入" />
+                </td>
+            </tr>
+            <tr>
+                <th class="formTitle">周五：</th>
+                <td class="formValue">
+                    <input id="F_Day5CourseTime" name="F_Day5CourseTime" type="text" class="form-control required" placeholder="请输入" />
+                </td>
+            </tr>
+            <tr>
+                <th class="formTitle">周六：</th>
+                <td class="formValue">
+                    <input id="F_Day6CourseTime" name="F_Day6CourseTime" type="text" class="form-control required" placeholder="请输入" />
+                </td>
+            </tr>
+            <tr>
+                <th class="formTitle">周日：</th>
+                <td class="formValue">
+                    <input id="F_Day7CourseTime" name="F_Day7CourseTime" type="text" class="form-control required" placeholder="请输入" />
+                </td>
+            </tr>
+</table>
+    </div>
+</form>

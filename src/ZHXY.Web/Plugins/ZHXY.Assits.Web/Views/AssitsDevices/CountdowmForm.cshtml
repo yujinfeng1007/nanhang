@@ -1,0 +1,102 @@
+﻿@{Layout = "~/Views/Shared/_Index.cshtml";}
+<script>
+    var id = $.request("id");
+    $(function () {
+        initControl();
+        if (!!id) {
+            $.ajax({
+                url: "/SchoolManage/School_Devices/GetCountdowm",
+                data: { id: id },
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    $("#form").formSerialize(result.data)
+                }
+            });
+        }
+    });
+    function initControl() {
+        $("#F_Device_Status").bindSelect({
+            dictionary: 'F_Device_Status'
+        })
+        $.addRequired('#form')
+    }
+    function submitForm() {
+        if (!$('#form').formValid()) {
+            return false;
+        }
+        $.submitForm({
+            url: "/SchoolManage/School_Devices/SetCountdowm?id=" + id,
+            param: $("#form").formSerialize(),
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+
+    function clearAll() {
+        $.ConfirmForm({
+            prompt: "注：您确定要清空班牌的倒计时设置吗？",
+            url: "/SchoolManage/School_Devices/ClearCountdowm?id=" + id,
+            topPage: parent.top,
+            success: function () {
+                $("#form")[0].reset();
+            }
+        })
+    }
+</script>
+<style>
+    .form .formTitle {
+        position: relative;
+        left: 0px;
+        text-align: right;
+        white-space: nowrap;
+        font-weight: normal;
+        width: 160px;
+        padding-right: 15px;
+    }
+</style>
+<form id="form">
+    <div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#a" data-toggle="tab">基本信息</a></li>
+        </ul>
+        <div class="tab-content" style="padding-top: 5px;">
+            <div id="a" class="tab-pane form active" style="padding: 15px;">
+                <table class="form">
+                    <tr><th colspan="4"><div style="text-align:left;font-size: 15px;"><button type="button" onclick="clearAll()">清除设置</button></div></th></tr>
+                    <tr>
+                        <td><hr /></td>
+                        <td><hr /></td>
+                        <td><hr /></td>
+                        <td><hr /></td>
+                    </tr>
+                    <tr><th colspan="4"><div style="text-align:left;">设置标题</div></th></tr>
+                    <tr>
+                        <th class="formTitle">标题</th>
+                        <td class="formValue">
+                            <input id="title" name="title" type="text" class="form-control required" placeholder="请填写标题" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><hr /></td>
+                        <td><hr /></td>
+                        <td><hr /></td>
+                        <td><hr /></td>
+                    </tr>
+                    <tr><th colspan="4"><div style="text-align:left;">设置时间段</div></th></tr>
+                    <tr>
+                        <th class="formTitle">开始时间</th>
+                        <td class="formValue">
+                            <input id="startTime" name="startTime" type="text" class="form-control input-wdatepicker" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss' })" placeholder="开始时间" />
+                        </td>
+                        <th class="formTitle">结束时间</th>
+                        <td class="formValue">
+                            <input id="endTime" name="endTime" type="text" class="form-control input-wdatepicker" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss' })" placeholder="结束时间" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</form>

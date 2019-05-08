@@ -1,0 +1,541 @@
+﻿@{
+    
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script>
+        var colModel = [
+            { label: '操作', name: 'operate', width: 95, index: 'operate', frozen: true,
+                  formatter: function (e, t, i) {
+                    var a = '<div class="operating"  data-id="' + i.F_Id + '">' +
+                    '<i onClick="btn_edit(this)" class="fa fa-pencil" title="修改"></i>' +
+                    '</div>';
+                    return a
+                  }
+            },
+            { label: '主键', name: 'F_Id', hidden: true, key: true },
+            { label: '姓名', name: 'F_Name', width: 80, align: 'left' },
+            {
+                label: '学号', name: 'F_StudentNum', width: 150, align: 'left',
+            },
+            { label: '入学年度', name: 'F_Year', width: 80, align: 'left' },
+            {
+                label: '学部', name: 'F_Divis_ID', width: 80, align: 'left',
+                formatter: function (cellvalue, options, rowObject) {
+                    return top.clients.organize[cellvalue] == null ? "" : top.clients.organize[cellvalue].fullname;
+                }
+            },
+            {
+                label: '年级', name: 'F_Grade_ID', width: 80, align: 'left',
+                formatter: function (cellvalue, options, rowObject) {
+                    return top.clients.organize[cellvalue] == null ? "" : top.clients.organize[cellvalue].fullname;
+                }
+            },
+            {
+                label: '班级', name: 'F_Class_ID', width: 80, align: 'left',
+                formatter: function (cellvalue, options, rowObject) {
+                    //if (cellvalue == null)
+                          //    return "未分配";
+                    return top.clients.organize[cellvalue] == null ? "" : top.clients.organize[cellvalue].fullname;
+                      }
+                  },
+                //{
+                //    label: '班级类型', name: 'F_Subjects_ID', width: 80, align: 'left',
+                //    formatter: function (cellvalue, options, rowObject) {
+                //        //if (cellvalue == null)
+                //        //    return "未分配";
+                //        return top.clients.dataItems["Class_Type"] == null ? "" : top.clients.dataItems["Class_Type"][cellvalue];
+                //    }
+                //},
+                {
+                    label: '性别', name: 'F_Gender', width: 60, align: 'center',
+                    formatter: function (cellvalue, options, rowObject) {
+                        if (cellvalue == "1") {
+                            return '男';
+                        } else {
+                            return '女';
+                        }
+                        //var gender = cellvalue === true ? 1 : 0
+                        //return top.clients.dataItems[104] == null ? "" : top.clients.dataItems[104][gender];
+                    }
+                },
+                {
+                    label: '在校状态', name: 'F_CurStatu', width: 80, align: 'left',
+                    formatter: function (cellvalue, options, rowObject) {
+                        if (cellvalue==null) {
+                            return "";
+                        }
+                        return top.clients.dataItems['F_CurStatu'] == null ? "" : top.clients.dataItems['F_CurStatu'][cellvalue];
+                    }
+                },
+                {
+                    label: '创建时间', name: 'F_CreatorTime', width: 80, align: 'left',
+                    formatter: "date", formatoptions: { srcformat: 'Y-m-d H:i:s', newformat: 'Y-m-d H:i:s' }
+                },
+                { label: '用户ID', name: 'F_Users_ID', hidden: true }
+
+            ];
+            var j
+    $(function () { 
+        j = Public.mod_PageConfig.register("schoolStudents", {
+          id: 'test',
+          config: {
+            grid: {
+              url: "/SchoolManage/School_Students/GetGridJson",
+              height: $(window).height() - 173,
+              colModel: colModel,
+              sortname: 'F_DepartmentId asc,F_CreatorTime desc',
+              viewrecords: true 
+            },
+            gridButton: {
+              lim: 3,
+              data: [{
+                name: '删除学生档案',
+                class: 'NF-delete',
+                multiAction: true,
+                callBack: function (e, row) {
+                  btn_delete(row)
+                }
+              }, {
+                name: '查看学生档案',
+                class: 'NF-details',
+                multiAction: false,
+                callBack: function (e, row) {
+                  btn_details(row)
+                }
+              }, {
+                name: '密码重置',
+                class: 'NF-restpwd',
+                multiAction: false,
+                callBack: function (e, row) {
+                  btn_restpwd(row)
+                }
+              }, {
+                name: '调整在校状态',
+                class: 'NF-updcurstatu',
+                multiAction: false,
+                callBack: function (e, row) {
+                  btn_updcurstatu(row)
+                }
+              }, {
+                name: '学籍异动',
+                class: 'NF-updxjstatu',
+                multiAction: false,
+                callBack: function (e, row) {
+                  btn_updxjstatu(row)
+                }
+              }, {
+                name: '费用调整',
+                class: 'NF-edit-price',
+                multiAction: false,
+                callBack: function (e, row) {
+                  btn_edit_price(row)
+                }
+              }]
+            }
+            
+          }
+        })
+        j.init()
+        $("#F_Divis_ID").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Division",
+            displayBlank: false
+        });
+
+        $("#F_Divis_ID").change(function () {
+            changeGrade();
+            //changeSubject();
+        });
+
+        $("#F_Grade_ID").change(function () {
+            changeClass();
+            //changeSubject();
+        });
+        $("#F_Year").bindSelect({
+            dictionary: 'F_Year',
+            displayBlank: false
+        });
+        $("#btn_search").click(function () {
+            $('#' + j.gridId).jqGrid('setGridParam', {
+                postData: { keyword: $("#txt_keyword").val(), F_DepartmentId: $("#F_Divis_ID").val(), F_Grade: $("#F_Grade_ID").val(), F_Class: $("#F_Class_ID").val(), F_Year: $("#F_Year").val() },
+            }).trigger('reloadGrid');
+        });
+
+    })
+
+    function changeGrade() {
+        $("#F_Grade_ID").find("option").remove();
+        $("#F_Grade_ID").append("<option value=''>请选择</option>");
+        $("#F_Grade_ID").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Grade&parentId=" + $("#F_Divis_ID").val(),
+        });
+        changeClass();
+    }
+
+    function changeClass() {
+        $("#F_Class_ID").find("option").remove();
+        $("#F_Class_ID").append("<option value=''>请选择</option>");
+        $("#F_Class_ID").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Class&parentId=" + $("#F_Grade_ID").val(),
+        });
+    }
+
+    function gridList() {
+        var $gridList = $("#gridList");
+        $gridList.dataGrid({
+            url: "/SchoolManage/School_Students/GetGridJson",
+            height: $(window).height() - 173,
+            colModel: [
+
+			 	{ label: '主键', name: 'F_Id', hidden: true, key: true },
+                { label: '姓名', name: 'F_Name', width: 80, align: 'left' },
+                {
+                    label: '学号', name: 'F_StudentNum', width: 150, align: 'left',
+                },
+                { label: '入学年度', name: 'F_Year', width: 80, align: 'left' },
+                {
+                    label: '学部', name: 'F_Divis_ID', width: 80, align: 'left',
+                    formatter: function (cellvalue, options, rowObject) {
+                        return top.clients.organize[cellvalue] == null ? "" : top.clients.organize[cellvalue].fullname;
+                    }
+                },
+
+                 {
+                     label: '年级', name: 'F_Grade_ID', width: 80, align: 'left',
+                     formatter: function (cellvalue, options, rowObject) {
+                         return top.clients.organize[cellvalue] == null ? "" : top.clients.organize[cellvalue].fullname;
+                     }
+                 },
+                  {
+                      label: '班级', name: 'F_Class_ID', width: 80, align: 'left',
+                      formatter: function (cellvalue, options, rowObject) {
+                          //if (cellvalue == null)
+                          //    return "未分配";
+                          return top.clients.organize[cellvalue] == null ? "" : top.clients.organize[cellvalue].fullname;
+                      }
+                  },
+                //{
+                //    label: '班级类型', name: 'F_Subjects_ID', width: 80, align: 'left',
+                //    formatter: function (cellvalue, options, rowObject) {
+                //        //if (cellvalue == null)
+                //        //    return "未分配";
+                //        return top.clients.dataItems["Class_Type"] == null ? "" : top.clients.dataItems["Class_Type"][cellvalue];
+                //    }
+                //},
+			 	{
+			 	    label: '性别', name: 'F_Gender', width: 60, align: 'center',
+			 	    formatter: function (cellvalue, options, rowObject) {
+			 	        if (cellvalue == "1") {
+			 	            return '男';
+			 	        } else {
+			 	            return '女';
+			 	        }
+			 	        //var gender = cellvalue === true ? 1 : 0
+			 	        //return top.clients.dataItems[104] == null ? "" : top.clients.dataItems[104][gender];
+			 	    }
+			 	},
+                {
+                    label: '在校状态', name: 'F_CurStatu', width: 80, align: 'left',
+                    formatter: function (cellvalue, options, rowObject) {
+                        return top.clients.dataItems['F_CurStatu'] == null ? "" : top.clients.dataItems['F_CurStatu'][cellvalue];
+                    }
+                },
+                { label: '用户ID', name: 'F_Users_ID', hidden: true }
+
+            ],
+            pager: "#gridPager",
+            sortname: 'F_DepartmentId asc,F_CreatorTime desc',
+            viewrecords: true
+        });
+        
+    }
+
+    function btn_add() {
+        $.modalOpen({
+            id: "Form",
+            title: "新增学生档案",
+            url: "/SchoolManage/School_Students/Form_gb",
+            width: "900px",
+            height: "700px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm();
+            }
+        });
+    }
+    function btn_edit(r) {
+        var id = $(r).parents('.operating').attr('data-id')
+        var keyValue = id;
+        $.modalOpen({
+            id: "Form",
+            title: "修改学生档案",
+            url: "/SchoolManage/School_Students/Form_gb?keyValue=" + keyValue,
+            width: "900px",
+            height: "700px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm();
+            }
+        });
+    }
+    function btn_delete(ids) {
+        var deleteid = $.map(ids, function (n) {
+          return n.F_Id
+        }).join('|');
+        var keyValue = deleteid
+        $.deleteForm({
+            url: "/SchoolManage/School_Students/DeleteForm",
+            param: { keyValue: keyValue },
+            success: function () {
+                $.currentWindow().$('#' + j.gridId).trigger("reloadGrid");
+            }
+        })
+    }
+    function btn_details(row) {
+        var keyValue = row[0].F_Id;
+        //window.parent.$.nfinetab.iframe_addTab(keyValue,
+        //    "/SchoolManage/School_Students/Details?keyValue=" + keyValue,
+        //    "查看学生档案");
+        $.modalOpen({
+            id: "Details",
+            title: "查看学生档案",
+            url: "/SchoolManage/School_Students/Details_gb?keyValue=" + keyValue,
+            width: "900px",
+            height: "700px",
+            btn: null,
+        });
+    }
+
+    function btn_export() {
+        var keyValue = $("#txt_keyword").val();
+        document.location = "/SchoolManage/School_Students/export?keyword="
+            + keyValue
+            + "&F_DepartmentId=" + $("#F_Divis_ID").val()
+            + "&F_Grade=" + $("#F_Grade_ID").val()
+            + "&F_Class=" + $("#F_Class_ID").val()
+            + "&F_Year=" + $("#F_Year").val();
+    }
+    function btn_import() {
+        var title = 'Excel';
+        var extensions = 'xls,xlsx';
+        var mimeTypes = 'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+        $.modalOpen({
+            id: "Form",
+            title: "导入学生档案",
+            url: "/Home/Import?title=" + title + "&extensions=" + extensions + "&mimeTypes=" + mimeTypes + "&fileName=学生档案模版.xls",
+            width: "500px",
+            height: "300px",
+            callBack: function (iframeId) {
+                var filePath = top.frames[iframeId].submitForm();
+                importAcrion(filePath);
+            }
+        });
+    }
+
+    function importAcrion(filePath) {
+        $.submitForm({
+            url: "/SchoolManage/School_Students/import",
+            param: { filePath: filePath },
+            success: function () {
+                $.currentWindow().$('#' + j.gridId).trigger("reloadGrid");
+            }
+        })
+    }
+    function btn_restpwd(id) {
+        var keyValue = id[0].F_Users_ID
+        $.modalOpen({
+            id: "RevisePassword",
+            title: '重置密码',
+            url: '/SystemManage/User/RevisePassword?keyValue=' + keyValue,
+            width: "450px",
+            height: "260px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm();
+            }
+        });
+    }
+    function btn_updcurstatu(row) {
+        var keyValue = row[0].F_Id;
+        var F_CurStatu = row[0].F_CurStatu
+        //alert(F_CurStatu);
+        if (F_CurStatu != "undefined") {
+            if (F_CurStatu != "正常在校" && F_CurStatu != "临时请假" && F_CurStatu != "长期请假") {
+                top.layer.alert("当前状态暂不支持变更！", { icon: "fa-times-circle", title: "系统提示", btn: ["确认"], btnclass: ["btn btn-primary"] });
+                return;
+            }
+        }
+        $.modalOpen({
+            id: "updcurstatu",
+            title: '调整在校状态',
+            url: '/SchoolManage/School_Students_StatusLog/Index?keyValue=' + keyValue + "",
+            width: "900px",
+            height: "700px",
+            btn: null,
+        });
+    }
+
+    function btn_updxjstatu(row) {
+        var keyValue = row[0].F_Id;
+
+        $.modalOpen({
+            id: "updcurstatu",
+            title: '调整学籍',
+            url: '/SchoolManage/School_Students/UpdSchool_Index?keyValue=' + keyValue + "",
+            width: "1200px",
+            height: "700px",
+            btn:null,
+        });
+    }
+    function btn_edit_price(row) {
+        var keyValue = row[0].F_Id;
+        $.ajax({
+            url: "/SchoolManage/School_Students/GetFormJson?keyValue=" + keyValue + "",
+            dataType: "json",
+            success: function (data) {
+                debugger
+                $.ajax({
+                    url: "/SchoolManage/School_EntrySignUp/GetForm?F_InitNum=" + data.F_InitNum + "",
+                    dataType: "json",
+                    success: function (item) {
+                        var xyid = item.F_Id;
+                        var F_Name = item.F_Name;
+                        var F_Statu = item.F_Statu;
+                        $.modalOpen({
+                            id: "Price",
+                            title: F_Name + "的费用调整",
+                            url: "/SchoolManage/School_EntrySignUp/Fast_Only_ComeBack?F_Statu=" + F_Statu + "&keyValue=" + xyid + "&F_Name=" + F_Name,
+                            width: "1200px",
+                            height: "700px",
+                            btn: null
+                        });
+                    }
+                });
+            }
+        });
+    }
+    function btn_import_two() {
+        var title = 'Excel';
+        var extensions = 'xls,xlsx';
+        var mimeTypes = 'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+        $.modalOpen({
+            id: "Form",
+            title: "导入学生档案",
+            url: "/Home/Import?title=" + title + "&extensions=" + extensions + "&mimeTypes=" + mimeTypes + "&fileName=学生档案模版.xls",
+            width: "500px",
+            height: "300px",
+            callBack: function (iframeId) {
+                var filePath = top.frames[iframeId].submitForm();
+                importAcrion_two(filePath);
+            }
+        });
+    }
+
+    function importAcrion_two(filePath) {
+        $.submitForm({
+            url: "/SchoolManage/School_Students/import_two",
+            param: { filePath: filePath },
+            success: function () {
+                $.currentWindow().$('#' + j.gridId).trigger("reloadGrid");
+            }
+        })
+    }
+</script>
+
+<div class="topPanel">
+    <div class="toolbar">
+        <div class="btn-group">
+            <a class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
+        </div>
+        <div class="btn-group">
+            <a id="NF-add" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_add()"><i class="fa fa-plus"></i>新建学生档案</a>
+        </div>
+        <div class="btn-group"><a id="NF-export" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_export()"><i class="fa fa-arrow-down"></i>导出学生档案</a></div>
+        <div class="btn-group"><a id="NF-import" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_import()"><i class="fa fa-arrow-up"></i>导入学生档案</a></div>
+        @*<div class="btn-group"><a id="NF-import-two" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_import_two()"><i class="fa fa-arrow-up"></i>导入学生档案诸暨</a></div>*@
+        <div class="operate">
+            <ul class="nav nav-pills">
+                <li class="first">已选中<span>1</span>项</li>
+                <li><a id="NF-edit" authorize="yes" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>修改学生档案</a></li>
+                <li><a class="multi-edit" id="NF-delete" authorize="yes" onclick="btn_delete()"><i class="fa fa-trash-o"></i>删除学生档案</a></li>
+                <li><a id="NF-details" authorize="yes" onclick="btn_details()"><i class="fa fa-search-plus"></i>查看学生档案</a></li>
+                <li class="split"></li>
+                <li><a id="NF-restpwd" authorize="yes" onclick="btn_restpwd()"><i class="fa fa-key"></i>密码重置</a></li>
+                <li class="split"></li>
+                @*<li><a id="NF-updcurstatu" authorize="yes" onclick="btn_updcurstatu()"><i class="fa fa-key"></i>调整在校状态</a></li>
+                <li><a class="mutil-edit" id="NF-updxjstatu" authorize="yes" onclick="btn_updxjstatu()"><i class="fa fa-key"></i>学籍异动</a></li>
+                <li><a class="mutil-edit" id="NF-edit-price" authorize="yes" onclick="btn_edit_price()"><i class="fa fa-pencil-square-o"></i>费用调整</a></li>*@
+                @*<li><a class="multi-edit" id="NF-disabled" authorize="yes" onclick="btn_disabled()"><i class="fa fa-stop-circle"></i>禁用</a></li>
+                    <li><a class="multi-edit" id="NF-enabled" authorize="yes" onclick="btn_enabled()"><i class="fa fa-play-circle"></i>启用</a></li>*@
+            </ul>
+            <a href="javascript:;" class="close"></a>
+        </div>
+        <script>$('.toolbar').authorizeButton()</script>
+    </div>
+    <div class="search">
+        <ul>
+            <li class="formTitle">搜索：</li>
+            @*<td>
+                    <div class="input-group" style="margin-right:10px;margin-top:1px">
+                        <input id="F_CreatorTime_Start" name="F_CreatorTime_Start" type="text" class="form-control input-wdatepicker" onfocus="WdatePicker()" placeholder="创建时间开始" />
+                    </div>
+                </td>
+                <td><div class="input-group" style="width:10px">--</div></td>
+                <td>
+                    <div class="input-group" style="margin-right:10px;margin-top:1px">
+                        <input id="F_CreatorTime_Stop" name="F_CreatorTime_Stop" type="text" class="form-control input-wdatepicker" onfocus="WdatePicker()" placeholder="创建时间结束" />
+                    </div>
+                </td>*@
+            <li>
+                <div class="input-group" style="margin-right:10px;width:200px;">
+                    <select id="F_Year" name="F_Year" class="form-control">
+                        <option value="">选择年度</option>
+                    </select>
+                </div>
+            </li>
+            <li>
+                <div class="input-group" style="margin-right:10px;width:200px;">
+                    <select id="F_Divis_ID" name="F_Divis_ID" class="form-control">
+                        <option value="">选择学部</option>
+                    </select>
+                </div>
+            </li>
+            <li>
+                <div class="input-group" style="margin-right:10px;width:200px;">
+                    <select id="F_Grade_ID" name="F_Grade_ID" class="form-control">
+                        <option value="">选择年级</option>
+                    </select>
+                </div>
+            </li>
+            <li>
+                <div class="input-group" style="margin-right:10px;width:200px;">
+                    <select id="F_Class_ID" name="F_Class_ID" class="form-control">
+                        <option value="">选择班级</option>
+                    </select>
+                </div>
+            </li>
+            @*<td>
+                        <div class="input-group" style="margin-right:10px;width:200px;">
+                            <select id="F_SysAreaId" name="F_SysAreaId" class="form-control">
+                                <option value="">选择区域</option>
+                            </select>
+                        </div>
+                    </td>
+                <td>
+                    <div class="input-group" style="margin-right:10px;width:200px;">
+                        <select id="F_Gender" name="F_Gender" class="form-control">
+                            <option value="">选择性别</option>
+                        </select>
+                    </div>
+                </td>*@
+            <li>
+                <div class="input-group">
+                    <input id="txt_keyword" type="text" class="form-control" placeholder="姓名｜学号" style="width: 150px;">
+                    <span class="input-group-btn">
+                        <button id="btn_search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div id="test" class="topPanel">
+
+</div>

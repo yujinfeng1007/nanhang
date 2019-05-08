@@ -1,0 +1,30 @@
+.uploader {
+}
+.upload-list {
+  width: 100%;
+  list-style: none;
+  border: 1px solid #DCDCDC;
+  padding: 15px;
+  display: none;
+}
+.upload-list:after {
+  content:"."; 
+  display:block; 
+  height:0; 
+  visibility:hidden; 
+  clear:both; 
+}
+.upload-list .file-item {
+  float: left;
+  width: 200px;
+  text-align: center;
+}
+.upload-list .close-upload i {
+  font-size: 20px;
+}
+.upload-list .file-item .btn-group {
+  margin-top: 15px;
+}
+.upload-list .file-item .item img {
+  margin: auto
+}

@@ -1,0 +1,79 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script>
+    var keyValue = $.request("keyValue");
+
+    $(function () {
+        gridList();
+    });
+
+    function gridList() {
+        var $gridList = $("#gridList");
+        $gridList.dataGrid({
+            url: "/ScheduleManage/Schedule_Class_Teachers/GetGridJson?ClassId=" + keyValue,
+            height: $(window).height() - 128,
+            colModel: [
+			 	{ label: '主键', name: 'F_Id', hidden: true },
+                {
+                    label: '科目', name: 'F_CourseId', width: 80, align: 'left'
+                    , formatter: function (cellvalue) {
+                        return top.clients.course[cellvalue] == null ? " " : top.clients.course[cellvalue].F_Name;
+                    }
+                },
+                { label: '走班班级', name: 'F_ClassNames', width: 80, align: 'left' },
+                { label: '走班班级', name: 'F_ClassIds', width: 80, align: 'left',hidden:true },
+                { label: '走班人数', name: 'F_Students', width: 80, align: 'left' },
+                { label: '开班数', name: 'F_ClassQty', width: 80, align: 'left' },
+                {label: '教师', name: 'F_TeacherNames', width: 80, align: 'left'}
+            ],
+            pager: "#gridPager",
+            sortname: 'F_CreatorTime desc',
+            viewrecords: true
+        });
+
+    }
+
+    function btn_edit() {
+        var courseId = ($("#gridList").jqGridRowValue('F_Id'))[0];
+        var F_ClassIds = ($("#gridList").jqGridRowValue('F_ClassIds'))[0];
+        $.modalOpen({
+            id: "Form",
+            title: "修改",
+            url: "/ScheduleManage/Schedule_Class_Teachers/Form?keyValue=" + courseId + "&F_ClassIds=" + F_ClassIds + "&F_ClassId=" + keyValue,
+            width: "500px",
+            height: "310px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm(function () {
+                    $("#gridList").trigger("reloadGrid");
+                });
+            }
+        });
+    }
+
+    function submitForm() {
+        $.modalClose();
+    }
+</script>
+
+<div class="topPanel">
+    <div class="toolbar">
+        <div class="btn-group">
+            <a class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
+        </div>
+
+       <div class="operate">
+                <ul class="nav nav-pills">
+                    <li class="first">已选中<span>1</span>项</li>
+                    <li><a id="NF-Edit" authorize="yes" onclick="btn_edit()"><i class="fa fa-search-plus"></i>编辑</a></li>
+                </ul>
+                <a href="javascript:;" class="close"></a>
+            </div>
+            @*<script>$('.toolbar').authorizeButton()</script>*@
+        </div>
+</div>
+<div class="gridPanel">
+    <table id="gridList"></table>
+    <div id="gridPager"></div>
+</div>

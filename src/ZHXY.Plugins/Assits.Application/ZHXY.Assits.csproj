@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{542D5D45-3F1B-4D48-A18E-B628C39C9364}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ZHXY.Assits</RootNamespace>
+    <AssemblyName>ZHXY.Assits</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssistsServices\Assists\AssistAppService.cs" />
+    <Compile Include="AssistsServices\Assists\Dto\1.2\BindRoominput.cs" />
+    <Compile Include="AssistsServices\Assists\Dto\1.2\BindRoomOutput.cs" />
+    <Compile Include="AssistsServices\Assists\Dto\1.9\GetUnBindRoomOutput.cs" />
+    <Compile Include="AssistsServices\Assists\Dto\1.9\RoomOutput.cs" />
+    <Compile Include="AssistsServices\Assists\Dto\Device\UpdateDeviceDto.cs" />
+    <Compile Include="AssistsServices\Questions\Dto\CreateQuestionMarkDto.cs" />
+    <Compile Include="AssistsServices\Assists\Dto\1.7\DistributeCoursewareInput.cs" />
+    <Compile Include="AssistsServices\Assists\Dto\1.6\GetCourseLatestQuestionsOutput.cs" />
+    <Compile Include="AssistsServices\Assists\Dto\1.5\GetCourseStudentsInput.cs" />
+    <Compile Include="AssistsServices\Assists\Dto\1.4\GetRoomCourseOfDayInput.cs" />
+    <Compile Include="AssistsServices\Assists\Dto\1.4\GetRoomCourseOfDayOutput.cs" />
+    <Compile Include="AssistsServices\Assists\Dto\1.6\GetCourseLatestQuestionsInput.cs" />
+    <Compile Include="AssistsServices\Assists\Dto\1.5\GetCourseStudentsOutput.cs" />
+    <Compile Include="AssistsServices\Assists\Dto\1.5\StudentDto.cs" />
+    <Compile Include="AssistsServices\Assists\Dto\1.3\TeacherLoginInput.cs" />
+    <Compile Include="AssistsServices\Assists\Dto\1.3\TeacherLoginOutput.cs" />
+    <Compile Include="AssistsServices\Questions\Dto\QuestionMarkView.cs" />
+    <Compile Include="AssistsServices\Questions\Dto\RenameMarkDto.cs" />
+    <Compile Include="AssistsServices\Questions\Dto\SubmitQuestionDto.cs" />
+    <Compile Include="AssistsServices\Questions\Dto\UpdateQuestionDto.cs" />
+    <Compile Include="AssistsServices\Questions\QuestionAppService.cs" />
+    <Compile Include="AssistManageRepository.cs" />
+    <Compile Include="Configurations\ConfigurationExtensions.cs" />
+    <Compile Include="Entity\Devices.cs" />
+    <Compile Include="Entity\Question.cs" />
+    <Compile Include="Entity\QuestionMark.cs" />
+    <Compile Include="IAssistManageRepository.cs" />
+    <Compile Include="Mapping\DevicesMap.cs" />
+    <Compile Include="Mapping\QuestionMap.cs" />
+    <Compile Include="Mapping\QuestionMarkMap.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ZHXY.Application\ZHXY.Application.csproj">
+      <Project>{F2035EE2-B73D-4FB8-A433-CAB465DE6A2A}</Project>
+      <Name>ZHXY.Application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ZHXY.Common\ZHXY.Common.csproj">
+      <Project>{DB19CE03-C307-43FE-A209-08AA4AE10E21}</Project>
+      <Name>ZHXY.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ZHXY.Domain\ZHXY.Domain.csproj">
+      <Project>{7dc886cd-b8a0-44e8-aadd-57fcb0cfecb8}</Project>
+      <Name>ZHXY.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <PackageReference Include="EntityFramework">
+      <Version>6.2.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.DependencyValidation.Analyzers">
+      <Version>0.10.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Net.Compilers">
+      <Version>2.10.0</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,75 @@
+﻿@{
+    
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script>
+    var keyValue = $.request("keyValue");
+    $(function () {
+        initControl();
+        $.addRequired('#form1');
+        if (!!keyValue) {
+            $.ajax({
+                url: "/SystemManage/Duty/GetFormJson",
+                data: { keyValue: keyValue },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    $("#form1").formSerialize(data);
+                }
+            });
+        }
+    });
+    function initControl() {
+        $("#F_OrganizeId").bindSelect({
+            url: "/SystemManage/Organize/GetTreeSelectJson",
+        });
+        $("#F_Duty_type").bindSelect({
+            dictionary: 'F_Duty_Type'
+        })
+    }
+    function submitForm() {
+        if (!$('#form1').formValid()) {
+            return false;
+        }
+        $.submitForm({
+            url: "/SystemManage/Duty/SubmitForm?keyValue=" + keyValue,
+            param: $("#form1").formSerialize(),
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+</script>
+
+<form id="form1" autocomplete="off">
+    <div style="padding-top: 20px; margin-right: 20px;">
+        <table class="form">
+            <tr>
+                <th class="formTitle">岗位名称</th>
+                <td class="formValue">
+                    <input id="F_FullName" name="F_FullName" type="text" class="form-control required" placeholder="请输入岗位名称" />
+                </td>
+            </tr>
+            <tr>
+                <th class="formTitle">岗位类型</th>
+                <td class="formValue">
+                    <select id="F_Duty_type" name="F_Duty_type" type="text" class="form-control required" />
+                </td>
+            </tr>
+            <tr>
+                <th class="formTitle">显示顺序</th>
+                <td class="formValue">
+                    <input data-rule-isDigits="true" id="F_SortCode" name="F_SortCode" type="number" class="form-control" placeholder="请输入显示顺序"/>
+                </td>
+            </tr>
+            <tr>
+                <th class="formTitle" valign="top" style="padding-top: 5px;">
+                    备注
+                </th>
+                <td class="formValue">
+                    <textarea id="F_Description" name="F_Description" class="form-control" style="height: 60px;" maxlength="250"></textarea>
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>

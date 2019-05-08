@@ -1,0 +1,119 @@
+﻿@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<script>
+    var keyValue = $.request("keyValue");
+    $(function () {
+        initControl();
+        if (!!keyValue) {
+            $.ajax({
+                url: "/SchoolManage/School_ComeBackRouteTwo/GetFormJson",
+                data: { keyValue: keyValue },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    $("#form1").formSerialize(data)
+                }
+            });
+        }
+    });
+    function initControl() {
+        $("#F_Divis_ID").bindCheckBox({
+            url: "/SystemManage/Organize/GetCheckBoxJson?tname=School_ComeBackRouteTwo&keyword=" + keyValue,
+            id: "value",
+            text: "text",
+            name: "F_Divis_ID"
+        });
+        //$("#F_City").bindSelect({
+        //    url: "/SchoolManage/School_Area/GetSelectJsonByCategoryId?F_ParentId=0",
+        //});
+        //$("#F_City").change(function () {
+        //    $("#F_Country").find("option").remove();
+        //    $("#F_Country").append("<option value=''>选择乡镇</option>");
+        //    $("#F_Country").bindSelect({
+        //        url: "/SchoolManage/School_Area/GetSelectJsonByCategoryId?F_ParentId=" + $("#F_City").val(),
+        //    });
+        //});
+        $.addRequired('#form1')
+    }
+    function submitForm() {
+        if ($("#F_Country").val() == "目的区县") {
+            alert("请选择目的区县！");
+            return false;
+        }
+        if (!$('#form1').formValid()) {
+            return false;
+        }
+        $.submitForm({
+            url: "/SchoolManage/School_ComeBackRouteTwo/SubmitForm?keyValue=" + keyValue,
+            param: $("#form1").formSerialize(),
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+    function Country() {
+        var F_Country = $("#F_Country").val();
+        $.modalOpen({
+            id: "Country",
+            title: "目的区县",
+            url: "/SchoolManage/School_ComeBackRouteTwo/Country?KeyValue=" + F_Country,
+            width: "900px",
+            height: "620px",
+            callBack: function (iframeId) {
+                var keyValue = top.frames[iframeId].submitForm();
+                $("#F_Country").val(keyValue);
+            },
+        });
+    }
+</script>
+<form id="form1">
+    <div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#">基本信息</a></li>
+            @*<li ><a href="#">扩展信息</a></li>*@
+        </ul>
+        <div style="padding-top: 20px; margin-right: 30px;">
+            <table class="form">
+                <tr>
+                    <th class="formTitle">路线名称</th>
+                    <td class="formValue" colspan="3">
+                        <input id="F_Title" name="F_Title" type="text" class="form-control required" placeholder="请输入路线名称" />
+                    </td>
+                </tr>
+                <tr>
+                    @*<th class="formTitle">目的市</th>
+                    <td class="formValue">
+                        <select id="F_City" name="F_City" class="form-control required">
+                            <option value="">-请选择-</option>
+                        </select>
+                    </td>*@
+                    <th class="formTitle">目的区县</th>
+                    <td class="formValue">
+                        @*<select id="F_Country" name="F_Country" class="form-control required">
+                            <option value="">-请选择-</option>
+                        </select>*@
+                        <input type="button" id="FCountry" class="layui-layer-btn0 btn btn-primary required" onclick="Country()" value="目的区县" />
+                        <input type="hidden" id="F_Country" name="F_Country" />
+                    </td>
+                    <th class="formTitle">序号</th>
+                    <td class="formValue">
+                        <input data-rule-isDigits="true" id="F_SortCode" name="F_SortCode" type="text" class="form-control required" placeholder="请输入序号" />
+                    </td>
+                    @*<td class="plus-item">+</td>*@
+                </tr>
+                <tr>
+                    <th class="formTitle">学部</th>
+                    <td colspan="3" class="formValue" id="F_Divis_ID"></td>
+                </tr>
+                <tr>
+                    <th class="formTitle">路线描述</th>
+                    <td class="formValue" colspan="3">
+                        <textarea id="F_Description" name="F_Description" class="form-control" style="height: 60px;"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</form>

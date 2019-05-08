@@ -1,0 +1,119 @@
+﻿@{
+    ViewBag.Title = "TKForm";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<script>
+    var keyValue = $.request("keyValue");
+    var billId = $.request("billId");
+    $(function () {
+        initControl();
+        //if (!!keyValue) {
+        //    $.ajax({
+        //        url: "/SchoolManage/School_ChangeBill_Log/GetFormJson",
+        //        data: { keyValue: keyValue },
+        //        dataType: "json",
+        //        async: false,
+        //        success: function (data) {
+        //            alert(dara["F_Description"])
+        //            $("#form1").formSerialize(data)
+        //        }
+        //    });
+        //}
+        var yj, sj, qj;
+        $.ajax({
+            url: "/SchoolManage/School_Bill/GetFormJson",
+            data: { keyValue: billId },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                var text = "应缴："
+                if (data["F_In_Pay"] != null) {
+                    yj = parseFloat(yj == '' ? 0 : yj);
+                    text += "<font color='red'>"+ data["F_In_Pay"] + "</font>元";
+                }
+                if (data["F_Pay"] != null) {
+                    sj = parseFloat(sj == '' ? 0 : sj);
+                    text += " 实缴：<font color='red'>" + data["F_Pay"] + "</font>元";
+                }
+                if (data["F_Not_Pay"] != null) {
+                    qj = parseFloat(qj == '' ? 0 : qj);
+                    text += " 欠缴：<font color='red'>" + data["F_Not_Pay"] + "</font>元";
+                }
+                $("#dqjfqk").html(text);
+            }
+        });
+    });
+    function initControl() {
+        //$("#F_Bill_Change_Type").bindSelect({
+        //    dictionary: 'F_Bill_Change_Type'
+        //});
+        $.simpleUploader($('.fileUpload'));
+		$.addRequired('#form1')
+    }
+    function submitForm() {
+        if (!$('#form1').formValid()) {
+            return false;
+        }
+
+        $.modalConfirm("注：账单金额将随之调整，确认调整么？", function (r) {
+            if (r) {
+                $("#F_Charge_Id").val(billId);
+                $.submitForm({
+                    url: "/SchoolManage/School_ChangeBill_Log/SubmitForm?keyValue=" + keyValue,
+                    param: $("#form1").formSerialize(),
+                    success: function () {
+                        //$.currentWindow().$("#gridList").trigger("reloadGrid");
+                        //parent.top.frames["fytz"].$("#gridList").trigger("reloadGrid");
+                    }
+                })
+            }
+        })
+    }
+</script>
+<form id="form1">
+    <div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#">基本信息</a></li>
+            @*<li ><a href="#">扩展信息</a></li>*@
+        </ul>
+        <div style="padding-top: 20px; margin-right: 30px;">
+            <table class="form">
+                <tr>
+                    <th class="formTitle required">当前缴费情况</th>
+                    <td class="formValue" id="dqjfqk" colspan="3"></td>
+                </tr>
+                <tr>
+                    <th class="formTitle required">变更类型</th>
+                    <td class="formValue">
+                        @*<select id="F_Bill_Change_Type" name="F_Bill_Change_Type" type="text" class="form-control required" placeholder="请输入变更类型" />*@
+                        <select id="F_Bill_Change_Type" name="F_Bill_Change_Type" type="text" class="form-control required" disabled="disabled">
+                            <option value="8">退款</option>
+                        </select>
+                        <input type="hidden" name="F_Charge_Id" id="F_Charge_Id">
+                    </td>
+                    <th class="formTitle required">退款金额</th>
+                    <td class="formValue">
+                        <input data-rule-isNumber="true" id="F_Fee" name="F_Fee" type="text" class="form-control required" placeholder="单位（元），例如：-100" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">申请编号</th>
+                    <td class="formValue">
+                        <input id="F_Invit_No" name="F_Invit_No" type="text" class="form-control" placeholder="请输入申请编号" />
+                    </td>
+                    <th class="formTitle">变更凭证</th>
+                    <td class="formValue">
+                        <div id="F_Proof" class="fileUpload">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle required">变更备注</th>
+                    <td class="formValue" colspan="3">
+                        <textarea id="F_Description" name="F_Description" class="form-control required" placeholder="请输入变更备注" style="height: 60px;"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</form>

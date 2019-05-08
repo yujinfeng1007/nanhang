@@ -1,0 +1,243 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <title> 智慧校园 </title>
+    <link rel="stylesheet" href="/page/system/css/skin/greyStyle.css" />
+    <link rel="stylesheet" href="/page/system/css/skin/dialog.css" />
+    <link rel="stylesheet" href="/page/system/css/iPadStyle.css" />
+    <link rel="stylesheet" href="/css/clockpicker.css" />
+    <link href="/Content/js/select2/select2.min.css" rel="stylesheet">
+    <link href="/Content/js/jqgrid/jqgrid.css" rel="stylesheet" />
+    <link href="/Content/css/framework-ui.css" rel="stylesheet" />
+
+    <!--[if lt IE 9]>
+      <link rel="stylesheet" href="page/system/css/ie8.css" />
+    <![endif]-->
+    <script src="/js/jquery-2.1.4.min.js"></script>
+</head>
+<body>
+    <img id="wallpaper" src="img/Gaoqingzhiwu30.jpg" onerror="this.src='img/clear.gif'">
+    <nav id="topNavBar" style="display: block;">
+        <div id="schInfo" style="cursor:pointer;">
+            <a id="schoolLink">
+                <img id="schLogo" src="/uploadfiles/logo/(131607984127152354)logo.png" onerror="this.src='img/clear.gif'" title="绿橄榄智慧校园">
+            </a>
+            <span id="schName"></span>
+        </div>
+        <span id="spTopBar">2018年度第一学期 第20教学周<a href="#" onclick="viewUserProfile('1' , 't')" class="aSnow">嘿嘿</a>老师，欢迎您<span id="mailinfo" style="padding-left: 10px;"></span></span>
+        <span>　|　</span>
+        <ul class="lavaLampBottomStyle" id="lnb3">
+            <li id="liWPS" class="liLnb current" style="visibility: visible;"><a class="aSnow" href="#"><img src="../../img/ico_16_2/background.png" class="icoTip">背景</a></li>
+            <li class="liLnb"><a class="aSnow" href="#" onclick="chooseApp()"><img src="../../img/ico_16_2/applications.png" class="icoTip">应用选择器</a></li>
+            <li class="liLnb"><a class="aSnow" href="#" onclick="showDesktop()"><img src="../../img/ico_16_2/showDesktop.png" class="icoTip">显示应用</a></li>
+            <li id="liFullScr" class="liLnb"><a class="aSnow" href="#" onclick="gotoFullScreen(this)"><img src="../../img/ico_16_2/user-desktop.png" class="icoTip">全屏</a></li>
+            <li id="liToggle" class="liLnb"><a id="acToggle" class="aSnow" href="/Home/Index"><img src="../../img/ico_16_2/switch.png" class="icoTip">经典风格</a></li>
+        </ul>
+        <span id="acSignOut">
+            |　
+            <a class="aSnow" href="/Login/OutLogin"><img src="../../img/ico_16_2/icon_lock2.png" class="icoTip">注销</a>
+        </span>
+    </nav>
+    <!-- put widgets here -->
+    <div id="widgets">
+        <div class="screenColumn"></div>
+        <div class="screenColumn"></div>
+        <div class="screenColumn"></div>
+    </div>
+    <!-- put lv1 menu icons here -->
+    <aside id="navPad">
+        <img id="navPadUp" src="../../img/up_02.png">
+        <menu id="navBoard">
+            <ul id="navUl"></ul>
+        </menu>
+        <img id="navPadDown" src="../../img/down_02.png">
+    </aside>
+    <div id="navPadCloser"></div>
+    <div id="screen" class="screen"></div>
+
+    <footer id="taskBar"></footer>
+
+    <!--wallpaper selector-->
+    <ul id="ulWPS"></ul>
+
+    <!-- app selector -->
+    <ul id="ulApps"></ul>
+    <script src="/js/jquery.easing.1.3.js"></script>
+    <script src="/js/fy.min.js"></script>
+    <script src="/js/sys.js"></script>
+    <script src="/js/config.js"></script>
+    <script src="/js/jquery-ui-1.11.4.custom.min.js"></script>
+    <script src="/js/jquery.contextMenu.js"></script>
+    <script src="/js/jquery.mousewheel.js"></script>
+    <script src="/js/groupDrag.js"></script>
+    <script src="/js/clockpicker.js"></script>
+    <script src="/js/miscMenuFunctions.js"></script>
+    <script src="/js/dialog.js"></script>
+    <script src="/Content/js/framework-ui.js"></script>
+    <script src="/Content/js/select2/select2.min.js"></script>
+    <script src="/Content/js/cookie/jquery.cookie.js"></script>
+    <script src="/Content/js/lodash/lodash.js"></script>
+    <script src="/Content/js/jqgrid/jqgrid.min.js"></script>
+
+    <script>
+        window.welcomeScreen=$('<div id="divWelcome"><div><img src="'+sys.rootPath+'img/loading.gif" style="width:78px; height:78px;vertical-align: middle;"> 请稍候 ...</div></div>').appendTo("body").fadeIn(3000);
+        var searchItemByUrl=function($screenWrap)
+        {
+            var wholeLv2Icons=$screenWrap.find(".navItem");
+            window.searchItemByUrl=function(url)
+            {
+                var _url,_search;
+                if(url.indexOf('?')>-1)
+                {
+                    _url=url.substring(0,url.indexOf('?'));
+                    _search=url.substring(url.indexOf('?'));
+                } else
+                {
+                    _url=url;
+                    _search='';
+                }
+                //适配市西路径
+                if(_url.indexOf('../../page/')===0)
+                {
+                    _url=_url.replace('../../page/','../');
+                }
+                var x=wholeLv2Icons.length,
+                    tar,notFound=true,
+                    pl=_url.length;
+                while(x--)
+                {
+                    tar=wholeLv2Icons.eq(x);
+                    var winData=tar.data("win");
+                    console.log(winData)
+                    if(winData)
+                    {
+                        var link=winData.oUrl,
+                            p=_url.lastIndexOf(link);
+                        if(p>-1&&(p+link.length==pl))
+                        {
+                            //log('winData' , winData) ;
+                            winData.search=_search;
+                            notFound=false;
+                            break;
+                        }
+                    }
+                }
+                return (notFound? false:tar);
+            };
+            return false;
+        };
+        //create module window
+        function createWindow(src,cfg)
+        {
+            var winNum=taskBar.find(".taskItem").length;
+            if(winNum<window.sys.maxWins)
+            {
+                var taskItem=$('<div class="taskItem taskItemCur"><img class="taskItemIcon" src="'+window.sys.menuIconPath+'085.png">'+cfg.F_FullName+'</div>');
+                taskItem.data('id',cfg.F_Id)
+                var opened;
+                var def={
+                    maximizable: true,
+                    minimizable: taskItem,
+                    unloadOnHide: true,
+                    title: src.data("name"),
+                    /*onMin:function(){
+                     } ,*/
+                    beforeUnload: function()
+                    {
+                        src.removeData("iframe");
+                        taskItem.removeData().remove();
+                        taskItem=null;
+                        if(opened.resizer&&opened.resizer.length)
+                        {
+                            opened.resizer.unbind('.boxy').remove();
+                            opened.resizer=null;
+                        }
+                    },
+                    helphtml: function(callback)
+                    {
+                        fy.server.getHelpDescribe.get({ SysMenuId: cfg.SysMenuId },function(json)
+                        {
+                            if(callback) callback(json.data);
+                        });
+                    }
+                };
+                cfg=$.extend(def,cfg);
+                var _url=cfg.F_UrlAddress;
+
+                if(_url.indexOf(' _blank')!=-1)
+                {
+                    _url=_url.replace(/_blank/,'');
+                    window.open(_url);
+                    return;
+                }
+                var iframe=$('<iframe id="iframe'+cfg.F_Id+'" src="'+cfg.F_UrlAddress+(cfg.search||'')+'" frameborder="0" class="winIframe NFine_iframe"></iframe>');
+                src.data("iframe",iframe[0]);
+                if(sys.defaultWinMax)
+                    opened=fy(iframe).popup(cfg).maximum();
+                else
+                    opened=fy(iframe).popup(cfg);
+
+                //log(opened.boxy.boxyId);
+                //add task item
+                $(".taskItemCur").removeClass("taskItemCur");
+                taskItem.data("window",opened.boxy).appendTo(taskBar);
+
+                //resize
+                if(document.addEventListener)
+                {//ie > 8
+                    opened.resizer=$('<div class="fyWinResize"></div>').appendTo(opened.jq);
+                    opened.resizer.bind('mousedown.boxy',function(e)
+                    {
+                        if(opened.boxy.winState!=='max')
+                        {
+                            document.onselectstart=fy.PREVENT_FN;
+                            opened.resizer.css({
+                                width: 400,
+                                height: 400,
+                                right: -193,
+                                bottom: -193
+                            });
+                            var M={
+                                W: iframe.width(),
+                                H: iframe.height(),
+                                pX: e.pageX,
+                                pY: e.pageY
+                            };
+                            var w=M.pX-M.W,h=M.pY-M.H;
+                            //log('M=' , M);
+                            $(window).bind('mousemove.boxy'+opened.boxy.boxyId,function(v)
+                            {
+                                iframe[0].style.cssText+=';width:'+(v.pageX-w)+'px;height:'+(v.pageY-h)+'px;';
+                            }).bind('mouseup.boxy'+opened.boxy.boxyId,function()
+                            {
+                                $(window).unbind('.boxy'+opened.boxy.boxyId);
+                                opened.resizer.css({
+                                    width: 15,
+                                    height: 15,
+                                    right: 0,
+                                    bottom: 0
+                                });
+                                document.onselectstart=null;
+                            });
+                        }
+                    });
+                }
+            }
+            else
+            {
+                sys.alert("您同时打开的窗口数已达上限，请先关闭一些窗口。");
+            }
+
+        }
+    </script>
+    <script src="js/main.js"></script>
+    <style>
+        .select2-container {
+            z-index: 99999;
+        }
+    </style>
+</body>
+</html>

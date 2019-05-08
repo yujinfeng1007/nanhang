@@ -1,0 +1,159 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script>
+    var F_StudentId = $.request("keyValue");
+    $(function () {
+        gridList();
+    })
+    function gridList() {
+        var $gridList = $("#gridList");
+        $gridList.dataGrid({
+            url: "/SchoolManage/School_Students_StatusLog/GetGridJson?F_StudentId=" + F_StudentId + "",
+            height: $(window).height() - 128,
+            colModel: [
+                { label: 'ID', name: 'F_Id', width: 80, align: 'left',hidden:true },
+                { label: '学生ID', name: 'F_StudentId', width: 80, align: 'left', hidden: true },
+                { label: '姓名', name: 'F_Name', width: 80, align: 'left' },
+                { label: '学号', name: 'F_StudentNum', width: 80, align: 'left' },
+                {
+                    label: '日常类型', name: 'F_CurStatu', width: 80, align: 'left',
+                    formatter: function (cellvalue, options, rowObject) {
+                        return top.clients.dataItems["F_CurStatu"][cellvalue] == undefined ? "" : top.clients.dataItems["F_CurStatu"][cellvalue];
+                    }
+                },
+                {
+                    label: '学部', name: 'F_Divis_ID', width: 80, align: 'left',
+                    formatter: function (cellvalue) {
+                        return top.clients.organize[cellvalue] == null ? "" : top.clients.organize[cellvalue].fullname;
+                    }
+                },
+                {
+                    label: '年级', name: 'F_Grade_ID', width: 80, align: 'left',
+                    formatter: function (cellvalue) {
+                        return top.clients.organize[cellvalue] == null ? "" : top.clients.organize[cellvalue].fullname;
+                    }
+                },
+                {
+                    label: '归属班级', name: 'F_Class_ID', width: 80, align: 'left',
+                    formatter: function (cellvalue) {
+                        return top.clients.organize[cellvalue] == null ? "" : top.clients.organize[cellvalue].fullname;
+                    }
+                },
+			 	//{ label: '备注', name: 'F_Description', width: 200, align: 'left' },
+			 	{
+			 	    label: '调整时间', name: 'F_CreatorTime', width: 90, align: 'left',
+			 	    formatter: "date", formatoptions: { srcformat: 'Y-m-d H:i', newformat: 'Y-m-d H:i' }
+			 	},
+                { label: '调整人', name: 'F_AdjustName', width: 80, align: 'left' },
+            ],
+            pager: "#gridPager",
+            sortname: 'F_DepartmentId asc,F_CreatorTime desc',
+            viewrecords: true
+        });
+        $("#btn_search").click(function () {
+            $gridList.jqGrid('setGridParam', {
+                postData: { keyword: $("#txt_keyword").val(), F_DepartmentId: $("#F_DepartmentId").val(), F_CreatorTime_Start: $("#F_CreatorTime_Start").val(), F_CreatorTime_Stop: $("#F_CreatorTime_Stop").val() },
+            }).trigger('reloadGrid');
+        });
+    }
+    function btn_add() {
+        $.modalOpen({
+            id: "Form",
+            title: "新增",
+            url: "/SchoolManage/School_Students_StatusLog/Form?F_StudentId=" + F_StudentId + "",
+            width: "700px",
+            height: "510px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm();
+            }
+        });
+    }
+    function btn_edit() {
+        var keyValue = ($("#gridList").jqGridRowValue('F_Id'))[0];
+        $.modalOpen({
+            id: "Form",
+            title: "修改",
+            url: "/SchoolManage/School_Students_StatusLog/Form?F_StudentId=" + F_StudentId + "&keyValue=" + keyValue,
+            width: "700px",
+            height: "510px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm();
+            }
+        });
+    }
+    function btn_delete() {
+        var deleteid = $('#gridList').jqGridRowValue('F_Id');
+        var keyValue = "";
+        for (var i = 0; i < deleteid.length; i++) {
+            keyValue += deleteid[i] + "|";
+        }
+        $.deleteForm({
+            url: "/SchoolManage/School_Students_StatusLog/DeleteForm",
+            param: { keyValue: keyValue },
+            success: function () {
+                parent.top.frames["updcurstatu"].$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+    function btn_details() {
+        var keyValue = ($("#gridList").jqGridRowValue('F_Id'))[0];
+        $.modalOpen({
+            id: "Details",
+            title: "查看",
+            url: "/SchoolManage/School_Students_StatusLog/Details?keyValue=" + keyValue,
+            width: "700px",
+            height: "550px",
+            btn: null,
+        });
+    }
+</script>
+<div class="topPanel">
+    <div class="toolbar">
+        <div class="btn-group">
+            <a class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
+        </div>
+        <div class="btn-group">
+            <a id="NF-add" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_add()"><i class="fa fa-plus"></i>调整状态</a>
+        </div>
+        <div class="operate">
+            <ul class="nav nav-pills">
+                <li class="first">已选中<span>1</span>项</li>
+                <li><a id="NF-details" authorize="yes" onclick="btn_details()"><i class="fa fa-search-plus"></i>查看</a></li>
+                @*<li><a id="NF-edit" authorize="yes" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>修改</a></li>
+                <li><a class="multi-edit" id="NF-delete" authorize="yes" onclick="btn_delete()"><i class="fa fa-trash-o"></i>删除</a></li>*@
+            </ul>
+            <a href="javascript:;" class="close"></a>
+        </div>
+        <script>$('.toolbar').authorizeButton()</script>
+    </div>
+    <div class="search">
+        <ul>
+            <li class="formTitle">搜索：</li>
+            <li>
+                <div class="input-group" style="margin-top:1px">
+                    <input id="F_CreatorTime_Start" name="F_CreatorTime_Start" type="text" class="form-control input-wdatepicker" onfocus="WdatePicker()" placeholder="创建时间开始" />
+                </div>
+            </li>
+            <li><div class="input-group" style="width:10px">--</div></li>
+            <li>
+                <div class="input-group" style="margin-right:10px;margin-top:1px">
+                    <input id="F_CreatorTime_Stop" name="F_CreatorTime_Stop" type="text" class="form-control input-wdatepicker" onfocus="WdatePicker()" placeholder="创建时间结束" />
+                </div>
+            </li>
+            <li>
+                <div class="input-group">
+
+                    <span class="input-group-btn">
+                        <button id="btn_search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="gridPanel">
+    <table id="gridList"></table>
+    <div id="gridPager"></div>
+</div>

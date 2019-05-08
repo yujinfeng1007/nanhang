@@ -1,0 +1,122 @@
+﻿@{
+    
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script>
+    var id = $.request("id");
+    $(function () {
+        initControl();
+        if (!!id) {
+            $.ajax({
+                url: "/SchoolManage/School_Devices/GetSwitch",
+                data: { id: id },
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    $("#form").formSerialize(result.data)
+                }
+            });
+        }
+    });
+    function initControl() {
+               $.addRequired('#form')
+    }
+    function submitForm() {
+        if (!$('#form').formValid()) {
+            return false;
+        }
+        $.submitForm({
+            url: "/SchoolManage/School_Devices/SetSwitch?id=" + id,
+            param: $("#form").formSerialize(),
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+
+    function clearAll() {
+        $.ConfirmForm({
+            prompt: "注：您确定要清空班牌的开关机设置吗？",
+            url: "/SchoolManage/School_Devices/ClearSwitch?id=" + id,
+            topPage: parent.top,
+            success: function () {
+                $("#form")[0].reset();
+            }
+        })
+    }
+</script>
+<style>
+    .form .formTitle {
+        position: relative;
+        left: 0px;
+        text-align: right;
+        white-space: nowrap;
+        font-weight: normal;
+        width: 160px;
+        padding-right: 15px;
+    }
+</style>
+<form id="form">
+    <div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#a" data-toggle="tab">基本信息</a></li>
+        </ul>
+        <div class="tab-content" style="padding-top: 5px;">
+            <div id="a" class="tab-pane form active" style="padding: 15px;">
+                <table class="form">
+                    <tr><th colspan="4"><div style="text-align:left;font-size: 15px;"><button type="button" onclick="clearAll()">清除设置</button></div></th></tr>
+                    <tr>
+                        <td><hr /></td>
+                        <td><hr /></td>
+                        <td><hr /></td>
+                        <td><hr /></td>
+                    </tr>
+                    <tr><th colspan="4"><div style="text-align:left;">设置时间段</div></th></tr>
+                    <tr>
+                        <th class="formTitle">开机时间</th>
+                        <td class="formValue">
+                            <input id="bootTime" name="bootTime" type="text" class="form-control input-wdatepicker" onfocus="WdatePicker({ dateFmt: 'HH:mm:ss' })" placeholder="开机时间" />
+                        </td>
+                        <th class="formTitle">关机时间</th>
+                        <td class="formValue">
+                            <input id="shutdownTime" name="shutdownTime" type="text" class="form-control input-wdatepicker" onfocus="WdatePicker({ dateFmt: 'HH:mm:ss' })" placeholder="关机时间" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><hr /></td>
+                        <td><hr /></td>
+                        <td><hr /></td>
+                        <td><hr /></td>
+                    </tr>
+                    <tr><th colspan="4"><div style="text-align:left;">设置周期</div></th></tr>
+                    <tr>
+                        <th class="formTitle"></th>
+                        <td class="formValue" colspan="3" style="padding-top: 1px;">
+                            <div class="ckbox">
+                                <input id="F_Week-1" name="week" value="1" type="checkbox" multiselect="true"><label for="F_Week-1">周一</label>
+                            </div>
+                            <div class="ckbox">
+                                <input id="F_Week-2" name="week" value="2" type="checkbox" multiselect="true"><label for="F_Week-2">周二</label>
+                            </div>
+                            <div class="ckbox">
+                                <input id="F_Week-3" name="week" value="3" type="checkbox" multiselect="true"><label for="F_Week-3">周三</label>
+                            </div>
+                            <div class="ckbox">
+                                <input id="F_Week-4" name="week" value="4" type="checkbox" multiselect="true"><label for="F_Week-4">周四</label>
+                            </div>
+                            <div class="ckbox">
+                                <input id="F_Week-5" name="week" value="5" type="checkbox" multiselect="true"><label for="F_Week-5">周五</label>
+                            </div>
+                            <div class="ckbox">
+                                <input id="F_Week-6" name="week" value="6" type="checkbox" multiselect="true"><label for="F_Week-6">周六</label>
+                            </div>
+                            <div class="ckbox">
+                                <input id="F_Week-7" name="week" value="7" type="checkbox" multiselect="true"><label for="F_Week-7">周日</label>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,86 @@
+﻿@{
+    /**/
+
+    
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script>
+    var keyValue = $.request("keyValue");
+    $(function () {
+        initControl();
+        if (!!keyValue) {
+            $.ajax({
+                url: "/SchoolManage/School_Semester/GetFormVo",
+                data: { keyValue: keyValue },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    $("#form1").formSerialize(data)
+                }
+            });
+        }
+    });
+    function initControl() {
+        $("#F_Year").bindSelect({
+            dictionary: 'F_Year',
+        })
+        $.addRequired('#form1')
+    }
+    function submitForm() {
+        if (!$('#form1').formValid()) {
+            return false;
+        }
+        $.submitForm({
+            url: "/SchoolManage/School_Semester/SubmitForm?keyValue=" + keyValue,
+            param: $("#form1").formSerialize(),
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+</script>
+<form id="form1" autocomplete="off">
+    <div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#">基本信息</a></li>
+        </ul>
+        <div style="padding-top: 20px; margin-right: 30px;">
+            <table class="form">
+
+                <tr>
+                    <th class="formTitle">学期名称</th>
+                    <td class="formValue">
+                        <input id="F_Name" name="F_Name" type="text" class="form-control required" placeholder="请输入学期名称" />
+                    </td>
+                </tr>
+                <tr>
+
+                    <th class="formTitle">学年度</th>
+                    <td class="formValue">
+                        <select id="F_Year" name="F_Year" class="form-control required">
+                            <option value="">选择年度</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">开始时间</th>
+                    <td class="formValue">
+                        <input id="F_Start_Time" name="F_Start_Time" type="text" class="form-control input-wdatepicker required" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">结束时间</th>
+                    <td class="formValue">
+                        <input id="F_End_Time" name="F_End_Time" type="text" class="form-control input-wdatepicker required" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', minDate: '#F{$dp.$D(\'F_Start_Time\')}' })" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">备注</th>
+                    <td class="formValue">
+                        <textarea id="F_Memo" name="F_Memo" class="form-control" rows="5" placeholder="请输入备注" maxlength="250"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</form>

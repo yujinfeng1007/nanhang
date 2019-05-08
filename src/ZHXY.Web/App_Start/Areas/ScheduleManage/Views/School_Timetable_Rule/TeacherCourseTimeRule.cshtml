@@ -1,0 +1,252 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script>
+
+    $(function () {
+        gridList();
+
+        $("#F_Semester").bindSelect({
+            url: "/SchoolManage/School_Semester/GetGridSelect",
+            id: "F_Id",
+            text: "F_Name"
+        });
+        $("#F_Year").bindSelect({
+            dictionary: 'F_Year',
+            displayBlank: false
+        });
+        $("#F_Divis_ID").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Division",
+        });
+
+        //$("#F_Divis_ID").change(function () {
+        //    changeDivis();
+        //});
+
+        //$("#F_Grade_ID").change(function () {
+        //    changeCourse();
+        //});
+        //$("#F_Course").change(function () {
+        //    search();
+        //});
+    });
+
+    function search()
+    {
+        var $gridList = $("#gridLists");
+        $gridList.jqGrid('setGridParam', {
+            postData: { F_Semester: $("#F_Semester").val(), F_Divis: $("#F_Divis_ID").val(), F_Teacher: $("#txt_keyword").val(), F_Year: $("#F_Year").val() },
+            //postData: { keyword: $("#txt_keyword").val(), F_DepartmentId: $("#F_Divis_ID").val(), F_CreatorTime_Start: $("#F_CreatorTime_Start").val(), F_CreatorTime_Stop: $("#F_CreatorTime_Stop").val() },
+        }).trigger('reloadGrid');
+    }
+
+    //function changeDivis() {
+    //    $("#F_Grade_ID").find("option").remove();
+    //    $("#F_Grade_ID").bindSelect({
+    //        url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Grade&parentId=" + $("#F_Divis_ID").val(),
+    //    });
+    //    changeCourse();
+    //}
+
+    //function changeCourse() {
+    //    $("#F_Course").bindSelect({
+    //        url: "/SchoolManage/School_Grade_Course/GetCourseSelectJson?Grade_ID=" + $("#F_Grade_ID").val(),
+    //        id: "F_Id",
+    //        text: "F_Name"
+    //    });
+    //}
+
+    function gridList() {
+        var $gridList = $("#gridLists");
+        $gridList.dataGrid({
+            url: "/ScheduleManage/School_Timetable_Rule/GetTeacherCourseTimeRule",
+            height: $(window).height() - 173,
+            colModel: [
+            			 	{ label: '主键', name: 'F_Id', hidden: true },
+              {
+                  label: '年度', name: 'F_Year', width: 80, align: 'left',
+                  formatter: function (cellvalue) {
+                      return top.clients.dataItems["F_Year"][cellvalue] == undefined ? "" : top.clients.dataItems["F_Year"][cellvalue];
+                  }
+              },
+			 	{
+			 	    label: '学期', name: 'F_SemesterId', width: 80, align: 'left', formatter: function (cellvalue) {
+			 	        return top.clients.semester[cellvalue] == undefined ? "" : top.clients.semester[cellvalue].fullname;
+			 	    }
+			 	},
+                {
+                    label: '学部', name: 'F_Divis_ID', width: 80, align: 'left',
+                    formatter: function (cellvalue, options, rowObject) {
+                        return top.clients.organize[cellvalue] == null ? "" : top.clients.organize[cellvalue].fullname;
+                    }
+                },
+                //{
+                //    label: '年级', name: 'F_GradeId', width: 80, align: 'left',
+                //    formatter: function (cellvalue) {
+                //        return top.clients.organize[cellvalue] == null ? "" : top.clients.organize[cellvalue].fullname;
+                //    }
+                //},
+                { label: '教师', name: 'F_TeacherName', width: 80, align: 'left' }
+                //, { label: '科目', name: 'F_CourseName', width: 80, align: 'left' }
+                 , { label: '周一', name: 'F_Day1CourseTime', width: 80, align: 'left' }
+                 , { label: '周二', name: 'F_Day2CourseTime', width: 80, align: 'left' }
+                 , { label: '周三', name: 'F_Day3CourseTime', width: 80, align: 'left' }
+                 , { label: '周四', name: 'F_Day4CourseTime', width: 80, align: 'left' }
+                 , { label: '周五', name: 'F_Day5CourseTime', width: 80, align: 'left' }
+                 , { label: '周六', name: 'F_Day6CourseTime', width: 80, align: 'left' }
+                 , { label: '周日', name: 'F_Day7CourseTime', width: 80, align: 'left' }
+            ],
+            pager: "#gridPager",
+            sortname: 'F_CreatorTime desc',
+            viewrecords: true
+        });
+    }
+
+    function btn_add() {
+        $.modalOpen({
+            id: "Form",
+            title: "新增教师课时规则",
+            url: "/ScheduleManage/School_Timetable_Rule/UpdForm",
+            width: "500px",
+            height: "510px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm(function () {
+                    search();
+                });
+            }
+        });
+    }
+    function btn_edit() {
+        var keyValue = ($("#gridLists").jqGridRowValue('F_Id'))[0];
+        $.modalOpen({
+            id: "Formedit",
+            title: "修改教师课时规则",
+            url: "/ScheduleManage/School_Timetable_Rule/UpdForm?keyValue=" + keyValue ,
+            width: "500px",
+            height: "510px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm(function () {
+                    search();
+                });
+            }
+        });
+    }
+    function btn_copy() {
+        var keyValue = ($("#gridLists").jqGridRowValue('F_Id'))[0];
+        var keyText =escape( ($("#gridLists").jqGridRowValue('F_TeacherName'))[0]);
+        $.modalOpen({
+            id: "Formcopy",
+            title: "复制教师课时规则",
+            url: "/ScheduleManage/School_Timetable_Rule/CopyForm?keyValue=" + keyValue + "&keyText=" + keyText,
+            width: "500px",
+            height: "510px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm(function () {
+                    search();
+                });
+
+            }
+        });
+    }
+
+    function submitForm() {
+        $.modalClose();
+    }
+
+    function btn_delete() {
+        var deleteid = $('#gridLists').jqGridRowValue('F_Id');
+        var keyValue = "";
+        for (var i = 0; i < deleteid.length; i++) {
+            keyValue += deleteid[i] + "|";
+        }
+        $.deleteForm({
+            url: "/ScheduleManage/School_Timetable_Rule/DeleteForm",
+            param: { keyValue: keyValue },
+            success: function () {
+                search();
+            }
+        })
+    }
+</script>
+
+<div class="topPanel">
+    <div class="toolbar">
+        <div class="btn-group">
+            <a class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
+        </div>
+        <div class="btn-group">
+            <a id="NF-add" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_add()"><i class="fa fa-plus"></i>添加</a>
+        </div>
+        <div class="operate">
+            <ul class="nav nav-pills">
+                <li class="first">已选中<span>1</span>项</li>
+                <li><a id="NF-edit" authorize="yes" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>编辑</a></li>
+                <li><a id="NF-copy" authorize="yes" onclick="btn_copy()"><i class="fa fa-pencil-square-o"></i>复制</a></li>
+                <li><a id="NF-delete" authorize="yes" onclick="btn_delete()"><i class="fa fa-trash-o"></i>删除</a></li>
+            </ul>
+            <a href="javascript:;" class="close"></a>
+        </div>
+        @*<script>$('.toolbar').authorizeButton()</script>*@
+    </div>
+    <div class="search">
+        <table>
+            <tr>
+                <th class="formTitle">搜索：</th>
+                <td>
+                    <div class="input-group" style="margin-right:10px;width:180px;">
+                        <select id="F_Year" name="F_Year" class="form-control">
+                            <option value="">选择年度</option>
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group" style="margin-right:10px;width:180px;">
+                        <select id="F_Semester" name="F_Semester" class="form-control">
+                            <option value="">选择学期</option>
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group" style="margin-right:10px;width:180px;">
+                        <select id="F_Divis_ID" name="F_Divis_ID" class="form-control">
+                            <option value="">选择学部</option>
+                        </select>
+                    </div>
+                </td>
+                @*<td>
+                    <div class="input-group" style="margin-right:10px;width:200px;">
+                        <select id="F_Grade_ID" name="F_Grade_ID" class="form-control">
+                            <option value="">选择年级</option>
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group" style="margin-right:10px;width:150px;">
+                        <select id="F_Course" name="F_Course" class="form-control">
+                            <option value="">选择科目</option>
+                        </select>
+                    </div>
+                </td><td>
+        <div class="input-group" style="margin-right:10px;width:200px;">
+            <select id="F_Class_ID" name="F_Class_ID" class="form-control">
+                <option value="">选择班级</option>
+            </select>
+        </div>
+    </td>*@
+    <td>
+        <div class="input-group">
+            <input id="txt_keyword" type="text" class="form-control" placeholder="教师" style="width: 150px;">
+            <span class="input-group-btn">
+                <button id="btn_search" type="button" class="btn  btn-primary" onclick="search();" ><i class="fa fa-search"></i></button>
+            </span>
+        </div>
+    </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="gridPanel">
+    <table id="gridLists"></table>
+    <div id="gridPager"></div>
+</div>

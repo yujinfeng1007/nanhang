@@ -1,0 +1,188 @@
+﻿@{Layout = "~/Views/Shared/_Index.cshtml";}
+<link rel="stylesheet" type="text/css" href="~/Content/js/webuploader/webuploader.css" />
+<link rel="stylesheet" type="text/css" href="~/Content/css/framework-custom-webuploader.css" />
+<script type="text/javascript" src="~/Content/js/webuploader/webuploader.js"></script>
+<script type="text/javascript" src="~/Content/js/Fileupload.js"></script>
+<script>
+    var id = $.request("id");
+    $(function () {
+        initControl();
+        if (!!id) {
+            $.ajax({
+                url: "/Assits/AssitsDevices/Get",
+                data: { id: id },
+                dataType: "json",
+                async: true,
+                success: function (data) {
+                    $("#form").formSerialize(data.data)
+                }
+            });
+
+            // 获取绑定信息
+            $.ajax({
+                url: "/Assits/AssitsDevices/GetBindInfo",
+                data: { id: id },
+                dataType: "json",
+                async: true,
+                success: function (data) {
+                    $("#form").formSerialize(data.data);
+                }
+            });
+        }
+    });
+    function initControl() {
+        $("#displayMode").bindSelect({
+            dictionary: 'F_Display_Style'
+        });
+
+        $("#status").bindSelect({
+            dictionary: 'F_Device_Status'
+        });
+
+        $("#classroom").bindSelect({
+            url: "/SchoolManage/School_Classroom/GetGridSelect",
+            id: "F_Id",
+            text: "F_Name"
+        });
+        $.addRequired('#form');
+    }
+
+    function skin(F_Skin_Id, index) {
+        $("input[name=F_Skin_ID]").prop("checked", false);
+        $("#skid" + index + "").prop('checked', true);
+    }
+
+    function submitForm() {
+        if (!$('#form').formValid()) {
+            return false;
+        }
+        $.submitForm({
+            url: "/Assits/AssitsDevices/update?id=" + id,
+            param: $("#form").formSerialize(),
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        });
+    }
+    //清除班牌教室绑定
+    function clearRoom() {
+        $.ConfirmForm({
+            prompt: "注：您确定要清空班牌绑定的教室设置吗？",
+            url: "/Assits/AssitsDevices/Unbind?id=" + id,
+            topPage: parent.top,
+            success: function () {
+                $("#classOrOfficeName").val("");
+                $("#classroomName").val("");
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        });
+    }
+</script>
+<style>
+    .form .formTitle {
+        position: relative;
+        left: 0px;
+        text-align: right;
+        white-space: nowrap;
+        font-weight: normal;
+        width: 160px;
+        padding-right: 15px;
+    }
+</style>
+<form id="form">
+    <div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#a" data-toggle="tab">基本信息</a></li>
+        </ul>
+        <div class="tab-content" style="padding-top: 5px;">
+            <div id="a" class="tab-pane form active" style="padding: 15px;">
+                <table class="form">
+                    <tr>
+                        <th class="formTitle">设备编号</th>
+                        <td class="formValue">
+                            <input id="id" name="id" type="hidden" />
+                            <input id="deviceCode" name="deviceCode" type="text" class="form-control required" placeholder="请输入设备编号" />
+                        </td>
+                        <th class="formTitle">设备名称</th>
+                        <td class="formValue">
+                            <input id="deviceName" name="deviceName" type="text" class="form-control required" placeholder="请输入设备名称" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="formTitle">显示模式</th>
+                        <td class="formValue">
+                            <select id="displayMode" name="displayMode" type="text" class="form-control required" placeholder="请输入显示模式（横屏/竖屏）" />
+                        </td>
+                        <th class="formTitle">状态</th>
+                        <td class="formValue">
+                            <select id="status" name="status" type="text" class="form-control required" placeholder="请输入状态（运行中、已关机、检修、停用）" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><hr /></td>
+                        <td><hr /></td>
+                        <td><hr /></td>
+                        <td><hr /></td>
+                    </tr>
+                    <tr>
+                        <th class="formTitle">品牌</th>
+                        <td class="formValue">
+                            <input id="brand" name="brand" type="text" class="form-control " placeholder="请输入品牌" />
+                        </td>
+                        <th class="formTitle">尺寸</th>
+                        <td class="formValue">
+                            <input id="size" name="size" type="text" class="form-control " placeholder="请输入尺寸" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="formTitle">设备IP</th>
+                        <td class="formValue">
+                            <input id="deviceIp" name="deviceIp" type="text" class="form-control " placeholder="请输入设备IP" readonly />
+                        </td>
+                        <th class="formTitle">设备序列号</th>
+                        <td class="formValue">
+                            <input id="sn" name="sn" type="text" class="form-control " placeholder="请输入设备序列号" readonly />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="formTitle">系统版本号</th>
+                        <td class="formValue">
+                            <input id="sysVersion" name="sysVersion" type="text" class="form-control " placeholder="请输入系统版本号" readonly />
+                        </td>
+                        <th class="formTitle">apk版本号</th>
+                        <td class="formValue">
+                            <input id="apkVersion" name="apkVersion" type="text" class="form-control " placeholder="请输入apk版本号" readonly />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="formTitle">Mac</th>
+                        <td class="formValue">
+                            <input id="mac" name="mac" type="text" class="form-control " placeholder="请输入Mac" />
+                        </td>
+                        <th class="formTitle">Ip</th>
+                        <td class="formValue">
+                            <input id="ip" name="ip" type="text" class="form-control " placeholder="请输入Ip" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><hr /></td>
+                        <td><hr /></td>
+                        <td><hr /></td>
+                        <td><hr /></td>
+                    </tr>
+                    <tr><th colspan="4"><div style="text-align:left;font-size: 15px"><button id="unBind" type="button" onclick="clearRoom()">解除教室绑定</button></div></th></tr>
+                    <tr>
+                        <th class="formTitle">班级名称</th>
+                        <td class="formValue">
+                            <input id="className" name="classOrOfficeName" type="text" class="form-control" placeholder="未绑定" readonly />
+                        </td>
+                        <th class="formTitle">教室</th>
+                        <td class="formValue">
+                            <input id="classroomName" name="classroomName" type="text" class="form-control" placeholder="未绑定" readonly />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</form>

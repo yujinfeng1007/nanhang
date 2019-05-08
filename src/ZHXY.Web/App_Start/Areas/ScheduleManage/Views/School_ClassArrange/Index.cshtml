@@ -1,0 +1,373 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script>
+
+    $(function () {
+        gridList();
+
+        $("#F_Semester").bindSelect({
+            url: "/SchoolManage/School_Semester/GetGridSelect",
+            id: "F_Id",
+            text: "F_Name"
+        });
+        $("#F_Year").bindSelect({
+            dictionary: 'F_Year',
+            displayBlank: false
+        });
+        $("#F_Divis_ID").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Division",
+        });
+
+        $("#F_Divis_ID").change(function () {
+            changeDivis();
+        });
+
+        $("#F_Grade_ID").change(function () {
+            changeClass();
+        });
+        changeDivis();
+
+        $("#btn_search").click(function () {
+            if ($("#F_Grade_ID").val() == "") {
+                $.modalAlert("请选择年级！", "warning");
+                return;
+            }
+            if ($("#F_Year").val() == "") {
+                $.modalAlert("请选择年度！", "warning");
+                return;
+            }
+            if ($("#F_Semester").val() == "") {
+                $.modalAlert("请选择学期！", "warning");
+                return;
+            }
+
+            //$.ajax({
+            //    url: "/ScheduleManage/School_ClassArrange/GetClassPTimetables?F_Semester=" + $("#F_Semester").val() + "&F_Divis=" + $("#F_Divis_ID").val() + "&F_Grade=" + $("#F_Grade_ID").val() + "&F_Year=" + $("#F_Year").val(),
+            //    dataType: "json",
+            //    async: false,
+            //    success: function (obj) {
+            //        var data = obj;
+            //        if (data.length <= 0)
+            //            return;
+            //        //$.jgrid.gridUnload("gridLists");//先卸载表格
+            //        //gridList(model);
+            //        jQuery("#gridLists").jqGrid("clearGridData");
+            //        for (var n = 0; n < data.length; n++) {
+            //            var item = data[n];
+            //            var F_Day1 = "", F_Day2 = "", F_Day3 = "", F_Day4 = "", F_Day5 = "", F_Day6 = "", F_Day7 = "";
+            //            for (var x = 0; x < item.ClassDay1Course.length; x++)
+            //                F_Day1 += item.ClassDay1Course[x].F_CourseIndex+":"+item.ClassDay1Course[x].F_CourseName + "(" + item.ClassDay1Course[x].F_Teacher + ")" + "</br>"
+            //            for (var x = 0; x < item.ClassDay2Course.length; x++)
+            //                F_Day2 += item.ClassDay2Course[x].F_CourseIndex + ":" + item.ClassDay2Course[x].F_CourseName + "(" + item.ClassDay2Course[x].F_Teacher + ")" + "</br>"
+            //            for (var x = 0; x < item.ClassDay3Course.length; x++)
+            //                F_Day3 += item.ClassDay3Course[x].F_CourseIndex + ":" + item.ClassDay3Course[x].F_CourseName + "(" + item.ClassDay3Course[x].F_Teacher + ")" + "</br>"
+            //            for (var x = 0; x < item.ClassDay4Course.length; x++)
+            //                F_Day4 += item.ClassDay4Course[x].F_CourseIndex + ":" + item.ClassDay4Course[x].F_CourseName + "(" + item.ClassDay4Course[x].F_Teacher + ")" + "</br>"
+            //            for (var x = 0; x < item.ClassDay5Course.length; x++)
+            //                F_Day5 += item.ClassDay5Course[x].F_CourseIndex + ":" + item.ClassDay5Course[x].F_CourseName + "(" + item.ClassDay5Course[x].F_Teacher + ")" + "</br>"
+            //            for (var x = 0; x < item.ClassDay6Course.length; x++)
+            //                F_Day6 += item.ClassDay6Course[x].F_CourseIndex + ":" + item.ClassDay6Course[x].F_CourseName + "(" + item.ClassDay6Course[x].F_Teacher + ")" + "</br>"
+            //            for (var x = 0; x < item.ClassDay7Course.length; x++)
+            //                F_Day7 += item.ClassDay7Course[x].F_CourseIndex + ":" + item.ClassDay7Course[x].F_CourseName + "(" + item.ClassDay7Course[x].F_Teacher + ")" + "</br>"
+            //            var t = "{ F_Id:'" + item.F_Id
+            //                + "', F_Year:'" + item.F_Year
+            //                + "', F_SemesterId:'" + item.F_SemesterId
+            //                + "', F_Divis_ID:'" + item.F_Divis_ID
+            //                + "', F_GradeId:'" + item.F_GradeId
+            //                  + "', F_ClassId:'" + item.F_ClassId
+            //                + "', F_CourseCount:'" + item.F_CourseCount
+            //                + "', F_Day1:'" + F_Day1
+            //                + "', F_Day2:'" + F_Day2
+            //                + "', F_Day3:'" + F_Day3
+            //                + "', F_Day4:'" + F_Day4
+            //                + "', F_Day5:'" + F_Day5
+            //                + "', F_Day6:'" + F_Day6
+            //                + "', F_Day7:'" + F_Day7 + "'}";
+
+            //            $("#gridLists").jqGrid('addRowData', n + 1, eval('(' + t + ')'));
+            //        }
+
+                //}
+            //});
+        $("#gridLists").jqGrid('setGridParam', {
+                postData: { keyword: $("#txt_keyword").val(), F_Semester: $("#F_Semester").val(), F_Divis: $("#F_Divis_ID").val(), F_Grade: $("#F_Grade_ID").val(), F_Year: $("#F_Year").val(), F_Class: $("#F_Class_ID").val(), F_CreatorTime_Start: $("#F_CreatorTime_Start").val(), F_CreatorTime_Stop: $("#F_CreatorTime_Stop").val() },
+            }).trigger('reloadGrid');
+        });
+    });
+
+    function changeDivis() {
+        $("#F_Grade_ID").find("option").remove();
+        $("#F_Grade_ID").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Grade&parentId=" + $("#F_Divis_ID").val(),
+        });
+        changeClass();
+    }
+
+    function changeClass() {
+        $("#F_Class_ID").find("option").remove();
+        $("#F_Class_ID").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Class&parentId=" + $("#F_Grade_ID").val(),
+        });
+    }
+
+    function gridList() {
+        var $gridList = $("#gridLists");
+        $gridList.dataGrid({
+            //datatype: "local",
+            url: "/ScheduleManage/School_ClassArrange/GetClassPTimetables",
+            height: $(window).height() - 128,
+            colModel: [
+			 	        { label: '主键', name: 'F_Id', hidden: true },
+                         {
+                             label: '年度', name: 'F_Year', width: 80, align: 'left',
+                             formatter: function (cellvalue) {
+                                 return top.clients.dataItems["F_Year"][cellvalue] == undefined ? "" : top.clients.dataItems["F_Year"][cellvalue];
+                             }
+                         },
+			 	{
+			 	    label: '学期', name: 'F_SemesterId', width: 80, align: 'left', formatter: function (cellvalue) {
+			 	        return top.clients.semester[cellvalue] == undefined ? "" : top.clients.semester[cellvalue].fullname;
+			 	    }
+			 	},
+                {
+                    label: '学部', name: 'F_Divis_ID', width: 80, align: 'left',
+                    formatter: function (cellvalue, options, rowObject) {
+                        return top.clients.organize[cellvalue] == null ? "" : top.clients.organize[cellvalue].fullname;
+                    }
+                },
+                {
+                    label: '年级', name: 'F_GradeId', width: 80, align: 'left',
+                    formatter: function (cellvalue) {
+                        return top.clients.organize[cellvalue] == null ? "" : top.clients.organize[cellvalue].fullname;
+                    }
+                },
+                //{
+                //    label: '班级', name: 'F_ClassId', width: 80, align: 'left',
+                //    formatter: function (cellvalue) {
+                //        return top.clients.organize[cellvalue] == null ? "" : top.clients.organize[cellvalue].fullname;
+                //    }
+                //},
+                 { label: '班级', name: 'F_ClassName', width: 80, align: 'left' },
+                 { label: '节数', name: 'F_CourseCount', width: 80, align: 'left' },
+                 { label: '周一', name: 'F_Day1', width: 80, align: 'left' },
+                 { label: '周二', name: 'F_Day2', width: 80, align: 'left' },
+                 { label: '周三', name: 'F_Day3', width: 80, align: 'left' },
+                 { label: '周四', name: 'F_Day4', width: 80, align: 'left' },
+                 { label: '周五', name: 'F_Day5', width: 80, align: 'left' },
+                 { label: '周六', name: 'F_Day6', width: 80, align: 'left' },
+                 { label: '周日', name: 'F_Day7', width: 80, align: 'left' }
+            ]
+            //,
+            //pager: "#gridPager",
+            //sortname: 'F_DepartmentId asc,F_CreatorTime desc',
+            //viewrecords: true
+        });
+
+    }
+
+    function btn_add() {
+        $.modalOpen({
+            id: "Form",
+            title: "行政班手动排课",
+            url: "/ScheduleManage/School_ClassArrange/Form",
+            width: "900px",
+            height: "710px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm(function (F_Year, F_Semester, F_Divis_ID, F_Grade_ID) {
+                    $("#F_Year").val(F_Year).trigger("change");
+                    $("#F_Semester").val(F_Semester).trigger("change");
+                    $("#F_Divis_ID").val(F_Divis_ID).trigger("change");
+                    $("#F_Grade_ID").val(F_Grade_ID).trigger("change");
+                    $("#btn_search").click();
+                });
+            }
+        });
+    }
+
+    function btn_set() {
+        $.modalOpen({
+            id: "Form",
+            title: "走班手动排课",
+            url: "/ScheduleManage/Schedule_MoveClassArrange/Form",
+            width: "900px",
+            height: "710px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm(function (F_Year, F_Semester, F_Divis_ID, F_Grade_ID) {
+                    $("#F_Year").val(F_Year).trigger("change");
+                    $("#F_Semester").val(F_Semester).trigger("change");
+                    $("#F_Divis_ID").val(F_Divis_ID).trigger("change");
+                    $("#F_Grade_ID").val(F_Grade_ID).trigger("change");
+                    $("#btn_search").click();
+                });
+            }
+        });
+    }
+
+    function btn_publish() {
+        var deleteid = $('#gridLists').jqGridRowValue('F_Id');
+        var keyValue = "";
+        for (var i = 0; i < deleteid.length; i++) {
+            keyValue += deleteid[i] + "|";
+        }
+        var F_Semester = $("#F_Semester").val();
+        var F_Year = $("#F_Year").val();
+
+        $.ConfirmForm({
+            url: "/ScheduleManage/School_ClassArrange/PublishForm",
+            param: { keyValue: keyValue, F_Semester: F_Semester, F_Year: F_Year },
+            success: function () {
+                $.currentWindow().$("#gridLists").trigger("reloadGrid");
+            }
+        })
+    }
+
+    function btn_import()
+    {
+        var title = 'Excel';
+        var extensions = 'xls,xlsx';
+        var mimeTypes = 'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+        $.modalOpen({
+            id: "Form",
+            title: "导入",
+            url: "/ScheduleManage/School_ClassArrange/Import?title=" + title + "&extensions=" + extensions + "&mimeTypes=" + mimeTypes + "&fileName=周排课模版.xls",
+            width: "500px",
+            height: "340px",
+            callBack: function (iframeId) {
+                var data = top.frames[iframeId].submitForm();
+                importAcrion(data);
+            }
+        });
+    }
+
+    function importAcrion(data) {
+        $.submitForm({
+            url: "/ScheduleManage/School_ClassArrange/import",
+            param: data,
+            success: function () {
+                $("#F_Year").val(data.F_Year).trigger("change");
+                $("#F_Semester").val(data.F_Semester).trigger("change");
+                $("#F_Divis_ID").val(data.F_Divis).trigger("change");
+                $("#F_Grade_ID").val(data.F_Grade).trigger("change");
+                $("#btn_search").click();
+            }
+        })
+    }
+    function btn_export() {
+        if ($("#F_Grade_ID").val() == "") {
+            $.modalAlert("请选择年级！", "warning");
+            return;
+        }
+        if ($("#F_Year").val() == "") {
+            $.modalAlert("请选择年度！", "warning");
+            return;
+        }
+        if ($("#F_Semester").val() == "") {
+            $.modalAlert("请选择学期！", "warning");
+            return;
+        }
+        document.location = "/ScheduleManage/School_ClassArrange/export?F_Semester=" + $("#F_Semester").val() + "&F_Divis=" + $("#F_Divis_ID").val() + "&F_Grade=" + $("#F_Grade_ID").val() + "&F_Year=" + $("#F_Year").val();
+    }
+
+    function btn_AutoArrange() {
+        $.modalOpen({
+            id: "Formedit",
+            title: "自动排课",
+            url: "/ScheduleManage/School_ClassArrange/AutoArrangeForm",
+            width: "500px",
+            height: "310px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm(function (F_Year, F_Semester,F_Divis_ID, F_Grade_ID) {
+                    $("#F_Year").val(F_Year).trigger("change");
+                    $("#F_Semester").val(F_Semester).trigger("change");
+                    $("#F_Divis_ID").val(F_Divis_ID).trigger("change");
+                    $("#F_Grade_ID").val(F_Grade_ID).trigger("change");
+                    $("#btn_search").click();
+                });
+            }
+        });
+    }
+</script>
+
+<div class="topPanel">
+    <div class="toolbar">
+        <div class="btn-group">
+            <a class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
+            <div class="btn-group">
+                <a id="NF-add" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_add()"><i class="fa fa-plus"></i>行政班手动排课</a>
+            </div>
+            <div class="btn-group">
+                <a id="NF-MoveArrnge" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_set()"><i class="fa fa-plus"></i>走班手动排课</a>
+            </div>
+            <div class="btn-group">
+                <a id="NF-autoArrange" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_AutoArrange()"><i class="fa fa-adjust"></i>自动排课</a>
+            </div>
+            <div class="btn-group"><a id="NF-import" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_import()"><i class="fa fa-arrow-up"></i>导入</a></div>
+
+            <div class="btn-group"><a id="NF-export" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_export()"><i class="fa fa-arrow-down"></i>导出</a></div>
+        </div>
+
+        <div class="operate">
+            <ul class="nav nav-pills">
+                <li class="first">已选中<span>1</span>项</li>
+                <li><a id="NF-publish" authorize="yes" onclick="btn_publish()"><i class="fa fa-pencil-square-o"></i>发布课表</a></li>
+            </ul>
+            <a href="javascript:;" class="close"></a>
+        </div>
+        <script>$('.toolbar').authorizeButton()</script>
+    </div>
+    <div class="search">
+        <table>
+            <tr>
+                <th class="formTitle">搜索：</th>
+                <td>
+                    <div class="input-group" style="margin-right:10px;width:200px;">
+                        <select id="F_Year" name="F_Year" class="form-control">
+                            <option value="">选择年度</option>
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group" style="margin-right:10px;width:200px;">
+                        <select id="F_Semester" name="F_Semester" class="form-control">
+                            <option value="">选择学期</option>
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group" style="margin-right:10px;width:200px;">
+                        <select id="F_Divis_ID" name="F_Divis_ID" class="form-control">
+                            <option value="">选择学部</option>
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group" style="margin-right:10px;width:200px;">
+                        <select id="F_Grade_ID" name="F_Grade_ID" class="form-control">
+                            <option value="">选择年级</option>
+                        </select>
+                    </div>
+                </td>
+                @*<td>
+                        <div class="input-group" style="margin-right:10px;width:200px;">
+                            <select id="F_Class_ID" name="F_Class_ID" class="form-control">
+                                <option value="">选择班级</option>
+                            </select>
+                        </div>
+                    </td>*@
+                <td>
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <button id="btn_search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="gridPanel">
+    <table id="gridLists"></table>
+    <div id="gridPager"></div>
+</div>

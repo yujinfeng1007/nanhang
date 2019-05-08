@@ -1,0 +1,193 @@
+﻿@{
+    
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script>
+    let id = $.request("id");
+    let isFinal;
+    $(function () {
+        if (!!id) {
+            $.ajax({
+                url: "get",
+                data: { id: id },
+                dataType: "json",
+                type: "GET",
+                async: false,
+                success: function (res) {
+                    console.table(res.data);
+                    isFinal = res.data.isFinal;
+                    $("#approveForm").formSerialize(res.data);
+
+                    $("#leaveType").val(localStorage.dataItems["LeaveType"] == "undefine" ? "" : top.clients.dataItems['LeaveType'][res.data.leaveType]);
+                    if (!isFinal) {
+                        $(".need").removeClass("hidden");
+                    }
+                    if (isFinal && parseFloat(res.data.leaveDays)>3){
+                        getPreApprove();
+                         $(".prev").removeClass("hidden");
+                    }
+                }
+            });
+        }
+
+        $("#finalJudgeId").select2({
+            allowClear: true,
+            placeholder: "请选择学工部审批人",
+            ajax: {
+                url: "loadFinals",
+                dataType: "json",
+                data: function (param) {
+                    return {
+                        search: param.term,
+                    }
+                },
+                processResults: function (data) {
+                    return {
+                        results: data.data
+                    };
+                },
+                delay: 100
+            }
+        })
+
+        $("#isAgreed").select2({
+            minimumResultsForSearch: -1,
+            data: [
+                {
+                    id: true,
+                    text: '同意'
+                },
+                {
+                    id: false,
+                    text: '不同意'
+                }],
+        });
+
+
+        $("#isAgreed").on("change", _ => {
+            if (!isFinal) {
+                $(".need").toggleClass("hidden");
+            }
+        })
+
+
+    });
+    function submitForm() {
+        if (!$('#approveForm').formValid()) {
+            return false;
+        }
+        if (!isFinal && eval($("#isAgreed").val())) {
+            let finalJudgeId = $("#finalJudgeId").val();
+            if (!finalJudgeId) {
+                $.modalMsg('请先选择终审人', 'warning');
+                return false;
+            } else {
+                $.post(
+                    "addApprover",
+                    { orderId: id, approverId: finalJudgeId },
+                    function (res) {
+                        if (res.state == "error") {
+                            $.modalMsg(res.message, 'error');
+                            return false;
+                        }
+                    });
+            }
+        }
+        $.submitForm({
+            url: "approval",
+            param: { orderId: id, isAgreed: $("#isAgreed").val(), opinion: $("#opinion").val() },
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+
+
+    function getPreApprove() {
+        $.getJSON(`getPreApprove?id=${id}`, (rst) => {
+            $("#prveName").val(rst.data.name);
+            $("#prevOpinion").val(rst.data.opinion);
+        })
+    }
+
+</script>
+<form id="approveForm">
+    <div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+        <div style="padding-top: 20px; margin-right: 30px;">
+            <table class="form">
+                <tr>
+                    <th class="formTitle">请假人</th>
+                    <td class="formValue disabled">
+                        <input id="leaveerName" name="leaveerName" type="text" class="form-control" />
+                    </td>
+                    <th class="formTitle">请假类型</th>
+                    <td class="formValue disabled">
+                        <input id="leaveType" name="leaveType" type="text" class="form-control" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">开始时间</th>
+                    <td class="formValue disabled">
+                        <input id="startTime" name="startTime" type="text" class="form-control" />
+                    </td>
+                    <th class="formTitle">结束时间</th>
+                    <td class="formValue disabled">
+                        <input id="endOfTime" name="endOfTime" type="text" class="form-control" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">请假天数</th>
+                    <td class="formValue disabled">
+                        <input id="leaveDays" name="leaveDays" type="text" class="form-control" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">请假事由</th>
+                    <td class="formValue disabled" colspan="3">
+                        <textarea id="reasonForLeave" name="reasonForLeave" class="form-control" style="height: 80px;"></textarea>
+                    </td>
+                </tr>
+                <tr class="prev hidden">
+                    <th class="formTitle">审批人</th>
+                    <td class="formValue disabled">
+                        <input id="prveName" name="prveName" class="form-control" >
+                    </td>
+                </tr>
+
+                <tr class="prev hidden">
+                    <th class="formTitle">审批意见</th>
+                    <td class="formValue disabled" colspan="3">
+                        <textarea id="prevOpinion" name="prevOpinion" class="form-control" style="height: 80px;"></textarea>
+                    </td>
+                </tr>
+
+                <br />
+                <tr>
+                    <th class="formTitle">审批</th>
+                    <td class="formValue">
+                        <select id="isAgreed" name="isAgreed" class="form-control" style="width:120px;">
+                            <option value="true" selected>同意</option>
+                            <option value="false">不同意</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">意见</th>
+                    <td class="formValue" colspan="3">
+                        <textarea id="opinion" name="opinion" class="form-control" rows="3" required=""></textarea>
+                    </td>
+                </tr>
+                <tr>
+
+                    <th class="formTitle need hidden">学工部审批</th>
+                    <td class="formValue need hidden">
+                        <select id="finalJudgeId" name="finalJudgeId" class="form-control">
+                            <option></option>
+                        </select>
+                    </td>
+
+                </tr>
+            </table>
+        </div>
+    </div>
+</form>

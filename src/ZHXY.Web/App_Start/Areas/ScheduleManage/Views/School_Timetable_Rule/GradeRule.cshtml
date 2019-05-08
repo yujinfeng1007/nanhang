@@ -1,0 +1,352 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script src="~/Content/js/jquery-contextmenu/jquery-contextmenu.min.js"></script>
+<link href="~/Content/js/jquery-contextmenu/jquery-contextmenu.min.css" rel="stylesheet">
+
+<style>
+    #class-table {
+      position: relative;
+    }
+    #class-table .select-box-dashed {
+        position: absolute;
+        display: none;
+        width: 0px;
+        height: 0px;
+        padding: 0px;
+        margin: 0px;
+        border: 1px dashed #0099ff;
+        background-color: #c3d5ed;
+        opacity: 0.5;
+        filter: alpha(opacity=50);
+        font-size: 0px;
+        z-index: 99999;
+    }
+
+    #class-table table {
+        width: 100%;
+        border: 1px solid #cdcdcd;
+        border-collapse: separate;
+    }
+
+        #class-table table thead tr {
+            background-color: #525252;
+            color: #fff;
+            font-weight: normal;
+        }
+
+            #class-table table thead tr th {
+                height: 30px;
+                padding: 3px 6px;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                text-align: center;
+                border: 1px solid #ccc;
+                font-weight: bold;
+            }
+
+        #class-table table tbody tr td {
+            border: 1px solid #ccc;
+            vertical-align: top;
+            padding: 2px;
+            text-align: center;
+            height: 36px;
+            text-align: center;
+            vertical-align: middle !important;
+        }
+        #class-table table tbody tr td.temp-selected, #class-table table tbody tr td.selected {
+          background: #dcdcdc
+        }
+</style>
+<script>
+
+    $(function () {
+
+        $("#F_Semester").bindSelect({
+            url: "/SchoolManage/School_Semester/GetGridSelect",
+            id: "F_Id",
+            text: "F_Name"
+        });
+        $("#F_Year").bindSelect({
+            dictionary: 'F_Year',
+            displayBlank: false
+        });
+        $("#F_Divis_ID").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Division",
+        });
+
+        $("#F_Divis_ID").change(function () {
+            changeDivis();
+        });
+
+        $("#F_Grade_ID").change(function () {
+            search();
+            //changeClass();
+        });
+        changeDivis();
+
+    });
+    function search() {
+        //if ($("#F_Grade_ID").val() == "") {
+        //    $.modalAlert("请选择年级！", "warning");
+        //    return;
+        //}
+        if ($("#F_Year").val() == "") {
+            $.modalAlert("请选择年度！", "warning");
+            return;
+        }
+        if ($("#F_Semester").val() == "") {
+            $.modalAlert("请选择学期！", "warning");
+            return;
+        }
+        classTable.clearClasses();
+        $.ajax({
+            url: "/ScheduleManage/School_Timetable_Rule/GeGradeRule?F_Semester=" + $("#F_Semester").val() + "&F_Divis=" + $("#F_Divis_ID").val() + "&F_Grade=" + $("#F_Grade_ID").val() + "&F_Year=" + $("#F_Year").val(),
+            dataType: "json",
+            async: false,
+            success: function (obj) {
+                console.log(obj);
+                var datas = obj;
+                if (datas.length <= 0)
+                    return;
+                for (var i = 0; i < datas.length; i++) {
+                        setPriority(datas[i].F_WeekN, datas[i].F_CourseIndex, datas[i].F_Rule);
+                }
+            }
+        });
+    }
+
+    function changeDivis() {
+        $("#F_Grade_ID").find("option").remove();
+        $("#F_Grade_ID").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Grade&parentId=" + $("#F_Divis_ID").val(),
+        });
+        //changeClass();
+    }
+
+    //function changeClass() {
+    //    $("#F_Class_ID").find("option").remove();
+    //    $("#F_Class_ID").bindSelect({
+    //        url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Class&parentId=" + $("#F_Grade_ID").val(),
+    //    });
+    //}
+
+    function setPriority(dateIndex, lessonIndex, value) {
+        if ($("#F_Grade_ID").val() == "") {
+            $.modalAlert("请选择年级！", "warning");
+            return;
+        }
+        if ($("#F_Year").val() == "") {
+            $.modalAlert("请选择年度！", "warning");
+            return;
+        }
+        if ($("#F_Semester").val() == "") {
+            $.modalAlert("请选择学期！", "warning");
+            return;
+        }
+        if (value === 'cancel') {
+            $('#t_' + dateIndex + '_' + lessonIndex).empty();
+            $('#t_' + dateIndex + '_' + lessonIndex).css("background-color", "");
+            return
+        }
+        if (value < 0) {
+            $('#t_' + dateIndex + '_' + lessonIndex).html('<div style="background-color:#FF0000" data-value=' + value + ' class="item">' + dictionary[value] + '</div>')
+            return;
+        }
+        if (value ==11) {
+            $('#t_' + dateIndex + '_' + lessonIndex).html('<div style="background-color:#d8c8ea" data-value=' + value + ' class="item">' + dictionary[value] + '</div>')
+            return;
+        }
+        $('#t_' + dateIndex + '_' + lessonIndex).html('<div data-value=' + value + ' class="item">' + dictionary[value] + '</div>')
+    }
+
+    function btn_sumbit()
+    {
+        if ($("#F_Grade_ID").val() == "") {
+            $.modalAlert("请选择年级！", "warning");
+            return;
+        }
+        if ($("#F_Year").val() == "") {
+            $.modalAlert("请选择年度！", "warning");
+            return;
+        }
+        if ($("#F_Semester").val() == "") {
+            $.modalAlert("请选择学期！", "warning");
+            return;
+        }
+        $.loading(true, "正在提交...");
+        var data = getRuleValue();
+        var F_Semester = $("#F_Semester").val();
+        var F_Divis = $("#F_Divis_ID").val();
+        var F_Grade = $("#F_Grade_ID").val();
+        var F_Year = $("#F_Year").val();
+        //var F_ClassId = $("#F_Class_ID").val();
+        console.log(data);
+        //var postData = { F_Class: F_ClassId, F_Semester: F_Semester, F_Divis: F_Divis, F_Grade: F_Grade, F_Year: F_Year, data: data };
+        var postData = {  F_Semester: F_Semester, F_Divis: F_Divis, F_Grade: F_Grade, F_Year: F_Year, data: data };
+        $.ajax({
+            type: "POST",
+            url: "/ScheduleManage/School_Timetable_Rule/SetGradeRule",
+            data: JSON.stringify(postData),
+            contentType: "application/json",
+            dataType: "json",
+            success: function (data) {
+                $.loading(false);
+                if (data.state == "success") {
+                    $.modalMsg(data.message, data.state);
+                    $.modalClose();
+                    callback();
+                } else {
+                    $.modalAlert(data.message, data.state);
+                }
+            }
+        });
+    }
+</script>
+ <div class="topPanel">
+                <div class="toolbar">
+                    <div class="btn-group">
+                        <a class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
+                    </div>
+                    <div class="btn-group">
+                        <a id="NF-add" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_sumbit()"><i class="fa fa-plus"></i>提交</a>
+                    </div>
+                </div>
+                <div class="search">
+                    <table>
+                        <tr>
+                            <th class="formTitle">搜索：</th>
+                            <td>
+                                <div class="input-group" style="margin-right:10px;width:100px;">
+                                    <select id="F_Year" name="F_Year" class="form-control">
+                                        <option value="">选择年度</option>
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group" style="margin-right:10px;width:200px;">
+                                    <select id="F_Semester" name="F_Semester" class="form-control">
+                                        <option value="">选择学期</option>
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group" style="margin-right:10px;width:200px;">
+                                    <select id="F_Divis_ID" name="F_Divis_ID" class="form-control">
+                                        <option value="">选择学部</option>
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group" style="margin-right:10px;width:200px;">
+                                    <select id="F_Grade_ID" name="F_Grade_ID" class="form-control">
+                                        <option value="">选择年级</option>
+                                    </select>
+                                </div>
+                            </td>
+                            @*<td>
+                                <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button id="btn_search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
+                                    </span>
+                                </div>
+                            </td>*@
+                        </tr>
+                    </table>
+                </div>
+            </div>
+         <div class="topPanel" style="padding:10px">
+    <div id="calendar">
+    </div>
+
+    <div id="class-table">
+    </div>
+    @*<button id="getValue">获取值</button>*@
+</div>
+
+<script>
+    var classTable = new classTable()
+    var dictionary = { "-1": '不排课',"10":'排行政课',"11":"排走班课" }; //top.clients.dataItems["TimetableRule"];// { 1: '优先排', 2: '尽量排', 3: '不排课' }  //字典
+
+    function getContextMenu(data) {
+        var output = {}
+        data = $.extend({}, data, { 'cancel': '取消' })
+        $.each(data, function (i, item) {
+            output[i] = {
+                name: item,
+            }
+        })
+
+        return output
+    }
+
+    function getRuleValue() {
+      var output = []
+      $('#class-table td[id]').each(function (i, item) {
+        if ($(this).find('.item').length) {
+          var value = $(this).find('.item').attr('data-value')
+          var dateIndex = $(this).attr('id').split('_')[1]
+          var lessonIndex = $(this).attr('id').split('_')[2]
+          output.push({
+            value: value,
+            dateIndex: dateIndex,
+            lessonIndex: lessonIndex
+          })
+        }
+      })
+      return output
+    }
+    var selecttds = null;
+    function frameSelection(tdselected)
+    {
+        if (tdselected.length <= 0) {
+            return;
+        }
+        $(tdselected[0]).trigger("contextmenu");
+        selecttds = tdselected;
+    }
+    $(function () {
+        classTable.init({
+            $container: $('#class-table'),
+            frameSelection: true,
+            offsetTop: 100,
+            selectCallback: frameSelection
+        })
+        //setPriority(1, 2, 1)
+        $.contextMenu({
+            selector: '#class-table td[id]',
+            items: getContextMenu(dictionary),
+            callback: function (key, options) {
+                //多选
+                if (selecttds != null) {
+
+                    if (options !== 'cancel') {
+
+                    } else {
+                        key = '';
+                    }
+                    for (var i = 0; i < selecttds.length; i++) {
+                        var dateIndex = $(selecttds[i]).attr('id').split('_')[1]
+                        var lessonIndex = $(selecttds[i]).attr('id').split('_')[2]
+                        setPriority(dateIndex, lessonIndex, key)
+                    }
+                    selecttds = null;
+                    return;
+                }
+                if (options !== 'cancel') {
+                    var dateIndex = $(this).attr('id').split('_')[1]
+                    var lessonIndex = $(this).attr('id').split('_')[2]
+                    setPriority(dateIndex, lessonIndex, key)
+                } else {
+                    setPriority(dateIndex, lessonIndex, '')
+                }
+            },
+
+        })
+        //$('#getValue').click(function () {
+        //  console.log(getRuleValue())
+        //})
+    })
+</script>

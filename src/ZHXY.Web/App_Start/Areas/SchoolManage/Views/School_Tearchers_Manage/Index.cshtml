@@ -1,0 +1,148 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script>
+    var F_Teachers_ID = $.request("keyValue");
+    $(function () {
+        gridList();
+        $("#F_DepartmentId").bindSelect({
+            url: "/SystemManage/Organize/GetTreeSelectJson",
+        });
+        $("#F_SysAreaId").bindSelect({
+            url: "/SystemManage/Area/GetTreeSelectJson",
+        });
+        $("#F_Gender").bindSelect({
+          dictionary: '104'
+        })
+    })
+    function gridList() {
+        var $gridList = $("#gridList");
+        $gridList.dataGrid({
+            url: "/SchoolManage/School_Tearchers_Manage/GetGridJson?keyValue=" + F_Teachers_ID + "",
+            height: $(window).height() - 173,
+            colModel: [
+            			 	{ label: '主键', name: 'F_Id', hidden: true },
+                //{ label: '教师ID', name: 'F_Teachers_ID', width: 80, align: 'left' },
+                                {
+                                    label: '年度', name: 'F_Year', width: 80, align: 'left',
+                                    formatter: function (cellvalue) {
+                                        return top.clients.dataItems["F_Year"][cellvalue] == undefined ? "" : top.clients.dataItems["F_Year"][cellvalue];
+                                    }
+                                },
+                                { label: '学期', name: 'F_Term', width: 80, align: 'left' },
+                                { label: '管理类型', name: 'F_Type', width: 80, align: 'left' },
+                                { label: '管理备注', name: 'F_Remark', width: 80, align: 'left' },
+                                { label: '涉及费用', name: 'F_Fee', width: 80, align: 'left' },
+                			 	{ label: '创建时间', name: 'F_CreatorTime', width: 80, align: 'left',
+                    formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' }
+                },
+                                //{ label: '创建人', name: 'F_CreatorUserId', width: 80, align: 'left' },
+                                //{ label: '删除标志', name: 'F_DeleteMark', width: 80, align: 'left' },
+                            ],
+            pager: "#gridPager",
+            sortname: 'F_DepartmentId asc,F_CreatorTime desc',
+            viewrecords: true
+        });
+        $("#btn_search").click(function () {
+            $gridList.jqGrid('setGridParam', {
+                postData: { keyword: $("#txt_keyword").val() },//, F_DepartmentId: $("#F_DepartmentId").val(), F_CreatorTime_Start: $("#F_CreatorTime_Start").val(), F_CreatorTime_Stop: $("#F_CreatorTime_Stop").val()
+            }).trigger('reloadGrid');
+        });
+    }
+    function btn_add() {
+        $.modalOpen({
+            id: "Form",
+            title: "新增",
+            url: "/SchoolManage/School_Tearchers_Manage/Form?F_Teachers_ID=" + F_Teachers_ID + "",
+            width: "700px",
+            height: "510px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm();
+            }
+        });
+    }
+    function btn_edit() {
+        var keyValue = ($("#gridList").jqGridRowValue('F_Id'))[0];
+        $.modalOpen({
+            id: "Form",
+            title: "修改",
+            url: "/SchoolManage/School_Tearchers_Manage/Form?F_Teachers_ID=" + F_Teachers_ID + "&keyValue=" + keyValue,
+            width: "700px",
+            height: "510px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm();
+            }
+        });
+    }
+    function btn_delete() {
+        var deleteid = $('#gridList').jqGridRowValue('F_Id');
+        var keyValue = "";
+        for (var i = 0; i < deleteid.length; i++) {
+            keyValue += deleteid[i] + "|";
+        }
+        $.deleteForm({
+            url: "/SchoolManage/School_Tearchers_Manage/DeleteForm",
+            param: { keyValue: keyValue },
+            success: function () {
+                parent.top.frames["Daily"].$("#gridList").trigger("reloadGrid");
+                //$.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+    function btn_details() {
+        var keyValue = ($("#gridList").jqGridRowValue('F_Id'))[0];
+        $.modalOpen({
+            id: "Details",
+            title: "查看",
+            url: "/SchoolManage/School_Tearchers_Manage/Details?keyValue=" + keyValue,
+            width: "700px",
+            height: "550px",
+            btn: null,
+        });
+    }
+</script>
+
+<div class="topPanel">
+    <div class="toolbar">
+        <div class="btn-group">
+            <a class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
+        </div>
+        <div class="btn-group">
+            <a id="NF-add" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_add()"><i class="fa fa-plus"></i>新建</a>
+        </div>
+        @*<div class="btn-group"><a id="NF-export" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_export()"><i class="fa fa-arrow-down"></i>导出公告</a></div>
+        <div class="btn-group"><a id="NF-import" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_import()"><i class="fa fa-arrow-up"></i>导入公告</a></div>*@
+            <div class="operate">
+                <ul class="nav nav-pills">
+                    <li class="first">已选中<span>1</span>项</li>
+                    <li><a id="NF-edit" authorize="yes" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>修改</a></li>
+                    <li><a id="NF-delete" authorize="yes" onclick="btn_delete()"><i class="fa fa-trash-o"></i>删除</a></li>
+                    <li><a id="NF-Details" authorize="yes" onclick="btn_details()"><i class="fa fa-search-plus"></i>查看</a></li>
+                    <li class="split"></li>
+                </ul>
+                <a href="javascript:;" class="close"></a>
+            </div>
+            <script>$('.toolbar').authorizeButton()</script>
+        </div>
+    <div class="search">
+        <table>
+            <tr>
+                <th class="formTitle">搜索：</th>
+
+                <td>
+                    <div class="input-group">
+                        <input id="txt_keyword" type="text" class="form-control" placeholder="年度" style="width: 150px;">
+                        <span class="input-group-btn">
+                            <button id="btn_search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="gridPanel">
+    <table id="gridList"></table>
+    <div id="gridPager"></div>
+</div>

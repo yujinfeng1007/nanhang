@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script>
+    var keyValue = $.request("keyValue");
+</script>
+<form id="form1">
+    <div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#a" data-toggle="tab">单科统计</a></li>
+            <li><a href="#b" data-toggle="tab">双科统计</a></li>
+            <li><a href="#c" data-toggle="tab">三科统计</a></li>
+        </ul>
+        <div class="tab-content" style="padding-top: 5px;">
+            <div id="a" class="tab-pane form active" style="padding: 15px;">
+                @Html.Partial("WCTaskOneCourseReport")
+            </div>
+            <div id="b" class="tab-pane form " style="padding: 15px;">
+                @Html.Partial("WCTaskTwoCourseReport")
+            </div>
+            <div id="c" class="tab-pane form " style="padding: 15px;">
+                @Html.Partial("WCTaskThreeCourseReport")
+            </div>
+        </div>
+        </div>
+</form>

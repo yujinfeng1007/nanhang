@@ -1,0 +1,93 @@
+﻿@{
+    
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script>
+    $(function () {
+        gridList();
+    })
+
+    function gridList() {
+        var $gridList = $("#gridList");
+        $gridList.dataGrid({
+            url: "/Dorm/Report/GetOriginalList",
+            colModel: [
+                { label: "通道名称", name: "ChannelName", width: 150, align: 'left' },
+                //{ label: '院校', name: 'DepartmentName', width: 200, align: 'left' },
+                { label: '姓名', name: 'Name', width: 150, align: 'left' },
+                //{ label: '宿舍', name: 'DormName', width: 150, align: 'left' },
+                //{ label: "卡号", name: "CardNum", width: 150, align: 'left' },
+                { label: "电话", name: "Tel", width: 150, align: 'left' },
+                {
+                    label: "性别", name: "Gender", width: 150, align: 'left'
+                    //formatter: function (cellValue) {
+                        //return top.clients.dataItems["Gender"][cellValue] == undefined ? "" : top.clients.dataItems["Gender"][cellValue]
+                    //}
+                },
+                {
+                    label: "进出", name: "InOut", width: 150, align: 'left', formatter: function (cellValue) {
+                        return top.clients.dataItems["InOut"][cellValue] == undefined ? "" : top.clients.dataItems["InOut"][cellValue];
+                    }
+                },
+                { label: "时间", name: "Date", width: 150, align: 'left' },
+            ],
+            pager: '#gridPager',
+            multiselect: false
+        });
+        $("#btn_search").click(function () {
+            if (!!$('#StartTime').val() && !$('#EndTime').val()) {
+                $.modalMsg("请输入结束时间", 'warning');
+                return null;
+            }
+            if (!$('#StartTime').val() && !!$('#EndTime').val()) {
+                $.modalMsg("请输入开始时间", 'warning');
+                return null;
+            }
+            $gridList.jqGrid('setGridParam', {
+                postData: { studentNum: $('#txt_keyword').val(), startTime: $('#StartTime').val(), endTime: $('#EndTime').val() },
+            }).trigger('reloadGrid');
+        });
+    }
+    function btn_export() {
+        document.location = "/Dorm/Report/OriginalExport?studentNum=" + $("#txt_keyword").val();
+    }
+</script>
+
+<div class="topPanel">
+    <div class="toolbar">
+        <div class="btn-group">
+            <a class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
+        </div>
+        <div class="btn-group">
+            <a id="NF-export" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_export()"><i class="fa fa-arrow-down"></i>导出</a>
+        </div>
+    </div>
+    <div class="search">
+        <ul>
+            <li class="formTitle">搜索：</li>
+            <li>
+                <div class="input-group" style="margin-top:1px">
+                    <input id="StartTime" name="StartTime" type="text" class="form-control input-wdatepicker" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss' })" placeholder="开始时间" />
+                </div>
+            </li>
+            <li><div class="input-group" style="width:10px">至</div></li>
+            <li>
+                <div class="input-group" style="margin-right:10px;margin-top:1px">
+                    <input id="EndTime" name="EndTime" type="text" class="form-control input-wdatepicker" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss' })" placeholder="结束时间" />
+                </div>
+            </li>
+            <li>
+                <div class="input-group">
+                    <input id="txt_keyword" type="text" class="form-control" placeholder="学号" style="width: 150px;">
+                    <span class="input-group-btn">
+                        <button id="btn_search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="gridPanel">
+    <table id="gridList"></table>
+    <div id="gridPager"></div>
+</div>

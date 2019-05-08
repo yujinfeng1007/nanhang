@@ -1,0 +1,227 @@
+﻿@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<link rel="stylesheet" type="text/css" href="~/Content/css/framework-custom-webuploader.css" />
+<link href="/Content/js/simditor/css/simditor.css" rel="stylesheet" />
+<script type="text/javascript" src="~/Content/js/webuploader/webuploader.js"></script>
+<script src="~/Content/js/Fileupload.js"></script>
+<script src="~/Content/js/simditor/js/module.min.js"></script>
+<script src="~/Content/js/simditor/js/hotkeys.min.js"></script>
+<script src="~/Content/js/simditor/js/uploader.min.js"></script>
+<script src="~/Content/js/simditor/js/simditor.min.js"></script>
+<style>
+    .simditor {
+        border-top: none;
+    }
+</style>
+<script>
+    var keyValue = $.request("keyValue");
+    $(function () {
+        initControl();
+        if (!!keyValue) {
+            $.ajax({
+                url: "/SchoolManage/School_Presence_Info/GetFormJson",
+                data: { keyValue: keyValue },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    $("#form1").formSerialize(data)
+                    if (data["F_EnabledMark"] == false) {
+                        $("input[name='radio']:eq(1)").attr("checked", 'checked');
+                    }
+                    else {
+                        $("input[name='radio']:eq(0)").attr("checked", 'checked');
+                    }
+
+                    var ClassID = data["F_Class"];
+                    var DivisGradeClass;
+                    $.ajax({
+                        url: "/SystemManage/Organize/GetDivisGradeClass?keyValue=" + ClassID,
+                        dataType: "json",
+                        async: false,
+                        success: function (data) {
+                            DivisGradeClass = data;
+                        }
+                    });
+                    $("#F_Class").val(ClassID);
+                    $("#F_ClassDis").val(DivisGradeClass);
+                }
+            });
+        }
+        $("#F_PresenceType").change(function () {
+            if ($("#F_PresenceType").val() != "5") {
+                $.modalOpen({
+                    id: "ClassForm",
+                    title: "班级选择",
+                    url: "/SchoolManage/School_Presence_Info/ClassForm",
+                    width: "900px",
+                    height: "620px",
+                    callBack: function (iframeId) {
+                        var ClassID = top.frames[iframeId].submitForm();
+                        var DivisGradeClass;
+                        $.ajax({
+                            url: "/SystemManage/Organize/GetDivisGradeClass?keyValue=" + ClassID,
+                            dataType: "json",
+                            async: false,
+                            success: function (data) {
+                                DivisGradeClass = data;
+                            }
+                        });
+                        $("#F_Class").val(ClassID);
+                        $("#F_ClassDis").val(DivisGradeClass);
+                    },
+                });
+            }
+            else { $("#F_Class").val(""); $("#F_ClassDis").val(""); }
+        });
+    });
+    function initControl() {
+        $("#F_PresenceType").bindSelect({
+            dictionary: 'F_PresenceType'
+        })
+        $("#F_Pattern").bindSelect({
+            dictionary: 'F_Pattern',
+            displayBlank: false
+        })
+        $("input[name='radio']").change(function () {
+            if ($("input[name='radio']:checked").val() == "true") {
+                $("#F_EnabledMark").val("true");
+            }
+            else
+                $("#F_EnabledMark").val("false");
+        });
+
+        var options = new Object();
+        options.maxFile = 10;
+        var accept = {
+            title: 'Files',
+            extensions: 'gif,jpg,jpeg,bmp,png,mp4,avi,flv',
+            mimeTypes: 'image/*,video/*',
+        };
+        options.accept = accept;
+        $.simpleUploader($('#F_Files'), options)
+        $.simpleUploader($('#F_Cover'), {
+            maxFile: 1,
+            maxSize: "20",
+            accept: {
+                title: 'Image',
+                extensions: 'gif,jpg,jpeg,bmp,png',
+                mimeTypes: 'image/*'
+            },
+        })
+        $.addRequired('#form1')
+    }
+    function submitForm() {
+        var video = false, image = false;
+        var array = $("#F_Files").val().split(',');
+        for (var i = 0; i < array.length; i++) {
+            var arr = array[i].substr(array[i].indexOf(".") + 1)
+            if ("gif,jpg,jpeg,bmp,png".indexOf(arr)!=-1) {
+                image = true;
+            }
+            if ("mp4,avi,flv".indexOf(arr)!=-1) {
+                video = true;
+            }
+        }
+        if (video==true&&image!=true) {
+            $("#F_Pattern").val("1");
+        } else if (image == true && video != true) {
+            $("#F_Pattern").val("2");
+        }
+        else {
+            top.layer.alert("每批次上传图片或视频", { icon: "fa-times-circle", title: "系统提示", btn: ["确认"], btnclass: ["btn btn-primary"] });
+            return;
+        }
+        if ($("#F_IsDisPlay").is(':checked')) {
+            $("#F_IsDisPlay").val(true)
+        }
+        if ($("#F_PresenceType").val() != "5") {
+            if ($("#F_Class").val() == "") {
+                top.layer.alert("班级不能为空", { icon: "fa-times-circle", title: "系统提示", btn: ["确认"], btnclass: ["btn btn-primary"] });
+                return;
+            }
+        }
+        if (!$('#form1').formValid()) {
+            return false;
+        }
+        var postData = $("#form1").formSerialize();
+        $.submitForm({
+            url: "/SchoolManage/School_Presence_Info/SubmitForm?keyValue=" + keyValue,
+            param: postData,
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+</script>
+<form id="form1">
+    <div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#">基本信息</a></li>
+            @*<li ><a href="#">扩展信息</a></li>*@
+        </ul>
+        <div style="padding-top: 20px; margin-right: 30px;">
+            <table class="form">
+                <tr>
+                    <th class="formTitle">标题</th>
+                    <td class="formValue" colspan="3">
+                        <input id="F_Title" name="F_Title" type="text" class="form-control required" placeholder="请输入标题" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">风采简图</th>
+                    <td class="formValue">
+                        <div id="F_Cover" class="required fileUpload">
+                        </div>
+                    </td>
+                    <th class="formTitle">状态</th>
+                    <td class="formValue">
+                        <label><input type="radio" name="radio" class="required" value="true" />启用</label><label style="margin-left:20px;"><input type="radio" name="radio" class="required" value="false" />停用</label>
+                        <input type="hidden" id="F_EnabledMark" name="F_EnabledMark" class="required" />
+                    </td>
+                </tr>
+                <tr>
+
+                    <th class="formTitle">风采文件</th>
+                    <td class="formValue" colspan="3">
+                        <div id="F_Files" class="required fileUpload">
+                        </div>
+                        <label style="color:red;">每批次上传图片或视频</label>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">风采类别</th>
+                    <td class="formValue">
+                        <select id="F_PresenceType" name="F_PresenceType" class="form-control required">
+                            <option value="">-请选择-</option>
+                        </select>
+                    </td>
+                    <th class="formTitle">是否首页展示</th>
+                    <td class="formValue">
+                        <input id="F_IsDisPlay" name="F_IsDisPlay" type="checkbox" class="form-control" style="width:30px;" value="false" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">班级</th>
+                    <td class="formValue">
+                        <input type="hidden" id="F_Class" name="F_Class" class="form-control" disabled="disabled" />
+                        <input type="text" id="F_ClassDis" name="F_ClassDis" class="form-control" disabled="disabled" />
+                    </td>
+                    <th class="formTitle">文件格式</th>
+                    <td class="formValue">
+                        <select id="F_Pattern" name="F_Pattern" class="form-control required" disabled="disabled">
+                            <option value=""></option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">风采内容</th>
+                    <td class="formValue" colspan="3">
+                        <textarea id="F_Content" name="F_Content" class="form-control" style="height: 260px;"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,305 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F2035EE2-B73D-4FB8-A433-CAB465DE6A2A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ZHXY.Application</RootNamespace>
+    <AssemblyName>ZHXY.Application</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="01.Base\TreeHelper.cs" />
+    <Compile Include="DormServices\BuildingAppService.cs" />
+    <Compile Include="DormServices\Buildings\Dto\CreateDormBuildingDto.cs" />
+    <Compile Include="DormServices\Buildings\Dto\DormBuildingView.cs" />
+    <Compile Include="DormServices\Buildings\Dto\UpdateDormBuildingDto.cs" />
+    <Compile Include="DormServices\Buildings\DormBuildingService.cs" />
+    <Compile Include="DormServices\DormRules\Dto\UpdateDormRuleDto.cs" />
+    <Compile Include="DormServices\Gates\Dto\AddGateDto.cs" />
+    <Compile Include="DormServices\Gates\Dto\GateView.cs" />
+    <Compile Include="DormServices\Gates\Dto\SyncGateDto.cs" />
+    <Compile Include="DormServices\Gates\Dto\UpdateGateDto.cs" />
+    <Compile Include="DormServices\Gates\GateAppService.cs" />
+    <Compile Include="DormServices\AccessStudentAppService.cs" />
+    <Compile Include="DormServices\BedAppService.cs" />
+    <Compile Include="DormServices\ChangeLogsAppService.cs" />
+    <Compile Include="DormServices\DormRules\DormRuleService.cs" />
+    <Compile Include="DormServices\DormRooms\DormRoomAppService.cs" />
+    <Compile Include="DormServices\DormStudentAppService.cs" />
+    <Compile Include="DormServices\InOutReceiveAppService.cs" />
+    <Compile Include="DormServices\LateReturnReportService.cs" />
+    <Compile Include="DormServices\NoOutReportService.cs" />
+    <Compile Include="DormServices\NoReturnReportService.cs" />
+    <Compile Include="DormServices\DormRepairAppService.cs" />
+    <Compile Include="DormServices\OriginalReportService.cs" />
+    <Compile Include="DormServices\Performances\Dto\BuildingAccessStatisticsView.cs" />
+    <Compile Include="DormServices\ReportHelper.cs" />
+    <Compile Include="DormServices\VisitDormLimitService.cs" />
+    <Compile Include="DormServices\Visitors\VisitorAppService.cs" />
+    <Compile Include="DormServices\Leave\Dto\AddApproverDto.cs" />
+    <Compile Include="DormServices\Leave\Dto\CancelHolidayDto.cs" />
+    <Compile Include="DormServices\Leave\Dto\CancellableLeaveView.cs" />
+    <Compile Include="DormServices\Leave\Dto\ContactGroupView.cs" />
+    <Compile Include="DormServices\Leave\Dto\ContactView.cs" />
+    <Compile Include="DormServices\Leave\Dto\ApproveDetailView.cs" />
+    <Compile Include="DormServices\Leave\Dto\BulkLeaveDto.cs" />
+    <Compile Include="DormServices\Leave\Dto\GetApprovalListDto.cs" />
+    <Compile Include="DormServices\Leave\Dto\GetCancelListDto.cs" />
+    <Compile Include="DormServices\Leave\Dto\GetLeaveHistoryDto.cs" />
+    <Compile Include="DormServices\Leave\Dto\GetSpecialLeaveDto.cs" />
+    <Compile Include="DormServices\Leave\Dto\LeaveApprovalDto.cs" />
+    <Compile Include="DormServices\Leave\Dto\LeaveApproveView.cs" />
+    <Compile Include="DormServices\Leave\Dto\OneKeyApprovalDto.cs" />
+    <Compile Include="01.Base\PagingDto.cs" />
+    <Compile Include="DormServices\Leave\LeaveAppService.cs" />
+    <Compile Include="DormServices\Leave\Dto\LeaveRequestDto.cs" />
+    <Compile Include="DormServices\Leave\Dto\LeaveListView.cs" />
+    <Compile Include="DormServices\Messages\Dto\OrgHeadView.cs" />
+    <Compile Include="DormServices\Messages\Dto\SetOrgHeadDto.cs" />
+    <Compile Include="DormServices\Messages\MessageAppService.cs" />
+    <Compile Include="DormServices\Performances\Dto\BuildingAccessDetailView.cs" />
+    <Compile Include="DormServices\Performances\Dto\GetBuildingAccessStatisticsDto.cs" />
+    <Compile Include="DormServices\Performances\Dto\GetLoginDetailDto.cs" />
+    <Compile Include="DormServices\Performances\Dto\GetLoginStatisticsDto.cs" />
+    <Compile Include="DormServices\Performances\Dto\LoginDetailView.cs" />
+    <Compile Include="DormServices\Performances\Dto\LoginStatisticsView.cs" />
+    <Compile Include="DormServices\Performances\Dto\GetBuildingAccessDetailDto.cs" />
+    <Compile Include="DormServices\Performances\PerformanceAppService.cs" />
+    <Compile Include="DormServices\Reports\ReportAppService.cs" />
+    <Compile Include="DormServices\Visitors\Dto\AddVisitApplyDto.cs" />
+    <Compile Include="SystemServices\Logs\Dto\AddLogDto.cs" />
+    <Compile Include="SystemServices\Logs\Dto\GetLogListDto.cs" />
+    <Compile Include="SystemServices\Organizes\Dto\AddOrRemoveOrgLeaderDto.cs" />
+    <Compile Include="SystemServices\Organizes\SysOrgLeaderManage.cs" />
+    <Compile Include="RequestDto\Api\CheckVersionInput.cs" />
+    <Compile Include="RequestDto\Api\StudentLeaveInput.cs" />
+    <Compile Include="RequestDto\BaseApiInput.cs" />
+    <Compile Include="SystemServices\Users\Dto\Login\LoginInput.cs" />
+    <Compile Include="SystemServices\Users\Dto\Login\ResultModel.cs" />
+    <Compile Include="SystemServices\Users\Dto\Login\UserModel.cs" />
+    <Compile Include="WebCore\CookieHelper.cs" />
+    <Compile Include="WebCore\Filters\ApiCompressionFilter.cs" />
+    <Compile Include="WebCore\Filters\CustomApiExceptionFilter.cs" />
+    <Compile Include="WebCore\Filters\HandlerAuthorize.cs" />
+    <Compile Include="WebCore\Filters\IpFilter.cs" />
+    <Compile Include="WebCore\Filters\LoginAuthentication.cs" />
+    <Compile Include="WebCore\Filters\SchoolCodeAndSnFilter.cs" />
+    <Compile Include="WebCore\Filters\ValidataParam.cs" />
+    <Compile Include="WebCore\Response\ResponseResult.cs" />
+    <Compile Include="SystemServices\Roles\Dto\RoleView.cs" />
+    <Compile Include="SystemServices\Users\Dto\Login\SsoAuth.cs" />
+    <Compile Include="01.Base\AppService.cs" />
+    <Compile Include="SystemServices\Users\Dto\Users\AuthorizeActionModel.cs" />
+    <Compile Include="SystemServices\Tables\Dto\FieldItem.cs" />
+    <Compile Include="DormServices\SemesterAppService.cs" />
+    <Compile Include="DormServices\StudentAppService.cs" />
+    <Compile Include="SystemServices\Dics\Dto\CreateDicItemDto.cs" />
+    <Compile Include="SystemServices\Dics\Dto\DicItemView.cs" />
+    <Compile Include="SystemServices\Modules\Dto\CreateModuleDto.cs" />
+    <Compile Include="SystemServices\Modules\Dto\ModuleView.cs" />
+    <Compile Include="SystemServices\Modules\Dto\UpdateModuleDto.cs" />
+    <Compile Include="SystemServices\PlaceAreas\Dto\CreatePlaceAreaDto.cs" />
+    <Compile Include="SystemServices\PlaceAreas\Dto\PlaceAreaView.cs" />
+    <Compile Include="SystemServices\PlaceAreas\SysPlaceAreaAppService.cs" />
+    <Compile Include="SystemServices\Caches\SysCacheAppService.cs" />
+    <Compile Include="SystemServices\DatabaseBackup\SysDbBackupAppService.cs" />
+    <Compile Include="SystemServices\Dics\SysDicAppService.cs" />
+    <Compile Include="SystemServices\Dics\SysDicItemAppService.cs" />
+    <Compile Include="SystemServices\Duties\Dto\CreateDutyDto.cs" />
+    <Compile Include="SystemServices\Duties\Dto\DutyView.cs" />
+    <Compile Include="SystemServices\Duties\Dto\UpdateDutyDto.cs" />
+    <Compile Include="SystemServices\Organizes\Dto\OrganizeListView.cs" />
+    <Compile Include="SystemServices\PlaceAreas\Dto\UpdatePlaceAreaDto.cs" />
+    <Compile Include="SystemServices\Roles\Dto\CreateRoleDto.cs" />
+    <Compile Include="SystemServices\Duties\SysDutyAppService.cs" />
+    <Compile Include="SystemServices\Filters\SysFilterIPAppService.cs" />
+    <Compile Include="SystemServices\Logs\SysLogAppService.cs" />
+    <Compile Include="SystemServices\Modules\SysButtonAppService.cs" />
+    <Compile Include="SystemServices\Modules\SysModuleAppService.cs" />
+    <Compile Include="SystemServices\Organizes\Dto\CreateOrganizeDto.cs" />
+    <Compile Include="SystemServices\Users\Dto\Login\SsoUserInfo.cs" />
+    <Compile Include="SystemServices\Organizes\Dto\OrganizeView.cs" />
+    <Compile Include="SystemServices\Organizes\Dto\UpdateOrganizeDto.cs" />
+    <Compile Include="SystemServices\Organizes\SysOrganizeAppService.cs" />
+    <Compile Include="SystemServices\Roles\SysRoleAppService.cs" />
+    <Compile Include="SystemServices\Roles\SysRoleAuthorizeAppService.cs" />
+    <Compile Include="SystemServices\Tables\SysFieldDefAppService.cs" />
+    <Compile Include="SystemServices\Tables\SysTableDefAppService.cs" />
+    <Compile Include="SystemServices\Users\Dto\Parents\CreateParentDto.cs" />
+    <Compile Include="SystemServices\Users\Dto\Parents\CreateUserDto.cs" />
+    <Compile Include="SystemServices\Users\Dto\Parents\ParentView.cs" />
+    <Compile Include="SystemServices\Users\Dto\Users\UpdateParentDto.cs" />
+    <Compile Include="SystemServices\Users\Dto\Users\UpdateUserDto.cs" />
+    <Compile Include="SystemServices\Users\Dto\Users\UserListView.cs" />
+    <Compile Include="SystemServices\Users\Dto\Users\UserView.cs" />
+    <Compile Include="SystemServices\Users\SysUserAppService.cs" />
+    <Compile Include="SystemServices\Users\SysUserLogOnAppService.cs" />
+    <Compile Include="SystemServices\Users\SysUserRoleAppService.cs" />
+    <Compile Include="DormServices\TeacherAppService.cs" />
+    <Compile Include="01.Base\DbLogType.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WebCore\Response\CheckBox\CheckBoxSelectModel.cs" />
+    <Compile Include="WebCore\Response\TreeGrid\TreeGrid.cs" />
+    <Compile Include="WebCore\Response\TreeGrid\TreeGridModel.cs" />
+    <Compile Include="WebCore\Response\TreeView\TreeViewExt.cs" />
+    <Compile Include="WebCore\Response\TreeView\TreeViewModel.cs" />
+    <Compile Include="WebCore\Response\Tree\TreeQuery.cs" />
+    <Compile Include="WebCore\Response\Tree\TreeSelect.cs" />
+    <Compile Include="WebCore\Response\Tree\TreeSelectModel.cs" />
+    <Compile Include="WebCore\Response\Tree\TreeView.cs" />
+    <Compile Include="WebCore\ZhxyWebControllerBase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Autofac">
+      <Version>4.9.2</Version>
+    </PackageReference>
+    <PackageReference Include="Autofac.Mvc5">
+      <Version>4.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="Autofac.Mvc5.Owin">
+      <Version>4.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="Autofac.Owin">
+      <Version>4.2.0</Version>
+    </PackageReference>
+    <PackageReference Include="Autofac.WebApi2">
+      <Version>4.2.0</Version>
+    </PackageReference>
+    <PackageReference Include="AutoMapper">
+      <Version>7.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="EntityFramework">
+      <Version>6.2.0</Version>
+    </PackageReference>
+    <PackageReference Include="EntityFramework.Extensions">
+      <Version>0.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="LumiSoft.Net.dll">
+      <Version>4.5.6712.42292</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNet.Mvc">
+      <Version>5.2.7</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNet.Razor">
+      <Version>3.2.7</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client">
+      <Version>5.2.7</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core">
+      <Version>5.2.7</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNet.WebApi.WebHost">
+      <Version>5.2.7</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNet.WebPages">
+      <Version>3.2.7</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.DependencyValidation.Analyzers">
+      <Version>0.10.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Net.Compilers">
+      <Version>2.10.0</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Owin">
+      <Version>4.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Web.Infrastructure">
+      <Version>1.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="MSTest.TestAdapter">
+      <Version>1.4.0</Version>
+    </PackageReference>
+    <PackageReference Include="MSTest.TestFramework">
+      <Version>1.3.2</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="Owin">
+      <Version>1.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="StackExchange.Redis">
+      <Version>1.2.6</Version>
+    </PackageReference>
+    <PackageReference Include="System.IO.Compression">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Linq.Dynamic">
+      <Version>1.0.7</Version>
+    </PackageReference>
+    <PackageReference Include="System.ValueTuple">
+      <Version>4.5.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Web.Http.Common">
+      <Version>4.0.20126.16343</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ZHXY.Common\ZHXY.Common.csproj">
+      <Project>{DB19CE03-C307-43FE-A209-08AA4AE10E21}</Project>
+      <Name>ZHXY.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ZHXY.Domain\ZHXY.Domain.csproj">
+      <Project>{7DC886CD-B8A0-44E8-AADD-57FCB0CFECB8}</Project>
+      <Name>ZHXY.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ZHXY.Module\Dorm\ZHXY.Dorm.Device\ZHXY.Dorm.Device.csproj">
+      <Project>{2175A722-2E8A-4E1C-A6E8-10710506DAD2}</Project>
+      <Name>ZHXY.Dorm.Device</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

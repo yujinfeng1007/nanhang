@@ -1,0 +1,561 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script src="/js/moment.js"></script>
+<script src="/js/calendar.js"></script>
+<script src="/js/locale.js"></script>
+<link rel="stylesheet" href="/css/calendar.css" />
+<style>
+    .fc-view-container {
+        display: none;
+    }
+
+    #class-table table {
+        width: 100%;
+        border: 1px solid #cdcdcd;
+        border-collapse: separate;
+    }
+
+        #class-table table thead tr {
+            background-color: #525252;
+            color: #fff;
+            font-weight: normal;
+        }
+
+            #class-table table thead tr th {
+                height: 30px;
+                padding: 3px 6px;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                text-align: center;
+                border: 1px solid #ccc;
+                font-weight: bold;
+            }
+
+        #class-table table tbody tr td {
+            border: 1px solid #ccc;
+            vertical-align: top;
+            padding: 2px;
+            text-align: center;
+            height: 36px;
+            text-align: center;
+            vertical-align: middle !important;
+        }
+</style>
+<script>
+    $(function () {
+        $("#F_Semester").bindSelect({
+            url: "/SchoolManage/School_Semester/GetGridSelect",
+            id: "F_Id",
+            text: "F_Name"
+        });
+        $("#F_Year").bindSelect({
+            dictionary: 'F_Year',
+            displayBlank: false
+        });
+        $("#F_Divis_ID").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Division",
+        });
+
+        $("#F_Divis_ID").change(function () {
+            changeDivis();
+        });
+
+        $("#F_Grade_ID").change(function () {
+            changeClass();
+        });
+        $("#F_Class_ID").change(function () {
+            search();
+        });
+        //changeDivis();
+
+        //$("#btn_search").click(function () {
+
+        //});
+    });
+
+    function search()
+    {
+        if ($("#F_Grade_ID").val() == "") {
+            $.modalAlert("请选择年级！", "warning");
+            return;
+        }
+        if ($("#F_Year").val() == "") {
+            $.modalAlert("请选择年度！", "warning");
+            return;
+        }
+        if ($("#F_Semester").val() == "") {
+            $.modalAlert("请选择学期！", "warning");
+            return;
+        }
+        //if ($("#F_Class_ID").val() == "") {
+        //    $.modalAlert("请选择班级！", "warning");
+        //    return;
+        //}
+        InitTimeTable();
+    }
+
+    function changeDivis() {
+        $("#F_Grade_ID").find("option").remove();
+        $("#F_Grade_ID").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Grade&parentId=" + $("#F_Divis_ID").val(),
+        });
+    }
+
+    function changeClass() {
+        $("#F_Class_ID").find("option").remove();
+        $("#F_Class_ID").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Class&parentId=" + $("#F_Grade_ID").val(),
+        });
+    }
+    //初始化
+    function InitTimeTable() {
+        var startDate = $('#calendar').fullCalendar('getDate');
+        startDate= moment(startDate).isoWeekday(1);
+        getClassTable(startDate.format('YYYY-MM-DD'), startDate.add(6, 'days').format('YYYY-MM-DD'))
+    }
+    function getClassTable(startDate, endDate) {
+        classTable.clearClasses();
+        classTable.loadClassHour(getTimeJson());
+        classTable.setClasses(getData( startDate,  endDate));
+        //$.ajax({
+
+        //})
+
+    }
+
+    function getTimeJson() {
+        var F_Semester = $("#F_Semester").val();
+        var F_Divis = $("#F_Divis_ID").val();
+        var F_Grade = $("#F_Grade_ID").val();
+        var F_Year = $("#F_Year").val();
+
+        var hours = { MN: [], AM: [], CM: [], PM: [], EN: [] };
+        $.ajax({
+            url: "/ScheduleManage/School_ClassArrange/GetTimeJson",
+            data: { F_Semester: F_Semester, F_Divis: F_Divis, F_Grade: F_Grade, F_Year: F_Year },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                if (data == null)
+                    return hours;
+                hours = gethoursTimeJson(hours, 1, data.F_TimeSpan1, data.F_Course_StartTime1, data.F_Course_EndTime1);
+                hours = gethoursTimeJson(hours, 2, data.F_TimeSpan2, data.F_Course_StartTime2, data.F_Course_EndTime2);
+                hours = gethoursTimeJson(hours, 3, data.F_TimeSpan3, data.F_Course_StartTime3, data.F_Course_EndTime3);
+                hours = gethoursTimeJson(hours, 4, data.F_TimeSpan4, data.F_Course_StartTime4, data.F_Course_EndTime4);
+                hours = gethoursTimeJson(hours, 5, data.F_TimeSpan5, data.F_Course_StartTime5, data.F_Course_EndTime5);
+                hours = gethoursTimeJson(hours, 6, data.F_TimeSpan6, data.F_Course_StartTime6, data.F_Course_EndTime6);
+                hours = gethoursTimeJson(hours, 7, data.F_TimeSpan7, data.F_Course_StartTime7, data.F_Course_EndTime7);
+                hours = gethoursTimeJson(hours, 8, data.F_TimeSpan8, data.F_Course_StartTime8, data.F_Course_EndTime8);
+                hours = gethoursTimeJson(hours, 9, data.F_TimeSpan9, data.F_Course_StartTime9, data.F_Course_EndTime9);
+                hours = gethoursTimeJson(hours, 10, data.F_TimeSpan10, data.F_Course_StartTime10, data.F_Course_EndTime10);
+                hours = gethoursTimeJson(hours, 11, data.F_TimeSpan11, data.F_Course_StartTime11, data.F_Course_EndTime11);
+                hours = gethoursTimeJson(hours, 12, data.F_TimeSpan12, data.F_Course_StartTime12, data.F_Course_EndTime12);
+            }
+        });
+        return hours;
+    }
+    function gethoursTimeJson(hours, index, timeSpan, timestart, timeend) {
+        if (timeSpan == "MN")
+            hours.MN.push({ ClassHour: index, ClassHourCh: "第" + index + "节", ClassTime: timestart + "-" + timeend });
+        if (timeSpan == "CM")
+            hours.CM.push({ ClassHour: index, ClassHourCh: "第" + index + "节", ClassTime: timestart + "-" + timeend });
+        if (timeSpan == "AM")
+            hours.AM.push({ ClassHour: index, ClassHourCh: "第" + index + "节", ClassTime: timestart + "-" + timeend });
+        if (timeSpan == "PM")
+            hours.PM.push({ ClassHour: index, ClassHourCh: "第" + index + "节", ClassTime: timestart + "-" + timeend });
+        if (timeSpan == "EN")
+            hours.EN.push({ ClassHour: index, ClassHourCh: "第" + index + "节", ClassTime: timestart + "-" + timeend });
+        return hours;
+    }
+
+    function getData(startDate, endDate) {
+        var objs = [];
+        $.ajax({
+            url: "/ScheduleManage/School_Class_Timetable/GetClassTimetable?F_Semester=" + $("#F_Semester").val()+ "&F_Year=" + $("#F_Year").val()+"&F_Class=" + $("#F_Class_ID").val() + "&startDate=" + startDate + "&endDate=" + endDate,
+            dataType: "json",
+            async: false,
+            success: function (datas) {
+                for (var x = 0; x < datas.length; x++) {
+                    var data = datas[x];
+                    console.log(data);
+                    if (data.F_Course1)
+                        objs.push(getmodel(data.F_Teacher1Name, data.F_Course1, data.F_Week, 1));
+                    if (data.F_Course2)
+                        objs.push(getmodel(data.F_Teacher2Name, data.F_Course2, data.F_Week, 2));
+                    if (data.F_Course3)
+                        objs.push(getmodel(data.F_Teacher3Name, data.F_Course3, data.F_Week, 3));
+                    if (data.F_Course4)
+                        objs.push(getmodel(data.F_Teacher4Name, data.F_Course4, data.F_Week, 4));
+                    if (data.F_Course5)
+                        objs.push(getmodel(data.F_Teacher5Name, data.F_Course5, data.F_Week, 5));
+                    if (data.F_Course6)
+                        objs.push(getmodel(data.F_Teacher6Name, data.F_Course6, data.F_Week, 6));
+                    if (data.F_Course7)
+                        objs.push(getmodel(data.F_Teacher7Name, data.F_Course7, data.F_Week, 7));
+                    if (data.F_Course8)
+                        objs.push(getmodel(data.F_Teacher8Name, data.F_Course8, data.F_Week, 8));
+                    if (data.F_Course9)
+                        objs.push(getmodel(data.F_Teacher9Name, data.F_Course9, data.F_Week, 9));
+                    if (data.F_Course10)
+                        objs.push(getmodel(data.F_Teacher10Name, data.F_Course10, data.F_Week, 10));
+                    if (data.F_Course11)
+                        objs.push(getmodel(data.F_Teacher11Name, data.F_Course11, data.F_Week, 11));
+                    if (data.F_Course12)
+                        objs.push(getmodel(data.F_Teacher12Name, data.F_Course12, data.F_Week, 12));
+                }
+            }
+        });
+        console.log(objs)
+        return objs;
+    }
+    function getmodel(teaId,courseId,dateIndex,lessonIndex)
+    {
+        var csName = top.clients.course[courseId] == null ? "" : top.clients.course[courseId].F_Name;
+        var teaName = teaId;//"";
+        //$.ajax({
+        //    url: "/SchoolManage/School_Teachers/GetFormJson",
+        //    data: { keyValue: teaId },
+        //    dataType: "json",
+        //    async: false,
+        //    success: function (data) {
+        //        teaName = data.F_Name;
+        //    }
+        //});
+        return {
+            teacherName: teaName,
+            teacherId: teaId,
+            courseName: csName,
+            courseId: courseId,
+            dateIndex: dateIndex,
+            lessonIndex: lessonIndex,
+            roomId: 0
+        };
+    }
+    function btn_Upd(celldate,tId, teacherName, cId, courseName, dateIndex, lessonIndex)
+    {
+        var Grade_ID = $("#F_Grade_ID").val();
+        var F_Class = $("#F_Class_ID").val();
+        var F_Semester = $("#F_Semester").val();
+        var parms = "celldate=" + celldate + "&tId=" + tId + "&teacherName=" + teacherName + "&F_Semester=" + escape(F_Semester)
+            + "&cId=" + cId + "&courseName=" + escape(courseName) + "&dateIndex=" + dateIndex
+            + "&lessonIndex=" + lessonIndex + "&Grade_ID=" + Grade_ID + "&F_Class=" + F_Class;
+        $.modalOpen({
+            id: "Form",
+            title: "调整",
+            url: "/ScheduleManage/School_Class_Timetable/Form?" + parms,
+            width: "300px",
+            height: "410px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm(function () {
+                    search();
+                    //$("#btn_search").click();
+                });
+            }
+        });
+    }
+
+    function btn_import() {
+        var title = 'Excel';
+        var extensions = 'xls,xlsx';
+        var mimeTypes = 'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+        $.modalOpen({
+            id: "Form",
+            title: "导入",
+            url: "/ScheduleManage/School_Class_Timetable/Import?title=" + title + "&extensions=" + extensions + "&mimeTypes=" + mimeTypes + "&fileName=周排课模版.xls",
+            width: "500px",
+            height: "360px",
+            callBack: function (iframeId) {
+                var data = top.frames[iframeId].submitForm();
+                importAcrion(data);
+            }
+        });
+    }
+
+    function importAcrion(data) {
+        $.submitForm({
+            url: "/ScheduleManage/School_Class_Timetable/import",
+            param: data,
+            success: function () {
+                $("#F_Year").val(data.F_Year).trigger("change");
+                $("#F_Semester").val(data.F_Semester).trigger("change");
+                $("#F_Divis_ID").val(data.F_Divis).trigger("change");
+                $("#F_Grade_ID").val(data.F_Grade).trigger("change");
+                $("#F_Class_ID").val(data.F_Class).trigger("change");
+                search();
+            }
+        })
+    }
+</script>
+
+<div class="topPanel">
+    <div class="toolbar">
+        <div class="btn-group"><a id="NF-import" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_import()"><i class="fa fa-arrow-up"></i>导入</a></div>
+        </div>
+    <div class="search">
+        <table>
+            <tr>
+                <th class="formTitle" >搜索：</th>
+                <td>
+                    <div class="input-group" style="margin-right:10px;width:100px;">
+                        <select id="F_Year" name="F_Year" class="form-control">
+                            <option value="">选择年度</option>
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group" style="margin-right:10px;width:200px;">
+                        <select id="F_Semester" name="F_Semester" class="form-control">
+                            <option value="">选择学期</option>
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group" style="margin-right:10px;width:200px;">
+                        <select id="F_Divis_ID" name="F_Divis_ID" class="form-control">
+                            <option value="">选择学部</option>
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group" style="margin-right:10px;width:200px;">
+                        <select id="F_Grade_ID" name="F_Grade_ID" class="form-control">
+                            <option value="">选择年级</option>
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group" style="margin-right:10px;width:200px;">
+                        <select id="F_Class_ID" name="F_Class_ID" class="form-control">
+                            <option value="">选择班级</option>
+                        </select>
+                    </div>
+                </td>
+                @*<td>
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <button id="btn_search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </td>*@
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="topPanel" style="padding:10px">
+    <div id="calendar">
+    </div>
+
+    <div id="class-table">
+    </div>
+</div>
+<script>
+var classTable = new classTable()
+$(function () {
+    $('#calendar').fullCalendar({
+      locale: 'zh-cn',
+      height: 600,
+      defaultView: "agendaWeek",
+      header: {
+        left: 'prev',
+        center: 'title',
+        right: 'next today'
+      },
+    })
+    classTable.init({
+      $container: $('#class-table')
+    })
+    function generateDateAxis(config) {
+      // 合并参数
+      var p = Object.assign({
+        // 类型
+        type: '年',
+        // 方向
+        direction: 'prev',
+        // 模板
+        source: '',
+        target: 'YYYYMMDD',
+        // 开始
+        start: moment(),
+        // 时间轴长度，默认2个
+        length: 2,
+        // 处理时间轴单个时间的方法
+        forEach: function (item, idx, axis) {
+            return item;
+        },
+        // 停止添加时间轴元素的方法
+        stop: function (item, idx, axis) {
+            return false;
+        },
+        // 升序 ascend(asc) || 降序 descend(desc)
+        sort: 'asc'
+    }, config);
+
+    // 时间类型映射表
+    var DATE_TYPE_MAP = {
+        'year|年': 'years',
+        'month|月': 'months',
+        'week|周|星期': 'weeks',
+        'day|日|天': 'days',
+    };
+    // 类型
+    var type = '', tstr, treg;
+
+    // 根据参数type获取moment需要加减的单位(年|月|星期|日)
+    for (tstr in DATE_TYPE_MAP) {
+        treg = new RegExp(tstr);
+        if (treg.test(p.type)) {
+            type = DATE_TYPE_MAP[tstr];
+            break;
+        }
+    }
+
+    var direction = p.direction === 'prev' ? 'subtract' : 'add', // 减 || 加
+        Sattern = p.source || p.target, // 源模板
+        Tpattern = p.target, // 目标模板
+        start = p.start, // 开始时间
+        sort = p.sort === 'asc' ? 'unshift' : 'push', // 排序
+        unit, // 时间轴单个元素
+        idx = 0, // 时间轴下标
+        newStart;
+
+    // 循环获取单个时间，并通过forEach方法处理，然后放入result数组返回
+    var axis = (function loop(l, r) {
+
+        newStart = moment(start, Sattern)[direction](idx, type).format(Tpattern);
+
+        // 处理生成的时间轴元素
+        unit = p.forEach(newStart, idx, r);
+
+        // 处理后的元素合法则放进结果数组
+        r[sort](unit);
+
+        if (r.length === l || p.stop(unit, idx, r)) {
+            return r;
+        }
+
+        idx++;
+
+        return loop(l, r);
+
+    })(p.length, []);
+
+    return axis;
+}
+////初始化
+//function init () {
+//  var startDate = moment().isoWeekday(1)
+//  $('#calendar').fullCalendar('gotoDate', startDate)
+//  getClassTable(startDate.format('YYYY-MM-DD'), startDate.add(6, 'days').format('YYYY-MM-DD'))
+//}
+//function getClassTable (startDate, endDate) {
+//  console.log(startDate, endDate)
+//  classTable.loadClassHour({
+//      AM: [{
+//        ClassHour: "1",
+//        ClassHourCh: "第2节",
+//        ClassTime: "8:00~9:00",
+//      }, {
+//        ClassHour: "2",
+//        ClassHourCh: "第2节",
+//        ClassTime: "9:00~10:00",
+//      }, {
+//        ClassHour: "3",
+//        ClassHourCh: "第3节",
+//        ClassTime: "10:00~11:00",
+//      }, {
+//        ClassHour: "4",
+//        ClassHourCh: "第4节",
+//        ClassTime: "11:00~12:00",
+//      }],
+//      PM: [{
+//        ClassHour: "5",
+//        ClassHourCh: "第5节",
+//        ClassTime: "13:00~14:00",
+//      }, {
+//        ClassHour: "6",
+//        ClassHourCh: "第6节",
+//        ClassTime: "14:00~15:00",
+//      }, {
+//        ClassHour: "7",
+//        ClassHourCh: "第7节",
+//        ClassTime: "15:00~16:00",
+//      }, {
+//        ClassHour: "8",
+//        ClassHourCh: "第8节",
+//        ClassTime: "16:00~17:00",
+//      }]
+//    })
+//    classTable.setClasses([{
+//      teacherName: 'www',
+//      teacherId: 12,
+//      courseName: 'wwwww',
+//      courseId: 3333,
+//      dateIndex: 1,
+//      lessonIndex: 1,
+//      roomId: 0
+//    }])
+//  //$.ajax({
+
+//  //})
+
+//}
+
+    function bindEvent() {
+      var curDateAxis = generateDateAxis({
+        type: 'day',
+        direction: 'next',
+        source: 'YYYYMM',
+        target: 'YYYY-MM-DD',
+        start: moment().isoWeekday(1),
+        length: 7,
+        forEach: function (item, idx, axis) {
+          return item;
+        },
+        stop: function (item, idx, axis) {
+          return false;
+        },
+        sort: 'desc'
+      })
+      getClassTable(curDateAxis[0], curDateAxis[curDateAxis.length - 1])
+      classTable.setHeaderDate(curDateAxis)
+      $('#calendar').find('.fc-left, .fc-right').click(function () {
+        var date = $('#calendar').fullCalendar('getDate')
+        var dateAxis = generateDateAxis({
+           type: 'day',
+           direction: 'next',
+           source: 'YYYYMM',
+           target: 'MM-DD',
+           start: date,
+           length: 7,
+           forEach: function (item, idx, axis) {
+               return item;
+           },
+           stop: function (item, idx, axis) {
+               return false;
+           },
+           sort: 'desc'
+        })
+        classTable.setHeaderDate(dateAxis)
+        getClassTable(dateAxis[0], dateAxis[curDateAxis.length - 1])
+      })
+      $('#class-table').on('dblclick', 'tbody td', function () {
+          var tId = $(this).attr('teacherid');
+          var cId = $(this).attr('courseid');
+          var teacherName = $(this).attr('teacherName');
+          //var courseName = $(this).attr('courseName');
+          var courseName = $(this).find("div").first().html();
+          var dateIndex = $(this).attr('id').split('_')[1]
+          var lessonIndex = $(this).attr('id').split('_')[2]
+          var celldate = $('#class-table .date-col:eq(' + (Number(dateIndex) - 1) + ')').html()
+
+        //if (tId && cId) {
+            btn_Upd(celldate,tId, teacherName, cId, courseName, dateIndex, lessonIndex);
+        //}
+      })
+    }
+    bindEvent()
+})
+</script>

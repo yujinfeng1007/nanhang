@@ -1,0 +1,290 @@
+﻿@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+
+<style>
+    #class-list ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        #class-list ul:after {
+            content: ".";
+            clear: both;
+            display: block;
+            overflow: hidden;
+            font-size: 0;
+            height: 0;
+        }
+
+        #class-list ul li {
+            width: 25%;
+            float: left;
+            border: 1px solid #EDEDED;
+        }
+
+        #class-list ul .title {
+            text-align: center;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #1ABC9C;
+        }
+
+        #class-list ul .operate-section {
+            text-align: center;
+            padding: 10px;
+            font-size: 15px;
+            background: #F5F5F5;
+            min-height: 102px;
+            cursor: pointer;
+        }
+        #class-list ul .operate-section.empty {
+          line-height: 80px;
+        }
+
+    .search-params {
+        width: 100%;
+        text-align: center;
+    }
+
+        .search-params:after {
+            content: ".";
+            clear: both;
+            display: block;
+            overflow: hidden;
+            font-size: 0;
+            height: 0;
+        }
+
+        .search-params .params {
+            display: inline-block;
+        }
+
+    .submit-area {
+        text-align: center;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+        .submit-area button {
+            width: 200px;
+        }
+        #time-popup {
+          padding: 20px;
+        }
+        #time-popup #start, #time-popup #end {
+          margin-bottom: 10px;
+        }
+</style>
+<script>
+    var keyValue = $.request("keyValue");
+    $(function () {
+        initControl();
+        var classTime = function (options) {
+            this.$container = options.$container
+        }
+        classTime.prototype = {
+            _getClassList: function () {
+                var html = '<ul>'
+                for (var i = 0 ; i <= 11 ; i++) {
+                    html += '<li data-index=' + (i + 1) + ' class="list-' + (i + 1) + '">'
+                    html += '<div class="title">第' + (i + 1) + '节课</div>'
+                    html += '<div class="operate-section empty">设置时间段</div>'
+                    html += '<div class="flag"></div>'
+                    html += '</li>'
+                }
+                html += '</ul>'
+                this.$container.html(html)
+            },
+            _bindEvent: function () {
+                var _this = this
+                this.$container.find('.operate-section').off('click').on('click', function () {
+                    var that = this
+                    var startDate = $(this).parent().find('.flag').attr('data-start') || ''
+                    var endDate = $(this).parent().find('.flag').attr('data-end') || ''
+                    var timeSpan = $(this).parent().find('.flag').attr('data-timespan') || ''
+                    var sindex = Number($(this).parents('li').attr('data-index'))
+                    top.layer.open({
+                        type: 1,
+                        btn: ['确认', '取消'],
+                        area: ['500px', '500px'],
+                        btnclass: ['btn btn-primary', 'btn btn-danger'],
+                        yes: function (index, layero) {
+                            var sDate = layero.find('#clockpicker-start').val()
+                            var eDate = layero.find('#clockpicker-end').val()
+                            var tSpan = layero.find('#timeSpan').val()
+                            if (!sDate || !eDate || !tSpan) {
+                              $.modalMsg('请将信息填写完整', 'warning')
+                              return
+                            }
+                            if (sDate > eDate) {
+                              $.modalMsg('开始日期不能大于结束日期', 'warning')
+                              return
+                            }
+                            if (sDate && eDate) {
+                                _this._updateTime(sindex, sDate, eDate, tSpan)
+                            }
+                            top.layer.close(index)
+                        },
+                        content: '<div style="padding: 20px;" id="time-popup"><div style="margin-bottom: 20px;" class="start">开始时间: <input style="height: 30px;border: 1px solid #dcdcdc" id="clockpicker-start" /></div><div style="margin-bottom: 20px;" class="end">结束时间: <input style="height: 30px;border: 1px solid #dcdcdc" id="clockpicker-end" /></div><div class="timeSpan">时间段:<select id="timeSpan"></select></div></div>',
+                        success: function (layero, index) {
+                            layero.find('#clockpicker-start').val(startDate).clockpicker({
+                                autoclose: true
+                            })
+                            layero.find('#clockpicker-end').val(endDate).clockpicker({
+                                autoclose: true
+                            })
+
+                            layero.find('#timeSpan').bindSelect({
+                                dictionary: 'F_TimeSpan'
+                            })
+                            layero.find('#timeSpan').val(timeSpan).trigger('change')
+                        }
+                    })
+                }).on('click', '.clear-btn', function (e) {
+                  e.stopPropagation()
+                  var index = $(this).parents('li').attr('data-index')
+                  _this._resetTime(index)
+                })
+            },
+            _updateTime: function (index, sDate, eDate, timeSpan) {
+                var $dom = this.$container.find('.list-' + index)
+                var tp = timeSpan == null ? "" : top.clients.dataItems.F_TimeSpan[timeSpan];
+                var asDate = (sDate + '-' + eDate) == "00:00:00-00:00:00" ? "点击设置" : (sDate + '-' + eDate);
+                var deButton = asDate == "点击设置" ? "" : '<button class="btn btn-danger clear-btn" type="primary">清除</button>';
+                $dom.find('.operate-section').removeClass('empty').html(asDate + '<div>' + tp + '</div>' + deButton)
+                $dom.find('.flag').attr('data-start', sDate).attr('data-end', eDate).attr('data-timespan', timeSpan)
+            },
+            _resetTime: function (index) {
+              var $dom = this.$container.find('.list-' + index)
+              $dom.find('.operate-section').addClass('empty').html('设置时间段')
+              $dom.find('.flag').removeAttr('data-start data-end data-timespan')
+            },
+            setTimeList: function (data) {
+                for (var i = 0 ; i <= 11 ; i++) {
+                    var index = Number(i) + 1
+                    if (!data['F_Course_StartTime' + index] && !data['F_Course_EndTime' + index] && !data['F_TimeSpan' + index]) {
+                      this._resetTime(i)
+                    } else {
+                      this._updateTime((Number(i) + 1), data['F_Course_StartTime' + index], data['F_Course_EndTime' + index], data['F_TimeSpan' + index])
+                    }
+                }
+            },
+            init: function (options) {
+                this._getClassList()
+                this._bindEvent()
+            }
+        }
+        var cTime = new classTime({
+            $container: $('#class-list')
+        })
+        cTime.init()
+        if (!!keyValue) {
+            $.ajax({
+                url: "/SchoolManage/School_Schedules_Time/GetFormJsonKey",
+                data: { keyValue: keyValue },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    $("#form1").formSerialize(data)
+                    var cTime = new classTime({
+                        $container: $('#class-list')
+                    })
+                    cTime.init()
+                    cTime.setTimeList(data)
+                }
+            });
+        }
+    });
+    function initControl() {
+        $("#F_Divis").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Division",
+        });
+        $("#F_Divis").change(function () {
+            $("#F_Grande").find("option").remove();
+            $("#F_Grande").append("<option value=''>选择年级</option>");
+            $("#F_Grande").bindSelect({
+                url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Grade&parentId=" + $("#F_Divis").val(),
+            });
+        });
+        $("#F_Semester").bindSelect({
+            url: "/SchoolManage/School_Semester/GetGridSelect",
+            id: "F_Id",
+            text: "F_Name"
+        });
+        $.addRequired('#form1')
+    }
+    function submitForm() {
+        if (!$('#form1').formValid()) {
+            return false;
+        }
+        var postData = $("#form1").formSerialize();
+        $('#class-list ul').find('li').each(function (i, item) {
+            var index = Number(i) + 1
+            var sDate = $(this).find('.flag').attr('data-start') || ''
+            var eDate = $(this).find('.flag').attr('data-end') || ''
+            var tSpan = $(this).find('.flag').attr('data-timespan') || ''
+            postData['F_Course_StartTime' + index] = sDate == '' ? 0 : sDate
+            postData['F_Course_EndTime' + index] = eDate == '' ? 0 : eDate
+            postData['F_TimeSpan' + index] = tSpan == '' ? "&nbsp;" : tSpan
+        })
+        console.log(postData)
+        $.ajax({
+            url: '/SchoolManage/School_Schedules_Time/SubmitForm?keyValue='+ keyValue +'',
+            type: 'POST',
+            dataType: 'json',
+            data: postData,
+            success: function (data) {
+              if (data.state === 'success') {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+                $.modalClose()
+              } else {
+                $.modalMsg(data.message, 'warning')
+              }
+
+            }
+        })
+    }
+</script>
+<form id="form1">
+    <div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#">基本信息</a></li>
+            @*<li ><a href="#">扩展信息</a></li>*@
+        </ul>
+        <div style="padding-top: 20px; margin-right: 30px;">
+            <table class="form">
+
+                <tr>
+                    <th class="formTitle">学部</th>
+                    <td class="formValue">
+                        <select id="F_Divis" name="F_Divis">
+                            <option value="--请选择--"></option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">年级</th>
+                    <td class="formValue">
+                        <select id="F_Grande" name="F_Grande">
+                            <option value="--请选择--"></option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">学期</th>
+                    <td class="formValue">
+                        <select id="F_Semester" name="F_Semester">
+                            <option value="--请选择--"></option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="class-list">
+        </div>
+    </div>
+</form>

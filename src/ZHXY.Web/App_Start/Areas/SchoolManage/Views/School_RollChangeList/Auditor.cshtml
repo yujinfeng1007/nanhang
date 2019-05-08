@@ -1,0 +1,254 @@
+﻿@{
+    ViewBag.Title = "Auditor";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+
+<script>
+    var keyValue = $.request("keyValue");
+    $(function () {
+        initControl();
+        if (!!keyValue) {
+            $.ajax({
+                url: "/SchoolManage/School_RollChangeList/GetFormJson",
+                data: { keyValue: keyValue },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    $("#form1").formSerialize(data)
+                    $("#F_New_Subjects_ID").val(data.F_New_Subjects_ID).trigger("change");
+                    $("#F_Proof").attr("src", $("#F_Proof").val());
+                    $("#F_Proof_hidden").attr("src", $("#F_Proof").val());
+                }
+            });
+        }
+    });
+    function initControl() {
+        $("#F_Year").bindSelect({
+            dictionary: 'limYear'
+        })
+        $("#F_Change_Type").bindSelect({
+            dictionary: 'xjbd'
+        })
+        $("#F_Charge_Type").bindSelect({
+            dictionary: 'F_Charge_mode'
+        })
+        $("#F_Divis_ID").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Division",
+        });
+        $("#F_Divis_ID").change(function () {
+            $("#F_Grade_ID").find("option").remove();
+            $("#F_Grade_ID").append("<option value=''>选择年级</option>");
+            $("#F_Grade_ID").bindSelect({
+                url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Grade&parentId=" + $("#F_Divis_ID").val(),
+            });
+            $("#F_INYear").find("option").remove();
+            $("#F_INYear").append("<option value=''>选择年段</option>");
+            $("#F_INYear").bindSelect({
+                OrgId: $("#F_Divis_ID").val(),
+                dictionaryOrg: "F_InYear"
+            });
+            changeSubject();
+            if ($("#F_Class_ID").find("option").length > 1) {
+                RefreshClass();
+            }
+        });
+        var RefreshClass = function (F_Grand_Id) {
+            $("#F_Class_ID").find("option").remove();
+            $("#F_Class_ID").append("<option value=''>选择班级</option>");
+            $("#F_Class_ID").bindSelect({
+                url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Class&parentId=" + F_Grand_Id,
+            });
+        }
+
+        $("#F_Grade_ID").change(function () {
+            RefreshClass($("#F_Grade_ID").val());
+            //changeSubject();
+        });
+        $("#F_INYear").change(function () {
+            changeSubject();
+        });
+        $("#F_Charge_mode").change(function () {
+            changeSubject();
+        });
+
+        $("#F_Year").change(function () {
+            changeSubject();
+        });
+
+        function changeSubject() {
+            $("#F_New_Subjects_ID").find("option").remove();
+            $("#F_New_Subjects_ID").append("<option value=''>选择班级类型</option>");
+            $("#F_New_Subjects_ID").bindSelect({
+                url: "/SchoolManage/School_Subjects/GetJsonByYDG?F_Year=" + $("#F_Year").val() + "&F_Divis_ID=" + $("#F_Divis_ID").val() + "&F_INYear=" + $("#F_INYear").val() + "&F_Charge_Type=" + $("#F_Charge_Type").val(),
+                id: "F_Id",
+                text: "F_Title"
+            });
+        }
+
+        $("#F_Change_Type").change(function () {
+            var $formItem = $('.tr1').find('.form-control')
+            if ($("#F_Change_Type").val() == 9 || $("#F_Change_Type").val() == 10 || $("#F_Change_Type").val() == 11) {
+                $(".tr1").show()
+                $formItem.addClass('required').parents('.formValue').prev('.formTitle').addClass('required')
+                $('#F_Class_ID').removeClass('required').parents('.formValue').prev('.formTitle').removeClass('required')
+            } else {
+                $(".tr1").hide()
+                $formItem.removeClass('required').parents('.formValue').prev('.formTitle').removeClass('required')
+            }
+        })
+
+        $.addRequired('#form1')
+        //$.simpleUploader($('.fileUpload'))
+    }
+    function submitForm() {
+        if (!$('#form1').formValid()) {
+            return false;
+        }
+        $.submitForm({
+            url: "/SchoolManage/School_RollChangeList/AuditorForm?keyValue=" + keyValue,
+            param: $("#form1").formSerialize(),
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+    $(document).ready(function () {
+        $("#F_Proof").click(function () {
+            //$.modalOpen({
+            //    title: false,
+            //    width: document.getElementById("F_Proof_hidden").width + "px",
+            //    height: document.getElementById("F_Proof_hidden").height + "px",
+            //    skin: 'layui-layer-nobg',
+            //    btn: 0,
+            //    url: $("#F_Proof").val()
+            //});
+            $("#F_Proof").zoomify();
+        });
+        $("#F_Status").change(function () {
+            if ($("#F_Status").val() != 5) {
+                $('#F_Bill_ChangeNo, #F_Bill_No').removeClass('required').parent().prev('.formTitle').removeClass('required')
+            } else {
+                $('#F_Bill_ChangeNo, #F_Bill_No').addClass('required').parent().prev('.formTitle').addClass('required')
+            }
+            if ($("#F_Status").val() == 5) {
+                    $.modalOpen({
+                        id: "Formm",
+                        title: "审核",
+                        url: "/SchoolManage/School_Bill/IndexCastration?F_StudentNum=" + $("#F_Student_Num").val(),
+                        width: "900px",
+                        height: "750px",
+                        callBack: function (iframeId) {
+                            top.frames[iframeId].submitForm();
+                        }
+                    });
+
+            }
+        })
+        if ($("#F_Status").val() != 5) {
+            $('#F_Bill_ChangeNo, #F_Bill_No').removeClass('required').parent().prev('.formTitle').removeClass('required')
+        } else {
+            $('#F_Bill_ChangeNo, #F_Bill_No').addClass('required').parent().prev('.formTitle').addClass('required')
+        }
+    })
+</script>
+<form id="form1">
+    <div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#">审核</a></li>
+        </ul>
+        <div style="padding-top: 20px; margin-right: 30px;">
+            <table class="form">
+                <tr>
+                    <th class="formTitle">调整类型</th>
+                    <td class="formValue">
+                        <select id="F_Change_Type" name="F_Change_Type" type="text" class="form-control required" disabled="disabled" />
+                    </td>
+                </tr>
+                <tr class="tr1">
+                    <th class="formTitle">收费方式</th>
+                    <td class="formValue">
+                        <select id="F_Charge_Type" name="F_Charge_Type" type="text" class="form-control required" disabled="disabled" />
+                    </td>
+                    <th class="formTitle">变动年度</th>
+                    <td class="formValue">
+                        <select id="F_Year" name="F_Year" type="text" class="form-control required" disabled="disabled" />
+                    </td>
+                </tr>
+                <tr class="tr1">
+                    <th class="formTitle">变动学部</th>
+                    <td class="formValue">
+                        <select id="F_Divis_ID" name="F_Divis_ID" type="text" class="form-control required" disabled="disabled" />
+                    </td>
+                    <th class="formTitle">变动年段</th>
+                    <td class="formValue">
+                        <select id="F_INYear" name="F_INYear" type="text" class="form-control required" disabled="disabled" />
+                    </td>
+                </tr>
+                <tr class="tr1">
+                    <th class="formTitle">变动年级</th>
+                    <td class="formValue">
+                        <select id="F_Grade_ID" name="F_Grade_ID" type="text" class="form-control required" disabled="disabled" />
+                    </td>
+                    <th class="formTitle">变动班级</th>
+                    <td class="formValue">
+                        <select id="F_Class_ID" name="F_Class_ID" type="text" class="form-control " disabled="disabled" />
+                    </td>
+                </tr>
+                <tr class="tr1">
+                    <th class="formTitle">新班级类型</th>
+                    <td class="formValue">
+                        <select id="F_New_Subjects_ID" name="F_New_Subjects_ID" type="text" class="form-control required" disabled="disabled" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle required">调整凭证</th>
+                    <td class="formValue">
+                        <img class="thumbnail" id="F_Proof" name="F_Proof" @*style="width:200px;height:100px;display:block;"*@ />
+                        <img id="F_Proof_hidden" style="display:none;" />
+                        @*<div id="F_Proof" class="fileUpload">
+            </div>*@
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">调整原因</th>
+                    <td class="formValue" colspan="3">
+                        <textarea id="F_Proof_Desc" name="F_Proof_Desc" class="form-control required" style="height: 60px;"disabled="disabled"></textarea>
+                    </td>
+                </tr>
+            </table>
+            <table class="form">
+                <tr>
+                    <th class="formTitle">审核状态</th>
+                    <td class="formValue">
+                        <select id="F_Status" name="F_Status" class="form-control required">
+                            <option value="">==请选择==</option>
+                            <option value="4">待审批</option>
+                            <option value="5">审批通过</option>
+                            <option value="6">审批不通过</option>
+                        </select>
+                        <input type="hidden" id="F_Student_Id" name="F_Student_Id" />
+                        <input type="hidden" id="F_Student_Num" name="F_Student_Num" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">费用调整编号</th>
+                    <td class="formValue">
+                        <input id="F_Bill_ChangeNo" name="F_Bill_ChangeNo" type="text" class="form-control required" placeholder="请输入账单变更操作编号" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">缴费账单编号</th>
+                    <td class="formValue">
+                        <input id="F_Bill_No" name="F_Bill_No" type="text" class="form-control required" placeholder="请输入变更账单编号" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">审核意见</th>
+                    <td class="formValue">
+                        <textarea id="F_Audit_Memo" name="F_Audit_Memo" class="form-control required" style="height: 80px;" placeholder="请输入审核意见"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,248 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script>
+    $(function () {
+        gridList();
+        $("#F_DepartmentId").bindSelect({
+            url: "/SystemManage/Organize/GetTreeSelectJson",
+            displayBlank:false
+        });
+        $("#F_SysAreaId").bindSelect({
+            url: "/SystemManage/Area/GetTreeSelectJson",
+            displayBlank:false
+        });
+        $("#F_Gender").bindSelect({
+          dictionary: '104',
+          displayBlank:false
+        })
+    })
+    function gridList() {
+        var $gridList = $("#gridList");
+        $gridList.dataGrid({
+            url: "/SchoolManage/School_Teacher_Honor/GetGridJsonByUser",
+            height: $(window).height() - 128,
+            colModel: [
+
+			 	{ label: '主键', name: 'F_Id', hidden: true },
+
+  				{ label: '姓名', name: 'F_Name', width: 80, align: 'left' },
+
+  				 { label: '工号', name: 'F_No', width: 80, align: 'left' },
+
+                   { label: '荣誉名称', name: 'F_Title', width: 80, align: 'left' },
+    {
+        label: '荣誉图片', name: 'F_Covers', width: 140, align: 'left',
+        formatter: function (cellvalue, options, rowObject) {
+            if (cellvalue == "") {
+                return "";
+            }
+            return "<img style='width:100px;height:50px;' src='" + cellvalue + "' onclick='F_Covers_Img(this)' />";
+            //return top.clients.dataItems["Education"][cellvalue] == undefined ? "" : top.clients.dataItems["Education"][cellvalue];
+        }
+    },
+  				{
+  				    label: '所属学部', name: 'F_Divis_ID', width: 80, align: 'left', formatter: function (cellvalue) {
+  				        return top.clients.organize[cellvalue] == null ? "" : top.clients.organize[cellvalue].fullname;
+  				    }
+  				},
+
+                {
+                    label: '状态', name: 'F_Status', width: 80, align: 'left', formatter: function (cellvalue) {
+                        return top.clients.dataItems["F_Status"][cellvalue] == undefined ? "" : top.clients.dataItems["F_Status"][cellvalue];
+                    }
+                },
+                {
+                    label: '创建时间', name: 'F_CreatorTime', width: 80, align: 'left',
+                    formatter: "date", formatoptions: { srcformat: 'Y-m-d H:i:s', newformat: 'Y-m-d H:i:s' }
+                },
+
+            ],
+            pager: "#gridPager",
+            sortname: 'F_DepartmentId asc,F_CreatorTime desc',
+            viewrecords: true
+        });
+        $("#btn_search").click(function () {
+            $gridList.jqGrid('setGridParam', {
+                postData: { keyword: $("#txt_keyword").val(), F_DepartmentId: $("#F_DepartmentId").val(),  },
+            }).trigger('reloadGrid');
+        });
+    }
+    function F_Covers_Img(cellvalue) {
+        var imageObject = new Image()
+        imageObject.src = cellvalue.src
+        imageObject.onload = function () {
+            var width = this.width + 'px'
+            var height = this.height + 'px'
+            $.modalOpen({
+                title: false,
+                width: width,
+                height: height,
+                skin: 'layui-layer-nobg',
+                btn: 0,
+                url: cellvalue.src
+            });
+        }
+    }
+    function btn_add() {
+        $.modalOpen({
+            id: "Form",
+            title: "新增",
+            url: "/SchoolManage/School_Teacher_Honor/Form",
+            width: "900px",
+            height: "610px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm();
+            }
+        });
+    }
+    function btn_edit() {
+        var keyValue = ($("#gridList").jqGridRowValue('F_Id'))[0];
+        if (($("#gridList").jqGridRowValue('F_Status'))[0] == "审核通过") {
+            top.layer.alert("已审核通过，请勿操作", { icon: "fa-times-circle", title: "系统提示", btn: ["确认"], btnclass: ["btn btn-primary"] });
+            return;
+        }
+        $.modalOpen({
+            id: "Form",
+            title: "修改",
+            url: "/SchoolManage/School_Teacher_Honor/Form?keyValue=" + keyValue,
+            width: "900px",
+            height: "610px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm();
+            }
+        });
+    }
+    function btn_delete() {
+        if (($("#gridList").jqGridRowValue('F_Status'))[0] == "审核通过") {
+            top.layer.alert("已审核通过，请勿操作", { icon: "fa-times-circle", title: "系统提示", btn: ["确认"], btnclass: ["btn btn-primary"] });
+            return;
+        }
+        var deleteid = $('#gridList').jqGridRowValue('F_Id');
+        var keyValue = "";
+        for (var i = 0; i < deleteid.length; i++) {
+            keyValue += deleteid[i] + "|";
+        }
+        $.deleteForm({
+            url: "/SchoolManage/School_Teacher_Honor/DeleteForm",
+            param: { keyValue: keyValue },
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+    function btn_details() {
+        var keyValue = ($("#gridList").jqGridRowValue('F_Id'))[0];
+        $.modalOpen({
+            id: "Details",
+            title: "查看",
+            url: "/SchoolManage/School_Teacher_Honor/Details?keyValue=" + keyValue,
+            width: "900px",
+            height: "650px",
+            btn: null,
+        });
+    }
+
+    function btn_disabled() {
+        var keyValue = $("#gridList").jqGridRowValue('F_Id');
+        $.modalConfirm("注：您确定要【禁用】该项吗？", function (r) {
+            if (r) {
+                $.submitForm({
+                    url: "/SchoolManage/School_Teacher_Honor/DisabledAccount",
+                    param: { keyValue: keyValue },
+                    success: function () {
+                        $.currentWindow().$("#gridList").trigger("reloadGrid");
+                    }
+                })
+            }
+        });
+    }
+    function btn_enabled() {
+        var keyValue = $("#gridList").jqGridRowValue('F_Id');
+        $.modalConfirm("注：您确定要【启用】该项吗？", function (r) {
+            if (r) {
+                $.submitForm({
+                    url: "/SchoolManage/School_Teacher_Honor/EnabledAccount",
+                    param: { keyValue: keyValue },
+                    success: function () {
+                        $.currentWindow().$("#gridList").trigger("reloadGrid");
+                    }
+                })
+            }
+        });
+    }
+
+    function btn_export() {
+        var keyValue = $("#txt_keyword").val();
+        if (keyValue != null)
+            keyValue = "?keyword=" + keyValue;
+
+        document.location = "/SchoolManage/School_Teacher_Honor/export" + keyValue;
+    }
+
+    function btn_import() {
+        var title = 'Excel';
+        var extensions = 'xls,xlsx';
+        var mimeTypes = 'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+        $.modalOpen({
+            id: "Form",
+            title: "导入",
+            url: "/Home/Import?title=" + title + "&extensions=" + extensions + "&mimeTypes=" + mimeTypes + "",
+            width: "500px",
+            height: "300px",
+            callBack: function (iframeId) {
+                var filePali = top.frames[iframeId].submitForm();
+                importAcrion(filePath);
+            }
+        });
+    }
+
+    function importAcrion(filePath) {
+        $.submitForm({
+            url: "/SchoolManage/School_Teacher_Honor/import",
+            param: { filePath: filePath },
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+</script>
+
+<div class="topPanel">
+    <div class="toolbar">
+        <div class="btn-group">
+            <a class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
+        </div>
+        <div class="btn-group">
+            <a id="NF-add" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_add()"><i class="fa fa-plus"></i>新建</a>
+        </div>
+            <div class="operate">
+                <ul class="nav nav-pills">
+                    <li class="first">已选中<span>1</span>项</li>
+                    <li><a id="NF-edit" authorize="yes" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>修改</a></li>
+                    <li><a class="multi-edit" id="NF-delete" authorize="yes" onclick="btn_delete()"><i class="fa fa-trash-o"></i>删除</a></li>
+                    <li><a id="NF-Details" authorize="yes" onclick="btn_details()"><i class="fa fa-search-plus"></i>查看</a></li>
+                </ul>
+                <a href="javascript:;" class="close"></a>
+            </div>
+            <script>$('.toolbar').authorizeButton()</script>
+        </div>
+    <div class="search">
+        <ul>
+            <li class="formTitle">搜索：</li>
+            <li>
+                <div class="input-group">
+                    <input id="txt_keyword" type="text" class="form-control" placeholder="工号" style="width: 150px;">
+                    <span class="input-group-btn">
+                        <button id="btn_search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="gridPanel">
+    <table id="gridList"></table>
+    <div id="gridPager"></div>
+</div>

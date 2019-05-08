@@ -1,0 +1,149 @@
+﻿@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<script>
+    $(function () {
+        initControl();
+    });
+    function initControl() {
+        $("#F_SemesterId").bindSelect({
+            url: "/SchoolManage/School_Semester/GetGridSelect",
+            id: "F_Id",
+            text: "F_Name"
+        });
+        $("#F_Year").bindSelect({
+            dictionary: 'F_Year',
+            displayBlank: false
+        });
+        $("#F_DivisId").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Division",
+        });
+
+        $("#F_DivisId").change(function () {
+            changeDivis();
+        });
+
+        $("#F_GradeId").change(function () {
+            //changeClass();
+            changeTask();
+
+        });
+
+        $.addRequired('#form1')
+    }
+
+    function changeDivis() {
+
+        $("#F_GradeId").find("option").remove();
+        $("#F_GradeId").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Grade&parentId=" + $("#F_DivisId").val(),
+        });
+        //changeClass();
+    }
+
+    function changeTask() {
+        $("#F_TaskId").find("option").remove();
+        $("#F_TaskId").bindSelect({
+            url: "/ScheduleManage/Schedule_WishCourseTask/GetSelectJson?F_Type=1&F_Year=" + $("#F_Year").val() + "&F_Semester=" + $("#F_SemesterId").val() + "&F_Divis=" + $("#F_DivisId").val() + "&F_Grade=" + $("#F_GradeId").val(),
+            id: "F_Id",
+            text: "F_TaskName"
+        });
+
+    }
+
+    function submitForm(callback) {
+        if (!$('#form1').formValid()) {
+            return false;
+        }
+
+        var postData = { F_TaskId: $("#F_TaskId").val(), F_ClassQTY: $("#F_ClassQTY").val(), F_StudentMaxQTY: $("#F_StudentMaxQTY").val(), F_StudentMinQTY: 0};//$("#F_StudentMinQTY").val() };
+        $.modalConfirm("注：此操作会将之前班级重置，确定执行吗？", function (r) {
+            if (r) {
+                $.ajax({
+                    type: "POST",
+                    url: "/ScheduleManage/Schedule_Class/SubmitDClassForm",
+                    data: JSON.stringify(postData),
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.state == "success") {
+                            $.modalMsg(data.message, data.state);
+                            $.modalClose();
+                            callback($("#F_Year").val(), $("#F_SemesterId").val(), $("#F_DivisId").val(), $("#F_GradeId").val());
+                        } else {
+                            $.modalAlert(data.message, data.state);
+                        }
+                    }
+                });
+            }
+        });
+    }
+</script>
+<form id="form1">
+    <div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+        <div style="padding-top: 20px; margin-right: 30px;">
+            <table class="form">
+                <tr>
+                    <th class="formTitle">年度：</th>
+                    <td class="formValue">
+                        <select id="F_Year" name="F_Year" class="form-control required">
+                            <option value="">选择年度</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">学期：</th>
+                    <td class="formValue">
+                        <select id="F_SemesterId" name="F_SemesterId" class="form-control required">
+                            <option value="">选择学期</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">学部：</th>
+                    <td class="formValue">
+                        <select id="F_DivisId" name="F_DivisId" class="form-control required">
+                            <option value="">选择学部</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">年级：</th>
+                    <td class="formValue">
+                        <select id="F_GradeId" name="F_GradeId" class="form-control required">
+                            <option value="">选择年级</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th class="formTitle">任务名称</th>
+                    <td class="formValue">
+                        <select id="F_TaskId" name="F_TaskId" class="form-control required">
+                            <option value="">选择预选任务</option>
+                        </select>
+                    </td>
+                </tr>
+                @*<tr>
+                        <th class="formTitle">班级数量：</th>
+                        <td class="formValue">
+                            <input id="F_ClassQTY" name="F_ClassQTY" type="text" class="form-control required" />
+                        </td>
+                    </tr>*@
+                <tr>
+                    <th class="formTitle">班额上线：</th>
+                    <td class="formValue">
+                        <input id="F_StudentMaxQTY" name="F_StudentMaxQTY" type="text" class="form-control required" />
+                    </td>
+                </tr>
+                <!--<tr>
+                    <th class="formTitle">班额下线：</th>
+                    <td class="formValue">
+                        <input id="F_StudentMinQTY" name="F_StudentMinQTY" type="text" value="0" class="form-control required" />
+                    </td>
+                </tr>-->
+            </table>
+        </div>
+    </div>
+</form>

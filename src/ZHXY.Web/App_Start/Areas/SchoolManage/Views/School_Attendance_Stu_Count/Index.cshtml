@@ -1,0 +1,327 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script>
+    $(function () {
+        gridList();
+        $("#F_Divis_ID").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Division",
+            displayBlank: false
+        });
+
+        $("#F_Divis_ID").change(function () {
+            changeGrade();
+            //changeSubject();
+        });
+
+        $("#F_Grade_ID").change(function () {
+            changeClass();
+            //changeSubject();
+        });
+        $("#F_Start1_Result").bindSelect({
+          dictionary: 'F_Check_Result',
+          displayBlank:false
+        })
+    })
+
+    function changeGrade() {
+        $("#F_Grade_ID").find("option").remove();
+        $("#F_Grade_ID").append("<option value=''>请选择</option>");
+        $("#F_Grade_ID").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Grade&parentId=" + $("#F_Divis_ID").val(),
+        });
+        changeClass();
+    }
+
+    function changeClass() {
+        $("#F_Class_ID").find("option").remove();
+        $("#F_Class_ID").append("<option value=''>请选择</option>");
+        $("#F_Class_ID").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Class&parentId=" + $("#F_Grade_ID").val(),
+        });
+    }
+
+    function gridList() {
+        var $gridList = $("#gridList");
+        $gridList.dataGrid({
+            url: "/SchoolManage/School_Attendance_Stu_Count/GetGridJson",
+            height: $(window).height() - 128,
+            colModel: [
+                { label: '主键', name: 'F_Id', hidden: true },
+                { label: '学生ID', name: 'F_Student', hidden: true },
+                {
+                    label: '姓名', name: 'School_Students_Entity', width: 80, align: 'left',
+                    formatter: function (cellvalue) {
+                        return cellvalue == null ? "" : cellvalue.F_Name
+                    }
+                },
+
+  				{
+  				    label: '学号', name: 'School_Students_Entity', width: 80, align: 'left',
+  				    formatter: function (cellvalue) {
+  				        return cellvalue == null ? "" : cellvalue.F_StudentNum
+  				    }
+  				},
+                {
+                    label: '学部', name: 'School_Students_Entity', width: 80, align: 'left',
+                    formatter: function (cellvalue) {
+                        return top.clients.organize[cellvalue.F_Divis_ID] == null ? "" : top.clients.organize[cellvalue.F_Divis_ID].fullname;
+                    }
+                },
+                {
+                    label: '年级', name: 'School_Students_Entity', width: 80, align: 'left',
+                  	formatter: function (cellvalue) {
+                  	    return top.clients.organize[cellvalue.F_Grade_ID] == null ? "" : top.clients.organize[cellvalue.F_Grade_ID].fullname;
+                  	}
+                },
+                {
+                    label: '班级', name: 'School_Students_Entity', width: 80, align: 'left',
+                    formatter: function (cellvalue) {
+                        return top.clients.organize[cellvalue.F_Class_ID] == null ? "" : top.clients.organize[cellvalue.F_Class_ID].fullname;
+                    }
+                },
+
+ 			 	{
+ 			 	    label: '考勤日期', name: 'F_Date', width: 80, align: 'left',
+ 			 	    formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' }
+ 			 	},
+                { label: '时间段1开始', name: 'F_Start1', width: 80, align: 'left' },
+                { label: '时间段1截止', name: 'F_End1', width: 80, align: 'left' },
+                { label: '时间段1打卡时间', name: 'F_Start1_Check', width: 80, align: 'left' },
+                { label: '时间段1结果', name: 'F_Start1_Result', width: 80, align: 'left',
+                    formatter: function (cellvalue) {
+                        return top.clients.dataItems["F_Check_Result"][cellvalue] == undefined ? "" : top.clients.dataItems["F_Check_Result"][cellvalue];
+                    }
+                },
+
+                { label: '时间段2开始', name: 'F_Start2', width: 80, align: 'left' },
+                { label: '时间段2截止', name: 'F_End2', width: 80, align: 'left' },
+                { label: '时间段2打卡时间', name: 'F_Start2_Check', width: 80, align: 'left' },
+                {
+                    label: '时间段2结果', name: 'F_Start2_Result', width: 80, align: 'left',
+                    formatter: function (cellvalue) {
+                        return top.clients.dataItems["F_Check_Result"][cellvalue] == undefined ? "" : top.clients.dataItems["F_Check_Result"][cellvalue];
+                    }
+                },
+
+                { label: '时间段3开始', name: 'F_Start3', width: 80, align: 'left' },
+                { label: '时间段3截止', name: 'F_End3', width: 80, align: 'left' },
+                { label: '时间段3打卡时间', name: 'F_Start3_Check', width: 80, align: 'left' },
+                {
+                    label: '时间段3结果', name: 'F_Start3_Result', width: 80, align: 'left',
+                    formatter: function (cellvalue) {
+                        return top.clients.dataItems["F_Check_Result"][cellvalue] == undefined ? "" : top.clients.dataItems["F_Check_Result"][cellvalue];
+                    }
+                },
+             ],
+            pager: "#gridPager",
+            sortname: 'F_DepartmentId asc,F_CreatorTime desc',
+            viewrecords: true
+        });
+        $("#btn_search").click(function () {
+            $gridList.jqGrid('setGridParam', {
+                postData: { keyword: $("#txt_keyword").val(), F_Divis_ID: $("#F_Divis_ID").val(), F_Start1_Result: $("#F_Start1_Result").val(), F_Class_ID: $("#F_Class_ID").val(), F_Grade_ID: $("#F_Grade_ID").val(), F_CreatorTime_Start: $("#F_CreatorTime_Start").val(), F_CreatorTime_Stop: $("#F_CreatorTime_Stop").val() },
+            }).trigger('reloadGrid');
+        });
+    }
+    function btn_add() {
+        $.modalOpen({
+            id: "Form",
+            title: "新增",
+            url: "/SchoolManage/School_Attendance_Stu_Count/Form",
+            width: "700px",
+            height: "510px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm();
+            }
+        });
+    }
+    function btn_edit() {
+        var keyValue = ($("#gridList").jqGridRowValue('F_Id'))[0];
+        $.modalOpen({
+            id: "Form",
+            title: "修改",
+            url: "/SchoolManage/School_Attendance_Stu_Count/Form?keyValue=" + keyValue,
+            width: "700px",
+            height: "510px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm();
+            }
+        });
+    }
+    function btn_delete() {
+        var deleteid = $('#gridList').jqGridRowValue('F_Id');
+        var keyValue = "";
+        for (var i = 0; i < deleteid.length; i++) {
+            keyValue += deleteid[i] + "|";
+        }
+        $.deleteForm({
+            url: "/SchoolManage/School_Attendance_Stu_Count/DeleteForm",
+            param: { keyValue: keyValue },
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+    function btn_details() {
+        var date = ($("#gridList").jqGridRowValue('F_Date'))[0];
+        var keyValue = ($("#gridList").jqGridRowValue('F_Student'))[0];
+        $.modalOpen({
+            id: "Details",
+            title: "查看",
+            url: "/SchoolManage/School_Attendance_Stu_Flow/Index?keyValue=" + keyValue + "&date=" + date,
+            width: "700px",
+            height: "550px",
+            btn: null,
+        });
+    }
+
+    function btn_disabled() {
+        var keyValue = $("#gridList").jqGridRowValue('F_Id');
+        $.modalConfirm("注：您确定要【禁用】该项吗？", function (r) {
+            if (r) {
+                $.submitForm({
+                    url: "/SchoolManage/School_Attendance_Stu_Count/DisabledAccount",
+                    param: { keyValue: keyValue },
+                    success: function () {
+                        $.currentWindow().$("#gridList").trigger("reloadGrid");
+                    }
+                })
+            }
+        });
+    }
+    function btn_enabled() {
+        var keyValue = $("#gridList").jqGridRowValue('F_Id');
+        $.modalConfirm("注：您确定要【启用】该项吗？", function (r) {
+            if (r) {
+                $.submitForm({
+                    url: "/SchoolManage/School_Attendance_Stu_Count/EnabledAccount",
+                    param: { keyValue: keyValue },
+                    success: function () {
+                        $.currentWindow().$("#gridList").trigger("reloadGrid");
+                    }
+                })
+            }
+        });
+    }
+
+    function btn_export() {
+        var keyValue = $("#txt_keyword").val();
+        if (keyValue != null)
+            keyValue = "?keyword=" + keyValue;
+
+        document.location = "/SchoolManage/School_Attendance_Stu_Count/export" + keyValue;
+    }
+
+    function btn_import() {
+        var title = 'Excel';
+        var extensions = 'xls,xlsx';
+        var mimeTypes = 'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+        $.modalOpen({
+            id: "Form",
+            title: "导入",
+            url: "/Home/Import?title=" + title + "&extensions=" + extensions + "&mimeTypes=" + mimeTypes + "",
+            width: "500px",
+            height: "300px",
+            callBack: function (iframeId) {
+                var filePali = top.frames[iframeId].submitForm();
+                importAcrion(filePath);
+            }
+        });
+    }
+
+    function importAcrion(filePath) {
+        $.submitForm({
+            url: "/SchoolManage/School_Attendance_Stu_Count/import",
+            param: { filePath: filePath },
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+</script>
+
+<div class="topPanel">
+    <div class="toolbar">
+        <div class="btn-group">
+            <a class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
+        </div>
+        <div class="btn-group">
+            <a id="NF-add" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_add()"><i class="fa fa-plus"></i>新建</a>
+        </div>
+        <div class="btn-group"><a id="NF-export" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_export()"><i class="fa fa-arrow-down"></i>导出</a></div>
+        @*<div class="btn-group"><a id="NF-import" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_import()"><i class="fa fa-arrow-up"></i>导入</a></div>*@
+            <div class="operate">
+                <ul class="nav nav-pills">
+                    <li class="first">已选中<span>1</span>项</li>
+                    <li><a id="NF-Details" authorize="yes" onclick="btn_details()"><i class="fa fa-search-plus"></i>查看流水</a></li>
+                    <li><a id="NF-edit" authorize="yes" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>修改</a></li>
+                    <li><a class="multi-edit" id="NF-delete" authorize="yes" onclick="btn_delete()"><i class="fa fa-trash-o"></i>删除</a></li>
+                    <li class="split"></li>
+                    <li><a id="NF-revisepassword" authorize="yes" onclick="btn_revisepassword()"><i class="fa fa-key"></i>密码重置</a></li>
+                    <li class="split"></li>
+                    <li><a class="multi-edit" id="NF-disabled" authorize="yes" onclick="btn_disabled()"><i class="fa fa-stop-circle"></i>禁用</a></li>
+                    <li><a class="multi-edit" id="NF-enabled" authorize="yes" onclick="btn_enabled()"><i class="fa fa-play-circle"></i>启用</a></li>
+                </ul>
+                <a href="javascript:;" class="close"></a>
+            </div>
+            <script>$('.toolbar').authorizeButton()</script>
+        </div>
+    <div class="search">
+        <ul>
+            <li class="formTitle">搜索：</li>
+            <li>
+                <div class="input-group" style="margin-top:1px">
+                    <input id="F_CreatorTime_Start" name="F_CreatorTime_Start" type="text" class="form-control input-wdatepicker" onfocus="WdatePicker()" placeholder="考勤时间开始" />
+                </div>
+            </li>
+            <li><div class="input-group" style="width:10px">--</div></li>
+            <li>
+                <div class="input-group" style="margin-right:10px;margin-top:1px">
+                    <input id="F_CreatorTime_Stop" name="F_CreatorTime_Stop" type="text" class="form-control input-wdatepicker" onfocus="WdatePicker()" placeholder="考勤时间结束" />
+                </div>
+            </li>
+            <li>
+                <div class="input-group" style="margin-right:10px;width:200px;">
+                    <select id="F_Divis_ID" name="F_Divis_ID" class="form-control">
+                        <option value="">选择学部</option>
+                    </select>
+                </div>
+            </li>
+            <li>
+                <div class="input-group" style="margin-right:10px;width:200px;">
+                    <select id="F_Grade_ID" name="F_Grade_ID" class="form-control">
+                        <option value="">选择年级</option>
+                    </select>
+                </div>
+            </li>
+            <li>
+                <div class="input-group" style="margin-right:10px;width:200px;">
+                    <select id="F_Class_ID" name="F_Class_ID" class="form-control">
+                        <option value="">选择班级</option>
+                    </select>
+                </div>
+            </li>
+            <li>
+                <div class="input-group" style="margin-right:10px;width:200px;">
+                    <select id="F_Start1_Result" name="F_Start1_Result" class="form-control">
+                        <option value="">考勤结果</option>
+                    </select>
+                </div>
+            </li>
+            <li>
+                <div class="input-group">
+                    <input id="txt_keyword" type="text" class="form-control" placeholder="姓名/学号" style="width: 150px;">
+                    <span class="input-group-btn">
+                        <button id="btn_search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="gridPanel">
+    <table id="gridList"></table>
+    <div id="gridPager"></div>
+</div>

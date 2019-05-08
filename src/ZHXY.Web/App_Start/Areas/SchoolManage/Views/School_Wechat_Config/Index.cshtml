@@ -1,0 +1,205 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script>
+    $(function () {
+        gridList();
+        $("#F_DepartmentId").bindSelect({
+            url: "/SystemManage/Organize/GetTreeSelectJson",
+            displayBlank:false
+        });
+        $("#F_SysAreaId").bindSelect({
+            url: "/SystemManage/Area/GetTreeSelectJson",
+            displayBlank:false
+        });
+        $("#F_Gender").bindSelect({
+          dictionary: '104',
+          displayBlank:false
+        })
+    })
+    function gridList() {
+        var $gridList = $("#gridList");
+        $gridList.dataGrid({
+            url: "/SchoolManage/School_Wechat_Config/GetGridJson",
+            height: $(window).height() - 128,
+            colModel: [
+
+			 	{ label: '主键', name: 'F_Id', hidden: true },
+
+                { label: '学校名称', name: 'F_School_Name', width: 80, align: 'left' },
+
+                { label: '微信appid', name: 'F_Wechat_AppId', width: 80, align: 'left' },
+
+                { label: '微信秘钥', name: 'F_Wechat_', width: 80, align: 'left' },
+
+                { label: '微信服务器响应地址', name: 'F_Wechat_NotifyUrl', width: 80, align: 'left' },
+
+                { label: '消息appid', name: 'F_News_AppId', width: 80, align: 'left' },
+
+                { label: '消息秘钥', name: 'F_News_', width: 80, align: 'left' },
+
+            ],
+            pager: "#gridPager",
+            sortname: 'F_DepartmentId asc,F_CreatorTime desc',
+            viewrecords: true
+        });
+        $("#btn_search").click(function () {
+            $gridList.jqGrid('setGridParam', {
+                postData: { keyword: $("#txt_keyword").val() },
+            }).trigger('reloadGrid');
+        });
+    }
+    function btn_add() {
+        $.modalOpen({
+            id: "Form",
+            title: "新增",
+            url: "/SchoolManage/School_Wechat_Config/Form",
+            width: "700px",
+            height: "510px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm();
+            }
+        });
+    }
+    function btn_edit() {
+        var keyValue = ($("#gridList").jqGridRowValue('F_Id'))[0];
+        $.modalOpen({
+            id: "Form",
+            title: "修改",
+            url: "/SchoolManage/School_Wechat_Config/Form?keyValue=" + keyValue,
+            width: "700px",
+            height: "510px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm();
+            }
+        });
+    }
+    function btn_delete() {
+        var deleteid = $('#gridList').jqGridRowValue('F_Id');
+        var keyValue = "";
+        for (var i = 0; i < deleteid.length; i++) {
+            keyValue += deleteid[i] + "|";
+        }
+        $.deleteForm({
+            url: "/SchoolManage/School_Wechat_Config/DeleteForm",
+            param: { keyValue: keyValue },
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+    function btn_details() {
+        var keyValue = ($("#gridList").jqGridRowValue('F_Id'))[0];
+        $.modalOpen({
+            id: "Details",
+            title: "查看",
+            url: "/SchoolManage/School_Wechat_Config/Details?keyValue=" + keyValue,
+            width: "700px",
+            height: "550px",
+            btn: null,
+        });
+    }
+
+    function btn_disabled() {
+        var keyValue = $("#gridList").jqGridRowValue('F_Id');
+        $.modalConfirm("注：您确定要【禁用】该项吗？", function (r) {
+            if (r) {
+                $.submitForm({
+                    url: "/SchoolManage/School_Wechat_Config/DisabledAccount",
+                    param: { keyValue: keyValue },
+                    success: function () {
+                        $.currentWindow().$("#gridList").trigger("reloadGrid");
+                    }
+                })
+            }
+        });
+    }
+    function btn_enabled() {
+        var keyValue = $("#gridList").jqGridRowValue('F_Id');
+        $.modalConfirm("注：您确定要【启用】该项吗？", function (r) {
+            if (r) {
+                $.submitForm({
+                    url: "/SchoolManage/School_Wechat_Config/EnabledAccount",
+                    param: { keyValue: keyValue },
+                    success: function () {
+                        $.currentWindow().$("#gridList").trigger("reloadGrid");
+                    }
+                })
+            }
+        });
+    }
+
+    function btn_export() {
+        var keyValue = $("#txt_keyword").val();
+        if (keyValue != null)
+            keyValue = "?keyword=" + keyValue;
+
+        document.location = "/SchoolManage/School_Wechat_Config/export" + keyValue;
+    }
+
+    function btn_import() {
+        var title = 'Excel';
+        var extensions = 'xls,xlsx';
+        var mimeTypes = 'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+        $.modalOpen({
+            id: "Form",
+            title: "导入",
+            url: "/Home/Import?title=" + title + "&extensions=" + extensions + "&mimeTypes=" + mimeTypes + "",
+            width: "500px",
+            height: "300px",
+            callBack: function (iframeId) {
+                var filePali = top.frames[iframeId].submitForm();
+                importAcrion(filePath);
+            }
+        });
+    }
+
+    function importAcrion(filePath) {
+        $.submitForm({
+            url: "/SchoolManage/School_Wechat_Config/import",
+            param: { filePath: filePath },
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+</script>
+
+<div class="topPanel">
+    <div class="toolbar">
+        <div class="btn-group">
+            <a class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
+        </div>
+        <div class="btn-group">
+            <a id="NF-add" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_add()"><i class="fa fa-plus"></i>新建</a>
+        </div>
+            <div class="operate">
+                <ul class="nav nav-pills">
+                    <li class="first">已选中<span>1</span>项</li>
+                    <li><a id="NF-edit" authorize="yes" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>修改</a></li>
+                    <li><a class="multi-edit" id="NF-delete" authorize="yes" onclick="btn_delete()"><i class="fa fa-trash-o"></i>删除</a></li>
+                    <li><a id="NF-Details" authorize="yes" onclick="btn_details()"><i class="fa fa-search-plus"></i>查看</a></li>
+                </ul>
+                <a href="javascript:;" class="close"></a>
+            </div>
+            <script>$('.toolbar').authorizeButton()</script>
+        </div>
+    <div class="search">
+        <ul>
+            <li class="formTitle">搜索：</li>
+            <li>
+                <div class="input-group">
+                    <input id="txt_keyword" type="text" class="form-control" placeholder="学校名称" style="width: 150px;">
+                    <span class="input-group-btn">
+                        <button id="btn_search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="gridPanel">
+    <table id="gridList"></table>
+    <div id="gridPager"></div>
+</div>

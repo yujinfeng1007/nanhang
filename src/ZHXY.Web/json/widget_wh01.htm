@@ -1,0 +1,24 @@
+<div id="divWidget_wh01" style="min-height: 110px; overflow: auto; "></div>
+<script>
+(function(){
+	var pane = $('#divWidget_wh01') ;
+	//log(pane);
+
+	var data = [
+		{
+			SysMenuId:14,
+			ico: '003.png',
+			text:'作业查询',
+			link:'../demo/viewClass.shtml',
+			SysMenuPid:13
+		}
+	];
+
+	pane.bindList({
+		list : data ,
+		template : '<li class="navItem" title="{text}"><img class="navItemIco" src="'+sys.menuIconPath+'{ico}"><span class="navItemLabel">{text}</span></li>'
+	});
+
+	pane.parent().css({'backgroundColor' : 'rgba(0,0,0,0.5)' , padding: 10});
+})();
+</script>

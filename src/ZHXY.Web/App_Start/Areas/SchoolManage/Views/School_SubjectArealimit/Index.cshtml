@@ -1,0 +1,237 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script>
+
+    $(function () {
+        gridList();
+        $("#F_Divis_ID").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Division",
+            displayBlank: false
+        });
+        $("#F_Year").bindSelect({
+            dictionary: 'F_Year',
+            displayBlank: false
+        })
+    })
+    function gridList() {
+        var $gridList = $("#gridList");
+        $gridList.dataGrid({
+            url: "/SchoolManage/School_SubjectArealimit/GetGridJson",
+            height: $(window).height() - 128,
+            colModel: [
+			 	{ label: '主键', name: 'F_Id', hidden: true },
+                { label: '序号', name: 'F_SortCode', width: 80, align: 'left' },
+                {
+                    label: '年度', name: 'F_Year', width: 80, align: 'left',
+                    formatter: function (cellvalue) {
+                        return top.clients.dataItems["F_Year"][cellvalue] == undefined ? "" : top.clients.dataItems["F_Year"][cellvalue];
+                    }
+                },
+                 {
+                     label: '学部', name: 'F_Divis_ID', width: 80, align: 'left',
+                     formatter: function (cellvalue) {
+                         return top.clients.organize[cellvalue] == null ? "" : top.clients.organize[cellvalue].fullname;
+                     }
+                 },
+                 {
+                     label: '入学年段', name: 'F_INYear', width: 80, align: 'left', formatter: function (cellvalue) {
+                         return top.clients.dataItems["In_Year"][cellvalue] == undefined ? "" : top.clients.dataItems["In_Year"][cellvalue];
+                     }
+                 },
+                {
+                    label: '区域省', name: 'F_Province', width: 80, align: 'left',
+                    formatter: function (cellvalue) {
+                        return top.clients.area[cellvalue] == null ? "" : top.clients.area[cellvalue].fullname;
+                    }
+                },
+                {
+                    label: '区域市', name: 'F_City', width: 80, align: 'left',
+                    formatter: function (cellvalue) {
+                        return top.clients.area[cellvalue] == null ? "" : top.clients.area[cellvalue].fullname;
+                    }
+                },
+                { label: '报名最大数', name: 'F_MaxSignNum', width: 80, align: 'left' },
+			 	//{ label: '备注', name: 'F_Description', width: 200, align: 'left' },
+			 	{
+			 	    label: '创建时间', name: 'F_CreatorTime', width: 80, align: 'left',
+			 	    formatter: "date", formatoptions: { srcformat: 'Y-m-d H:i:s', newformat: 'Y-m-d H:i:s' }
+			 	}
+            ],
+            pager: "#gridPager",
+            sortname: 'F_DepartmentId asc,F_CreatorTime desc',
+            viewrecords: true
+        });
+        $("#btn_search").click(function () {
+            $gridList.jqGrid('setGridParam', {
+                postData: { keyword: $("#txt_keyword").val(), F_DepartmentId: $("#F_DepartmentId").val(), F_Divis_ID: $("#F_Divis_ID").val(), F_Year: $("#F_Year").val() },
+            }).trigger('reloadGrid');
+        });
+    }
+    function btn_add() {
+        $.modalOpen({
+            id: "Form",
+            title: "新增",
+            url: "/SchoolManage/School_SubjectArealimit/Form",
+            width: "700px",
+            height: "510px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm();
+            }
+        });
+    }
+    function btn_edit() {
+        var keyValue = ($("#gridList").jqGridRowValue('F_Id'))[0];
+        $.modalOpen({
+            id: "Form",
+            title: "修改",
+            url: "/SchoolManage/School_SubjectArealimit/Form?keyValue=" + keyValue,
+            width: "700px",
+            height: "510px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm();
+            }
+        });
+    }
+    function btn_delete() {
+        var deleteid = $('#gridList').jqGridRowValue('F_Id');
+        var keyValue = "";
+        for (var i = 0; i < deleteid.length; i++) {
+            keyValue += deleteid[i] + "|";
+        }
+        $.deleteForm({
+            url: "/SchoolManage/School_SubjectArealimit/DeleteForm",
+            param: { keyValue: keyValue },
+            success: function () {
+                parent.top.frames["Daily"].$("#gridList").trigger("reloadGrid");
+                //$.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+    function btn_details() {
+        var keyValue = ($("#gridList").jqGridRowValue('F_Id'))[0];
+        $.modalOpen({
+            id: "Details",
+            title: "查看",
+            url: "/SchoolManage/School_SubjectArealimit/Details?keyValue=" + keyValue,
+            width: "700px",
+            height: "550px",
+            btn: null,
+        });
+    }
+
+    function btn_disabled() {
+        var keyValue = $("#gridList").jqGridRowValue('F_Id');
+        $.modalConfirm("注：您确定要【禁用】该项吗？", function (r) {
+            if (r) {
+                $.submitForm({
+                    url: "/SchoolManage/School_SubjectArealimit/DisabledAccount",
+                    param: { keyValue: keyValue },
+                    success: function () {
+                        $.currentWindow().$("#gridList").trigger("reloadGrid");
+                    }
+                })
+            }
+        });
+    }
+    function btn_enabled() {
+        var keyValue = $("#gridList").jqGridRowValue('F_Id');
+        $.modalConfirm("注：您确定要【启用】该项吗？", function (r) {
+            if (r) {
+                $.submitForm({
+                    url: "/SchoolManage/School_SubjectArealimit/EnabledAccount",
+                    param: { keyValue: keyValue },
+                    success: function () {
+                        $.currentWindow().$("#gridList").trigger("reloadGrid");
+                    }
+                })
+            }
+        });
+    }
+
+    function btn_export() {
+        var keyValue = $("#txt_keyword").val();
+        document.location = "/SchoolManage/School_SubjectArealimit/export";
+    }
+
+    function btn_import() {
+        var title = 'Excel';
+        var extensions = 'xls,xlsx';
+        var mimeTypes = 'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+        $.modalOpen({
+            id: "Form",
+            title: "导入",
+            url: "/Home/Import?title=" + title + "&extensions=" + extensions + "&mimeTypes=" + mimeTypes + "&fileName=区域限制模版.xls",
+            width: "500px",
+            height: "300px",
+            callBack: function (iframeId) {
+                var filePath = top.frames[iframeId].submitForm();
+                importAcrion(filePath);
+            }
+        });
+    }
+
+    function importAcrion(filePath) {
+        $.submitForm({
+            url: "/SchoolManage/School_SubjectArealimit/import",
+            param: { filePath: filePath },
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+</script>
+<div class="topPanel">
+    <div class="toolbar">
+        <div class="btn-group">
+            <a class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
+        </div>
+        <div class="btn-group">
+            <a id="NF-add" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_add()"><i class="fa fa-plus"></i>新建</a>
+        </div>
+        <div class="btn-group"><a id="NF-export" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_export()"><i class="fa fa-arrow-down"></i>导出</a></div>
+        <div class="btn-group"><a id="NF-import" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_import()"><i class="fa fa-arrow-up"></i>导入</a></div>
+        <div class="operate">
+            <ul class="nav nav-pills">
+                <li class="first">已选中<span>1</span>项</li>
+                <li><a id="NF-edit" authorize="yes" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>修改</a></li>
+                <li><a class="multi-edit" id="NF-delete" authorize="yes" onclick="btn_delete()"><i class="fa fa-trash-o"></i>删除</a></li>
+                <li><a id="NF-Details" authorize="yes" onclick="btn_details()"><i class="fa fa-search-plus"></i>查看</a></li>
+            </ul>
+            <a href="javascript:;" class="close"></a>
+        </div>
+        <script>$('.toolbar').authorizeButton()</script>
+    </div>
+    <div class="search">
+        <ul>
+            <li class="formTitle">搜索：</li>
+            <li>
+                <div class="input-group" style="margin-right:10px;width:170px;">
+                    <select id="F_Year" name="F_Year" class="form-control">
+                        <option value="">选择年度</option>
+                    </select>
+                </div>
+            </li>
+            <li>
+                <div class="input-group" style="margin-right:10px;width:170px;">
+                    <select id="F_Divis_ID" name="F_Divis_ID" class="form-control">
+                        <option value="">选择学部</option>
+                    </select>
+                </div>
+            </li>
+            <li>
+                <div class="input-group">
+                    @*<input id="txt_keyword" type="text" class="form-control" placeholder="姓名/手机" style="width: 150px;">*@
+                    <span class="input-group-btn">
+                        <button id="btn_search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="gridPanel">
+    <table id="gridList"></table>
+    <div id="gridPager"></div>
+</div>

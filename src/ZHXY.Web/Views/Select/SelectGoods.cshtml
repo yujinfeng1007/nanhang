@@ -1,0 +1,124 @@
+﻿@{Layout = "~/Views/Shared/_Index.cshtml";}
+<script>
+    var multiSelect = $.request('ml')
+    //全局变量
+    function getTree() { return $("#itemTree"); }
+    function getGrid() { return $("#gridList"); }
+
+    $(function () {
+        $('#layout').layout();
+        initTree();
+        initGrid(multiSelect);
+        $("#btn_search").bind("click", () => reloadGrid());
+        $("#txt_keyword").bind("input", () => reloadGrid());
+    })
+
+    // 初始化树
+    function initTree() {
+        getTree().jqGrid({
+            styleUI: 'Bootstrap',
+            treeGrid: true,
+            url: "/GoodsManage/Category/GetTree",
+            treeGridModel: "adjacency",
+            datatype: "json",
+            gridview: true,
+            altRows: true,
+            viewrecords: true,
+            autoGridWidth: true,
+            multiselect: true, //开启多选,
+            rowNum: 15,
+            shrinkToFit: true,
+            autoGridHeight: true,
+            jsonReader: {
+                root: function (r) { return r.data; }
+            },
+            height: window.innerHeight * 0.90,
+            width: window.innerWidth * 0.19,
+            ExpandColumn: 'name',
+            ExpandColClick: false,
+            onSelectRow: reloadGrid,
+            colModel: [
+                { label: '物品类别', name: 'name', width: 100, align: 'left' },
+                { label: '主键', name: "id", width: 150, align: 'left', key: true, hidden: true },
+            ],
+            multiselect: false,
+            rowNum: "all",
+        });
+    }
+
+    // 初始化数据表格
+    function initGrid(multiSelect) {
+        getGrid().dataGrid({
+            url: "/GoodsManage/Goods/GetList",
+            autoGridHeight: () => $(window).height() * 0.78,
+            colModel: [
+                { label: '主键', name: 'id', hidden: true },
+                { label: '物品编码', name: 'code', width: 80, align: 'left' },
+                { label: '物品名称', name: 'name', width: 80, align: 'left' },
+                { label: '条形码', name: 'barCode', width: 80, align: 'left' },
+                { label: '规格', name: 'size', width: 80, align: 'left' },
+                { label: '型号', name: 'model', width: 80, align: 'left' },
+                { label: '物品单价', name: 'unitPrice', width: 80, align: 'left' },
+            ],
+            loadComplete: function () {
+                this.p.postData.categoryId = null;
+            },
+            multiselect: multiSelect === 'undefined' ? false : multiSelect,
+            pager: "#gridPager",
+            viewrecords: true
+        });
+    }
+    //提交
+    function submit() {
+        var data
+        if (!multiSelect) {
+            data = getGrid().getRowData(getGrid().getGridParam("selrow"));
+        } else {
+            data = []
+            var selectedId = getGrid().jqGrid('getGridParam', 'selarrrow')
+            $.each(selectedId, function (i, item) {
+                data.push(getGrid().jqGrid("getRowData", item))
+            })
+
+        }
+        console.log(data);
+        $.modalClose();
+        return data;
+
+    }
+    // 重载数据表格
+    function reloadGrid(categoryId) {
+        getGrid().setGridParam(
+            {
+                postData: { categoryId: categoryId, keyword: $("#txt_keyword").val() }
+            }
+        ).trigger('reloadGrid');
+    }
+</script>
+<div class="ui-layout" id="layout" style="height: 100%; width: 100%;">
+    <div class="ui-layout-west">
+        <table id="itemTree"></table>
+    </div>
+    <div class="ui-layout-center">
+        <div class="topPanel">
+            <div class="search">
+                <table>
+                    <tr>
+                        <td>
+                            <div class="input-group">
+                                <input id="txt_keyword" type="text" class="form-control" placeholder="名称" style="width: 200px;">
+                                <span class="input-group-btn">
+                                    <button id="btn_search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="gridPanel">
+            <table id="gridList"></table>
+            <div id="gridPager"></div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This file contains job definitions in schema version 2.0 format -->
+
+<job-scheduling-data xmlns="http://quartznet.sourceforge.net/JobSchedulingData" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0">
+
+  <processing-directives>
+    <overwrite-existing-data>true</overwrite-existing-data>
+  </processing-directives>
+  <schedule>
+    <!--
+    <job>
+      <name>ShortMsgJob</name>
+      <group>Test</group>
+      <description>Test测试</description>
+      <job-type>TaskApi.Job.ShortMsgJob,TaskApi</job-type>
+      <durable>true</durable>
+      <recover>false</recover>
+    </job>
+
+    <job>
+      <name>SynOrgJob</name>
+      <group>Organize</group>
+      <description>组织机构同步</description>
+      <job-type>TaskApi.Job.SynOrgJob,TaskApi</job-type>
+      <durable>true</durable>
+      <recover>false</recover>
+    </job>
+    <job>
+      <name>SendBillsJob</name>
+      <group>AliPay</group>
+      <description>支付宝订单发送</description>
+      <job-type>TaskApi.Alipay.Job.SendBillsJob,TaskApi</job-type>
+      <durable>true</durable>
+      <recover>false</recover>
+    </job>
+
+    <job>
+      <name>BalanceBillJob</name>
+      <group>AliPay</group>
+      <description>农行支付文件对账</description>
+      <job-type>TaskApi.Nhpay.Job.BalanceBillJob,TaskApi</job-type>
+      <durable>true</durable>
+      <recover>false</recover>
+    </job>
+
+    <job>
+      <name>SyncBillJob</name>
+      <group>AliPay</group>
+      <description>支付宝订单状态同步</description>
+      <job-type>TaskApi.Alipay.Job.SyncBillJob,TaskApi</job-type>
+      <durable>true</durable>
+      <recover>false</recover>
+    </job>
+
+    <job>
+      <name>SendBillsJob</name>
+      <group>AliPay</group>
+      <description>支付宝订单发送</description>
+      <job-type>TaskApi.Alipay.Job.SendBillsJob,TaskApi</job-type>
+      <durable>true</durable>
+      <recover>false</recover>
+    </job>
+
+    <job>
+      <name>XysSendBillJob</name>
+      <group>XYS</group>
+      <description>校易收订单发送</description>
+      <job-type>TaskApi.XYS.Job.SendBillJob,TaskApi</job-type>
+      <durable>true</durable>
+      <recover>false</recover>
+    </job>
+
+    <job>
+      <name>BalanceBillJob</name>
+      <group>AliPay</group>
+      <description>农行支付文件对账</description>
+      <job-type>TaskApi.Nhpay.Job.BalanceBillJob,TaskApi</job-type>
+      <durable>true</durable>
+      <recover>false</recover>
+    </job>
+
+    <job>
+      <name>XYSBalanceBillJob</name>
+      <group>XYS</group>
+      <description>校易收支付文件对账</description>
+      <job-type>TaskApi.XYS.Job.XYSBalanceBillJob,TaskApi</job-type>
+      <durable>true</durable>
+      <recover>false</recover>
+    </job>
+
+    <job>
+      <name>SyncBillJob</name>
+      <group>AliPay</group>
+      <description>支付宝订单状态同步</description>
+      <job-type>TaskApi.Alipay.Job.SyncBillJob,TaskApi</job-type>
+      <durable>true</durable>
+      <recover>false</recover>
+    </job>
+    -->
+
+    <job>
+      <name>SendJpush</name>
+      <group>Test</group>
+      <description>推送消息到班牌设备</description>
+      <job-type>TaskApi.Bp.Job.SendJpush,TaskApi</job-type>
+      <durable>true</durable>
+      <recover>false</recover>
+    </job>
+
+    <job>
+      <name>SynOrgJob</name>
+      <group>Organize</group>
+      <description>嘉兴项目组织机构同步</description>
+      <job-type>TaskApi.Job.SynOrgJob,TaskApi</job-type>
+      <durable>true</durable>
+      <recover>false</recover>
+    </job>
+
+    <job>
+      <name>NanHangJob</name>
+      <group>NanHang</group>
+      <description>南航项目同步师生信息</description>
+      <job-type>TaskApi.Job.NanHangJob,TaskApi</job-type>
+      <durable>true</durable>
+      <recover>false</recover>
+    </job>
+    <job>
+      <name>NanHangReportJob</name>
+      <group>NanHangReport</group>
+      <description>南航项目异常流水分类</description>
+      <job-type>TaskApi.Job.ReportJob,TaskApi</job-type>
+      <durable>true</durable>
+      <recover>false</recover>
+    </job>
+
+    <job>
+      <name>NanHangReportMessageJob</name>
+      <group>NanHangReportMessage</group>
+      <description>南航项目异常流水通知任务</description>
+      <job-type>TaskApi.Job.ReportMessageJob,TaskApi</job-type>
+      <durable>true</durable>
+      <recover>false</recover>
+    </job>
+
+    <job>
+      <name>DHMigrateJob</name>
+      <group>DHMigrate</group>
+      <description>南航项目同步闸机流水信息</description>
+      <job-type>TaskApi.DH.DHMigrateJob,TaskApi</job-type>
+      <durable>true</durable>
+      <recover>false</recover>
+    </job>
+
+    <job>
+      <name>UpdateTokenJob</name>
+      <group>UpdateToken</group>
+      <description>南航项目-大华Token保活定时任务</description>
+      <job-type>TaskApi.DH.UpdateTokenJob,TaskApi</job-type>
+      <durable>true</durable>
+      <recover>false</recover>
+    </job>
+
+    <job>
+      <name>DHCreateDormJob</name>
+      <group>DHCreateDorm</group>
+      <description>南航项目-大华创建宿舍相关</description>
+      <job-type>TaskApi.DH.DHCreateDormJob, TaskApi</job-type>
+      <durable>true</durable>
+      <recover>false</recover>
+    </job>
+
+
+    <!--<trigger>
+      <cron>
+        <name>SendJpushTrigger</name>
+        <group>Test</group>
+        <job-name>SendJpush</job-name>
+        <job-group>Test</job-group>
+        <cron-expression>0/5 * * * * ?</cron-expression>
+      </cron>
+    </trigger>-->
+
+    <!--嘉兴电子班牌同步结构-->
+    <!--<trigger>
+      <cron>
+        <name>SynOrgJobTrigger</name>
+        <group>Organize</group>
+        <job-name>SynOrgJob</job-name>
+        <job-group>Organize</job-group>
+        <cron-expression>0 0/59 * * * ?</cron-expression>
+      </cron>
+    </trigger>-->
+
+    <trigger>
+      <cron>
+        <name>DHMigrateJobTrigger</name>
+        <group>DHMigrate</group>
+        <job-name>DHMigrateJob</job-name>
+        <job-group>DHMigrate</job-group>
+        <!-- 每3秒启动一次定时任务 -->
+        <cron-expression>0/8 * * * * ?</cron-expression>
+      </cron>
+    </trigger>
+    
+    <trigger>
+      <cron>
+        <name>NanHangJobTrigger</name>
+        <group>NanHang</group>
+        <job-name>NanHangJob</job-name>
+        <job-group>NanHang</job-group>
+        <!-- 每日凌晨2点启动定时任务 -->
+        <cron-expression>0 0 2 ? * *</cron-expression>
+      </cron>
+    </trigger>
+
+
+    <trigger>
+      <cron>
+        <name>ReportMessageJobTrigger</name>
+        <group>NanHangReportMessage</group>
+        <job-name>NanHangReportMessageJob</job-name>
+        <job-group>NanHangReportMessage</job-group>
+        <cron-expression>0 05 19 ? * *</cron-expression>
+      </cron>
+    </trigger>
+    <!--NanHangReportJobTrigger：如果该触发器不在触发器列的第四位，请移至第四位-->
+    <trigger>
+      <cron>
+        <name>ReportJobTrigger</name>
+        <group>NanHangReport</group>
+        <job-name>NanHangReportJob</job-name>
+        <job-group>NanHangReport</job-group>
+        <cron-expression>0 42 9 ? * *</cron-expression>
+      </cron>
+    </trigger>
+ 
+
+    <!--<trigger>
+      <cron>
+        <name>UpdateTokenJobTrigger</name>
+        <group>UpdateToken</group>
+        <job-name>UpdateTokenJob</job-name>
+        <job-group>UpdateToken</job-group>
+        --><!-- 每10秒启动一次定时任务 --><!--
+        <cron-expression>0/10 * * * * ?</cron-expression>
+      </cron>
+    </trigger>-->
+    
+    <!--<trigger>
+      <cron>
+        <name>DHCreateDormJobTrigger</name>
+        <group>DHCreateDorm</group>
+        <job-name>DHCreateDormJob</job-name>
+        <job-group>DHCreateDorm</job-group>
+        --><!-- 每天9点启动一次定时任务 --><!--
+        <cron-expression>0 5 18 ? * *</cron-expression>
+      </cron>
+    </trigger>-->
+    
+    <!--<trigger>
+      <cron>
+        <name>ShortMsgJobTrigger</name>
+        <group>Test</group>
+        <job-name>ShortMsgJob</job-name>
+        <job-group>Test</job-group>
+        <cron-expression>0/10 * * * * ?</cron-expression>
+      </cron>
+    </trigger>
+    <trigger>
+      <cron>
+        <name>SynOrgJobTrigger</name>
+        <group>Organize</group>
+        <job-name>SynOrgJob</job-name>
+        <job-group>Organize</job-group>
+        <cron-expression>0 0/1 * * * ?</cron-expression>
+      </cron>
+    </trigger>
+    <trigger>
+      <cron>
+        <name>SendBillsTrigger</name>
+        <group>AliPay</group>
+        <job-name>SendBillsJob</job-name>
+        <job-group>AliPay</job-group>
+        <cron-expression>0/10 * * * * ?</cron-expression>
+      </cron>
+    </trigger>
+
+    <trigger>
+      <cron>
+        <name>SyncBillJobTrigger</name>
+        <group>AliPay</group>
+        <job-name>SyncBillJob</job-name>
+        <job-group>AliPay</job-group>
+        <cron-expression>0/10 * * * * ?</cron-expression>
+      </cron>
+    </trigger>
+
+    <trigger>
+      <cron>
+        <name>BalanceBillJobTrigger</name>
+        <group>AliPay</group>
+        <job-name>BalanceBillJob</job-name>
+        <job-group>AliPay</job-group>
+        <cron-expression>0/10 * * * * ?</cron-expression>
+      </cron>
+    </trigger>
+
+    <trigger>
+      <cron>
+        <name>XysSendBillJob</name>
+        <group>XYS</group>
+        <job-name>XysSendBillJob</job-name>
+        <job-group>XYS</job-group>
+        <cron-expression>0/30 * * * * ?</cron-expression>
+      </cron>
+    </trigger>
+
+    <trigger>
+      <cron>
+        <name>SyncBillJobTrigger</name>
+        <group>AliPay</group>
+        <job-name>SyncBillJob</job-name>
+        <job-group>AliPay</job-group>
+        <cron-expression>0/20 * * * * ?</cron-expression>
+      </cron>
+    </trigger>
+
+    <trigger>
+      <cron>
+        <name>BalanceBillJobTrigger</name>
+        <group>AliPay</group>
+        <job-name>BalanceBillJob</job-name>
+        <job-group>AliPay</job-group>
+        <cron-expression>0 30 23 * * ?</cron-expression>
+      </cron>
+    </trigger>
+
+    <trigger>
+      <cron>
+        <name>XYSBalanceBillJobTrigger</name>
+        <group>XYS</group>
+        <job-name>XYSBalanceBillJob</job-name>
+        <job-group>XYS</job-group>
+        <cron-expression>0/35 * * * * ?</cron-expression>
+      </cron>
+    </trigger>-->
+  </schedule>
+</job-scheduling-data>

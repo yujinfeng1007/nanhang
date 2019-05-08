@@ -1,0 +1,130 @@
+﻿@{Layout = "~/Views/Shared/_Index.cshtml";}
+<script>
+
+
+    $(function () {
+        $('#layout').layout({
+            west__size: 300,
+            resizable: false
+        });
+        getGridTree();
+        gridList();
+    })
+    //// 初始化树
+
+    function getGridTree() {
+        var $gridList = $("#table_gridList");
+        $gridList.dataGrid({
+            treeGrid: true,
+            treeGridModel: "adjacency",// nested
+            ExpandColumn: "F_EnCode",
+            ExpandColClick: true,
+            onCustomSelectRow: DispalyGrid,
+            multiselect: false,
+            url: "/SystemManage/Organize/GetTreeGridJson",
+            colModel: [
+                { label: '名称', name: 'F_FullName', width: 200, align: 'left' },
+                { label: '编号', name: 'F_EnCode', width: 150, align: 'left', hidden: true },
+                { label: "主键", name: "F_Id", width: 150, align: 'left', key: true, hidden: true }
+            ]
+
+        });
+        $("#btn_search").click(function () {
+            $gridList.jqGrid('setGridParam', {
+                postData: { keyword: $("#txt_keyword").val() },
+            }).trigger('reloadGrid');
+        });
+    }
+    function DispalyGrid(rowid) {
+        $('#btn_searchfield').trigger("click");
+    }
+    // 初始化列表
+    function gridList() {
+        var $gridList = $("#gridList");
+        $gridList.dataGrid({
+            height: $(window).height() - 173,
+            autoGridHeight: function () {
+                return 700
+            },
+            colModel: [
+                { label: 'F_Id', index: "F_Id", name: 'F_Id', key: true, hidden: true },
+                { label: '姓名', index: "F_RealName", name: 'F_RealName', width: 150 },
+            ],
+            rowNum: -1
+        });
+        $("#btn_searchfield").click(function () {
+            $gridList.jqGrid('setGridParam', {
+                url: "/SystemManage/User/GetListByOrg",
+                postData: { keyword: $("#txt_fieldName").val(), orgId: $("#table_gridList").jqGridRowValue()["F_Id"] },
+            }).trigger('reloadGrid');
+        });
+    }
+    function submit() {
+        var data = $('#gridList').jqGrid('getGridParam', 'selarrrow');
+        $.modalClose();
+        return data;
+        //var data = $('#gridList').jqGrid('getGridParam', 'selarrrow');
+        ////alert(data);
+        //console.log(data);
+        //$.modalClose();
+        //return data;
+    }
+
+</script>
+
+
+<div class="ui-layout" id="layout" style="height: 100%; width: 100%;">
+    <div class="ui-layout-west">
+        <div class="topPanel">
+            <div class="toolbar">
+                <div class="btn-group">
+                    <a class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
+                </div>
+
+            </div>
+            <div class="search">
+                <table>
+                    <tr>
+                        <th class="formTitle">搜索：</th>
+
+                        <td>
+                            <div class="input-group">
+                                <input id="txt_keyword" type="text" class="form-control" placeholder="机构名称" style="width: 150px;">
+                                <span class="input-group-btn">
+                                    <button id="btn_search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="gridPanel">
+            <table id="table_gridList"></table>
+        </div>
+    </div>
+    <div class="ui-layout-center">
+        <div class="topPanel">
+
+            <div class="search">
+                <table>
+                    <tr>
+                        <th class="formTitle">搜索：</th>
+
+                        <td>
+                            <div class="input-group">
+                                <input id="txt_fieldName" type="text" class="form-control" placeholder="名称" style="width: 150px;">
+                                <span class="input-group-btn">
+                                    <button id="btn_searchfield" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="gridPanel">
+            <table id="gridList"></table>
+        </div>
+    </div>
+</div>

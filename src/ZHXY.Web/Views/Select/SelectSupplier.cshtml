@@ -1,0 +1,90 @@
+﻿@{Layout = "~/Views/Shared/_Index.cshtml";}
+<script>
+    function getGrid() { return $("#gridList"); }
+    $(function () {
+        initGrid();
+        $("#btn_search").bind("click", reloadGrid);
+        $("#txt_keyword").bind("input", reloadGrid);
+    })
+
+    // 初始化列表
+    function initGrid() {
+        getGrid().dataGrid({
+            url: "/AssetManage/Supplier/GetList",
+            autoGridHeight: () => $(window).height() * 0.68,
+            autoGridWidth: true,
+            rowNum: 10,
+            colModel: [
+                { label: '供应商简称', name: 'shortName' },
+                {
+                    label: '状态', name: 'status',
+                    formatter: function (cellvalue) {
+                        if (!cellvalue) return "";
+                        return top.clients.dataItems["SupplierStatus"] == null ? "" : top.clients.dataItems.SupplierStatus[cellvalue];
+                    }
+                },
+                {
+                    label: '供应商类别', name: 'type',
+                    formatter: function (cellvalue) {
+                        if (!cellvalue) return "";
+                        return top.clients.dataItems["SupplierType"] == null ? "" : top.clients.dataItems.SupplierType[cellvalue];
+                    }
+                },
+                { label: '联系人', name: 'contact' },
+                { label: '地址', name: 'address' },
+                { label: '电话', name: 'phone' },
+                { label: '备注', name: 'memo' },
+                { label: '主键', name: 'id', hidden: true },
+            ],
+
+            viewrecords: true,
+            multiselect: false,
+            pager: "#gridPager",
+        });
+    }
+
+    function submit() {
+        let data = null;
+        let selrow = getGrid().getGridParam("selrow");
+        if (selrow !== null) {
+            data = getGrid().getRowData(selrow);
+        }
+        $.modalClose();
+        return data;
+
+    }
+
+    // 重载数据表
+    function reloadGrid() {
+        getGrid().setGridParam(
+            { postData: { keyword: $("#txt_keyword").val() } }
+        ).trigger('reloadGrid');
+    }
+</script>
+
+<div class="topPanel">
+    <div class="search">
+        <table>
+            <tr>
+                <td>
+                    <div class="input-group">
+                        <input id="txt_keyword" type="text" class="form-control" placeholder="名称/编号" style="width: 200px;">
+                        <span class="input-group-btn">
+                            <button id="btn_search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group" style="margin-left:15px">
+                        <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+                        <span id="currentCatecory" style="margin-left:6px"></span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="gridPanel">
+    <table id="gridList"></table>
+    <div id="gridPager"></div>
+</div>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<discovery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/disco/">
+  <contractRef ref="https://passport.nchu.edu.cn/api/DataCenter.asmx?wsdl" docRef="https://passport.nchu.edu.cn/api/DataCenter.asmx" xmlns="http://schemas.xmlsoap.org/disco/scl/" />
+  <soap address="https://passport.nchu.edu.cn/api/DataCenter.asmx" xmlns:q1="http://passport.nchu.edu.cn/" binding="q1:数据中心接口服务Soap" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="https://passport.nchu.edu.cn/api/DataCenter.asmx" xmlns:q2="http://passport.nchu.edu.cn/" binding="q2:数据中心接口服务Soap12" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+</discovery>

@@ -1,0 +1,93 @@
+﻿@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script>
+    var keyValue = $.request("keyValue");
+    $(function () {
+        initControl();
+        if (!!keyValue) {
+            $.ajax({
+                url: "/SystemManage/Sys_ShortMsg/GetFormJson",
+                data: { keyValue: keyValue },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    $("#form1").formSerialize(data)
+                }
+            });
+        }
+    });
+    function initControl() {
+        $.addRequired('#form1')
+    }
+    function submitForm() {
+        if (!$('#form1').formValid()) {
+            return false;
+        }
+        $.submitForm({
+            url: "/SystemManage/Sys_ShortMsg/SubmitForm?keyValue=" + keyValue,
+            param: $("#form1").formSerialize(),
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+</script>
+<form id="form1">
+    <div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#">基本信息</a></li>
+        </ul>
+        <div style="padding-top: 20px; margin-right: 30px;">
+            <table class="form">
+                <tr>
+                    <th class="formTitle">接收人手机号</th>
+                    <td class="formValue">
+                        <input id="F_Mobile" name="F_Mobile" type="text" class="form-control required" placeholder="请输入接收人手机号" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">短信内容</th>
+                    <td class="formValue">
+                        <input id="F_ShortMsg" name="F_ShortMsg" type="text" class="form-control required" placeholder="请输入短信内容" />
+                    </td>
+                    <th class="formTitle">计费条数</th>
+                    <td class="formValue">
+                        <input id="F_FeesCount" name="F_FeesCount" type="text" class="form-control required" placeholder="请输入计费条数" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">发送状态</th>
+                    <td class="formValue">
+                        <input id="F_Send_Statu" name="F_Send_Statu" type="text" class="form-control required" placeholder="请输入发送状态" />
+                    </td>
+                    <th class="formTitle">发送时间</th>
+                    <td class="formValue">
+                        <input id="F_SendDTM" name="F_SendDTM" type="text" class="form-control input-wdatepicker" onfocus="WdatePicker()" />
+                    </td>
+                </tr>
+                @*<tr>
+                    <th class="formTitle">序号</th>
+                    <td class="formValue">
+                        <input id="F_SortCode" name="F_SortCode" type="text" class="form-control required" placeholder="请输入序号" />
+                    </td>
+                    <th class="formTitle">所属部门</th>
+                    <td class="formValue">
+                        <select id="F_DepartmentId" name="F_DepartmentId" class="form-control required">
+                            <option value="">==请选择==</option>
+                        </select>
+                    </td>
+                </tr>*@
+                <tr>
+                <tr>
+                <tr>
+                <tr>
+                <tr>
+                <tr>
+                <tr>
+                <tr>
+            </table>
+        </div>
+    </div>
+</form>
