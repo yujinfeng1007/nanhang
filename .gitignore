@@ -19,7 +19,7 @@ bld/
 
 
 # MSTest test Results
-[Tt]est[Rr]esults*/
+TestResults/
 [Bb]uild[Ll]og.*
 
 # NUNIT
