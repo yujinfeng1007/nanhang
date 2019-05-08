@@ -1,0 +1,1371 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Beyova.JPush</name>
+    </assembly>
+    <members>
+        <member name="T:Beyova.Extension">
+            <summary>
+            Class Extension.
+            </summary>
+        </member>
+        <member name="M:Beyova.Extension.ToPushMessageRequestV3(Beyova.JPush.PushMessageRequest)">
+            <summary>
+            To the push message request v3.
+            </summary>
+            <param name="request">The request.</param>
+            <returns>Beyova.JPush.V3.PushMessageRequestV3.</returns>
+        </member>
+        <member name="M:Beyova.Extension.ToPushTypeV3(Beyova.JPush.PushType)">
+            <summary>
+            To the push type v3.
+            </summary>
+            <param name="pushType">Type of the push.</param>
+            <returns>Beyova.JPush.V3.PushTypeV3.</returns>
+        </member>
+        <member name="M:Beyova.Extension.ToJson(Beyova.JPush.PushPlatform)">
+            <summary>
+            Platforms to json.
+            </summary>
+            <param name="platform">The platform.</param>
+            <returns>JProperty.</returns>
+        </member>
+        <member name="M:Beyova.Extension.ToJson(Beyova.JPush.V3.Audience)">
+            <summary>
+            Pushes the type to json.
+            </summary>
+            <param name="audience">The audience.</param>
+            <returns>System.Object.</returns>
+        </member>
+        <member name="T:Beyova.JPush.NoDestinationReachedException">
+            <summary>
+            Class NoDestinationReachedException.
+            </summary>
+        </member>
+        <member name="P:Beyova.JPush.NoDestinationReachedException.Code">
+            <summary>
+            Gets or sets the code.
+            </summary>
+            <value>
+            The code.
+            </value>
+        </member>
+        <member name="M:Beyova.JPush.NoDestinationReachedException.#ctor(System.String,System.Exception)">
+            <summary>
+            Pushes the message exception.
+            </summary>
+            <param name="message">The message.</param>
+            <param name="innerException">The inner exception.</param>
+        </member>
+        <member name="T:Beyova.JPush.PushMessageException">
+            <summary>
+            Class PushMessageException.
+            </summary>
+        </member>
+        <member name="P:Beyova.JPush.PushMessageException.HttpStatusCode">
+            <summary>
+            Gets or sets the HTTP status code.
+            </summary>
+            <value>
+            The HTTP status code.
+            </value>
+        </member>
+        <member name="P:Beyova.JPush.PushMessageException.Code">
+            <summary>
+            Gets or sets the code.
+            </summary>
+            <value>
+            The code.
+            </value>
+        </member>
+        <member name="P:Beyova.JPush.PushMessageException.MessageId">
+            <summary>
+            Gets or sets the message identifier.
+            </summary>
+            <value>
+            The message identifier.
+            </value>
+        </member>
+        <member name="M:Beyova.JPush.PushMessageException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Beyova.JPush.PushMessageException"/> class.
+            </summary>
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <param name="innerException">The exception that is the cause of the current exception, or a null reference (Nothing in Visual Basic) if no inner exception is specified.</param>
+        </member>
+        <member name="M:Beyova.JPush.PushMessageException.FromHttpOperationException(Beyova.ExceptionSystem.HttpOperationException)">
+            <summary>
+            Froms the HTTP operation exception.
+            </summary>
+            <param name="exception">The exception.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Beyova.JPush.V3.ConnectionString">
+            <summary>
+            Class ConnectionString.
+            </summary>
+        </member>
+        <member name="P:Beyova.JPush.V3.ConnectionString.AppKey">
+            <summary>
+            Gets or sets the application key.
+            </summary>
+            <value>The application key.</value>
+        </member>
+        <member name="P:Beyova.JPush.V3.ConnectionString.MasterSecret">
+            <summary>
+            Gets or sets the master secret.
+            </summary>
+            <value>The master secret.</value>
+        </member>
+        <member name="P:Beyova.JPush.V3.ConnectionString.IsTestEnvironment">
+            <summary>
+            Gets or sets a value indicating whether this instance is test environment.
+            </summary>
+            <value><c>null</c> if [is test environment] contains no value, <c>true</c> if [is test environment]; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="M:Beyova.JPush.V3.ConnectionString.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Beyova.JPush.V3.ConnectionString"/> class.
+            </summary>
+        </member>
+        <member name="M:Beyova.JPush.V3.ConnectionString.#ctor(System.String,System.String,System.Nullable{System.Boolean})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Beyova.JPush.V3.ConnectionString" /> class.
+            </summary>
+            <param name="appKey">The application key.</param>
+            <param name="masterSecret">The master secret.</param>
+            <param name="isTestEnvironment">if set to <c>true</c> [is test environment].</param>
+        </member>
+        <member name="T:Beyova.JPush.V3.Audience">
+            <summary>
+            Class Audience
+            </summary>
+        </member>
+        <member name="M:Beyova.JPush.V3.Audience.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Beyova.JPush.V3.Audience"/> class.
+            </summary>
+        </member>
+        <member name="M:Beyova.JPush.V3.Audience.#ctor(System.Collections.Generic.Dictionary{Beyova.JPush.V3.PushTypeV3,System.Collections.Generic.List{System.String}})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Beyova.JPush.V3.Audience"/> class.
+            </summary>
+            <param name="dictionary">The dictionary.</param>
+        </member>
+        <member name="M:Beyova.JPush.V3.Audience.AddItem(Beyova.JPush.V3.PushTypeV3,System.String)">
+            <summary>
+            Adds the item.
+            </summary>
+            <param name="pushType">Type of the push.</param>
+            <param name="item">The item.</param>
+        </member>
+        <member name="T:Beyova.JPush.V3.AppMessage">
+            <summary>
+            Class AppMessage.
+            </summary>
+        </member>
+        <member name="P:Beyova.JPush.V3.AppMessage.Content">
+            <summary>
+            Gets or sets the content.
+            </summary>
+            <value>The content.</value>
+        </member>
+        <member name="P:Beyova.JPush.V3.AppMessage.Title">
+            <summary>
+            Gets or sets the title.
+            </summary>
+            <value>The title.</value>
+        </member>
+        <member name="P:Beyova.JPush.V3.AppMessage.ContentType">
+            <summary>
+            Gets or sets the type of the content.
+            </summary>
+            <value>The type of the content.</value>
+        </member>
+        <member name="P:Beyova.JPush.V3.AppMessage.CustomizedValue">
+            <summary>
+            Gets or sets the customized value.
+            </summary>
+            <value>The customized value.</value>
+        </member>
+        <member name="T:Beyova.JPush.V3.Notification">
+            <summary>
+            Class Notification.
+            </summary>
+        </member>
+        <member name="P:Beyova.JPush.V3.Notification.AndroidNotification">
+            <summary>
+            Gets or sets the android notification.
+            </summary>
+            <value>The android notification.</value>
+        </member>
+        <member name="P:Beyova.JPush.V3.Notification.iOSNotification">
+            <summary>
+            Gets or sets the i os notification.
+            </summary>
+            <value>The i os notification.</value>
+        </member>
+        <member name="P:Beyova.JPush.V3.Notification.WindowsPhoneNotification">
+            <summary>
+            Gets or sets the windows phone notification.
+            </summary>
+            <value>The windows phone notification.</value>
+        </member>
+        <member name="T:Beyova.JPush.V3.WindowsPhoneNotificationParameters">
+            <summary>
+            Class WindowsPhoneNotificationParameters.
+            </summary>
+        </member>
+        <member name="P:Beyova.JPush.V3.WindowsPhoneNotificationParameters.Alert">
+            <summary>
+            Gets or sets the alert.
+            </summary>
+            <value>The alert.</value>
+        </member>
+        <member name="P:Beyova.JPush.V3.WindowsPhoneNotificationParameters.Title">
+            <summary>
+            Gets or sets the title.
+            </summary>
+            <value>The title.</value>
+        </member>
+        <member name="P:Beyova.JPush.V3.WindowsPhoneNotificationParameters.OpenPage">
+            <summary>
+            Gets or sets the open page.
+            </summary>
+            <value>The open page.</value>
+        </member>
+        <member name="P:Beyova.JPush.V3.WindowsPhoneNotificationParameters.CustomizedValues">
+            <summary>
+            Gets or sets the customized values.
+            </summary>
+            <value>The customized values.</value>
+        </member>
+        <member name="M:Beyova.JPush.V3.WindowsPhoneNotificationParameters.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Beyova.JPush.V3.WindowsPhoneNotificationParameters" /> class.
+            </summary>
+        </member>
+        <member name="T:Beyova.JPush.V3.iOSNotificationParameters">
+            <summary>
+            Class iOSNotificationParameters.
+            </summary>
+        </member>
+        <member name="P:Beyova.JPush.V3.iOSNotificationParameters.Alert">
+            <summary>
+            Gets or sets the alert.
+            </summary>
+            <value>The alert.</value>
+        </member>
+        <member name="P:Beyova.JPush.V3.iOSNotificationParameters.Sound">
+            <summary>
+            Gets or sets the sound.
+            </summary>
+            <value>The sound.</value>
+        </member>
+        <member name="P:Beyova.JPush.V3.iOSNotificationParameters.Badge">
+            <summary>
+            Gets or sets the badge.
+            </summary>
+            <value>The badge.</value>
+        </member>
+        <member name="P:Beyova.JPush.V3.iOSNotificationParameters.SilenceMode">
+            <summary>
+            Gets or sets a value indicating whether [silence mode].
+            </summary>
+            <value><c>null</c> if [silence mode] contains no value, <c>true</c> if [silence mode]; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:Beyova.JPush.V3.iOSNotificationParameters.CustomizedValues">
+            <summary>
+            Gets or sets the customized values.
+            </summary>
+            <value>The customized values.</value>
+        </member>
+        <member name="M:Beyova.JPush.V3.iOSNotificationParameters.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Beyova.JPush.V3.iOSNotificationParameters" /> class.
+            </summary>
+        </member>
+        <member name="T:Beyova.JPush.V3.JPushClientV3">
+             <summary>
+             Class JPushClient.
+             <example>
+             Here is a sample based on .NET console application.
+             <code>
+             <![CDATA[
+             using System;
+             using System.Collections.Generic;
+             using System.IO;
+             using System.Net;
+             using System.Text;
+             using System.Threading;
+             using Beyova.JPush.V3;
+             using Newtonsoft.Json;
+            
+             namespace Beyova.JPush.Test
+             {
+                 class Program
+                 {
+                     static void Main(string[] args)
+                     {
+                         var appKey = "1234567890abcdef"; // Your App Key from JPush
+                         var masterSecret = "1234567890abcdef"; // Your Master Secret from JPush
+            
+                         Dictionary<string, object> customizedValues = new Dictionary<string, object>();
+                         customizedValues.Add("CK1", "CV1");
+                         customizedValues.Add("CK2", 2);
+            
+                         JPushClientV3 client = new JPushClientV3(appKey, masterSecret);
+            
+                         Audience audience = new Audience();
+                         // In JPush V3, tag can be multiple added with different values.
+                         // In following code, it is to send push to those who are in ((Tag1 AND Tag2) AND (Tag3 OR Tag4))
+                         // If you want to send to all, please use: audience.Add(PushTypeV3.Broadcast, null);
+                         audience.Add(PushTypeV3.ByTagWithinAnd, new List<string>(new string[] { "Tag1", "Tag2" }));
+                         audience.Add(PushTypeV3.ByTagWithinOr, new List<string>(new string[] { "Tag3", "Tag4" }));
+            
+                         // In JPush V3, Notification would not be display on screen, it would be transferred to app instead.
+                         // And different platform can provide different notification data.
+                         Notification notification = new Notification
+                         {
+                             AndroidNotification = new AndroidNotificationParameters
+                             {
+                                 Title = "JPush provides V3.",
+                                 Alert = "JPush V2 would be retired soon.",
+                                 CustomizedValues = customizedValues
+                             },
+                             iOSNotification = new iOSNotificationParameters
+                             {
+                                 Badge = 1,
+                                 Alert = "JPush V2 would be retired soon.",
+                                 Sound = "YourSound",
+                                 CustomizedValues = customizedValues
+                             }
+                         };
+            
+                         var response = client.SendPushMessage(new PushMessageRequestV3
+                         {
+                             Audience = audience,
+                             Platform = PushPlatform.AndroidAndiOS,
+                             IsTestEnvironment = true,
+                             AppMessage = new AppMessage
+                             {
+                                 Content = "Hello, this is a test push of V3 from .NET. Have a nice day!",
+                                 CustomizedValue = customizedValues
+                             },
+                             Notification = notification
+                         });
+            
+                         Console.WriteLine(response.ResponseCode.ToString() + ":" + response.ResponseMessage);
+                         Console.WriteLine("Push sent.");
+                         Console.WriteLine(response.ResponseCode.ToString() + ":" + response.ResponseMessage);
+            
+                         List<string> idToCheck = new List<string>();
+                         idToCheck.Add(response.MessageId);
+            
+                         var statusList = client.QueryPushMessageStatus(idToCheck);
+            
+                         Console.WriteLine("Status track is completed.");
+            
+                         if (statusList != null)
+                         {
+                             foreach (var one in statusList)
+                             {
+                                 Console.WriteLine(string.Format("Id: {0}, Android: {1}, iOS: {2}", one.MessageId, one.AndroidDeliveredCount, one.ApplePushNotificationDeliveredCount));
+                             }
+                         }
+            
+                         Console.WriteLine("Press any key to exit.");
+                         Console.Read();
+                     }
+                 }
+             }
+                ]]>
+                </code>
+             </example>
+             If you already use JPushClient V2 (Class: <see cref="T:Beyova.JPush.JPushClient"/>), you can continue to use that. Library would convert the old <see cref="T:Beyova.JPush.PushMessageRequest"/> to <see cref="T:Beyova.JPush.V3.PushMessageRequestV3" />.
+             NOTE: the parameter in constructor of <see cref="T:Beyova.JPush.JPushClient"/> has lost effect. Whatever you set as true or false, SSL would be used according to JPush's new rule.
+             RESTful API reference: http://docs.jpush.cn/display/dev/Push-API-v3   
+             </summary>
+        </member>
+        <member name="F:Beyova.JPush.V3.JPushClientV3.apiBaseUrl">
+            <summary>
+            The remote base URL
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.V3.JPushClientV3.reportBaseUrlFormat">
+            <summary>
+            The report base URL format
+            </summary>
+        </member>
+        <member name="P:Beyova.JPush.V3.JPushClientV3.AppKey">
+            <summary>
+            Gets or sets the application key.
+            </summary>
+            <value>The application key.</value>
+        </member>
+        <member name="P:Beyova.JPush.V3.JPushClientV3.MasterSecret">
+            <summary>
+            Gets or sets the master secret.
+            </summary>
+            <value>The master secret.</value>
+        </member>
+        <member name="P:Beyova.JPush.V3.JPushClientV3.IsTestEnvironment">
+            <summary>
+            Gets or sets a value indicating whether this instance is test environment.
+            </summary>
+            <value><c>null</c> if [is test environment] contains no value, <c>true</c> if [is test environment]; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="M:Beyova.JPush.V3.JPushClientV3.#ctor(Beyova.JPush.V3.ConnectionString)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Beyova.JPush.V3.JPushClientV3" /> class.
+            </summary>
+            <param name="connectionString">The connection string.</param>
+        </member>
+        <member name="M:Beyova.JPush.V3.JPushClientV3.#ctor(System.String,System.String,System.Nullable{System.Boolean})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Beyova.JPush.JPushClient" /> class.
+            </summary>
+            <param name="appKey">The application key.</param>
+            <param name="masterSecret">The master secret.</param>
+            <param name="isTestEnvironment">The is test environment.</param>
+        </member>
+        <member name="M:Beyova.JPush.V3.JPushClientV3.SendPushMessage(Beyova.JPush.V3.PushMessageRequestV3)">
+            <summary>
+            Sends the push message.
+            </summary>
+            <param name="request">The request.</param>
+            <returns>PushResponseCode.</returns>
+            <exception cref="T:System.InvalidOperationException">Failed to send push message.</exception>
+        </member>
+        <member name="M:Beyova.JPush.V3.JPushClientV3.SendPushMessageAsync(Beyova.JPush.V3.PushMessageRequestV3)">
+            <summary>
+            Sends the push message asynchronously.
+            </summary>
+            <param name="request">The request.</param>
+            <returns>PushResponseCode.</returns>
+            <exception cref="T:System.InvalidOperationException">Failed to send push message.</exception>
+        </member>
+        <member name="M:Beyova.JPush.V3.JPushClientV3.QueryPushMessageStatus(System.Collections.Generic.List{System.String})">
+            <summary>
+            Queries the push message status.
+            JPush has official limitation. One query support no more than 100 IDs. So if the input has more than 100 IDs, only the first 100 IDs would be queried.
+            </summary>
+            <param name="messageIdCollection">The message unique identifier collection.</param>
+            <returns>List{PushMessageStatus}.</returns>
+            <exception cref="T:System.InvalidOperationException">Failed to QueryPushMessageStatus.</exception>
+        </member>
+        <member name="M:Beyova.JPush.V3.JPushClientV3.CreatePushRequest(Beyova.JPush.V3.PushMessageRequestV3)">
+            <summary>
+            Creates the push request.
+            </summary>
+            <param name="request">The request.</param>
+            <returns>HttpWebRequest.</returns>
+        </member>
+        <member name="M:Beyova.JPush.V3.JPushClientV3.CreatePushQueryRequest(System.String)">
+            <summary>
+            Creates the push query request.
+            </summary>
+            <param name="idCollectionString">The unique identifier collection string.</param>
+            <returns>HttpWebRequest.</returns>
+        </member>
+        <member name="M:Beyova.JPush.V3.JPushClientV3.FillAuthentication(System.Net.HttpWebRequest)">
+            <summary>
+            Fills the authentication.
+            </summary>
+            <param name="httpRequest">The HTTP request.</param>
+        </member>
+        <member name="M:Beyova.JPush.V3.JPushClientV3.FillAuthenticationV3(System.Net.HttpWebRequest)">
+            <summary>
+            Fills the authentication v3.
+            </summary>
+            <param name="httpRequest">The HTTP request.</param>
+        </member>
+        <member name="M:Beyova.JPush.V3.JPushClientV3.CreateRequestOptions(Beyova.JPush.V3.PushMessageRequestV3)">
+            <summary>
+            Creates the request option.
+            </summary>
+            <param name="request">The request.</param>
+            <returns>Dictionary&lt;System.String, System.Object&gt;.</returns>
+        </member>
+        <member name="M:Beyova.JPush.V3.JPushClientV3.FillNetworkCredential(System.Net.HttpWebRequest)">
+            <summary>
+            Fills the network credential.
+            </summary>
+            <param name="httpRequest">The HTTP request.</param>
+        </member>
+        <member name="M:Beyova.JPush.V3.JPushClientV3.GenerateQueryToken(System.String,System.String)">
+            <summary>
+            Generates the query token.
+            </summary>
+            <param name="appKey">The application key.</param>
+            <param name="masterSecret">The master secret.</param>
+            <returns>System.String.</returns>
+        </member>
+        <member name="M:Beyova.JPush.V3.JPushClientV3.GenerateSendIdentity">
+            <summary>
+            Generates the send identity.
+            The total milliseconds value of offset from UTC now to UTC 2014 Jan 1st.
+            </summary>
+            <returns>System.Int32.</returns>
+        </member>
+        <member name="M:Beyova.JPush.V3.JPushClientV3.ParseResponse(System.String)">
+            <summary>
+            Parse the response content into the <see cref="T:Beyova.JPush.PushResponse"/>.
+            </summary>
+            <param name="responseContent">The response content.</param>
+            <returns>The <see cref="T:Beyova.JPush.PushResponse"/>. </returns>
+        </member>
+        <member name="T:Beyova.JPush.V3.PushMessageRequestV3">
+            <summary>
+            Class PushMessageRequestV3.
+            </summary>
+        </member>
+        <member name="P:Beyova.JPush.V3.PushMessageRequestV3.Notification">
+            <summary>
+            Gets or sets the notification.
+            </summary>
+            <value>The notification.</value>
+        </member>
+        <member name="P:Beyova.JPush.V3.PushMessageRequestV3.Audience">
+            <summary>
+            Gets or sets the audience.
+            </summary>
+            <value>The audience.</value>
+        </member>
+        <member name="P:Beyova.JPush.V3.PushMessageRequestV3.AppMessage">
+            <summary>
+            Gets or sets the message.
+            </summary>
+            <value>The message.</value>
+        </member>
+        <member name="P:Beyova.JPush.V3.PushMessageRequestV3.Platform">
+            <summary>
+            Gets or sets the platform.
+            </summary>
+            <value>The platform.</value>
+        </member>
+        <member name="P:Beyova.JPush.V3.PushMessageRequestV3.LifeTime">
+            <summary>
+            Gets or sets the life time.
+            Unit: second.
+            Max: 864000 Seconds (10 days).
+            Default: 86400 Seconds (1 days).
+            If set as 0, means no life time. Only the online destination would be get message at the time when push message delivers JPush.
+            </summary>
+            <value>The life time.</value>
+        </member>
+        <member name="P:Beyova.JPush.V3.PushMessageRequestV3.OverrideMessageId">
+            <summary>
+            Gets or sets the override message unique identifier.
+            </summary>
+            <value>The override message unique identifier.</value>
+        </member>
+        <member name="P:Beyova.JPush.V3.PushMessageRequestV3.IsTestEnvironment">
+            <summary>
+            Gets or sets a value indicating whether this instance is test.
+            For iOS only.
+            Default: false.
+            </summary>
+            <value><c>true</c> if this instance is test; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="T:Beyova.JPush.V3.AndroidNotificationParameters">
+            <summary>
+            Enum PushType
+            </summary>
+        </member>
+        <member name="P:Beyova.JPush.V3.AndroidNotificationParameters.Alert">
+            <summary>
+            Gets or sets the alert.
+            </summary>
+            <value>The alert.</value>
+        </member>
+        <member name="P:Beyova.JPush.V3.AndroidNotificationParameters.Title">
+            <summary>
+            Gets or sets the title.
+            </summary>
+            <value>The title.</value>
+        </member>
+        <member name="P:Beyova.JPush.V3.AndroidNotificationParameters.BuilderId">
+            <summary>
+            Gets or sets the builder identifier.
+            </summary>
+            <value>The builder identifier.</value>
+        </member>
+        <member name="P:Beyova.JPush.V3.AndroidNotificationParameters.CustomizedValues">
+            <summary>
+            Gets or sets the customized values.
+            </summary>
+            <value>The customized values.</value>
+        </member>
+        <member name="M:Beyova.JPush.V3.AndroidNotificationParameters.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Beyova.JPush.V3.AndroidNotificationParameters" /> class.
+            </summary>
+        </member>
+        <member name="T:Beyova.JPush.V3.PushTypeV3">
+            <summary>
+            Enum PushTypeV3
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.V3.PushTypeV3.None">
+            <summary>
+            The value indicating it is none
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.V3.PushTypeV3.Broadcast">
+            <summary>
+            The value indicating it is broadcast
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.V3.PushTypeV3.ByTagWithinOr">
+            <summary>
+            The value indicating it is by tag in OR operation.
+            </summary>    
+        </member>
+        <member name="F:Beyova.JPush.V3.PushTypeV3.ByTagWithinAnd">
+            <summary>
+            The value indicating it is by tag in AND operation.
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.V3.PushTypeV3.ByAlias">
+            <summary>
+            The value indicating it is by alias
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.V3.PushTypeV3.ByRegistrationId">
+            <summary>
+            The value indicating it is by registration unique identifier
+            </summary>
+        </member>
+        <member name="T:Beyova.JPush.JPushHandler">
+             <summary>
+             Class <c>JPushHandler</c>. Class <c>JPushHandler</c> is inherited from class <c>JPushClient</c>. The difference is, class <c>JPushHandler</c> has already involve the maintenance logic to automatically track JPush Message status. You only need to assign appropriate delegate to update status result to your storage. Since a background monitor thread would be initialized in each instance of class <c>JPushHandler</c>, it is strongly recommended to use JPushHandler as singleton. Another minor difference is, class <c>JPushClient</c> uses SSL always, which can be noticed by its constructor.
+             <example>
+             Here is a sample based on .NET console application.
+             <code>
+             <![CDATA[
+            namespace Beyova.JPush.Test
+            {
+                static class Program
+                {
+                    static void Main(string[] args)
+                    {
+                        var appKey = "1234567890abcdef"; // Your App Key from JPush
+                        var masterSecret = "1234567890abcdef"; // Your Master Secret from JPush
+            
+                        Dictionary<string, string> customizedValues = new Dictionary<string, string>();
+                        customizedValues.Add("CK1", "CV1");
+                        customizedValues.Add("CK2", "CV2");
+            
+                        JPushHandler handler = new JPushHandler(
+                            appKey,                              // Your app key
+                            masterSecret,                        // Your master secret
+                            CreatePushMessageLogDelegate,        // Delegate for creating push message log. Generally, it is to save log in database or any other media for later tracking in UI, but to make it simple here, just console write lines of information in JSON format.
+                            UpdatePushMessageStatus,             // Delegate for updating push message status. Generally, it is to update status in database, but to make it simple here, just console write lines of information.
+                            null,                                // Delegate for initializing message tracking information. Generally, it is to read message id collection which need to be tracked from database, especially it occurs when machine is rebooted. To make it simple here, leave null for doing nothing.                
+                            null,                                // Delegate for reporting exception. Generally, it is to write log in file, event log or database. To make it simple here, leave null for doing nothing.
+                            2                                    // Interval value for monitoring thread for get update for message status. By default, it is 60 in seconds. It is set 2 seconds here for sample.
+                            );
+            
+                        handler.SendPushMessage(new PushMessageRequest
+                                         {
+                                             MessageType = MessageType.Notification,
+                                             Platform = PushPlatform.Android,
+                                             Description = "DotNET",
+                                             PushType = PushType.Broadcast,
+                                             IsTestEnvironment = true,
+                                             Message = new PushMessage
+                                             {
+                                                 Content = "Hello, this is a test push from .NET. Have a nice day!",
+                                                 PushTitle = "A title.",
+                                                 Sound = "YourSound",
+                                                 CustomizedValue = customizedValues
+                                             }
+                                         });
+            
+                        Console.WriteLine("Tracking IDs in list:");
+                        foreach (var one in handler.MessageTrackingId)
+                        {
+                            Console.WriteLine(one);
+                        }
+                        Console.WriteLine("---------- END ----------");
+            
+                        Thread.Sleep(10 * 1000); // To sleep 10 seconds here to make sure the monitoring thread in hander has been invoked.
+            
+                        Console.WriteLine("Press any key to exit.");
+                        Console.Read();
+                    }
+            
+                    public static void CreatePushMessageLogDelegate(PushMessageRequest messageRequest, PushResponse response)
+                    {
+                        Console.WriteLine(string.Format(@"Push Log {0}
+            Request:
+            {1}
+            
+            Response:
+            {2}", JsonConvert.SerializeObject(messageRequest), JsonConvert.SerializeObject(response)));
+                    }
+            
+                    public static void CreatePushMessageLog(PushMessageRequest messageRequest, PushResponse response)
+                    {
+                        Console.WriteLine(string.Format(@"Push Log {0}
+            Request:
+            {1}
+            Response:
+            {2}", JsonConvert.SerializeObject(messageRequest), JsonConvert.SerializeObject(response)));
+                    }
+            
+                    public static void UpdatePushMessageStatus(List<PushMessageStatus> pushMessageStatus)
+                    {
+                        if (pushMessageStatus != null)
+                        {
+                            foreach (var one in pushMessageStatus)
+                            {
+                                Console.WriteLine(string.Format(@"Push Message Status Update: {0}
+            Android: {1}
+            iOS: {2}", one.MessageId, one.AndroidDeliveredCount, one.ApplePushNotificationDeliveredCount));
+                            }
+                        }
+                    }
+                }
+            }
+             ]]>
+             </code>
+             </example>
+             RESTful API reference: http://docs.jpush.cn/display/dev/Index
+             </summary>
+        </member>
+        <member name="F:Beyova.JPush.JPushHandler.client">
+            <summary>
+            The client
+            </summary>
+        </member>
+        <member name="T:Beyova.JPush.JPushHandler.InitializeMessageTrackingIdDelegate">
+            <summary>
+            Delegate InitializeMessageTrackingId
+            </summary>
+            <returns>IEnumerable{System.String}.</returns>
+        </member>
+        <member name="T:Beyova.JPush.JPushHandler.CreatePushMessageLogDelegate">
+            <summary>
+            Delegate CreatePushMessageLog
+            </summary>
+            <param name="messageRequest">The message request.</param>
+            <param name="response">The response.</param>
+        </member>
+        <member name="T:Beyova.JPush.JPushHandler.UpdatePushMessageStatusDelegate">
+            <summary>
+            Delegate UpdatePushMessageStatusDelegate
+            </summary>
+            <param name="pushMessageStatus">The push message status.</param>
+        </member>
+        <member name="T:Beyova.JPush.JPushHandler.ReportExceptionDelegate">
+            <summary>
+            Delegate ReportExceptionDelegate
+            </summary>
+            <param name="exception">The exception.</param>
+        </member>
+        <member name="F:Beyova.JPush.JPushHandler.pushMessageStatusTrackingLifeCycle">
+            <summary>
+            The push message status tracking life cycle
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.JPushHandler.pushMessageTrackingList">
+            <summary>
+            The push message tracking list
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.JPushHandler.dataLocker">
+            <summary>
+            The data locker
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.JPushHandler.monitorThread">
+            <summary>
+            The monitor thread
+            </summary>
+        </member>
+        <member name="M:Beyova.JPush.JPushHandler.MonitorThreadDelegate">
+            <summary>
+            Monitors the thread delegate.
+            </summary>
+        </member>
+        <member name="M:Beyova.JPush.JPushHandler.InitializeBackgroundThread">
+            <summary>
+            Initializes the background thread.
+            </summary>
+        </member>
+        <member name="P:Beyova.JPush.JPushHandler.IntervalInSecond">
+            <summary>
+            Gets or sets the interval in second.
+            </summary>
+            <value>The interval in second.</value>
+        </member>
+        <member name="P:Beyova.JPush.JPushHandler.CreateDelegate">
+            <summary>
+            Gets or sets the create delegate.
+            </summary>
+            <value>The create delegate.</value>
+        </member>
+        <member name="P:Beyova.JPush.JPushHandler.UpdateDelegate">
+            <summary>
+            Gets or sets the update delegate.
+            </summary>
+            <value>The update delegate.</value>
+        </member>
+        <member name="P:Beyova.JPush.JPushHandler.InitializeDelegate">
+            <summary>
+            Gets or sets the initialize delegate.
+            </summary>
+            <value>The initialize delegate.</value>
+        </member>
+        <member name="P:Beyova.JPush.JPushHandler.ExceptionDelegate">
+            <summary>
+            Gets or sets the exception delegate.
+            </summary>
+            <value>The exception delegate.</value>
+        </member>
+        <member name="M:Beyova.JPush.JPushHandler.#ctor(System.String,System.String,Beyova.JPush.JPushHandler.CreatePushMessageLogDelegate,Beyova.JPush.JPushHandler.UpdatePushMessageStatusDelegate,Beyova.JPush.JPushHandler.InitializeMessageTrackingIdDelegate,Beyova.JPush.JPushHandler.ReportExceptionDelegate,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Beyova.JPush.JPushClient" /> class.
+            </summary>
+            <param name="appKey">The application key.</param>
+            <param name="masterSecret">The master secret.</param>
+            <param name="createPushMessageLogDelegate">The create push message log delegate.</param>
+            <param name="updatePushMessageStatusDelegate">The update push message status delegate.</param>
+            <param name="initializeDelegate">The initialize delegate.</param>
+            <param name="exceptionDelegate">The exception delegate.</param>
+            <param name="intervalInSecond">The interval in second.</param>
+        </member>
+        <member name="M:Beyova.JPush.JPushHandler.SendPushMessage(Beyova.JPush.PushMessageRequest)">
+            <summary>
+            Sends the push message.
+            </summary>
+            <param name="request">The request.</param>
+            <returns>PushResponseCode.</returns>
+        </member>
+        <member name="M:Beyova.JPush.JPushHandler.SendPushMessage(Beyova.JPush.V3.PushMessageRequestV3)">
+            <summary>
+            Sends the push message.
+            </summary>
+            <param name="request">The request.</param>
+            <returns>PushResponse.</returns>
+        </member>
+        <member name="M:Beyova.JPush.JPushHandler.AddMessageTrackingId(Beyova.JPush.PushMessageTracking)">
+            <summary>
+            Adds the message tracking identifier.
+            </summary>
+            <param name="messageTracking">The message tracking.</param>
+        </member>
+        <member name="M:Beyova.JPush.JPushHandler.RemoveMessageTracking(System.String)">
+            <summary>
+            Removes the message tracking.
+            </summary>
+            <param name="messageId">The message identifier.</param>
+        </member>
+        <member name="P:Beyova.JPush.JPushHandler.MessageTrackingId">
+            <summary>
+            Gets the message tracking identifier.
+            </summary>
+            <value>The message tracking identifier.</value>
+        </member>
+        <member name="M:Beyova.JPush.JPushHandler.HandleException(System.Exception)">
+            <summary>
+            Handles the exception.
+            </summary>
+            <param name="exception">The exception.</param>
+            <exception cref="T:System.InvalidOperationException">Failed to handle exception with specific delegate.</exception>
+        </member>
+        <member name="M:Beyova.JPush.JPushHandler.FindMessageTrackingByIdWithoutLocker(System.String,System.Int32@)">
+            <summary>
+            Finds the message tracking by identifier.
+            </summary>
+            <param name="messageId">The message identifier.</param>
+            <param name="index">The index.</param>
+            <returns>PushMessageTracking.</returns>
+        </member>
+        <member name="M:Beyova.JPush.JPushHandler.AddMessageTrackingIdWithoutLocker(Beyova.JPush.PushMessageTracking)">
+            <summary>
+            Adds the message tracking identifier without locker.
+            </summary>
+            <param name="messageTracking">The message tracking.</param>
+        </member>
+        <member name="M:Beyova.JPush.JPushHandler.RemoveMessageTrackingWithoutLocker(System.String)">
+            <summary>
+            Removes the message tracking without locker.
+            </summary>
+            <param name="messageId">The message identifier.</param>
+        </member>
+        <member name="T:Beyova.JPush.JPushClient">
+             <summary>
+             Class JPushClient.
+             <example>
+             Here is a sample based on .NET console application.
+             <code>
+             <![CDATA[
+              class Program
+               {
+                    static void Main(string[] args)
+                    {
+                        var appKey = "1234567890abcdef"; // Your App Key from JPush
+                        var masterSecret = "1234567890abcdef"; // Your Master Secret from JPush
+            
+                        Dictionary<string, string> customizedValues = new Dictionary<string, string>();
+                        customizedValues.Add("CK1", "CV1");
+                        customizedValues.Add("CK2", "CV2");
+            
+                        JPushClient client = new JPushClient(appKey, masterSecret, false);
+                        var response = client.SendPushMessage(new PushMessageRequest
+                                   {
+                                       MessageType = MessageType.Notification,
+                                       Platform = PushPlatform.Android,
+                                       Description = "DotNET",
+                                       PushType = PushType.Broadcast,
+                                       IsTestEnvironment = true,
+                                       Message = new PushMessage
+                                       {
+                                           Content = "Hello, this is a test push from .NET. Have a nice day!",
+                                           PushTitle = "A title.",
+                                           Sound = "YourSound",
+                                           CustomizedValue = customizedValues
+                                       }
+                                   });
+            
+                        Console.WriteLine(response.ResponseCode.ToString() + ":" + response.ResponseMessage);
+                        Console.WriteLine("Push sent.");
+                        Console.WriteLine(response.ResponseCode.ToString() + ":" + response.ResponseMessage);
+            
+            
+                        List<string> idToCheck = new List<string>();
+                        idToCheck.Add(response.MessageId);
+                        var statusList = client.QueryPushMessageStatus(idToCheck);
+            
+                        Console.WriteLine("Status track is completed.");
+            
+                        if (statusList != null)
+                        {
+                            foreach (var one in statusList)
+                            {
+                                Console.WriteLine(string.Format("Id: {0}, Android: {1}, iOS: {2}", one.MessageId, one.AndroidDeliveredCount, one.ApplePushNotificationDeliveredCount));
+                            }
+                        }
+            
+                        Console.WriteLine("Press any key to exit.");
+                        Console.Read();
+                    }
+                }
+                ]]>
+                </code>
+             </example>
+             RESTful API reference: http://docs.jpush.cn/display/dev/Index
+             </summary>
+        </member>
+        <member name="M:Beyova.JPush.JPushClient.#ctor(System.String,System.String,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Beyova.JPush.JPushClient" /> class.
+            </summary>
+            <param name="appKey">The application key.</param>
+            <param name="masterSecret">The master secret.</param>
+            <param name="useSSL">if set to <c>true</c> [use SSL].</param>
+        </member>
+        <member name="M:Beyova.JPush.JPushClient.SendPushMessage(Beyova.JPush.PushMessageRequest)">
+            <summary>
+            Sends the push message.
+            </summary>
+            <param name="request">The request.</param>
+            <returns>PushResponseCode.</returns>
+            <exception cref="T:System.InvalidOperationException">Failed to send push message.</exception>
+        </member>
+        <member name="M:Beyova.JPush.JPushClient.QueryPushMessageStatus(System.Collections.Generic.List{System.String})">
+            <summary>
+            Queries the push message status.
+            JPush has official limitation. One query support no more than 100 IDs. So if the input has more than 100 IDs, only the first 100 IDs would be queried.
+            </summary>
+            <param name="messageIdCollection">The message unique identifier collection.</param>
+            <returns>List{PushMessageStatus}.</returns>
+            <exception cref="T:System.InvalidOperationException">Failed to QueryPushMessageStatus.</exception>
+        </member>
+        <member name="T:Beyova.JPush.MessageType">
+            <summary>
+            Enum MessageType
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.MessageType.None">
+            <summary>
+            The none
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.MessageType.Notification">
+            <summary>
+            The notification
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.MessageType.CustomizedMessage">
+            <summary>
+            The customized message.
+            For Android only.
+            </summary>
+        </member>
+        <member name="T:Beyova.JPush.PushMessageTracking">
+            <summary>
+            Class PushMessageTracking.
+            </summary>
+        </member>
+        <member name="P:Beyova.JPush.PushMessageTracking.MessageId">
+            <summary>
+            Gets or sets the message identifier.
+            </summary>
+            <value>The message identifier.</value>
+        </member>
+        <member name="P:Beyova.JPush.PushMessageTracking.CreatedUtcStamp">
+            <summary>
+            Gets or sets the created UTC stamp.
+            </summary>
+            <value>The created UTC stamp.</value>
+        </member>
+        <member name="M:Beyova.JPush.PushMessageTracking.ToString">
+            <summary>
+            Returns a <see cref="T:System.String" /> that represents this instance.
+            </summary>
+            <returns>A <see cref="T:System.String" /> that represents this instance.</returns>
+        </member>
+        <member name="T:Beyova.JPush.PushMessage">
+            <summary>
+            Class PushMessage.
+            <see cref="T:Beyova.JPush.PushMessageRequest"/> and <see cref="T:Beyova.JPush.PushMessage"/> work together to send out push request.
+            See official RESTful API: http://docs.jpush.cn/display/dev/Push+API+v2
+            </summary>
+        </member>
+        <member name="P:Beyova.JPush.PushMessage.Content">
+            <summary>
+            Gets or sets the content.
+            </summary>
+            <value>The content.</value>
+        </member>
+        <member name="P:Beyova.JPush.PushMessage.CustomizedValue">
+            <summary>
+            Gets or sets the customized value.
+            </summary>
+            <value>The customized value.</value>
+        </member>
+        <member name="P:Beyova.JPush.PushMessage.BadgeValue">
+            <summary>
+            Gets or sets the badge value.
+            </summary>
+            <value>The badge value.</value>
+        </member>
+        <member name="P:Beyova.JPush.PushMessage.Sound">
+            <summary>
+            Gets or sets the sound.
+            For iOS only.
+            </summary>
+            <value>The sound.</value>
+        </member>
+        <member name="P:Beyova.JPush.PushMessage.PushTitle">
+            <summary>
+            Gets or sets the push title.
+            For Android Only.
+            </summary>
+            <value>The push title.</value>
+        </member>
+        <member name="P:Beyova.JPush.PushMessage.BuilderId">
+            <summary>
+            Gets or sets the builder unique identifier.
+            For Android Only.
+            Default is 0. Valid value is 1-1000
+            </summary>
+            <value>The builder unique identifier.</value>
+        </member>
+        <member name="M:Beyova.JPush.PushMessage.ToJson(Beyova.JPush.PushPlatform)">
+            <summary>
+            To json.
+            iOS Push Message example:
+            <example>
+            {"n_content":"通知内容", "n_extras":{"ios":{"badge":88, "sound":"happy"}, "user_param_1":"value1", "user_param_2":"value2"}}
+            </example>
+            </summary>
+            <param name="platform">The platform.</param>
+            <returns>System.String.</returns>
+        </member>
+        <member name="M:Beyova.JPush.PushMessage.ToString">
+            <summary>
+            Returns a <see cref="T:System.String" /> that represents this instance.
+            </summary>
+            <returns>A <see cref="T:System.String" /> that represents this instance.</returns>
+        </member>
+        <member name="T:Beyova.JPush.PushMessageRequest">
+            <summary>
+            Class PushMessageRequest.
+            <see cref="T:Beyova.JPush.PushMessageRequest"/> and <see cref="T:Beyova.JPush.PushMessage"/> work together to send out push request.
+            See official RESTful API: http://docs.jpush.cn/display/dev/Push+API+v2
+            </summary>
+        </member>
+        <member name="P:Beyova.JPush.PushMessageRequest.Message">
+            <summary>
+            Gets or sets the message.
+            </summary>
+            <value>The message.</value>
+        </member>
+        <member name="P:Beyova.JPush.PushMessageRequest.PushType">
+            <summary>
+            Gets or sets the type.
+            </summary>
+            <value>The type.</value>
+        </member>
+        <member name="P:Beyova.JPush.PushMessageRequest.MessageType">
+            <summary>
+            Gets or sets the type of the message.
+            </summary>
+            <value>The type of the message.</value>
+        </member>
+        <member name="P:Beyova.JPush.PushMessageRequest.Platform">
+            <summary>
+            Gets or sets the platform.
+            </summary>
+            <value>The platform.</value>
+        </member>
+        <member name="P:Beyova.JPush.PushMessageRequest.ReceiverValue">
+            <summary>
+            Gets or sets the receiver value.
+            </summary>
+            <value>The receiver value.</value>
+        </member>
+        <member name="P:Beyova.JPush.PushMessageRequest.Description">
+            <summary>
+            Gets or sets the description.
+            </summary>
+            <value>The description.</value>
+        </member>
+        <member name="P:Beyova.JPush.PushMessageRequest.LifeTime">
+            <summary>
+            Gets or sets the life time.
+            Unit: second.
+            Max: 864000 Seconds (10 days).
+            Default: 86400 Seconds (1 days).      
+            </summary>
+            <value>The life time.</value>
+        </member>
+        <member name="P:Beyova.JPush.PushMessageRequest.OverrideMessageId">
+            <summary>
+            Gets or sets the override message unique identifier.
+            </summary>
+            <value>The override message unique identifier.</value>
+        </member>
+        <member name="P:Beyova.JPush.PushMessageRequest.IsTestEnvironment">
+            <summary>
+            Gets or sets a value indicating whether this instance is test.
+            For iOS only.
+            Default: false.
+            </summary>
+            <value><c>true</c> if this instance is test; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="T:Beyova.JPush.PushMessageStatus">
+            <summary>
+            Class PushMessageStatus.
+            </summary>
+        </member>
+        <member name="P:Beyova.JPush.PushMessageStatus.MessageId">
+            <summary>
+            Gets or sets the message unique identifier.
+            This value is decided by JPush Service.
+            </summary>
+            <value>The message unique identifier.</value>
+        </member>
+        <member name="P:Beyova.JPush.PushMessageStatus.AndroidDeliveredCount">
+            <summary>
+            Gets or sets the android delivered count.
+            </summary>
+            <value>The android delivered count.</value>
+        </member>
+        <member name="P:Beyova.JPush.PushMessageStatus.ApplePushNotificationDeliveredCount">
+            <summary>
+            Gets or sets the apple push notification delivered count.
+            </summary>
+            <value>The apple push notification delivered count.</value>
+        </member>
+        <member name="T:Beyova.JPush.PushPlatform">
+            <summary>
+            Enum PushPlatform
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.PushPlatform.None">
+            <summary>
+            The none
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.PushPlatform.Android">
+            <summary>
+            The android
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.PushPlatform.iOS">
+            <summary>
+            The i os
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.PushPlatform.WindowsPhone">
+            <summary>
+            The windows phone
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.PushPlatform.AndroidAndiOS">
+            <summary>
+            The android + ios
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.PushPlatform.AndroidAndWindowsPhone">
+            <summary>
+            The android + windows phone
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.PushPlatform.iOSAndWindowsPhone">
+            <summary>
+            The ios + windows phone
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.PushPlatform.All">
+            <summary>
+            The android + ios + windows phone
+            </summary>
+        </member>
+        <member name="T:Beyova.JPush.PushResponse">
+            <summary>
+            Class PushResponse.
+            </summary>
+        </member>
+        <member name="P:Beyova.JPush.PushResponse.SendIdentity">
+            <summary>
+            Gets or sets the send identity.
+            </summary>
+            <value>The send identity.</value>
+        </member>
+        <member name="P:Beyova.JPush.PushResponse.MessageId">
+            <summary>
+            Gets or sets the message unique identifier.
+            </summary>
+            <value>The message unique identifier.</value>
+        </member>
+        <member name="P:Beyova.JPush.PushResponse.ResponseCode">
+            <summary>
+            Gets or sets the response code.
+            </summary>
+            <value>The response code.</value>
+        </member>
+        <member name="P:Beyova.JPush.PushResponse.ResponseMessage">
+            <summary>
+            Gets or sets the response message.
+            </summary>
+            <value>The response message.</value>
+        </member>
+        <member name="T:Beyova.JPush.PushResponseCode">
+            <summary>
+            Enum PushResponseCode
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.PushResponseCode.Succeed">
+            <summary>
+            Value indicating succeed
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.PushResponseCode.ServiceError">
+            <summary>
+            Value indicating service error
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.PushResponseCode.PostOnly">
+            <summary>
+            Value indicating post only
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.PushResponseCode.MissingRequiredParameter">
+            <summary>
+            Value indicating missing required parameter
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.PushResponseCode.InvalidParameter">
+            <summary>
+            Value indicating invalid parameter
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.PushResponseCode.FailedVerificationCode">
+            <summary>
+            Value indicating failed verification code
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.PushResponseCode.BodyTooLarge">
+            <summary>
+            Value indicating body too large
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.PushResponseCode.InvalidUserOrPassword">
+            <summary>
+            Value indicating invalid user or password
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.PushResponseCode.InvalidReceiverValue">
+            <summary>
+            Value indicating invalid receiver value
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.PushResponseCode.InvalidAppKey">
+            <summary>
+            Value indicating invalid application key
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.PushResponseCode.InvalidMessageContent">
+            <summary>
+            Value indicating invalid message content
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.PushResponseCode.NoDestinationReached">
+            <summary>
+            Value indicating no destination reached
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.PushResponseCode.CustomizedMessageNotSupport">
+            <summary>
+            Value indicating customized message not support
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.PushResponseCode.InvalidContentType">
+            <summary>
+            Value indicating invalid content type
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.PushResponseCode.HttpIsNotAllowed">
+            <summary>
+            Value indicating HTTP is not allowed. Please turn to use HTTPS.
+            </summary>
+        </member>
+        <member name="T:Beyova.JPush.PushType">
+            <summary>
+            Enum PushType
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.PushType.Unknown">
+            <summary>
+            The unknown
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.PushType.ByTag">
+            <summary>
+            The by tag
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.PushType.ByAlias">
+            <summary>
+            The by alias
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.PushType.Broadcast">
+            <summary>
+            The broadcast
+            </summary>
+        </member>
+        <member name="F:Beyova.JPush.PushType.ByRegistrationId">
+            <summary>
+            The by registration unique identifier
+            </summary>
+        </member>
+    </members>
+</doc>
