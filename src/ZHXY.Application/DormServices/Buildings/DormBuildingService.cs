@@ -6,6 +6,8 @@ using System.Data.Entity;
 using System.Linq;
 using System.Linq.Dynamic;
 using System.Threading.Tasks;
+using ZHXY.Application.DormServices.Gates.Dto;
+using ZHXY.Domain.Entity.Dorm;
 
 namespace ZHXY.Application
 {
@@ -56,6 +58,36 @@ namespace ZHXY.Application
             return query.ToListAsync().Result.MapToList<DormBuildingView>();
         }
 
-        
+        public void BindBuilding(GateDto input)
+        {
+            var entity = Query<Dorm_BuildingDevice>(p => p.building_id== input.F_GateId && p.device_id==input.F_Sn).FirstOrDefault();
+            
+            if(entity == null)
+            {
+                entity = new Dorm_BuildingDevice();
+                entity.building_id = input.F_GateId;
+                entity.device_id = input.F_Sn;
+
+                AddAndSave(entity);
+
+            }
+        }
+
+        public void UnbindBuilding(GateDto input)
+        {
+            var entity = Query<Dorm_BuildingDevice>(p =>p.device_id == input.F_Sn).FirstOrDefault();
+
+            if (entity != null)
+            {
+                DelAndSave(entity);
+            }
+        }
+
+
+
+        public Building GetBuildingByNo(string buildingNo)
+        {
+            return Query<Building>(t => t.BuildingNo == buildingNo).FirstOrDefault();
+        }
     }
 }

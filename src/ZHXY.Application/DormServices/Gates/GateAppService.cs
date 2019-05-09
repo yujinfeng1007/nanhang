@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic;
+using ZHXY.Application.DormServices.Gates.Dto;
 using ZHXY.Common;
 using ZHXY.Domain;
 
@@ -20,6 +21,10 @@ namespace ZHXY.Application
             pag.Records = query.Count();
             var list = query.Paging(pag).ToList();
             return list.MapToList<GateView>();
+        }
+
+        public List<Gate> GetList(){
+            return Query<Gate>().ToList();
         }
 
         public void SetStatus(string[] ids, int status)
@@ -86,6 +91,11 @@ namespace ZHXY.Application
             var buildingIds=Read<Relevance>(p => p.Name.Equals(SmartCampusConsts.REL_GATE_BUILDING) && p.FirstKey.Equals(id)).Select(p=>p.SecondKey).ToArray();
             var list = Read<Building>(p => buildingIds.Contains(p.Id)).ToList();
             return list;
+        }
+
+        public List<Building> GetBuildings()
+        {
+            return Read<Building>().ToList();
         }
 
 

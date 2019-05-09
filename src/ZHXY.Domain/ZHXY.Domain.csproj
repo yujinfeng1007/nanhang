@@ -38,6 +38,8 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -99,6 +101,7 @@
     <Compile Include="Entity\Dorm\DormRoom.cs" />
     <Compile Include="Entity\Dorm\DormStudent.cs" />
     <Compile Include="Entity\Dorm\DormVisitLimit.cs" />
+    <Compile Include="Entity\Dorm\Dorm_BuildingDevice.cs" />
     <Compile Include="Entity\Dorm\Gate.cs" />
     <Compile Include="Entity\Dorm\InOutReceive.cs" />
     <Compile Include="Entity\Dorm\LateReturnReport.cs" />
