@@ -1,13 +1,13 @@
-﻿using System.Data;
+﻿using System.Configuration;
+using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
-using ZHXY.Common;
 
 namespace ZHXY.Domain
 {
     public class DbHelper
     {
-        private static readonly string connstring = Configs.GetValue("ZHXYDbContext");
+        private static readonly string connstring = ConfigurationManager.ConnectionStrings["default"].ConnectionString;
 
         public static int ExecuteSqlCommand(string cmdText)
         {

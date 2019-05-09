@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="01.Base\DataScopeFilterExt.cs" />
     <Compile Include="01.Base\TreeHelper.cs" />
     <Compile Include="DormServices\BuildingAppService.cs" />
     <Compile Include="DormServices\Buildings\Dto\CreateDormBuildingDto.cs" />

@@ -93,7 +93,7 @@ namespace ZHXY.Web.School.Controllers
             var data = App.Get(keyValue);
 
             var obj = new object();
-            var dic = CacheFactory.Cache().GetCache<Dictionary<string, object>>(SmartCampusConsts.ORGANIZE);
+            var dic = CacheFactory.Cache().GetCache<Dictionary<string, object>>(SYS_CONSTS.ORGANIZE);
             if (data.F_Class_ID != null && dic.TryGetValue(data.F_Class_ID, out obj))
             {
                 data.F_Class_ID = GetPropertyValue(obj, "fullname").ToString();

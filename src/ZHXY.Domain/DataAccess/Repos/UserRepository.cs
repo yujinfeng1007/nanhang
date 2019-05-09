@@ -30,15 +30,6 @@ namespace ZHXY.Domain
                 var fieldItem = new fieldItem();
                 fieldItem.encode = item.F_EnCode;
                 fieldItem.fullname = item.F_FullName;
-                //{
-                //    encode = item.F_EnCode,
-                //    fullname = item.F_FullName
-                //};
-                //var fieldItem = new
-                //{
-                //    encode = item.F_EnCode,
-                //    fullname = item.F_FullName
-                //};
                 dictionary.Add(item.F_Id, fieldItem);
             }
 
@@ -66,8 +57,6 @@ namespace ZHXY.Domain
         {
             using (var db = new UnitWork().BeginTrans())
             {
-                //var db = new RepositoryBase());
-
                 if (!string.IsNullOrEmpty(keyValue))
                 {
                     db.Update(userEntity);

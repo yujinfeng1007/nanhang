@@ -24,9 +24,9 @@ namespace ZHXY.Domain
         /// <returns>受影响的行数</returns>
         public static int ExecuteNonQuery(string sqlText)
         {
-            using (SqlConnection conn = new SqlConnection(GetSqlConnection()))
+            using (var conn = new SqlConnection(GetSqlConnection()))
             {
-                using (SqlCommand cmd = conn.CreateCommand())
+                using (var cmd = conn.CreateCommand())
                 {
                     conn.Open();
                     cmd.CommandText = sqlText;
@@ -44,13 +44,13 @@ namespace ZHXY.Domain
         /// <returns>受影响的行数</returns>
         public static int ExecuteProcedure(string procedure, Dictionary<string, Object> para)
         {
-            using (SqlConnection conn = new SqlConnection(GetSqlConnection()))
+            using (var conn = new SqlConnection(GetSqlConnection()))
             {
-                using (SqlCommand cmd = new SqlCommand(procedure, conn))
+                using (var cmd = new SqlCommand(procedure, conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     //把具体的值传给输入参数
-                    foreach (KeyValuePair<string, Object> kv in para)
+                    foreach (var kv in para)
                     {
                         cmd.Parameters.Add(new SqlParameter(kv.Key, kv.Value));
                     }
@@ -68,9 +68,9 @@ namespace ZHXY.Domain
         /// <returns>查询结果中的第一行第一列的值</returns>
         public static object ExecuteScalar(string sqlText, params SqlParameter[] parameters)
         {
-            using (SqlConnection conn = new SqlConnection(GetSqlConnection()))
+            using (var conn = new SqlConnection(GetSqlConnection()))
             {
-                using (SqlCommand cmd = conn.CreateCommand())
+                using (var cmd = conn.CreateCommand())
                 {
                     conn.Open();
                     cmd.CommandText = sqlText;
@@ -88,9 +88,9 @@ namespace ZHXY.Domain
         /// <returns>返回一个DataTable</returns>
         public static DataTable ExecuteDataTable(string sqlText, params SqlParameter[] parameters)
         {
-            using (SqlDataAdapter adapter = new SqlDataAdapter(sqlText, GetSqlConnection()))
+            using (var adapter = new SqlDataAdapter(sqlText, GetSqlConnection()))
             {
-                DataTable dt = new DataTable();
+                var dt = new DataTable();
                 adapter.SelectCommand.Parameters.AddRange(parameters);
                 adapter.Fill(dt);
                 return dt;
@@ -106,8 +106,8 @@ namespace ZHXY.Domain
         public static SqlDataReader ExecuteReader(string sqlText, params SqlParameter[] parameters)
         {
             //SqlDataReader要求，它读取数据的时候有，它独占它的SqlConnection对象，而且SqlConnection必须是Open状态
-            SqlConnection conn = new SqlConnection(GetSqlConnection());//不要释放连接，因为后面还需要连接打开状态
-            SqlCommand cmd = conn.CreateCommand();
+            var conn = new SqlConnection(GetSqlConnection());//不要释放连接，因为后面还需要连接打开状态
+            var cmd = conn.CreateCommand();
             conn.Open();
             cmd.CommandText = sqlText;
             cmd.Parameters.AddRange(parameters);
@@ -122,15 +122,15 @@ namespace ZHXY.Domain
         /// <returns></returns>
         public static void CheckExistsTable(string tablename, string createTabelSql)
         {
-            using (SqlConnection conn = new SqlConnection(GetSqlConnection()))
+            using (var conn = new SqlConnection(GetSqlConnection()))
             {
-                if(conn.State == ConnectionState.Closed)
+                if (conn.State == ConnectionState.Closed)
                 {
                     conn.Open();
                 }
-                String tableNameStr = "select count(1) from sysobjects where name = '" + tablename + "'";
-                SqlCommand cmd = new SqlCommand(tableNameStr, conn);
-                int result = Convert.ToInt32(cmd.ExecuteScalar());
+                var tableNameStr = "select count(1) from sysobjects where name = '" + tablename + "'";
+                var cmd = new SqlCommand(tableNameStr, conn);
+                var result = Convert.ToInt32(cmd.ExecuteScalar());
                 if (result == 0)
                 {
                     cmd = new SqlCommand(createTabelSql, conn);
@@ -149,12 +149,12 @@ namespace ZHXY.Domain
             }
             else
             {
-                List<string> res = new List<string>();
-                int Year = dtEnd.Year - dtStart.Year;
-                int Month = (dtEnd.Year - dtStart.Year) * 12 + (dtEnd.Month - dtStart.Month);
-                for (int i = 0; i <= Month; i++)
+                var res = new List<string>();
+                var Year = dtEnd.Year - dtStart.Year;
+                var Month = ((dtEnd.Year - dtStart.Year) * 12) + (dtEnd.Month - dtStart.Month);
+                for (var i = 0; i <= Month; i++)
                 {
-                    DateTime dt = dtStart.AddMonths(i);
+                    var dt = dtStart.AddMonths(i);
                     res.Add(table_prefix + dt.ToString("yyyyMM"));
                 }
                 return res;

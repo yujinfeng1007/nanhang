@@ -61,7 +61,7 @@ namespace ZHXY.Application
 
                 var rel = new Relevance
                 {
-                    Name = SmartCampusConsts.REL_GATE_BUILDING,
+                    Name = SYS_CONSTS.REL_GATE_BUILDING,
                     FirstKey = id,
                     SecondKey = item
                 };
@@ -73,7 +73,7 @@ namespace ZHXY.Application
 
         public void UnbindBuilding(string id, string buildingId)
         {
-            var obj=Query<Relevance>(p => p.Name.Equals(SmartCampusConsts.REL_GATE_BUILDING) && p.FirstKey.Equals(id) && p.SecondKey.Equals(buildingId)).FirstOrDefault();
+            var obj=Query<Relevance>(p => p.Name.Equals(SYS_CONSTS.REL_GATE_BUILDING) && p.FirstKey.Equals(id) && p.SecondKey.Equals(buildingId)).FirstOrDefault();
             DelAndSave(obj);
         }
 
@@ -83,7 +83,7 @@ namespace ZHXY.Application
         /// <param name="id"></param>
         public List<Building> GetBoundBuildings(string id)
         {
-            var buildingIds=Read<Relevance>(p => p.Name.Equals(SmartCampusConsts.REL_GATE_BUILDING) && p.FirstKey.Equals(id)).Select(p=>p.SecondKey).ToArray();
+            var buildingIds=Read<Relevance>(p => p.Name.Equals(SYS_CONSTS.REL_GATE_BUILDING) && p.FirstKey.Equals(id)).Select(p=>p.SecondKey).ToArray();
             var list = Read<Building>(p => buildingIds.Contains(p.Id)).ToList();
             return list;
         }
@@ -91,7 +91,7 @@ namespace ZHXY.Application
 
         public List<Building> GetNotBoundBuildings(string id)
         {
-            var buildingIds = Read<Relevance>(p => p.Name.Equals(SmartCampusConsts.REL_GATE_BUILDING) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
+            var buildingIds = Read<Relevance>(p => p.Name.Equals(SYS_CONSTS.REL_GATE_BUILDING) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
             var list = Read<Building>(p => !buildingIds.Contains(p.Id)).ToList();
             return list;
         }

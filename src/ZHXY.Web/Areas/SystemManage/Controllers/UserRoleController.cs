@@ -39,7 +39,7 @@ namespace ZHXY.Web.SystemManage.Controllers
             //将用户id替换成姓名
             var creator = new User();
             var modifier = new User();
-            var dic = CacheFactory.Cache().GetCache<Dictionary<string, User>>(SmartCampusConsts.USERS);
+            var dic = CacheFactory.Cache().GetCache<Dictionary<string, User>>(SYS_CONSTS.USERS);
             if (data.F_CreatorUserId != null && dic.TryGetValue(data.F_CreatorUserId, out creator))
             {
                 data.F_CreatorUserId = creator.F_RealName;
