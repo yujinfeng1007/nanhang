@@ -14,6 +14,8 @@ namespace ZHXY.Web.Dorm.Controllers
 
         public DormBuildingController(DormBuildingService app) => App = app;
 
+        public async Task<ViewResult> BindUsers() => await Task.Run(() => View());
+
         #region HttpPost
 
         [HttpPost]
