@@ -11,7 +11,7 @@ namespace ZHXY.Application
     /// </summary>
     public class NoOutReportService: AppService
     {
-        public NoOutReportService(IZhxyRepository r) => R = r;
+        public NoOutReportService(IZhxyRepository r) : base(r) { }
         public List<NoOutReport> GetList(Pagination pagination, string startTime, string endTime, string classId)
         {
             pagination.Sord = "desc";

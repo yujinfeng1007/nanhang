@@ -10,7 +10,7 @@ namespace ZHXY.Application
     /// </summary>
     public class DormRuleAppService : AppService
     {
-        public DormRuleAppService(IZhxyRepository r) => R = r;
+        public DormRuleAppService(IZhxyRepository r) : base(r) { }
         public DormRule GetById(string id) => Get<DormRule>(id);
         public void Update(UpdateDormRuleDto input)
         {

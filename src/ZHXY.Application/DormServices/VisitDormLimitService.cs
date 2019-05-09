@@ -9,6 +9,13 @@ namespace ZHXY.Application
 {
     public class VisitDormLimitService : AppService
     {
+        public VisitDormLimitService(IZhxyRepository r) : base(r)
+        {
+        }
+        public VisitDormLimitService()
+        {
+            R = new ZhxyRepository();
+        }
 
         private ILog Logger { get; } = LogManager.GetLogger(typeof(VisitDormLimitService));
 

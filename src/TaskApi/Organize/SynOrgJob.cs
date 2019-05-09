@@ -138,7 +138,7 @@ namespace TaskApi
         {
             try
             {
-                var db = new ZhxyDbContext(schoolCode);
+                var db = new ZhxyDbContext();
                 var parentdata = db.Set<Organize>().Where(t => t.F_Id == f_ParentId).FirstOrDefault();
                 if (parentdata == null)
                 {
@@ -158,7 +158,7 @@ namespace TaskApi
         {
             try
             {
-                using (var db = new UnitWork(schoolCode).BeginTrans(schoolCode))
+                using (var db = new UnitWork().BeginTrans())
                 {
                     var entity = new ZHXY.Domain.Organize();
                     entity.F_EnCode = f_EnCode;
@@ -235,7 +235,7 @@ namespace TaskApi
         {
             try
             {
-                var db = new ZhxyDbContext(schoolCode);
+                var db = new ZhxyDbContext();
                 var parentdata = db.Set<Organize>().Where(t => t.F_Id == data.OrgId).FirstOrDefault();
                 if (parentdata == null)
                 {

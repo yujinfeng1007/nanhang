@@ -7,14 +7,10 @@ namespace ZHXY.Domain
 {
     public class UserRepository : Repository<User>, IUserRepository
     {
-        public UserRepository(string schoolCode) : base(schoolCode)
+        public UserRepository( ) : base()
         {
         }
-
-        public UserRepository()
-        {
-        }
-
+               
         public object GetPropertyValue(object info, string field)
         {
             if (info == null) return null;

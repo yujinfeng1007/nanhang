@@ -23,13 +23,7 @@ namespace ZHXY.Domain
 
         public Repository() => DbContext = new ZhxyDbContext();
 
-        public Repository(string schoolCode)
-        {
-            if (schoolCode.IsEmpty())
-                DbContext = new ZhxyDbContext();
-            else
-                DbContext = new ZhxyDbContext(schoolCode);
-        }
+       
 
         protected string GetFullErrorText(DbEntityValidationException exc)
         {

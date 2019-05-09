@@ -7,7 +7,7 @@ namespace ZHXY.Application
     /// </summary>
     public class MessageAppService : AppService
     {
-        public MessageAppService(IZhxyRepository r) => R = r;
+        public MessageAppService(IZhxyRepository r) : base(r) { }
 
         /// <summary>
         /// 设置机构消息接收人

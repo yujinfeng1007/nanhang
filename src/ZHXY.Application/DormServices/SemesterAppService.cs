@@ -11,7 +11,7 @@ namespace ZHXY.Application
 {
     public class SemesterAppService : AppService
     {
-        public SemesterAppService(IZhxyRepository r) => R=r;
+        public SemesterAppService(IZhxyRepository r) : base(r) { }
         public List<Semester> GetAll() => Read<Semester>().ToList();
 
     }

@@ -14,7 +14,7 @@ namespace ZHXY.Application
     /// </summary>
     public class OriginalReportService : AppService
     {
-        public OriginalReportService(IZhxyRepository r) => R = r;
+        public OriginalReportService(IZhxyRepository r) : base(r) { }
 
         public List<OriginalReport> GetMonthOriginalList(Pagination pagination, string studentNum,string startTime,string endTime)
         {

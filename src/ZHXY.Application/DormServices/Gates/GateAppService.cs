@@ -12,7 +12,7 @@ namespace ZHXY.Application
     /// </summary>
     public class GateAppService : AppService
     {
-        public GateAppService(IZhxyRepository r) => R = r;
+        public GateAppService(IZhxyRepository r) : base(r) { }
         public List<GateView> GetList(Pagination pag, string keyword)
         {
             var query = Read<Gate>();
@@ -71,10 +71,10 @@ namespace ZHXY.Application
 
         }
 
-        public void UnbindBuilding(string id, string[] buildings)
+        public void UnbindBuilding(string id, string buildingId)
         {
-            var list=Query<Relevance>(p => p.Name.Equals(SmartCampusConsts.REL_GATE_BUILDING) && p.FirstKey.Equals(id) && buildings.Contains(p.SecondKey)).ToList();
-            DelAndSave<Relevance>(list);
+            var obj=Query<Relevance>(p => p.Name.Equals(SmartCampusConsts.REL_GATE_BUILDING) && p.FirstKey.Equals(id) && p.SecondKey.Equals(buildingId)).FirstOrDefault();
+            DelAndSave(obj);
         }
 
         /// <summary>

@@ -26,6 +26,9 @@ namespace ZHXY.Application
 
         #endregion 属性
 
+        public AppService(IZhxyRepository r) => R = r;
+        public AppService() { }
+
         #region 增删改
 
         #region 添加

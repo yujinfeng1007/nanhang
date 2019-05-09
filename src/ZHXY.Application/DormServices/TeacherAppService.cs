@@ -17,16 +17,17 @@ namespace ZHXY.Application
     {
         private ITeacherRepository Repository { get; }
 
+       
+        public TeacherAppService(ITeacherRepository repos,IZhxyRepository r):base(r)
+        {
+            Repository = repos;
+            R = r;
+        }
+
         public TeacherAppService()
         {
             Repository = new TeacherRepository();
             R = new ZhxyRepository();
-        }
-
-        public TeacherAppService(ITeacherRepository repos,IZhxyRepository r)
-        {
-            Repository = repos;
-            R = r;
         }
 
         public Teacher GetTeacherByCardNum(string f_CardNum) => Read<Teacher>(p => p.F_Mac_No == f_CardNum).FirstOrDefaultAsync().Result;

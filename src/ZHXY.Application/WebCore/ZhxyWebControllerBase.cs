@@ -19,9 +19,6 @@ using ZHXY.Common;
 
 namespace ZHXY.Application
 {
-    /// <summary>
-    /// 些为基础类，禁止修改，如需修改，请发需求易本辰
-    /// </summary>
     [LoginAuthentication]
     [ValidataParam]
     public abstract class ZhxyWebControllerBase : Controller

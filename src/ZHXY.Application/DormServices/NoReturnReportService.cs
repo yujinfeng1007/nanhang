@@ -13,7 +13,7 @@ namespace ZHXY.Application
     /// </summary>
     public class NoReturnReportService : AppService
     {
-        public NoReturnReportService(IZhxyRepository r) => R = r;
+        public NoReturnReportService(IZhxyRepository r) : base(r) { }
 
         public List<NoReturnReport> GetList(Pagination pag, string startTime, string endTime, string classId)
         {

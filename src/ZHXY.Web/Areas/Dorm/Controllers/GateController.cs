@@ -87,9 +87,9 @@ namespace ZHXY.Web.Dorm.Controllers
         }
 
         [HttpPost]
-        public ActionResult UnbindBuilding(string id, string[] buildings)
+        public ActionResult UnbindBuilding(string id, string buildingId)
         {
-            App.UnbindBuilding(id, buildings);
+            App.UnbindBuilding(id, buildingId);
             return Resultaat.Success();
         }
 

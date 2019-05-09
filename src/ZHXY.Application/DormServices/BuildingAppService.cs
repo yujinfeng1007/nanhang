@@ -5,6 +5,6 @@ namespace ZHXY.ApplicationServices
 {
     public class BuildingAppService : AppService
     {
-        public BuildingAppService(IZhxyRepository r) => R = r;
+        public BuildingAppService(IZhxyRepository r) : base(r) { }
     }
 }

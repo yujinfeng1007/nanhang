@@ -11,7 +11,7 @@ namespace ZHXY.Application
     /// </summary>
     public class DormRepairAppService : AppService
     {
-       public DormRepairAppService(IZhxyRepository r) => R = r;
+       public DormRepairAppService(IZhxyRepository r) : base(r) { }
 
 
         public List< DormRepair> GetList(Pagination p)

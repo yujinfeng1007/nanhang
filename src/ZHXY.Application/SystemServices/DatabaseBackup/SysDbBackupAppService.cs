@@ -12,7 +12,9 @@ namespace ZHXY.Application
     /// </summary>
     public class SysDbBackupAppService : AppService
     {
-        public SysDbBackupAppService(IZhxyRepository r) => R = r;
+        public SysDbBackupAppService(IZhxyRepository r) : base(r)
+        {
+        }
 
         public List<DbBackup> GetList(string queryJson)
         {

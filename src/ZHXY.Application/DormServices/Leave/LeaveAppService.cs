@@ -30,7 +30,7 @@ create table School_CancelHoliday(
     /// </summary>
     public class LeaveAppService : AppService
     {
-        public LeaveAppService(IZhxyRepository r) => R = r;
+        public LeaveAppService(IZhxyRepository r) : base(r) { }
 
         /// <summary>
         /// 请假申请

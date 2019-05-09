@@ -12,8 +12,12 @@ namespace ZHXY.Application
     /// </summary>
     public class SysCacheAppService : AppService
     {
-        public static DbContext MyDb => new ZhxyDbContext();
+        public SysCacheAppService(IZhxyRepository r) : base(r)
+        {
+        }
 
+
+     
         /// <summary>
         /// 地区缓存
         /// </summary>
@@ -93,7 +97,7 @@ namespace ZHXY.Application
         {
             var itemDetails = new SysDicItemAppService().GetList();
             var dic = new Dictionary<string, object>();
-            foreach (var item in new SysDicAppService().GetList())
+            foreach (var item in new SysDicAppService() .GetAll())
             {
                 var tempDictionary = new Dictionary<string, string>();
                 var details = itemDetails.FindAll(t => t.F_ItemId.Equals(item.F_Id));
@@ -267,16 +271,7 @@ namespace ZHXY.Application
 
         }
 
-        public static Dictionary<string, object> GetUserListByCache()
-        {
-            var cache = CacheFactory.Cache();
-            if (CacheFactory.Cache().GetCache<Dictionary<string, object>>(SmartCampusConsts.USERS).IsEmpty())
-            {
-                cache.WriteCache((Dictionary<string, object>)GetUserList(), SmartCampusConsts.USERS);
-            }
-
-            return cache.GetCache<Dictionary<string, object>>(SmartCampusConsts.USERS);
-        }
+       
 
         public static string ToMenuJson(List<SysModule> data, string parentId)
         {
@@ -297,6 +292,5 @@ namespace ZHXY.Application
             return sbJson.ToString();
         }
 
-        public static void ClearOrgCache() => CacheFactory.Cache().RemoveCache(SmartCampusConsts.ORGANIZE);
     }
 }

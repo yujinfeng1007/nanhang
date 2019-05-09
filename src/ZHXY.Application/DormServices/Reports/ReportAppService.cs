@@ -10,7 +10,7 @@ namespace ZHXY.Application
     /// </summary>
     public class ReportAppService : AppService
     {
-        public ReportAppService(IZhxyRepository r) => R = r;
+        public ReportAppService(IZhxyRepository r) : base(r) { }
 
         /// <summary>
         /// 获取异常出入报表

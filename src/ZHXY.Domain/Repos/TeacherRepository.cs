@@ -7,13 +7,10 @@ namespace ZHXY.Domain
 {
     public class TeacherRepository : Repository<Teacher>, ITeacherRepository
     {
-        public TeacherRepository(string schoolCode) : base(schoolCode)
+        public TeacherRepository( ) : base()
         {
         }
 
-        public TeacherRepository()
-        {
-        }
 
         private string getStrNum(string num, int leng = 4)
         {
@@ -91,6 +88,7 @@ namespace ZHXY.Domain
                 }
                 db.Commit();
             }
+                
         }
 
         public void AddDatas(List<Teacher> datas)

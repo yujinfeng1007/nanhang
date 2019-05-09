@@ -21,7 +21,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         
         public ActionResult GetTreeSelectJson()
         {
-            var data = App.GetList();
+            var data = App.GetAll();
             var treeList = new List<TreeSelectModel>();
             foreach (var item in data)
             {
@@ -40,7 +40,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         
         public ActionResult GetTreeJson()
         {
-            var data = App.GetList();
+            var data = App.GetAll();
             var treeList = new List<TreeViewModel>();
             foreach (var item in data)
             {
@@ -62,7 +62,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         
         public ActionResult GetTreeGridJson()
         {
-            var data = App.GetList();
+            var data = App.GetAll();
             var treeList = new List<TreeGridModel>();
             foreach (var item in data)
             {
@@ -82,7 +82,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         
         public ActionResult GetFormJson(string keyValue)
         {
-            var data = App.GetForm(keyValue);
+            var data = App.GetById(keyValue);
             return Content(data.ToJson());
         }
 
@@ -91,7 +91,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult SubmitForm(SysDic itemsEntity, string keyValue)
         {
-            App.SubmitForm(itemsEntity, keyValue);
+            App.Submit(itemsEntity, keyValue);
             CacheFactory.Cache().RemoveCache(SmartCampusConsts.DATAITEMS);
             CacheFactory.Cache().WriteCache(SysCacheAppService.GetDataItemList(), SmartCampusConsts.DATAITEMS);
             return Message("操作成功。");
@@ -102,7 +102,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteForm(string keyValue)
         {
-            App.DeleteForm(keyValue);
+            App.Delete(keyValue);
             CacheFactory.Cache().RemoveCache(SmartCampusConsts.DATAITEMS);
             CacheFactory.Cache().WriteCache(SysCacheAppService.GetDataItemList(), SmartCampusConsts.DATAITEMS);
             return Message("删除成功。");

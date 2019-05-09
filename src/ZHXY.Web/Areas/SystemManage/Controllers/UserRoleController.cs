@@ -57,7 +57,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult SubmitForm(UserRole entity, string keyValue)
         {
             entity.F_DepartmentId = OperatorProvider.Current.DepartmentId;
-            App.SubmitForm(entity, keyValue);
+            App.Submit(entity, keyValue);
             return Message("操作成功。");
         }
 
@@ -67,7 +67,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteForm(string keyValue)
         {
-            App.DeleteForm(keyValue);
+            App.Delete(keyValue);
             return Message("删除成功。");
         }
 
@@ -87,21 +87,6 @@ namespace ZHXY.Web.SystemManage.Controllers
             ms.Seek(0, SeekOrigin.Begin);
             var filename = "Sys_User_Role列表" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xls";
             return File(ms, "application/ms-excel", filename);
-        }
-
-        //导入excel
-        [HttpPost]
-        
-        [HandlerAuthorize]
-        [ValidateAntiForgeryToken]
-        public ActionResult Import(string filePath)
-        {
-            IDictionary<string, string[]> rules = new Dictionary<string, string[]>();
-            var list = ExcelToList<UserRole>(Server.MapPath(filePath), rules);
-            if (list == null)
-                return Error("导入失败");
-            App.Import(list);
-            return Message("导入成功。");
         }
     }
 }
