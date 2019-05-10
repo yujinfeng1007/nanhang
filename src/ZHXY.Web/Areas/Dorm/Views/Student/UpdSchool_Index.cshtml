@@ -1,0 +1,184 @@
+﻿@{
+    
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script>
+    var F_Student_Id = $.request("keyValue");
+    $(function () {
+        gridList();
+        $("#F_DepartmentId").bindSelect({
+            url: "/SystemManage/Organize/GetTreeSelectJson",
+            displayBlank:false
+        });
+        $("#F_SysAreaId").bindSelect({
+            url: "/SystemManage/Area/GetTreeSelectJson",
+            displayBlank:false
+        });
+        $("#F_Gender").bindSelect({
+          dictionary: '104',
+          displayBlank:false
+        })
+    })
+    function gridList() {
+        var $gridList = $("#gridList");
+        $gridList.dataGrid({
+            url: "/Dorm/School_RollChangeList/GetGridJson?F_Student_Id=" + F_Student_Id + "",
+            height: $(window).height() - 128,
+            colModel: [
+			 	{ label: '主键', name: 'F_Id', hidden: true },
+                //{ label: '学号', name: 'F_Student_Num', width: 80, align: 'left' },
+                //{ label: '学生', name: 'F_Student_Id', width: 80, align: 'left' },
+                ////{ label: '协议', name: 'F_Sign_Id', width: 80, align: 'left' },
+                //{ label: '原班级类型', name: 'F_Old_Subjects_ID', width: 80, align: 'left' },
+                {
+                    label: '学生姓名', name: 'F_Student_Name', width: 80, align: 'left'
+                },
+                {
+                    label: '申请编号', name: 'F_SchoolNum', width: 80, align: 'left'
+                },
+                {
+                    label: '调整类型', name: 'F_Change_Type', width: 80, align: 'left', formatter: function (cellvalue) {
+                        return top.clients.dataItems["xjbd"][cellvalue] == undefined ? "" : top.clients.dataItems["xjbd"][cellvalue];
+                    }
+                },
+                {
+                    label: '变动学部', name: 'F_Divis_ID', width: 80, align: 'left', formatter: function (cellvalue) {
+                        return top.clients.organize[cellvalue] == null ? "" : top.clients.organize[cellvalue].fullname;
+                    }
+                },
+                {
+                    label: '变动年级', name: 'F_Grade_ID', width: 80, align: 'left', formatter: function (cellvalue) {
+                        return top.clients.organize[cellvalue] == null ? "" : top.clients.organize[cellvalue].fullname;
+                    }
+                },
+                {
+                    label: '变动班级', name: 'F_Class_ID', width: 80, align: 'left', formatter: function (cellvalue) {
+                        return top.clients.organize[cellvalue] == null ? "" : top.clients.organize[cellvalue].fullname;
+                    }
+                },
+                {
+                    label: '新班级类型', name: 'F_New_Subjects_ID', width: 80, align: 'left', formatter: function (cellvalue, options, rowObject) {
+                        var F_New_Subjects_ID = null;
+                        $.ajax({
+                            url: "/Dorm/School_Subjects/GetFormJson?keyValue=" + cellvalue + "",
+                            dataType: "json",
+                            async: false,
+                            success: function (data) {
+                                F_New_Subjects_ID = data["F_Title"];
+                            }
+                        });
+                        return F_New_Subjects_ID == null ? "" : F_New_Subjects_ID;
+                    }
+                },
+                //{ label: '调整凭证', name: 'F_Proof', width: 80, align: 'left' },
+
+                //{ label: '账单变更操作编号', name: 'F_Bill_ChangeNo', width: 80, align: 'left' },
+                { label: '变更账单编号', name: 'F_Bill_No', width: 80, align: 'left' },
+                { label: '审核人姓名', name: 'F_Auditor_Name', width: 80, align: 'left' },
+                {
+                    label: '审核状态', name: 'F_Status', width: 80, align: 'left', formatter: function (cellvalue) {
+                        return top.clients.dataItems["F_Statu"][cellvalue] == undefined ? "" : top.clients.dataItems["F_Statu"][cellvalue];
+                    }
+                },
+                //{ label: '审核意见', name: 'F_Audit_Memo', width: 80, align: 'left' },
+                {
+                    label: '审核时间', name: 'F_Audit_Time', width: 80, align: 'left', formatter: "date", formatoptions: { srcformat: 'Y-m-d H:i', newformat: 'Y-m-d H:i' }
+                },
+                { label: '申请人姓名', name: 'F_Creator_Name', width: 80, align: 'left' },
+
+			 	{
+			 	    label: '申请时间', name: 'F_CreatorTime', width: 80, align: 'left',
+                    formatter: "date", formatoptions: { srcformat:'Y-m-d H:i',newformat:'Y-m-d H:i' }
+                },
+                {
+                    label: '收费方式', name: 'F_Charge_Type', width: 80, align: 'left', formatter: function (cellvalue) {
+                        return top.clients.dataItems["F_Charge_mode"][cellvalue] == undefined ? "" : top.clients.dataItems["F_Charge_mode"][cellvalue];
+                    }
+                },
+                { label: '调整原因', name: 'F_Proof_Desc', width: 80, align: 'left' },
+            ],
+            pager: "#gridPager",
+            sortname: 'F_DepartmentId asc,F_CreatorTime desc',
+            viewrecords: true
+        });
+        $("#btn_search").click(function () {
+            $gridList.jqGrid('setGridParam', {
+                postData: { keyword: $("#txt_keyword").val(), F_DepartmentId: $("#F_DepartmentId").val(), F_CreatorTime_Start: $("#F_CreatorTime_Start").val(), F_CreatorTime_Stop: $("#F_CreatorTime_Stop").val() },
+            }).trigger('reloadGrid');
+        });
+    }
+    function btn_add() {
+        $.modalOpen({
+            id: "Form",
+            title: "新增",
+            url: "/Dorm/School_RollChangeList/Form?F_Student_Id=" + F_Student_Id,
+            width: "700px",
+            height: "510px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm();
+            }
+        });
+    }
+    function btn_edit() {
+        var keyValue = ($("#gridList").jqGridRowValue('F_Id'))[0];
+        $.modalOpen({
+            id: "Form",
+            title: "修改",
+            url: "/Dorm/School_RollChangeList/Form?keyValue=" + keyValue + "&F_Student_Id=" + F_Student_Id,
+            width: "700px",
+            height: "510px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm();
+            }
+        });
+    }
+    function btn_delete() {
+        var deleteid = $('#gridList').jqGridRowValue('F_Id');
+        var keyValue = "";
+        for (var i = 0; i < deleteid.length; i++) {
+            keyValue += deleteid[i] + "|";
+        }
+        $.deleteForm({
+            url: "/Dorm/School_RollChangeList/DeleteForm",
+            param: { keyValue: keyValue },
+            success: function () {
+                parent.top.frames["Price"].$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+    function btn_details() {
+        var keyValue = ($("#gridList").jqGridRowValue('F_Id'))[0];
+        $.modalOpen({
+            id: "Details",
+            title: "查看",
+            url: "/Dorm/School_RollChangeList/Details?keyValue=" + keyValue,
+            width: "700px",
+            height: "550px",
+            btn: null,
+        });
+    }
+</script>
+<div class="topPanel">
+    <div class="toolbar">
+        <div class="btn-group">
+            <a class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
+        </div>
+        <div class="btn-group">
+            <a id="NF-add" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_add()"><i class="fa fa-plus"></i>新建</a>
+        </div>
+        <div class="operate">
+            <ul class="nav nav-pills">
+                <li class="first">已选中<span>1</span>项</li>
+                @*<li><a id="NF-edit" authorize="yes" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>修改</a></li>
+                <li><a class="multi-edit" id="NF-delete" authorize="yes" onclick="btn_delete()"><i class="fa fa-trash-o"></i>删除</a></li>*@
+                <li><a id="NF-Details" authorize="false" onclick="btn_details()"><i class="fa fa-search-plus"></i>查看</a></li>
+            </ul>
+            <a href="javascript:;" class="close"></a>
+        </div>
+        <script>$('.toolbar').authorizeButton()</script>
+    </div>
+</div>
+<div class="gridPanel">
+    <table id="gridList"></table>
+    <div id="gridPager"></div>
+</div>

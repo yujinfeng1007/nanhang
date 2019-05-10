@@ -67,8 +67,8 @@ namespace ZHXY.Web.School.Controllers
         public ActionResult DeleteForm(string keyValue)
         {
             App.Delete(keyValue);
-            CacheFactory.Cache().RemoveCache(SmartCampusConsts.USERS);
-            CacheFactory.Cache().WriteCache(SysCacheAppService.GetUserList(), SmartCampusConsts.USERS);
+            CacheFactory.Cache().RemoveCache(SYS_CONSTS.USERS);
+            CacheFactory.Cache().WriteCache(SysCacheAppService.GetUserList(), SYS_CONSTS.USERS);
             return Message("删除成功。");
         }
 

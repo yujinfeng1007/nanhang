@@ -9,7 +9,7 @@ namespace ZHXY.Application
 {
     public class AccessStudentAppService : AppService
     {
-        public AccessStudentAppService(IZhxyRepository r) => R = r;
+        public AccessStudentAppService(IZhxyRepository r) : base(r) { }
 
          public List<AccessStudent> GetList(Pagination pagination, string keyword,string F_DevId)
         {

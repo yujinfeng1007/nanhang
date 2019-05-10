@@ -11,7 +11,10 @@ namespace ZHXY.Application
     /// </summary>
     public class DormStudentAppService : AppService
     {
-        public DormStudentAppService(IZhxyRepository r) => R = r;
+        public DormStudentAppService(IZhxyRepository r) : base(r)
+        {
+        }
+
         public object GetGridJson(Pagination pagination, string keyword, string F_Year, string F_Semester, string F_Divis, string F_Grade, string F_Class)
         {
             var param = new

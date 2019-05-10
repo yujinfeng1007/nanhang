@@ -85,7 +85,7 @@ namespace ZHXY.Web.School.Controllers
         public ActionResult SubmitForm(Teacher entity, string keyValue)
         {
             App.SubmitForm(entity, keyValue);
-            CacheFactory.Cache().RemoveCache(SmartCampusConsts.CLASSTEACHERS);
+            CacheFactory.Cache().RemoveCache(SYS_CONSTS.CLASSTEACHERS);
             return Message("操作成功。");
         }
 
@@ -96,7 +96,7 @@ namespace ZHXY.Web.School.Controllers
         public ActionResult DeleteForm(string keyValue)
         {
             App.Delete(keyValue);
-            CacheFactory.Cache().RemoveCache(SmartCampusConsts.CLASSTEACHERS);
+            CacheFactory.Cache().RemoveCache(SYS_CONSTS.CLASSTEACHERS);
             return Message("删除成功。");
         }
 

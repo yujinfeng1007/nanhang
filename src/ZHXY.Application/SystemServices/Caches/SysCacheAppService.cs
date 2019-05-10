@@ -12,8 +12,12 @@ namespace ZHXY.Application
     /// </summary>
     public class SysCacheAppService : AppService
     {
-        public static DbContext MyDb => new ZhxyDbContext();
+        public SysCacheAppService(IZhxyRepository r) : base(r)
+        {
+        }
 
+
+     
         /// <summary>
         /// 地区缓存
         /// </summary>
@@ -40,11 +44,11 @@ namespace ZHXY.Application
         public static Dictionary<string, object> GetAreaListByCache()
         {
             var cache = CacheFactory.Cache();
-            if (CacheFactory.Cache().GetCache<Dictionary<string, object>>(SmartCampusConsts.AREA).IsEmpty())
+            if (CacheFactory.Cache().GetCache<Dictionary<string, object>>(SYS_CONSTS.AREA).IsEmpty())
             {
-                cache.WriteCache((Dictionary<string, object>)GetAreaList(), SmartCampusConsts.AREA);
+                cache.WriteCache((Dictionary<string, object>)GetAreaList(), SYS_CONSTS.AREA);
             }
-            return cache.GetCache<Dictionary<string, object>>(SmartCampusConsts.AREA);
+            return cache.GetCache<Dictionary<string, object>>(SYS_CONSTS.AREA);
         }
 
         public static object GetAreaListChild()
@@ -77,12 +81,12 @@ namespace ZHXY.Application
         public static List<AreaChild> GetAreaListChildByCache()
         {
             var cache = CacheFactory.Cache();
-            if (CacheFactory.Cache().GetCache<List<AreaChild>>(SmartCampusConsts.AREACHILD).IsEmpty())
+            if (CacheFactory.Cache().GetCache<List<AreaChild>>(SYS_CONSTS.AREACHILD).IsEmpty())
             {
-                cache.WriteCache((List<AreaChild>)GetAreaListChild(), SmartCampusConsts.AREACHILD);
+                cache.WriteCache((List<AreaChild>)GetAreaListChild(), SYS_CONSTS.AREACHILD);
             }
 
-            return cache.GetCache<List<AreaChild>>(SmartCampusConsts.AREACHILD);
+            return cache.GetCache<List<AreaChild>>(SYS_CONSTS.AREACHILD);
         }
 
         /// <summary>
@@ -93,7 +97,7 @@ namespace ZHXY.Application
         {
             var itemDetails = new SysDicItemAppService().GetList();
             var dic = new Dictionary<string, object>();
-            foreach (var item in new SysDicAppService().GetList())
+            foreach (var item in new SysDicAppService() .GetAll())
             {
                 var tempDictionary = new Dictionary<string, string>();
                 var details = itemDetails.FindAll(t => t.F_ItemId.Equals(item.F_Id));
@@ -116,12 +120,12 @@ namespace ZHXY.Application
         public static Dictionary<string, object> GetDataItemListByCache()
         {
             var cache = CacheFactory.Cache();
-            if (CacheFactory.Cache().GetCache<Dictionary<string, object>>(SmartCampusConsts.DATAITEMS).IsEmpty())
+            if (CacheFactory.Cache().GetCache<Dictionary<string, object>>(SYS_CONSTS.DATAITEMS).IsEmpty())
             {
-                cache.WriteCache((Dictionary<string, object>)GetDataItemList(), SmartCampusConsts.DATAITEMS);
+                cache.WriteCache((Dictionary<string, object>)GetDataItemList(), SYS_CONSTS.DATAITEMS);
             }
 
-            return cache.GetCache<Dictionary<string, object>>(SmartCampusConsts.DATAITEMS);
+            return cache.GetCache<Dictionary<string, object>>(SYS_CONSTS.DATAITEMS);
         }
 
         /// <summary>
@@ -147,12 +151,12 @@ namespace ZHXY.Application
         public static Dictionary<string, object> GetDutyListByCache()
         {
             var cache = CacheFactory.Cache();
-            if (CacheFactory.Cache().GetCache<Dictionary<string, object>>(SmartCampusConsts.DUTY).IsEmpty())
+            if (CacheFactory.Cache().GetCache<Dictionary<string, object>>(SYS_CONSTS.DUTY).IsEmpty())
             {
-                cache.WriteCache((Dictionary<string, object>)GetDutyList(), SmartCampusConsts.DUTY);
+                cache.WriteCache((Dictionary<string, object>)GetDutyList(), SYS_CONSTS.DUTY);
             }
 
-            return cache.GetCache<Dictionary<string, object>>(SmartCampusConsts.DUTY);
+            return cache.GetCache<Dictionary<string, object>>(SYS_CONSTS.DUTY);
         }
 
         public static object GetMenuButtonList()
@@ -217,9 +221,9 @@ namespace ZHXY.Application
         public static Dictionary<string, object> GetOrganizeListByCache()
         {
             var cache = CacheFactory.Cache();
-            CacheFactory.Cache().RemoveCache(SmartCampusConsts.ORGANIZE);
-            CacheFactory.Cache().WriteCache(GetOrganizeList(), SmartCampusConsts.ORGANIZE);
-            return cache.GetCache<Dictionary<string, object>>(SmartCampusConsts.ORGANIZE);
+            CacheFactory.Cache().RemoveCache(SYS_CONSTS.ORGANIZE);
+            CacheFactory.Cache().WriteCache(GetOrganizeList(), SYS_CONSTS.ORGANIZE);
+            return cache.GetCache<Dictionary<string, object>>(SYS_CONSTS.ORGANIZE);
         }
 
         /// <summary>
@@ -242,12 +246,12 @@ namespace ZHXY.Application
         public static Dictionary<string, object> GetRoleListByCache()
         {
             var cache = CacheFactory.Cache();
-            if (CacheFactory.Cache().GetCache<Dictionary<string, object>>(SmartCampusConsts.ROLE).IsEmpty())
+            if (CacheFactory.Cache().GetCache<Dictionary<string, object>>(SYS_CONSTS.ROLE).IsEmpty())
             {
-                cache.WriteCache((Dictionary<string, object>)GetRoleList(), SmartCampusConsts.ROLE);
+                cache.WriteCache((Dictionary<string, object>)GetRoleList(), SYS_CONSTS.ROLE);
             }
 
-            return cache.GetCache<Dictionary<string, object>>(SmartCampusConsts.ROLE);
+            return cache.GetCache<Dictionary<string, object>>(SYS_CONSTS.ROLE);
         }
 
     
@@ -267,16 +271,7 @@ namespace ZHXY.Application
 
         }
 
-        public static Dictionary<string, object> GetUserListByCache()
-        {
-            var cache = CacheFactory.Cache();
-            if (CacheFactory.Cache().GetCache<Dictionary<string, object>>(SmartCampusConsts.USERS).IsEmpty())
-            {
-                cache.WriteCache((Dictionary<string, object>)GetUserList(), SmartCampusConsts.USERS);
-            }
-
-            return cache.GetCache<Dictionary<string, object>>(SmartCampusConsts.USERS);
-        }
+       
 
         public static string ToMenuJson(List<SysModule> data, string parentId)
         {
@@ -297,6 +292,5 @@ namespace ZHXY.Application
             return sbJson.ToString();
         }
 
-        public static void ClearOrgCache() => CacheFactory.Cache().RemoveCache(SmartCampusConsts.ORGANIZE);
     }
 }

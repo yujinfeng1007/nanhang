@@ -201,8 +201,8 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult SubmitForm(Organize organizeEntity, string keyValue)
         {
             App.CreateOrUpdate(organizeEntity, keyValue);
-            CacheFactory.Cache().RemoveCache(SmartCampusConsts.ORGANIZE);
-            CacheFactory.Cache().WriteCache(SysCacheAppService.GetOrganizeList(), SmartCampusConsts.ORGANIZE);
+            CacheFactory.Cache().RemoveCache(SYS_CONSTS.ORGANIZE);
+            CacheFactory.Cache().WriteCache(SysCacheAppService.GetOrganizeList(), SYS_CONSTS.ORGANIZE);
             return Message("操作成功。");
         }
 
@@ -213,8 +213,8 @@ namespace ZHXY.Web.SystemManage.Controllers
         {
             App.Delete(keyValue);
             //new ClassAppService().DeleteByClassId(keyValue);
-            CacheFactory.Cache().RemoveCache(SmartCampusConsts.ORGANIZE);
-            CacheFactory.Cache().WriteCache(SysCacheAppService.GetOrganizeList(), SmartCampusConsts.ORGANIZE);
+            CacheFactory.Cache().RemoveCache(SYS_CONSTS.ORGANIZE);
+            CacheFactory.Cache().WriteCache(SysCacheAppService.GetOrganizeList(), SYS_CONSTS.ORGANIZE);
             return Message("删除成功。");
         }
 

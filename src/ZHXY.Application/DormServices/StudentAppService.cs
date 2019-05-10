@@ -14,17 +14,14 @@ namespace ZHXY.Application
     /// </summary>
     public class StudentAppService : AppService
     {
+        public StudentAppService(IZhxyRepository r) : base(r)
+        {
+        }
 
         public StudentAppService()
         {
             R = new ZhxyRepository();
         }
-
-        public StudentAppService(IZhxyRepository repos)
-        {
-            R = repos;
-        }
-
         public Student GetByStuNum(string stuNum)
         {
             return Read<Student>(p => p.F_StudentNum.Equals(stuNum)).FirstOrDefaultAsync().Result;

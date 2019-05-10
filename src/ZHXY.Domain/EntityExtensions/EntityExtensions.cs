@@ -12,26 +12,8 @@ namespace ZHXY.Domain
     /// </summary>
     public static class EntityExtensions
     {
-        public static void Create<T>(this T t, string deptId = null, string creatorId = null) where T : ICreateAuditable
-        {
-            t.Id = Guid.NewGuid().ToString("N").ToUpper();
-            t.CreatedTime = DateTime.Now;
-            t.OwnerDeptId = deptId;
-            t.CreatedByUserId = creatorId;
-        }
+     
 
-        public static void Modify<T>(this T t, string modifier = null) where T : IModifiedAuditable
-        {
-            t.LastModifiedTime = DateTime.Now;
-            t.LastModifiedByUserId = modifier;
-        }
-
-        public static void MarkAsDeleted<T>(this T t, string deleteOperator = null) where T : IDeleteAuditable
-        {
-            t.DeletedTime = DateTime.Now;
-            t.DeletedByUserId = deleteOperator;
-            t.IsDeleted = true;
-        }
 
         public static string GetSearchString<T>(this T t, string[] fields) where T : IEntity
         {

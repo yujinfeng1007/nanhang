@@ -11,7 +11,7 @@ namespace ZHXY.Application
     /// </summary>
     public class LateReturnReportService: AppService
     {
-        public LateReturnReportService(IZhxyRepository r) => R = r;
+        public LateReturnReportService(IZhxyRepository r) : base(r) { }
         public List<LateReturnReport> GetList(Pagination pagination,string startTime, string endTime, string classId)
         {
             pagination.Sord = "desc";

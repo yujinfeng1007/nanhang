@@ -17,7 +17,7 @@ namespace TaskApi
 
         public void UpdOrAdd(UserModel data, string catetoryId)// string loginId, string mobilePhone, string orgId, string passWord, string telephone, string userId, string userName, string userStatus, string userType, string catetoryId, string gw,string num,string sex)
         {
-            using (var db = new UnitWork(SchoolCode).BeginTrans(SchoolCode))
+            using (var db = new UnitWork().BeginTrans())
             {
                 string gw = data.post_Description;
                 if (data.isHeadmaster == "1")

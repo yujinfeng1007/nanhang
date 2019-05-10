@@ -15,7 +15,10 @@ namespace ZHXY.Application
     /// </summary>
     public class VisitorAppService :  AppService
     {
-        public VisitorAppService(IZhxyRepository r) => R = r;
+        public VisitorAppService(IZhxyRepository r) : base(r)
+        {
+        }
+
         public List<VisitApply> GetList(Pagination pagination, string F_Building, int Time_Type, string startTime, string endTime)
         {
             ////获取记录数

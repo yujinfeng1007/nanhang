@@ -1,0 +1,132 @@
+﻿<table class="form">
+    <tr>
+        <th class="formTitle">学号</th>
+        <td class="formValue">
+            <input id="F_StudentNum" name="F_StudentNum" type="text" class="form-control" placeholder="请输入学号" disabled="disabled" />
+            <input id="F_InitNum" name="F_InitNum" type="hidden" class="form-control" placeholder="请输入学号" />
+            <input id="F_Users_ID" name="F_Users_ID" type="hidden" class="form-control" placeholder="请输入学号" />
+        </td>
+        <th class="formTitle">姓名</th>
+        <td class="formValue">
+            <input id="F_Name" name="F_Name" type="text" class="form-control required" placeholder="请输入姓名" />
+        </td>
+    </tr>
+    @*<tr>
+        <th class="formTitle">曾用名</th>
+        <td class="formValue">
+            <input id="F_Name_Old" name="F_Name_Old" type="text" class="form-control required" placeholder="请输入曾用名" />
+        </td>
+        <th class="formTitle">英文名</th>
+        <td class="formValue">
+            <input id="F_Name_En" name="F_Name_En" type="text" class="form-control required" placeholder="请输入英文名" />
+        </td>
+    </tr>*@
+    <tr>
+        <th class="formTitle">性别</th>
+        <td class="formValue">
+            <select id="F_Gender" name="F_Gender" type="text" class="form-control required" placeholder="请输入性别">
+                <option value="">请选择</option>
+            </select>
+        </td>
+        <th class="formTitle">出生日期</th>
+        <td class="formValue">
+            <input id="F_Birthday" name="F_Birthday" type="text" class="form-control input-wdatepicker required" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss' })" />
+        </td>
+    </tr>
+    @*<tr>
+        <th class="formTitle">独生子女</th>
+        <td class="formValue">
+            <select id="F_Only_One" name="F_Only_One" type="text" class="form-control required" placeholder="请输入独生子女">
+                <option value="">请选择</option>
+            </select>
+        </td>
+    </tr>*@
+    <tr>
+        <th class="formTitle">国籍</th>
+        <td class="formValue">
+            <select id="F_Nation" name="F_Nation" type="text" class="form-control" placeholder="请输入国籍">
+                <option value="">请选择</option>
+            </select>
+        </td>
+        <th class="formTitle">宗教信仰</th>
+        <td class="formValue">
+            <select id="F_ZJXY" name="F_ZJXY" type="text" class="form-control required" placeholder="请输入宗教信仰">
+                <option value="">请选择</option>
+            </select>
+         </td>
+    </tr>
+    <tr>
+        <th class="formTitle">证件类型</th>
+        <td class="formValue">
+            <select id="F_CredType" name="F_CredType" type="text" class="form-control required" placeholder="请输入证件类型">
+                <option value="">请选择</option>
+            </select>
+        </td>
+        <th class="formTitle">证件号码</th>
+        <td class="formValue">
+            <input id="F_CredNum" name="F_CredNum" type="text" class="form-control required" placeholder="请输入证件号码" />
+        </td>
+    </tr>
+    <tr>
+        <th class="formTitle">证件正面照片</th>
+        <td class="formValue">
+            <div id="F_CredPhoto_Obve" class="fileUpload">
+            </div>
+        <th class="formTitle">证件反面照片</th>
+        <td class="formValue">
+            <div id="F_CredPhoto_Rever" class="fileUpload">
+            </div>
+        </td>
+    </tr>
+    @*<tr>
+        <th class="formTitle">籍贯</th>
+        <td class="formValue">
+            <input id="F_Native" name="F_Native" type="text" class="form-control required" placeholder="请输入籍贯" />
+        </td>
+        <th class="formTitle">祖籍国</th>
+        <td class="formValue">
+            <select id="F_Native_Old" name="F_Native_Old" type="text" class="form-control required" placeholder="请输入祖籍国">
+                <option value="">请选择</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <th class="formTitle">中文程度</th>
+        <td class="formValue">
+            <select id="F_Cn_Level" name="F_Cn_Level" type="text" class="form-control required" placeholder="请输入中文程度">
+                <option value="">请选择</option>
+            </select>
+        </td>
+        <th class="formTitle">HSK-TEST</th>
+        <td class="formValue">
+            <select id="F_HSK_TEST" name="F_HSK_TEST" type="text" class="form-control required" placeholder="请输入HSK-TEST">
+                <option value="">请选择</option>
+            </select>
+        </td>
+    </tr>*@
+    @*<tr>
+        <th class="formTitle">申请学习时间</th>
+        <td class="formValue">
+            <input id="F_Stu_Time" name="F_Stu_Time" type="text" class="form-control input-wdatepicker required" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss' })" />
+        </td>
+        
+    </tr>*@
+    <tr>
+        @*<th class="formTitle">政治面貌</th>
+        <td class="formValue">
+            <select id="F_PolitStatu" name="F_PolitStatu" type="text" class="form-control required" placeholder="请输入政治面貌">
+                <option value="">请选择</option>
+            </select>
+        </td>*@
+        <th class="formTitle">民族</th>
+        <td class="formValue">
+            <select id="F_Volk" name="F_Volk" type="text" class="form-control required" placeholder="请输入民族">
+                <option value="">请选择</option>
+            </select>
+        </td>
+        <th class="formTitle">家庭住址</th>
+        <td class="formValue">
+            <input id="F_Home_Addr" name="F_Home_Addr" type="text" class="form-control required" placeholder="请输入家庭住址" />
+        </td>
+    </tr>
+</table>

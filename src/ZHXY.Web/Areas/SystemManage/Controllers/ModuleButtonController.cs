@@ -66,7 +66,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         {
             App.SubmitForm(moduleButtonEntity, keyValue);
             CacheFactory.Cache().RemoveCache();
-            CacheFactory.Cache().WriteCache(SysCacheAppService.GetMenuButtonList(), SmartCampusConsts.AUTHORIZEBUTTON);
+            CacheFactory.Cache().WriteCache(SysCacheAppService.GetMenuButtonList(), SYS_CONSTS.AUTHORIZEBUTTON);
             return Message("操作成功。");
         }
 

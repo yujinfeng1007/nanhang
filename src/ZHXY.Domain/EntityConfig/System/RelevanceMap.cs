@@ -7,7 +7,7 @@ namespace ZHXY.Domain
         public RelevanceMap()
         {
             ToTable("sys_relevance");
-            HasKey(p => new { p.Name ,p.FirstKey,p.SecondKey,p.ThirdKey});
+            HasKey(p => new { p.Name ,p.FirstKey,p.SecondKey});
 
             Property(p => p.Name).HasColumnName("name");
             Property(p => p.FirstKey).HasColumnName("first_key");

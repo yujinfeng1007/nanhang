@@ -122,9 +122,7 @@
 
     function showChildGrid(parentRow, parentRowKey) {
         let childGrid = parentRow + "_table";
-        let childGridPagger = parentRow + "_pagger";
         $('#' + parentRow).append('<table class="table-striped" id=' + childGrid + '></table>');
-        $('#' + parentRow).append('<div id=' + childGridPagger + '></div>');
         $("#" + childGrid).jqGrid({
             url: `BoundBuildings?id=${parentRowKey}`,
             mtype: "GET",
@@ -139,13 +137,11 @@
             rowNum: -1,
             sortname: 'createTime',
             sortorder: 'desc',
-            pagger: $("#" + childGridPagger),
-            toppager:true,
             jsonReader: {
                 root: function (r) { return r.data },
             },
             colModel: [
-                { label: "Id", name: "id", width: 150, align: 'left', key: true, hidden: true },
+                { name: "id", width: 150, align: 'left', key: true, hidden: true },
                 { label: '名称', name: 'title' },
                 { label: '所属区域', name: 'area' },
                 { label: "楼栋号", name: "buildingNo" },
@@ -165,46 +161,23 @@
                         if (!cellvalue) return "";
                         return top.clients.dataItems["BuildingStatus"] == null ? "" : top.clients.dataItems.BuildingStatus[cellvalue];
                     }
+                },
+                 {
+                    label: '楼栋状态',  width: 80, align: 'left',
+                     formatter: function (cell, options, rowObj) {
+                         let rowId = rowObj["id"];
+                         return `<button onclick=unbound('${parentRowKey}','${rowId}','${childGrid}')>解绑</button>`;
+                    }
                 }
             ],
 
         });
-
-        $("#" + childGrid).jqGrid('navGrid', `#${childGridPagger}`,
-            {
-                'add': false,
-                'del': false,
-                'edit': false,
-                'search': false,
-                'refresh': false,
-                'cloneToTop': true,
-            }, {}, {}, {})
-        jqNav.navButtonAdd(pager_selector, {
-            caption: "借阅",
-            title: "jiejue",
-            buttonicon: "ace-icon fa fa-globe blue",
-            onClickButton: function () {
-                var s;
-                //多选获取
-                s = jQuery(grid_selector).jqGrid('getGridParam', 'selarrrow');
-                alert(s);
-            },
-            position: "last"
-        })
-        jqNav.navButtonAdd(pager_selector, {
-            caption: "Del",
-            buttonicon: "ace-icon fa fa-pencil blue",
-            onClickButton: function () {
-                alert("Deleting Row");
-            },
-            position: "last"
-        });
     }
 
 
-    function unbound(gateId, buildings) {
-        $.post(UNBOUND_URL, { id: gateId, buildings: buildings }, function (r) {
-            $("#gridList").jqGrid().trigger('reloadGrid');
+    function unbound(gateId, buildingId,gridId) {
+        $.post(UNBOUND_URL, { id: gateId, buildingId: buildingId }, function (r) {
+            $(`#${gridId}`).jqGrid().trigger('reloadGrid');
         })
     }
 </script>

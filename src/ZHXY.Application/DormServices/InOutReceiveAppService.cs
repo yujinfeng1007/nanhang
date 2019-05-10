@@ -9,7 +9,7 @@ namespace ZHXY.Application
 {
     public class InOutReceiveAppService : AppService
     {
-        public InOutReceiveAppService(IZhxyRepository r) => R = r;
+        public InOutReceiveAppService(IZhxyRepository r) : base(r) { }
         public List<InOutReceive> GetList(Pagination pagination)
         {
             var list = Read<InOutReceive>().Paging(pagination).ToList();

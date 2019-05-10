@@ -1,0 +1,208 @@
+﻿
+@{
+    
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+    $(function () {
+        $('#layout').layout({
+            west__resizable: false
+        }).sizePane("west", 300);
+        gridList();
+        gridTree();
+        $("#pattern").select2({
+            minimumResultsForSearch: -1,
+            data: [
+                {
+                    id: 0,
+                    text: '本周',
+                    selected: true
+                },
+                {
+                    id: 1,
+                    text: '本月'
+                },
+                {
+                    id: -1,
+                    text: '其他时间'
+                },],
+        });
+
+        $("#pattern").on("change", function (e) {
+            let value = e.target.value;
+            console.log(value);
+            if (value < 0) {
+                $("#start").attr("disabled", false);
+                $("#end").attr("disabled", false);
+            } else {
+                $("#start").attr("disabled", true);
+                $("#end").attr("disabled", true);
+            }
+        })
+
+        $("#btn_search").click(() => {
+            let rowId = $("#treeGrid").jqGrid("getGridParam", "selrow");
+            reloadGrid(rowId)
+        });
+    })
+    function gridList() {
+        $("#gridList").dataGrid({
+            url: `BuildingAccessStatistics`,
+            autoGridHeight: () => window.innerHeight * 0.88,
+            pager: "#gridPager",
+            colModel: [
+                { name: "userId", hidden: true },
+                { name: "buildingId", hidden: true  },
+                { label: '姓名', name: 'name' },
+                { label: '部门', name: 'department', sortable: false, },
+                { label: '楼栋', name: 'buildingTitle', sortable: false, },
+                { label: '巡检次数', name: 'visitsCount' ,width: 40},
+                {
+                    label: '上次巡检时间', name: 'lastInspectionTime', width: 100, align: 'left',
+                    formatter: "date", formatoptions: { srcformat: 'Y-m-d H:i', newformat: 'Y-m-d H:i' }
+                }
+            ],
+            autoGridWidth: true,
+            sortname: 'lastInspectionTime',
+            sortorder: 'desc',
+            multiselect: false,
+            loadonce: false,
+            viewrecords: true,
+            subGrid: true,
+            subGridRowExpanded: showChildGrid
+        });
+    }
+
+    function showChildGrid(parentRow, parentRowKey) {
+        let selectedRow = $("#gridList").jqGrid("getRowData", parentRowKey);
+        let childGrid = parentRow + "_table";
+        $('#' + parentRow).append('<table class="table-striped" id=' + childGrid + '></table>');
+        $("#" + childGrid).jqGrid({
+            url: `BuildingAccessDetail?pattern=${$("#pattern").val()}&start=${$("#start").val()}&end=${$("#end").val()}&userId=${selectedRow.userId}&buildingId=${selectedRow.buildingId}`,
+            mtype: "GET",
+            datatype: "json",
+            jsonReader: {
+                root: function (r) { return r.data },
+            },
+            colModel: [
+                { label: '姓名', name: 'name', sortable: false },
+                { label: '所属院系', name: 'department', sortable: false},
+                { label: '楼栋号', name: 'buildingTitle', sortable: false },
+                {
+                    label: '进出方向', name: 'direction', sortable: false,width:60,
+                    formatter: function (cellvalue) {
+                        return cellvalue ? "出" : "进";
+                    }
+                },
+                { label: '时间', name: 'time', sortable: false },
+            ],
+            autoGridWidth: true,
+            width: window.innerWidth * 0.76,
+            height: window.innerHeight * 0.3,
+            footerrow: true,
+            userDataOnFooter: true,
+            rownumbers: true,
+            styleUI: 'Bootstrap',
+            rowNum: -1,
+            sortname: 'createTime',
+            sortorder: 'desc',
+        });
+
+    }
+    // 重载数据表格
+
+    function reloadGrid(rowId) {
+        $("#gridList").jqGrid('setGridParam', {
+            postData: {
+                pattern: $("#pattern").val(),
+                start: $("#start").val(),
+                end: $("#end").val(),
+                keyword: $("#keyword").val(),
+                orgId: rowId
+            },
+        }).trigger('reloadGrid');
+    }
+
+    function gridTree() {
+        $("#treeGrid").jqGrid({
+            styleUI: 'Bootstrap',
+            treeGrid: true,
+            url: "/SystemManage/Organize/GetTeacherOrg",
+            treeGridModel: "adjacency",
+            datatype: "json",
+            gridview: true,
+            altRows: true,
+            viewrecords: true,
+            autoGridWidth: true,
+            rowNum: 15,
+            shrinkToFit: true,
+            autoGridHeight: true,
+            jsonReader: {
+                root: function (r) { return r.data; }
+            },
+            height: window.innerHeight * 0.9,
+            width: top.window.innerWidth * 0.2,
+            ExpandColumn: 'name',
+            ExpandColClick: false,
+            onSelectRow: reloadGrid,
+            colModel: [
+                { label: '机构名称', name: 'name', width: 100, align: 'left', sortable: false },
+                { label: '主键', name: "id", width: 150, align: 'left', key: true, hidden: true },
+                { label: 'level', name: "level", hidden: true },
+            ],
+            multiselect: false,
+            rowNum: "all",
+        });
+    }
+</script>
+<div class="ui-layout" id="layout" style="height: 100%; width: 100%;">
+    <div class="ui-layout-west" style="height: 100%; width: 100%;">
+        <table id="treeGrid"></table>
+    </div>
+    <div class="ui-layout-center" style="height: 100%; width: 100%;">
+
+        <div class="topPanel">
+            <div class="search">
+                <table>
+                    <tr>
+                        <td>
+                            <div class="input-group" style="padding-right:4px;">
+                                <select id="pattern" class="form-control" style="width: 120px;"> </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-group" style="padding-right:4px;">
+                                <input id="start" type="text" class="form-control input-wdatepicker" disabled placeholder="开始时间" style="width: 200px;" onfocus="WdatePicker()">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-group" style="padding-right:4px;">
+                                <input id="end" type="text" class="form-control input-wdatepicker" disabled placeholder="截至时间" style="width: 200px;" onfocus="WdatePicker()">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-group" style="padding-right:4px;">
+                                <input id="keyword" type="text" class="form-control" placeholder="搜索关键字" style="width: 200px;">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-group" style="padding-right:4px;">
+                                <button id="btn_search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="input-group" style="padding-right:4px;">
+                                <button class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="gridPanel">
+            <table id="gridList"></table>
+            <div id="gridPager"></div>
+        </div>
+    </div>
+</div>
