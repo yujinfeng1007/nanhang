@@ -27,5 +27,7 @@
         /// </summary>
         public static string REL_GATE_BUILDING { get; } = "GATE_BUILDING";
 
+        public static string REL_BUILDING_USERS { get; } = "BUILDING_USER";
+
     }
 }

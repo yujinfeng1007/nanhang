@@ -55,7 +55,66 @@ namespace ZHXY.Application
             query = query.Skip(pagination.Skip).Take(pagination.Rows);
             return query.ToListAsync().Result.MapToList<DormBuildingView>();
         }
+       
 
-        
+        /// <summary>
+        /// 绑定楼栋的宿管
+        /// </summary>
+        public void BindUsers(string id, string[] users) {
+            foreach (var user in users) {
+                var rel = new Relevance
+                {
+                    Name = SYS_CONSTS.REL_BUILDING_USERS,
+                    FirstKey = id,
+                    SecondKey = user
+                };
+                Add(rel);
+            }
+            SaveChanges();
+        }
+
+      
+        /// <summary>
+        /// 解除楼栋所绑定的宿管
+        /// </summary>
+        public void UnBindUser(string id, string userId)
+        {
+            var user = Query<Relevance>(p => p.Name.Equals(SYS_CONSTS.REL_BUILDING_USERS) && p.FirstKey.Equals(id) && p.SecondKey.Equals(userId)).FirstOrDefault();
+            DelAndSave(user);
+        }
+
+
+        /// <summary>
+        /// 获取楼栋所绑定的宿管
+        /// </summary>
+        /// <param name="id"></param>
+        public List<User> GetSubBindUsers(string id)
+        {
+            var usersIds = Read<Relevance>(p => p.Name.Equals(SYS_CONSTS.REL_BUILDING_USERS) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
+            var list = Read<User>(p => usersIds.Contains(p.F_Id)).ToList();
+            return list;
+        }
+
+        /// <summary>
+        /// 获取楼栋未绑定的宿管 宿管机构ID:27e1854fd963d24b8c5d88506a775c2a
+        /// </summary>
+        /// <param name="id"></param>
+        public List<User> GetNotBindUsers(string id)
+        {
+            var usersIds = Read<Relevance>(p => p.Name.Equals(SYS_CONSTS.REL_BUILDING_USERS) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
+            var list = Read<User>(p => !usersIds.Contains(p.F_Id) && p.F_OrganizeId == "27e1854fd963d24b8c5d88506a775c2a").ToList();
+            return list;
+        }
+        //public List<DormBuildingUserView> GetNotBindUsers(Pagination pagination, string keyword)
+        //{
+        //    var query = Read<User>();
+        //    query = string.IsNullOrEmpty(keyword) ? query : query.Where(p => p.F_RealName.Contains(keyword));
+        //    pagination.Records = query.CountAsync().Result;
+        //    pagination.CheckSort<User>();
+        //    query = string.Equals("false", pagination.Sidx, StringComparison.CurrentCultureIgnoreCase) ? query.OrderBy(p => p.F_Id) : query.OrderBy(pagination.Sidx);
+        //    query = query.Skip(pagination.Skip).Take(pagination.Rows);
+        //    return query.ToListAsync().Result.MapToList<DormBuildingUserView>();
+        //}
+
     }
 }

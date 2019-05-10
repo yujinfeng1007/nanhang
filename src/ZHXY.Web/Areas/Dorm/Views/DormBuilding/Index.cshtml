@@ -3,6 +3,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <script>
+
+    const UNBOUND_URL = `/Dorm/DormBuilding/UnBindUser`;
+
     function getGrid() { return $("#gridList"); }
     $(function () {
         initGrid();
@@ -56,8 +59,67 @@
                 }               
             ],
             viewrecords: true,
-            pager: "#gridPager",
+            pager: "#gridPager",   
+            sortname: 'buildingNo',
+            sortorder: 'asc',
+            subGrid: true,
+            subGridRowExpanded: showChildGrid
         });
+        $("#btn_search").click(function () {
+            $gridList.jqGrid('setGridParam', {
+                postData: { keyword: $("#txt_keyword").val() },
+            }).trigger('reloadGrid');
+        });
+    }
+
+    function showChildGrid(parentRow, parentRowKey) {
+        let childGrid = parentRow + "_table";        
+        $('#' + parentRow).append('<table class="table-striped" id=' + childGrid + '></table>');       
+        $("#" + childGrid).jqGrid({
+            url: `SubBindUsers?id=${parentRowKey}`,
+            mtype: "GET",
+            datatype: "json",
+            autoGridWidth: true,
+            autoGridHeight: true,
+            //autoGridHeight: () => $(window).height(),   
+            
+            footerrow: false,
+            userDataOnFooter: false,
+            rownumbers: true,
+            styleUI: 'Bootstrap',
+            rowNum: -1,
+            sortname: 'createTime',
+            sortorder: 'desc',            
+            toppager: false,
+            jsonReader: {
+                root: function (r) { return r.data },
+            },
+            colModel: [
+                { label: "Id", name: "f_Id", width: 150, align: 'left', key: true, hidden: true },
+                { label: '账户', name: 'f_Account', width: 200, align: 'left' },
+                { label: '姓名', name: 'f_RealName', width: 150, align: 'left' },
+                { label: "性别", name: "f_Gender", width: 150, align: 'left' },
+                { label: "手机号", name: "f_MobilePhone", width: 150, align: 'left' },                
+                { label: "角色", name: "f_RoleId", width: 150, align: 'left' },
+                {
+                    label: "操作", name: "f_RoleId", width: 150, align: 'left',
+                    formatter: function (cell, options, rowObj) {
+                        let rowId = rowObj["f_Id"];
+                        return `<button onclick=unbind('${parentRowKey}','${rowId}','${childGrid}')>解绑</button>`;
+                    }
+                }
+            ]
+
+        });
+
+      
+    }   
+
+    //解绑宿管
+    function unbind(buildingId, userId, gridId) {
+        $.post(UNBOUND_URL, { id: buildingId, userId: userId }, function (r) {
+            $(`#${gridId}`).jqGrid().trigger('reloadGrid');
+        })
     }
 
     // 添加
@@ -128,11 +190,29 @@
             width: "1000px",
             height: "510px",
             btn: null
+        });        
+    }
+
+    // 绑定宿管
+    function btn_bindUsers() {
+        let rowid = getGrid().getGridParam("selrow");
+        $.modalOpen({
+            id: "form",
+            title: "查看",
+            url: `/Dorm/DormBuilding/BindUsers?id=${rowid}`,
+           // url: `/Dorm/DormBuilding/test.cshtml`,
+            width: "1000px",
+            height: "510px",           
+            callBack: function (iframeId) {
+                top.frames[iframeId].bindUsers();
+                $("#gridList").jqGrid().trigger('reloadGrid');
+            }
+           
         });
     }
 </script>
 <div class="topPanel">
-    <div class="search">
+    <div class="search">    
         <table>
             <tr>
                 <td>
@@ -155,6 +235,7 @@
                                 <li><a id="NF-edit" authorize="yes" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>修改</a></li>
                                 <li><a class="multi-edit" id="NF-delete" authorize="yes" onclick="btn_delete()"><i class="fa fa-trash-o"></i>删除</a></li>
                                 <li><a id="NF-Details" authorize="yes" onclick="btn_details()"><i class="fa fa-search-plus"></i>查看</a></li>
+                                <li><a id="NF-edit" authorize="yes" onclick="btn_bindUsers()"><i class="fa fa-pencil-square-o"></i>绑定宿管</a></li>
                             </ul>
                             <a href="javascript:;" class="close"></a>
                         </div>

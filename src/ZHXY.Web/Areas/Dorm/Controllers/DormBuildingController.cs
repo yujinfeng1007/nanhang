@@ -14,6 +14,8 @@ namespace ZHXY.Web.Dorm.Controllers
 
         public DormBuildingController(DormBuildingService app) => App = app;
 
+        public async Task<ViewResult> BindUsers() => await Task.Run(() => View());
+
         #region HttpPost
 
         [HttpPost]
@@ -51,7 +53,49 @@ namespace ZHXY.Web.Dorm.Controllers
             return await Task.Run(() => Resultaat.PagingRst(App.GetList(pagination, keyword), pagination.Records, pagination.Total));
         }
 
+        //获取未绑定的宿管
+        [HttpGet]
+        public ActionResult GetNotBindUsers(string id)
+        {
+            var data = App.GetNotBindUsers(id);
+            return Resultaat.Success(data);
+        }
 
-               #endregion HttpGet
+        //public async Task<ActionResult> GetNotBindUsers(Pagination pagination, string keyword)
+        //{
+        //    return await Task.Run(() => Resultaat.PagingRst(App.GetNotBindUsers(pagination, keyword), pagination.Records, pagination.Total));
+        //}
+
+        [HttpPost]
+        public ActionResult BindUsers(string id, string[] users)
+        {
+            App.BindUsers(id, users);
+            return Resultaat.Success();
+        }
+
+        [HttpPost]
+        public ActionResult UnBindUser(string id, string userId)
+        {
+            App.UnBindUser(id, userId);
+            return Resultaat.Success();
+        }
+
+        //[HttpGet]
+        //public ActionResult FreeBuildings(string id)
+        //{
+        //    var data = App.GetNotBoundBuildings(id);
+        //    return Resultaat.Success(data);
+        //}
+
+        [HttpGet]
+        public ActionResult SubBindUsers(string id)
+        {
+            var data = App.GetSubBindUsers(id);
+            return Resultaat.Success(data);
+        }
+       
+
+
+        #endregion HttpGet
     }
 }
