@@ -61,11 +61,7 @@ namespace ZHXY.Web.Dorm.Controllers
             return Resultaat.Success(data);
         }
 
-        //public async Task<ActionResult> GetNotBindUsers(Pagination pagination, string keyword)
-        //{
-        //    return await Task.Run(() => Resultaat.PagingRst(App.GetNotBindUsers(pagination, keyword), pagination.Records, pagination.Total));
-        //}
-
+        
         [HttpPost]
         public ActionResult BindUsers(string id, string[] users)
         {
@@ -79,13 +75,7 @@ namespace ZHXY.Web.Dorm.Controllers
             App.UnBindUser(id, userId);
             return Resultaat.Success();
         }
-
-        //[HttpGet]
-        //public ActionResult FreeBuildings(string id)
-        //{
-        //    var data = App.GetNotBoundBuildings(id);
-        //    return Resultaat.Success(data);
-        //}
+        
 
         [HttpGet]
         public ActionResult SubBindUsers(string id)
