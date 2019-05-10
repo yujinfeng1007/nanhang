@@ -95,7 +95,7 @@ namespace ZHXY.Application
                 query = query.Where(t => t.F_CreatorTime <= CreatorTime_Stop);
             }
             pag.Records = query.CountAsync().Result;
-            pag.CheckSort<User>();
+            pag.GetOrdering<User>();
             return query.OrderBy(pag.Sidx).Skip(pag.Skip).Take(pag.Rows).ToListAsync().Result;
 
         }

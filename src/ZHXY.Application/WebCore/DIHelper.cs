@@ -9,7 +9,7 @@ namespace ZHXY.Application
 {
     public class DIHelper
     {
-        public static void SetDependencyResolver()
+        public static void SetMvcDependencyResolver()
         {
             var builder = new ContainerBuilder();
 

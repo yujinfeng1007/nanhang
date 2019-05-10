@@ -45,7 +45,7 @@ namespace ZHXY.Application
             var query = Read<Building>();
             query = string.IsNullOrEmpty(keyword) ? query : query.Where(p => p.Title.Contains(keyword));
             pagination.Records = query.CountAsync().Result;
-            pagination.CheckSort<Building>();
+            pagination.GetOrdering<Building>();
             query = string.Equals("false", pagination.Sidx, StringComparison.CurrentCultureIgnoreCase) ? query.OrderBy(p => p.BuildingNo) : query.OrderBy(pagination.Sidx);
             query = query.Skip(pagination.Skip).Take(pagination.Rows);
             return query.ToListAsync().Result.MapToList<DormBuildingView>();
