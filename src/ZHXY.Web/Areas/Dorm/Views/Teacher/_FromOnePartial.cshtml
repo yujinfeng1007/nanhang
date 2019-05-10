@@ -1,0 +1,146 @@
+﻿<table class="form">
+    @*@if (string.IsNullOrEmpty(Request["keyValue"]))
+        {*@
+    <tr>
+        <th class="formTitle">教师类别</th>
+        <td class="formValue">
+            <select required id="F_Type_Teacher" name="F_Type_Teacher" class="form-control required"></select>
+        </td>
+        <th class="formTitle">曾用名</th>
+        <td class="formValue">
+            <input id="F_Name_Old" name="F_Name_Old" type="text" class="form-control required" placeholder="请输入" />
+        </td>
+    </tr>
+    @*}*@
+    <tr>
+        <th class="formTitle">教师姓名</th>
+        <td class="formValue">
+            <input id="F_Name" name="F_Name" type="text" class="form-control required" placeholder="请输入姓名" />
+            <input id="F_User_ID" name="F_User_ID" type="hidden" class="form-control" placeholder="请输入姓名" />
+        </td>
+        <th class="formTitle">进校时间</th>
+        <td class="formValue">
+            <input id="F_EntryTime" name="F_EntryTime" type="text" class="form-control required" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', maxDate: '%y-%M-%d' })" />
+        </td>
+    </tr>
+    @if (!string.IsNullOrEmpty(Request["keyValue"]))
+    {
+        <tr>
+            <th class="formTitle">教师工号</th>
+            <td class="formValue">
+                <input id="F_Num" name="F_Num" type="text" class="form-control required" placeholder="请输入工号" disabled="disabled" />
+            </td>
+        </tr>
+    }
+    <tr>
+        <th class="formTitle">隶属学部</th>
+        <td class="formValue">
+            @*<input id="F_Divis_ID" name="F_Divis_ID" type="text" class="form-control required" placeholder="请输入F_Divis_ID" />*@
+            <select required id="F_Divis_ID" name="F_Divis_ID" class="form-control required"></select>
+        </td>
+        <th class="formTitle">性别</th>
+        <td class="formValue">
+            <select required id="F_Gender" name="F_Gender" class="form-control"></select>
+        </td>
+    </tr>
+    <tr>
+        <th class="formTitle">出生日期</th>
+        <td class="formValue">
+            <input id="F_Birthday" name="F_Birthday" type="text" class="form-control input-wdatepicker required" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', maxDate: '%y-%M-%d' })" />
+        </td>
+        <th class="formTitle">出生地</th>
+        <td class="formValue">
+            <input id="F_RegAddr" name="F_RegAddr" type="text" class="form-control" placeholder="请输入" />
+        </td>
+    </tr>
+    <tr>
+        <th class="formTitle">民族</th>
+        <td class="formValue">
+            <select required id="F_Volk" name="F_Volk" class="form-control"></select>
+        </td>
+        <th class="formTitle">政治面貌</th>
+        <td class="formValue">
+            <select required id="F_PolitStatu" name="F_PolitStatu" class="form-control"></select>
+        </td>
+    </tr>
+    <tr>
+        <th class="formTitle">手机</th>
+        <td class="formValue">
+            <input required data-rule-isTel="true" id="F_MobilePhone" name="F_MobilePhone" type="text" class="form-control" />
+        </td>
+        <th class="formTitle">科别</th>
+        <td class="formValue">
+            <input id="F_Profession" name="F_Profession" type="text" class="form-control" placeholder="请输入" />
+        </td>
+        @*<th class="formTitle">进校时间</th>
+            <td class="formValue">
+                <input id="F_EntryTime" name="F_EntryTime" type="text" class="form-control input-wdatepicker" onfocus="WdatePicker()" />
+            </td>*@
+    </tr>
+    <tr>
+        <th class="formTitle">毕业院校</th>
+        <td class="formValue">
+            <input id="F_Academy" name="F_Academy" type="text" class="form-control" placeholder="请输入毕业院校" />
+        </td>
+        <th class="formTitle">最高学历</th>
+        <td class="formValue">
+            @*<input id="F_Education" name="F_Education" type="text" class="form-control required" placeholder="请输入最高学历" />*@
+            <select id="F_Education" name="F_Education" class="form-control"></select>
+        </td>
+    </tr>
+    <tr>
+        <th class="formTitle">籍贯</th>
+        <td class="formValue">
+            <input id="F_Native" name="F_Native" type="text" class="form-control" placeholder="请输入籍贯" />
+        </td>
+        <th class="formTitle">职务</th>
+        <td class="formValue">
+            <input id="F_Duties" name="F_Duties" type="text" class="form-control" placeholder="请输入职务" />
+        </td>
+    </tr>
+    <tr>
+        <th class="formTitle">职称</th>
+        <td class="formValue">
+            <select id="F_Titles" name="F_Titles" class="form-control"></select>
+            @*<input id="F_Titles" name="F_Titles" type="text" class="form-control required" placeholder="请输入职称" />*@
+        </td>
+        <th class="formTitle">国籍/地区</th>
+        <td class="formValue">
+            <select id="F_Nation" name="F_Nation" class="form-control"></select>
+        </td>
+    </tr>
+    <tr>
+        <th class="formTitle">证件类型</th>
+        <td class="formValue">
+            @*<input id="F_CredType" name="F_CredType" type="text" class="form-control required" placeholder="请输入证件类型" />*@
+            <select id="F_CredType" name="F_CredType" class="form-control required"></select>
+        </td>
+        <th class="formTitle">证件号码</th>
+        <td class="formValue">
+            <input id="F_CredNum" data-rule-IdCodeDut="true" name="F_CredNum" type="text" class="form-control required" placeholder="请输入证件号码" />
+        </td>
+    </tr>
+    <tr>
+        <th class="formTitle">电子照片</th>
+        <td class="formValue">
+            <div id="F_FacePhoto" class="required fileUpload">
+                        </div>
+        </td>
+        @*<th class="formTitle">工资计算模板</th>
+            <td class="formValue">
+                <input id="F_SalaryModule_ID" name="F_SalaryModule_ID" type="text" class="form-control required" placeholder="请输入F_SalaryModule_ID" />
+            </td>*@
+    </tr>
+    <tr>
+        <th class="formTitle">证件正面照片</th>
+        <td class="formValue">
+            <div id="F_CredPhoto_Obve" class="required fileUpload">
+                        </div>
+        </td>
+        <th class="formTitle">证件反面照片</th>
+        <td class="formValue">
+            <div id="F_CredPhoto_Rever" class="required fileUpload">
+                        </div>
+        </td>
+    </tr>
+</table>

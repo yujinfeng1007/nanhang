@@ -1,0 +1,517 @@
+﻿@{
+    
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<link rel="stylesheet" type="text/css" href="~/Content/css/framework-custom-webuploader.css" />
+<link href="/Content/js/simditor/css/simditor.css" rel="stylesheet" />
+<script type="text/javascript" src="~/Content/js/webuploader/webuploader.js"></script>
+<script src="~/Content/js/Fileupload.js"></script>
+<script src="~/Content/js/simditor/js/module.min.js"></script>
+<script src="~/Content/js/simditor/js/hotkeys.min.js"></script>
+<script src="~/Content/js/simditor/js/uploader.min.js"></script>
+<script src="~/Content/js/simditor/js/simditor.min.js"></script>
+<style>
+    .webuploader-container {
+        position: relative;
+    }
+
+    .webuploader-element-invisible {
+        position: absolute !important;
+        clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+        clip: rect(1px,1px,1px,1px);
+    }
+
+    .fileUpload .preview-list {
+        display: inline-block;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        margin-left: 5px;
+    }
+
+        .fileUpload .preview-list .fa-file {
+            margin-right: 3px;
+        }
+
+        .fileUpload .preview-list .fa-close {
+            font-size: 14px;
+        }
+
+         .form .formTitle {
+    position: relative;
+    left: 0px;
+    text-align: right;
+    white-space: nowrap;
+    font-weight: normal;
+    width: 115px;
+    padding-right: 15px;
+}
+</style>
+<script>
+    var keyValue = $.request("keyValue");
+    var dictionaryBinding = {
+      //F_Divis_ID: {
+      //  url: '/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Division'
+      //},
+      //F_Grade_ID: {
+      //    url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Grade",
+      //},
+      //F_Class_ID: {
+      //        url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Class",
+      //},
+      F_Year: {
+        dictionary: 'F_Year'
+    },
+      F_Gender: {
+        dictionary: '104'
+      },
+      F_ICType: {
+          dictionary: 'F_ICType'
+      },
+      F_Dzn: {
+          dictionary: 'YesOrNo'
+      },
+      F_Teacherzn: {
+          dictionary: 'YesOrNo'
+      },
+      F_Only_One: {
+        dictionary: 'YesOrNo'
+      },
+      F_Guarder_Wh: {
+        dictionary: 'Education'
+      },
+      F_Sqzn: {
+        dictionary: 'YesOrNo'
+      },
+      F_Gender: {
+        dictionary: '104'
+      },
+      //F_INYear: {
+      //  dictionary: 'In_Year'
+      //},
+
+      F_InClass: {
+        dictionary: 'F_InClass'
+      },
+      F_PolitStatu: {
+        dictionary: 'F_PolitStatu'
+      },
+      F_ComeBackType: {
+        dictionary: 'F_ComeBackType'
+      },
+      F_ComeFrom_Type: {
+        dictionary: 'F_ComeFrom_Type'
+      },
+      F_Volk: {
+        dictionary: '103'
+      },
+      F_CredType: {
+        dictionary: 'Certificate'
+      },
+      F_Native_Old: {
+        dictionary: 'F_Nation'
+      },
+      F_Cn_Level: {
+        dictionary: 'F_Cn_Level'
+      },
+      F_SchoolType: {
+        dictionary: 'F_SchoolType'
+      },
+      F_Relative1_Guarder: {
+        dictionary: 'Education'
+      },
+      F_Relative2_Guarder: {
+        dictionary: 'Education'
+      },
+      F_Relative3_Guarder3: {
+        dictionary: 'Education'
+      },
+      F_Reg_Status: {
+        dictionary: 'HaveOrNot'
+      },
+      F_RegRelat: {
+        dictionary: 'F_RegRelat'
+      },
+      F_Stu_Type: {
+        dictionary: 'F_Stu_Type'
+      },
+      F_Old: {
+        dictionary: 'YesOrNo'
+      },
+      F_Guarder_CredType: {
+        dictionary: 'Certificate'
+      },
+      F_Nation: {
+          dictionary: 'F_Nation'
+      },
+      F_Guarder_Nation: {
+        dictionary: 'F_Nation'
+      },
+      //F_MedicalHis: {
+      //  dictionary: 'F_MedicalHis'
+      //},
+      F_Relative1_Guarder_Relation: {
+        dictionary: 'Parentage'
+      },
+      F_Relative2_Guarder_Relation: {
+        dictionary: 'Parentage'
+      },
+      F_Relative3_Guarder_Relation: {
+        dictionary: 'Parentage'
+      },
+      F_HSK_TEST: {
+        dictionary: 'F_HSK_TEST'
+      },
+      F_Blood_Type: {
+        dictionary: 'F_Blood_Type'
+      },
+      F_Eat: {
+        dictionary: 'F_Eat'
+      },
+      F_Relish: {
+        dictionary: 'F_Relish'
+      },
+      F_Incontinence: {
+        dictionary: 'F_Incontinence'
+      },
+      F_Dress: {
+        dictionary: 'F_Dress'
+      },
+      F_Sleep: {
+        dictionary: 'F_Sleep'
+      },
+      F_Health: {
+        dictionary: 'F_Health'
+      },
+      F_Stripped: {
+        dictionary: 'F_Stripped'
+      },
+      F_Physique: {
+        dictionary: 'F_Physique'
+      },
+      //F_OrganizeId: {
+      //  url: "/SystemManage/Organize/GetTreeSelectJson"
+      //},
+      //F_DepartmentId: {
+      //  url: "/SystemManage/Organize/GetTreeSelectJson"
+      //},
+      //F_RoleId: {
+      //  url: "/SystemManage/Role/GetGridJson",
+      //  id: "F_Id",
+      //  text: "F_FullName"
+      //},
+      //F_DutyId: {
+      //  url: "/SystemManage/Duty/GetGridJson",
+      //  id: "F_Id",
+      //  text: "F_FullName"
+      //},
+      F_Guarder_Relation: {
+        dictionary: 'Parentage'
+      },
+      //F_Subjects: {
+      //  dictionary: 'Class_Type'
+      //},
+      F_RegUserType: {
+        dictionary: 'F_RegUserType'
+      },
+      F_CurStatu: {
+            dictionary: 'F_CurStatu'
+      },
+      F_ZJXY: {
+          dictionary: 'F_ZJXY'
+     }
+    }
+
+    function resetForm () {
+      $('.form-control').removeClass('ignore').removeAttr('disabled')
+      $('.formValue, .formTitle').removeClass('disabled')
+    }
+    //function changeStation () {
+    //  $('#F_ComeBackSite option').remove()
+    //  $('#F_ComeBackSite').bindSelect({
+    //    url: '/Dorm/School_ComeBackSite/GetSelectList?F_ComeBackRouteId='+ $('#F_ComeBackRoute_ID').val() +''
+    //  })
+    //}
+    function initControl() {
+        $('#F_MedicalHis').bindCheckBox({
+            name: 'F_MedicalHis',
+            dictionary: 'F_MedicalHis'
+        })
+        $("#F_Divis_ID").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Division",
+        });
+
+        $("#F_Divis_ID").change(function () {
+            $("#F_INYear").find("option").remove();
+            $("#F_INYear").append("<option value=''>选择年段</option>");
+            $("#F_INYear").bindSelect({
+                OrgId: $("#F_Divis_ID").val(),
+                dictionaryOrg: "F_InYear"
+            });
+            changeDivis();
+            changeSubject();
+            changeComeBack();
+        });
+        $("#F_INYear").change(function () {
+            changeSubject();
+        });
+        $("#F_Grade_ID").change(function () {
+            changeClass($("#F_Grade_ID").val());
+            //changeSubject();
+        });
+        //changeDivis();
+        $('#F_ComeFrom_Province').bindSelect({
+            url: "/SystemManage/Area/GetSelectJsonByCategoryId?F_ParentId=0",
+        })
+        $('#F_ComeFrom_Province').change(function () {
+          $('#F_ComeFrom_City option') .remove()
+          $('#F_ComeFrom_City').bindSelect({
+              url: "/SystemManage/Area/GetSelectJsonByCategoryId?F_ParentId=" + $("#F_ComeFrom_Province").val(),
+          })
+          $('#F_ComeFrom_Area option').remove()
+          $('#F_ComeFrom_Area').bindSelect({
+            url: "/SystemManage/Area/GetSelectJsonByCategoryId?F_ParentId=" + $("#F_ComeFrom_Area").val(),
+          })
+        })
+        $('#F_ComeFrom_City').change(function () {
+          $('#F_ComeFrom_Area option').remove()
+          $('#F_ComeFrom_Area').bindSelect({
+            url: "/SystemManage/Area/GetSelectJsonByCategoryId?F_ParentId=" + $("#F_ComeFrom_City").val(),
+          })
+        })
+        //$("#F_ComeBackPro").bindSelect({
+        //    url: "/SystemManage/Area/GetSelectJsonByCategoryId?F_ParentId=0",
+        //});
+
+        //$("#F_ComeBackPro").change(function () {
+
+        //    $("#F_ComeBackCity").find("option").remove();
+        //    $("#F_ComeBackCity").append("<option value=''>选择市</option>");
+        //    $("#F_ComeBackCity").bindSelect({
+        //        url: "/SystemManage/Area/GetSelectJsonByCategoryId?F_ParentId=" + $("#F_ComeBackPro").val(),
+        //    });
+
+        //    $("#F_ComeBackArea").find("option").remove();
+        //    $("#F_ComeBackArea").append("<option value=''>选择乡镇</option>");
+        //    $("#F_ComeBackArea").bindSelect({
+        //        url: "/SystemManage/Area/GetSelectJsonByCategoryId?F_ParentId=" + $("#F_ComeBackCity").val(),
+        //    });
+
+        //    changeComeBack();
+        //    //changeStation()
+        //});
+        $("#F_ComeBackCity").bindSelect({
+            url: "/Dorm/School_Area/GetSelectJsonByCategoryId?F_ParentId=0",
+        });
+        $("#F_ComeBackCity").change(function () {
+            $("#F_ComeBackArea").find("option").remove();
+            $("#F_ComeBackArea").append("<option value=''>选择乡镇</option>");
+            $("#F_ComeBackArea").bindSelect({
+                url: "/Dorm/School_Area/GetSelectJsonByCategoryId?F_ParentId=" + $("#F_ComeBackCity").val(),
+            });
+
+            //changeComeBack();
+            //changeStation()
+        });
+
+        //$("#F_ComeBackRoute_ID").change(function () {
+        //  $('#F_ComeBackSite').bindSelect({
+        //    url: '/Dorm/School_ComeBackSite/GetSelectList?F_ComeBackRouteId='+ $('#F_ComeBackRoute_ID').val() +''
+        //  })
+        //})
+
+        $("#F_ComeBackArea").change(function () {
+            changeComeBack();
+            //changeStation()
+        });
+
+        $("#F_ComeBackType").change(function () {
+            if ($("#F_ComeBackType").val() != '自行接送') {
+                $("#callBack1").show();
+                $("#callBack2").show();
+                //changeComeBack();
+                //changeStation()
+            } else {
+                $("#callBack1").hide();
+                $("#callBack2").hide();
+            }
+        });
+
+        function changeComeBack() {
+            $("#F_ComeBackRoute_ID").find("option").remove();
+            $("#F_ComeBackRoute_ID").append("<option value=''>选择路线</option>");
+            $("#F_ComeBackRoute_ID").bindSelect({
+                url: "/Dorm/School_ComeBackRouteTwo/GetFormEntity?F_Divis_ID=" + $("#F_Divis_ID").val() + "&F_Country=" + $("#F_ComeBackArea").val() + "",
+                id: "F_Id",
+                text: "F_Title"
+            });
+        }
+
+        $.addRequired('#form1')
+        $('#wizard').wizard().on('change', function (e, data) {
+            var $finish = $("#btn_finish");
+            var $next = $("#btn_next");
+            $finish.hide();
+            if (data.direction == "next") {
+              if (!$('#step-'+ data.step).find('form').formValid()) {
+              }
+              if (data.step === 1) {
+                var id = $('#F_Divis_ID').val()
+                var data = top.clients.department[id]
+                resetForm()
+                if (data.length !== 0) {
+                    disableFormDoms(data, $('#form1'))
+                }
+              }
+
+            } else {
+                $finish.hide();
+                $next.show();
+            }
+        });
+
+        if ($("#F_ComeBackType").val() != '自行接送') {
+            $("#callBack1").show();
+            $("#callBack2").show();
+        } else {
+            $("#callBack1").hide();
+            $("#callBack2").hide();
+        }
+
+        $('.step-pane').each(function () {
+            $(this).find('table.form').wrap('<form></form>')
+        })
+        $.simpleUploader($('.fileUpload'))
+        $.each(dictionaryBinding, function (i, item) {
+            $('#' + i).bindSelect(item)
+        })
+    }
+    function disableFormDoms(removeArray, $form) {
+      $.each(removeArray, function (i, item) {
+        $form.find('#' + item).attr('disabled', 'disabled').parents('.formValue').addClass('disabled').prev('.formTitle').addClass('disabled')
+      })
+    }
+
+    function changeDivis() {
+        $("#F_Grade_ID").find("option").remove();
+        $("#F_Grade_ID").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Grade&parentId=" + $("#F_Divis_ID").val(),
+        });
+        
+
+        if ($("#F_Class_ID").find("option").length > 1) {
+            
+            changeClass();
+        }
+    }
+
+    function changeClass(F_Grand_Id) {
+        $("#F_Class_ID").find("option").remove();
+        $("#F_Class_ID").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Class&parentId=" + F_Grand_Id,
+        });
+    }
+
+    function changeSubject() {
+        //alert($("#F_Subjects_ID").val())
+        $("#F_Subjects_ID").find("option").remove();
+        $("#F_Subjects_ID").append("<option value=''>选择班级类型</option>");
+        $("#F_Subjects_ID").bindSelect({
+            url: "/Dorm/School_Subjects/GetJsonByYDG?F_Year=" + $("#F_Year").val() + "&F_Divis_ID=" + $("#F_Divis_ID").val() + "&F_INYear=" + $("#F_INYear").val() + "&F_Charge_mode=" + $("#F_Charge_mode").val(),
+            id: "F_Id",
+            text: "F_Title"
+        });
+    }
+
+    $(function () {
+        initControl();
+        if (!!keyValue) {
+            $.ajax({
+                url: "/Dorm/School_Students/GetFormJson",
+                data: { keyValue: keyValue },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    $("#form1").formSerialize(data);
+                    $("#F_ComeBackPro").val(data.F_ComeBackPro).trigger("change");
+                    $("#F_ComeBackCity").val(data.F_ComeBackCity).trigger("change");
+                    $("#F_ComeBackArea").val(data.F_ComeBackArea).trigger("change");
+                    $("#F_ComeBackRoute_ID").val(data.F_ComeBackRoute_ID).trigger("change");
+                    $("#F_ComeFrom_Province").val(data.F_ComeFrom_Province).trigger("change");
+                    $("#F_ComeFrom_City").val(data.F_ComeFrom_City).trigger("change");
+                    $("#F_ComeFrom_Area").val(data.F_ComeFrom_Area).trigger("change");
+                    $('#F_ComeBackSite').val(data.F_ComeBackSite).trigger("change")
+                    $("#F_Subjects_ID").val(data.F_Subjects_ID).trigger("change")
+                    $('#F_Year,#F_Divis_ID,#F_Grade_ID,#F_Class_ID,#F_Subjects_ID,#F_ComeBackType,#F_ComeBackPro,#F_ComeBackCity,#F_ComeBackArea,#F_ComeBackSite,#F_INYear').attr('disabled', 'disabled').parents('.formValue').addClass('disabled').prev('.formTitle').addClass('disabled')//#F_ComeBackRoute_ID,
+                }
+            });
+        }
+        $('#save-info').click(function (e) {
+          e.preventDefault()
+          $.ajax({
+            type: 'POST',
+            url: '/Dorm/School_Students/SubmitForm_gb?keyValue=' + keyValue,
+            data: $('#form1').formSerialize(),
+            dataType: 'json',
+            success: function (data) {
+              $.currentWindow().$("#schoolStudentsGrid").trigger("reloadGrid");
+              $.modalAlert(data.message, data.state);
+              $.modalClose()
+            }
+          })
+        })
+    });
+
+    function submitForm() {
+        //if (!$('#form1').formValid()) {
+        //    return false;
+        //}
+        $.submitForm({
+            url: "/Dorm/School_Students/SubmitForm_gb?keyValue=" + keyValue,
+            param: $("#form1").formSerialize(),
+            success: function () {
+                $.currentWindow().$("#schoolStudentsGrid").trigger("reloadGrid");
+            }
+        })
+    }
+</script>
+
+<form id="form1">
+    <div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#a" data-toggle="tab">基本信息</a></li>
+            <li><a href="#b" data-toggle="tab">入学信息</a></li>
+            <li><a href="#c" data-toggle="tab">户口信息</a></li>
+            <li><a href="#d" data-toggle="tab">家庭信息</a></li>
+            @*<li><a href="#e" data-toggle="tab">键康状况</a></li>
+            <li><a href="#f" data-toggle="tab">生活状况</a></li>*@
+            <li><a href="#g" data-toggle="tab">其他</a></li>
+            @*<div class="save">
+               <button id="save-info" type="button" class="btn btn-primary">保存当前信息</button>
+            </div>*@
+        </ul>
+        <div class="tab-content" style="padding-top: 5px;">
+            <div id="a" class="tab-pane form active" style="padding: 15px;">
+               @Html.Partial("_FromBasePartial_gb")
+            </div>
+            <div id="b" class="tab-pane form " style="padding: 15px;">
+                @Html.Partial("_FromEnrolPartial_gb")
+            </div>
+            <div id="c" class="tab-pane form " style="padding: 15px;">
+                @Html.Partial("_FromRegPartial_gb")
+            </div>
+            <div id="d" class="tab-pane form " style="padding: 15px;">
+                @Html.Partial("_FromFamilyPartial_gb")
+            </div>
+            @*<div id="e" class="tab-pane form " style="padding: 15px;">
+                @Html.Partial("_FromHealthPartial_gb")
+            </div>
+            <div id="f" class="tab-pane form " style="padding: 15px;">
+                @Html.Partial("_FromLifePartial_gb")
+            </div>*@
+            <div id="g" class="tab-pane form " style="padding: 15px;">
+                @Html.Partial("_FromOtherPartial_gb")
+            </div>
+            </div>
+        </div>
+</form>
