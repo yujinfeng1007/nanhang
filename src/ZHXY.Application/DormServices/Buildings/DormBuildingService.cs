@@ -21,9 +21,7 @@ namespace ZHXY.Application
 
         public async Task<DormBuildingView> AddAsync(CreateDormBuildingDto input)
         {
-            Building entity = input;
-            //if (Read<Building>(p => p.Title.Equals(input.ShortName)).AnyAsync().Result) throw new Exception("已有相同的名称!");
-            //entity.SearchIndex = entity.GetSearchString(new[] { nameof(entity.ShortName), nameof(entity.Contact), nameof(entity.Address), nameof(entity.Remark) });
+            Building entity = input;            
             AddAndSave(entity);
             return entity;
         }
@@ -35,10 +33,7 @@ namespace ZHXY.Application
             if (string.IsNullOrEmpty(input.Id)) throw new ArgumentNullException(nameof(input.Id));
             var entity =  Get<Building>(input.Id);
             if (entity == null) throw new Exception($"No objects were found based on this Id : {input.Id}");
-            input.MapTo(entity);
-            //if (Read<Building>(p => p.ShortName.Equals(entity.ShortName) && p.Id != entity.Id).AnyAsync().Result) throw new Exception("已有相同的名称!");
-            //entity.SearchIndex = entity.GetSearchString(new[] { nameof(entity.ShortName), nameof(entity.Contact), nameof(entity.Address), nameof(entity.Remark) });
-            //Modify(entity);
+            input.MapTo(entity);            
              SaveChanges();
             return entity;
         }
@@ -86,8 +81,7 @@ namespace ZHXY.Application
 
         /// <summary>
         /// 获取楼栋所绑定的宿管
-        /// </summary>
-        /// <param name="id"></param>
+        /// </summary>        
         public List<User> GetSubBindUsers(string id)
         {
             var usersIds = Read<Relevance>(p => p.Name.Equals(SYS_CONSTS.REL_BUILDING_USERS) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
@@ -96,25 +90,15 @@ namespace ZHXY.Application
         }
 
         /// <summary>
-        /// 获取楼栋未绑定的宿管 宿管机构ID:27e1854fd963d24b8c5d88506a775c2a
-        /// </summary>
-        /// <param name="id"></param>
+        /// 获取楼栋未绑定的宿管 宿管机构ID:27e1854fd963d24b8c5d88506a775c2a  或者根据角色宿管进行过滤
+        /// </summary>        
         public List<User> GetNotBindUsers(string id)
         {
             var usersIds = Read<Relevance>(p => p.Name.Equals(SYS_CONSTS.REL_BUILDING_USERS) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
             var list = Read<User>(p => !usersIds.Contains(p.F_Id) && p.F_OrganizeId == "27e1854fd963d24b8c5d88506a775c2a").ToList();
             return list;
         }
-        //public List<DormBuildingUserView> GetNotBindUsers(Pagination pagination, string keyword)
-        //{
-        //    var query = Read<User>();
-        //    query = string.IsNullOrEmpty(keyword) ? query : query.Where(p => p.F_RealName.Contains(keyword));
-        //    pagination.Records = query.CountAsync().Result;
-        //    pagination.CheckSort<User>();
-        //    query = string.Equals("false", pagination.Sidx, StringComparison.CurrentCultureIgnoreCase) ? query.OrderBy(p => p.F_Id) : query.OrderBy(pagination.Sidx);
-        //    query = query.Skip(pagination.Skip).Take(pagination.Rows);
-        //    return query.ToListAsync().Result.MapToList<DormBuildingUserView>();
-        //}
+       
 
     }
 }
