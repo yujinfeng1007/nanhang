@@ -64,7 +64,7 @@ namespace ZHXY.Application
             foreach (var user in users) {
                 var rel = new Relevance
                 {
-                    Name = SmartCampusConsts.REL_BUILDING_USERS,
+                    Name = SYS_CONSTS.REL_BUILDING_USERS,
                     FirstKey = id,
                     SecondKey = user
                 };
@@ -79,7 +79,7 @@ namespace ZHXY.Application
         /// </summary>
         public void UnBindUser(string id, string userId)
         {
-            var user = Query<Relevance>(p => p.Name.Equals(SmartCampusConsts.REL_BUILDING_USERS) && p.FirstKey.Equals(id) && p.SecondKey.Equals(userId)).FirstOrDefault();
+            var user = Query<Relevance>(p => p.Name.Equals(SYS_CONSTS.REL_BUILDING_USERS) && p.FirstKey.Equals(id) && p.SecondKey.Equals(userId)).FirstOrDefault();
             DelAndSave(user);
         }
 
@@ -90,7 +90,7 @@ namespace ZHXY.Application
         /// <param name="id"></param>
         public List<User> GetSubBindUsers(string id)
         {
-            var usersIds = Read<Relevance>(p => p.Name.Equals(SmartCampusConsts.REL_BUILDING_USERS) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
+            var usersIds = Read<Relevance>(p => p.Name.Equals(SYS_CONSTS.REL_BUILDING_USERS) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
             var list = Read<User>(p => usersIds.Contains(p.F_Id)).ToList();
             return list;
         }
@@ -101,7 +101,7 @@ namespace ZHXY.Application
         /// <param name="id"></param>
         public List<User> GetNotBindUsers(string id)
         {
-            var usersIds = Read<Relevance>(p => p.Name.Equals(SmartCampusConsts.REL_BUILDING_USERS) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
+            var usersIds = Read<Relevance>(p => p.Name.Equals(SYS_CONSTS.REL_BUILDING_USERS) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
             var list = Read<User>(p => !usersIds.Contains(p.F_Id) && p.F_OrganizeId == "27e1854fd963d24b8c5d88506a775c2a").ToList();
             return list;
         }
