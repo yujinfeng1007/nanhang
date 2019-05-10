@@ -1,4 +1,5 @@
 ﻿using System;
+using ZHXY.Common;
 
 namespace ZHXY.Application
 {
@@ -7,8 +8,10 @@ namespace ZHXY.Application
     /// <summary>
     /// 获取审批列表
     /// </summary>
-    public class GetApprovalListDto: PagingDto
+    public class GetApprovalListDto: Pagination
     {
+
+        public string Keyword { get; set; }
         /// <summary>
         /// 当前用户的Id
         /// </summary>

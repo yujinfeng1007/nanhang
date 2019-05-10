@@ -32,7 +32,7 @@ namespace ZHXY.Application
         }
 
 
-        public (List<LoginStatisticsView> list, int recordCount, int pageCount) GetLoginKpi(GetLoginStatisticsDto input)
+        public dynamic GetLoginKpi(GetLoginStatisticsDto input)
         {
             var query = Read<SysLog>(p => p.Type == "Login" && !string.IsNullOrEmpty(p.UserId) && p.Result == true && p.CreateTime >= input.StartTime && p.CreateTime <= input.EndOfTime)
                 .GroupBy(p => new { p.UserId }).Select(g => new LoginStatisticsView
@@ -45,10 +45,7 @@ namespace ZHXY.Application
                     EndOfTime = input.EndOfTime
                 });
             query = string.IsNullOrWhiteSpace(input.Keyword) ? query : query.Where(p => p.Name.Contains(input.Keyword));
-            var (recordCount, pageCount) = query.CountAsync().Result.ComputePage(input.Take);
-            var list = query.OrderBy(input.Sort).Skip(input.Skip).Take(input.Take).ToListAsync().Result;
-            return (list, recordCount, pageCount);
-
+            return query.Paging(input).ToListAsync().Result;
         }
 
     }

@@ -116,6 +116,7 @@
     <Compile Include="SystemServices\Users\Dto\Login\ResultModel.cs" />
     <Compile Include="SystemServices\Users\Dto\Login\UserModel.cs" />
     <Compile Include="WebCore\CookieHelper.cs" />
+    <Compile Include="WebCore\DIHelper.cs" />
     <Compile Include="WebCore\Filters\ApiCompressionFilter.cs" />
     <Compile Include="WebCore\Filters\CustomApiExceptionFilter.cs" />
     <Compile Include="WebCore\Filters\HandlerAuthorize.cs" />

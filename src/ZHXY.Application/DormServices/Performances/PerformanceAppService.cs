@@ -2,6 +2,7 @@
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Dynamic;
+using ZHXY.Common;
 using ZHXY.Domain;
 
 namespace ZHXY.Application
@@ -18,9 +19,9 @@ namespace ZHXY.Application
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public (List<LoginStatisticsView> list, int recordCount, int pageCount) GetLoginStatistics(GetLoginStatisticsDto input)
+        public dynamic GetLoginStatistics(GetLoginStatisticsDto input)
         {
-            if (string.IsNullOrEmpty(input.OrgId)) return (null, 0, 0);
+            if (string.IsNullOrEmpty(input.OrgId)) return null;
             var orgs = new List<string> { input.OrgId };
             this.GetChildOrg(input.OrgId, orgs);
             var userQuery = Read<Teacher>(p => orgs.Contains(p.F_Divis_ID));
@@ -38,29 +39,28 @@ namespace ZHXY.Application
                     StartTime = input.StartTime,
                     EndOfTime = input.EndOfTime
                 });
-            var (recordCount, pageCount) = query.CountAsync().Result.ComputePage(input.Take);
-            var list = query.OrderBy(input.Sort).Skip(input.Skip).Take(input.Take).ToListAsync().Result;
-            return (list, recordCount, pageCount);
+            return query.Paging(input).ToListAsync().Result;
         }
 
         /// <summary>
         /// 获取登录详情列表
         /// </summary>
         /// <param name="input"></param>
-        public List<LoginDetailView> GetLoginDetail(GetLoginDetailDto input)
+        public dynamic GetLoginDetail(GetLoginDetailDto input)
         {
             var user = Read<User>(p => p.F_Id.Equals(input.UserId)).FirstOrDefaultAsync().Result;
             if (null == user) return null;
             var departmentName = Read<Organize>(p => p.F_Id.Equals(user.F_DepartmentId)).Select(p => p.F_FullName).FirstOrDefaultAsync().Result;
-            return Read<SysLog>(p => p.Type == "Login" && p.UserId.Equals(input.UserId) && p.Result == true && p.CreateTime >= input.StartTime && p.CreateTime <= input.EndOfTime)
-                .OrderBy(input.Sort)
-                .Select(p => new LoginDetailView
-                {
-                    Name = user.F_RealName,
-                    Department = departmentName,
-                    LoginTime = p.CreateTime,
-                    WayOfLogin = p.ModuleName
-                }).ToListAsync().Result;
+            var query = Read<SysLog>(p => p.Type == "Login" && p.UserId.Equals(input.UserId) && p.Result == true && p.CreateTime >= input.StartTime && p.CreateTime <= input.EndOfTime);
+            var ordering = input.GetOrdering<SysLog>();
+            return query.OrderBy(ordering)
+              .Select(p => new LoginDetailView
+              {
+                  Name = user.F_RealName,
+                  Department = departmentName,
+                  LoginTime = p.CreateTime,
+                  WayOfLogin = p.ModuleName
+              }).ToListAsync().Result;
         }
 
         /// <summary>
@@ -68,14 +68,14 @@ namespace ZHXY.Application
         /// </summary>
         public (List<BuildingAccessStatisticsView> list, int recordCount, int pageCount) GetBuildingAccessStatistics(GetBuildingAccessStatisticsDto input)
         {
-            
+
             return (null, 0, 0);
         }
 
         public List<BuildingAccessDetailView> GetBuildingAccessDetail(GetBuildingAccessDetailDto input)
         {
             return null;
-          
+
         }
 
     }
