@@ -262,7 +262,7 @@ namespace ZHXY.Application
         public static object GetUserList()
         {
             var dictionary = new Dictionary<string, object>();
-            new SysUserAppService().GetAll().ForEach(item =>
+            new UserAppService().GetAll().ForEach(item =>
             {
                 var fieldItem = new FieldItem { fullname = item.F_RealName };
                 dictionary.Add(item.F_Id, fieldItem);

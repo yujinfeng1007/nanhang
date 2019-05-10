@@ -93,7 +93,19 @@ namespace ZHXY.Web.Dorm.Controllers
             return Resultaat.Success();
         }
 
+        [HttpGet]
+        public ActionResult GetByBuilding(string id)
+        {
+            var data = App.GetByBuilding(id);
+            return Resultaat.Success(data);
+        }
 
 
+        [HttpGet]
+        public ActionResult GetUsers(string id)
+        {
+            var data = App.GetUsers(id);
+            return Resultaat.Success(data);
+        }
     }
 }

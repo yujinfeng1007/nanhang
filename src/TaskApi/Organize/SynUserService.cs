@@ -65,19 +65,19 @@ namespace TaskApi
             var student = new Student();
             if (catetoryId == "Class")
             {
-                var org = db.FindEntity<Organ>(p => p.Id == entity.F_DepartmentId);
-                student.F_Class_ID = entity.F_DepartmentId;
+                var org = db.FindEntity<Organ>(p => p.Id == entity.OrgId);
+                student.F_Class_ID = entity.OrgId;
                 student.F_Grade_ID = org?.ParentId;
                 student.F_Divis_ID = org?.Parent?.ParentId;
             }
             if (catetoryId == "Grade")
             {
-                var org = db.FindEntity<Organ>(p => p.Id == entity.F_DepartmentId);
-                student.F_Grade_ID = entity.F_DepartmentId;
+                var org = db.FindEntity<Organ>(p => p.Id == entity.OrgId);
+                student.F_Grade_ID = entity.OrgId;
                 student.F_Divis_ID = org?.ParentId;
             }
             if (catetoryId == "Division")
-                student.F_Divis_ID = entity.F_DepartmentId;
+                student.F_Divis_ID = entity.OrgId;
             student.F_Name = entity.F_RealName;
             student.F_StudentNum = num;
             student.F_CredNum = credNum;
@@ -87,7 +87,7 @@ namespace TaskApi
             student.F_InitDTM = entryTime;
             //student.F_Users_ID = entity.F_Id;
             student.F_Tel = entity.F_MobilePhone;
-            student.F_DepartmentId = entity.F_DepartmentId;
+            student.F_DepartmentId = entity.OrgId;
 
             var s = db.FindEntity<Student>(p => p.F_Users_ID == entity.F_Id);
             if (s != null)
@@ -132,21 +132,21 @@ namespace TaskApi
             var teacher = new Teacher();
             if (catetoryId == "Class")
             {
-                var org = db.FindEntity<Organ>(p => p.Id == entity.F_DepartmentId);
+                var org = db.FindEntity<Organ>(p => p.Id == entity.OrgId);
                 teacher.F_Divis_ID = org?.Parent?.ParentId;
             }
             if (catetoryId == "Grade")
             {
-                var org = db.FindEntity<Organ>(p => p.Id == entity.F_DepartmentId);
+                var org = db.FindEntity<Organ>(p => p.Id == entity.OrgId);
                 teacher.F_Divis_ID = org?.ParentId;
             }
             if (catetoryId == "Division")
-                teacher.F_Divis_ID = entity.F_DepartmentId;
+                teacher.F_Divis_ID = entity.OrgId;
             teacher.F_Name = entity.F_RealName;
             teacher.F_Num = num;
             //student.F_Users_ID = entity.F_Id;
             teacher.F_MobilePhone = entity.F_MobilePhone;
-            teacher.F_DepartmentId = entity.F_DepartmentId;
+            teacher.F_DepartmentId = entity.OrgId;
             teacher.F_CredNum = credNum;
             teacher.F_Profession = profession;
             teacher.F_PolitStatu = politstatu;
@@ -208,7 +208,7 @@ namespace TaskApi
             entity.F_MobilePhone = mobilePhone;
             entity.F_NickName = userName;
             entity.F_RealName = userName;
-            entity.F_DepartmentId = orgId;
+            entity.OrgId = orgId;
             entity.F_Gender = sex == "1" ? true : false;
             entity.F_HeadIcon = ico;
             entity.F_DeleteMark = isDelete == "1" ? true : false;
@@ -242,7 +242,7 @@ namespace TaskApi
             {
                 entity.F_DutyId = "parentDuty";
                 entity.F_RoleId = "parent";
-                entity.F_DepartmentId = "parent";
+                entity.OrgId = "parent";
             }
             if (isAdmin == "1")
             {
@@ -251,12 +251,10 @@ namespace TaskApi
             var data = db.FindEntity<User>(t => t.F_Id == userId);
             if (data != null)
             {
-                entity.Modify(userId);
                 db.Update(entity);
             }
             else
             {
-                entity.Create();
                 entity.F_Id = userId;
                 db.Insert(entity);
 
@@ -300,7 +298,7 @@ namespace TaskApi
             var parameters = "sysid=" + entity.F_Id + "&amp;appid=" + AppId + "&amp;nickname=" +
                              entity.F_RealName + "&amp;username=" + entity.F_Account +
                              "&amp;password=" + userLogOnEntity.F_UserPassword +
-                             "&amp;sysgroupid=" + entity.F_DepartmentId + "&amp;headicon=" +
+                             "&amp;sysgroupid=" + entity.OrgId + "&amp;headicon=" +
                              entity.F_HeadIcon + "&amp;birthday=" + entity.F_Birthday + "";
             WebHelper.SendRequest(CallUrlAdd, parameters, isPost, "application/json");
         }

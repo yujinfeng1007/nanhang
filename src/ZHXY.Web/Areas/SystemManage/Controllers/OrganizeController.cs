@@ -91,7 +91,7 @@ namespace ZHXY.Web.SystemManage.Controllers
             }
             else
             {
-                var user = new SysUserAppService().Get(keyword);
+                var user = new UserAppService().Get(keyword);
                 if (!user.IsEmpty())
                     data_deeps = user.F_Data_Deps;
             }
@@ -315,6 +315,13 @@ namespace ZHXY.Web.SystemManage.Controllers
         public async Task<ActionResult> GetStudentOrg(string nodeId = "2", int n_level = 0) => await Task.Run(() =>
         {
             var result = App.GetTeacherOrg(nodeId, n_level);
+            return Resultaat.Success(result);
+        });
+
+        [HttpGet]
+        public async Task<ActionResult> GetSubOrg(string nodeId = null, int n_level = 0) => await Task.Run(() =>
+        {
+            var result = App.GetSubOrg(nodeId, n_level);
             return Resultaat.Success(result);
         });
 

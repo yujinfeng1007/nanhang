@@ -53,6 +53,12 @@ namespace ZHXY.Web.Dorm.Controllers
             return await Task.Run(() => Resultaat.PagingRst(App.GetList(pagination, keyword), pagination.Records, pagination.Total));
         }
 
+        [HttpGet]
+        public async Task<ActionResult> GetAll()
+        {
+            return await Task.Run(() => Resultaat.Success(App.GetAll()));
+        }
+
         //获取未绑定的宿管
         [HttpGet]
         public ActionResult GetNotBindUsers(string id)

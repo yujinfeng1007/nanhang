@@ -13,18 +13,18 @@ namespace ZHXY.Application
     /// <summary>
     /// 用户管理
     /// </summary>
-    public class SysUserAppService : AppService
+    public class UserAppService : AppService
     {
         private IUserRepository UserRepository { get; }
         private OrgAppService OrgApp { get; }
 
-        public SysUserAppService(IZhxyRepository repos, IUserRepository userRepository, OrgAppService organizeApp)
+        public UserAppService(IZhxyRepository repos, IUserRepository userRepository, OrgAppService organizeApp)
         {
             R = repos;
             UserRepository = userRepository;
             OrgApp = organizeApp;
         }
-        public SysUserAppService()
+        public UserAppService()
         {
             R = new ZhxyRepository();
             UserRepository = new UserRepository();
@@ -65,11 +65,11 @@ namespace ZHXY.Application
                 if (orgs != null && orgs.Count != 0)
                 {
                     var deps = orgs.Select(p => p.Id).ToArray();
-                    query = query.Where(p => deps.Contains(p.F_DepartmentId) || p.F_DepartmentId.Equals(F_DepartmentId));
+                    query = query.Where(p => deps.Contains(p.OrgId) || p.OrgId.Equals(F_DepartmentId));
                 }
                 else
                 {
-                    query = query.Where(p => p.F_DepartmentId.Equals(F_DepartmentId));
+                    query = query.Where(p => p.OrgId.Equals(F_DepartmentId));
                 }
             }
             pagination.Records = query.CountAsync().Result;
@@ -79,9 +79,9 @@ namespace ZHXY.Application
 
         public List<User> GetParentsList(Pagination pag, string account, string keyword, string deptId, string creatorTimeStart, string creatorTimeStop)
         {
-            var query = Read<User>(t => t.F_DepartmentId.Equals("parent") && t.F_Account != "admin");
+            var query = Read<User>(t => t.OrgId.Equals("parent") && t.F_Account != "admin");
             query = string.IsNullOrEmpty(keyword) ? query : query.Where(t => t.F_Account.Contains(keyword) || t.F_RealName.Contains(keyword) || t.F_MobilePhone.Contains(keyword));
-            query = string.IsNullOrEmpty(deptId) ? query : query.Where(t => t.F_DepartmentId.Equals(deptId));
+            query = string.IsNullOrEmpty(deptId) ? query : query.Where(t => t.OrgId.Equals(deptId));
             query = string.IsNullOrEmpty(account) ? query : query.Where(t => t.F_Account.Contains(account));
 
             if (!string.IsNullOrEmpty(creatorTimeStart))
@@ -117,7 +117,7 @@ namespace ZHXY.Application
             if (string.IsNullOrEmpty(orgId)) return query.ToList();
             var orgs = recursive ? OrgApp.GetListByParentId(orgId)?.Select(p => p.Id).ToList() : Read<Organ>(p => p.ParentId.Equals(orgId)).Select(p => p.Id).ToListAsync().Result;
             orgs.Add(orgId);
-            return query.Where(p => orgs.Contains(p.F_DepartmentId)).ToListAsync().Result;
+            return query.Where(p => orgs.Contains(p.OrgId)).ToListAsync().Result;
         }
 
 
@@ -162,12 +162,10 @@ namespace ZHXY.Application
             }
             if (!string.IsNullOrEmpty(keyValue))
             {
-                userEntity.Modify(keyValue);
             }
             else
             {
                 userLogOnEntity.F_UserPassword = Configs.GetValue("UserPassword");
-                userEntity.Create();
             }
 
             var userRoles = new List<UserRole>();
@@ -181,7 +179,6 @@ namespace ZHXY.Application
 
         public void SubmitSetUp(User userEntity)
         {
-            userEntity.Modify(OperatorProvider.Current.UserId);
             UserRepository.Update(userEntity);
         }
 
@@ -191,12 +188,10 @@ namespace ZHXY.Application
 
             if (!string.IsNullOrEmpty(id))
             {
-                userEntity.Modify(id);
             }
             else
             {
                 userLogOnEntity.F_UserPassword = Configs.GetValue("UserPassword");
-                userEntity.Create();
             }
 
             var userRoles = new List<UserRole>();
@@ -259,21 +254,18 @@ namespace ZHXY.Application
         }
 
 
-        public dynamic GetUserByOrg(string orgId,string keyword)
+      
+
+        public dynamic GetByOrg(string orgId,string keyword)
         {
-            if (string.IsNullOrWhiteSpace(orgId) && string.IsNullOrWhiteSpace(keyword)) return null;
-            var userQuery = Read<User>();
-            userQuery = !string.IsNullOrWhiteSpace(keyword) ? userQuery.Where(p => p.F_RealName.Contains(keyword)) : userQuery.Where(p => p.F_OrganizeId.Equals(orgId));
-            return userQuery.Join(
-                Read<Organ>(),
-                u => u.F_OrganizeId,
-                d => d.Id,
-                (u, o) => new
-                {
-                    userId = u.F_Id,
-                    userName = u.F_RealName,
-                    orgName = o.Name,
-                }).ToListAsync().Result;
+            if (string.IsNullOrEmpty(orgId)) return null;
+            var query=Read<User>(p => p.OrgId.Equals(orgId));
+            query = string.IsNullOrWhiteSpace(keyword) ? query : query.Where(p => p.F_RealName.Contains(keyword));
+            return query.Select(p => new
+            {
+                id=p.F_Id,
+                name = p.F_RealName
+            }).ToListAsync().Result;
         }
     }
 }

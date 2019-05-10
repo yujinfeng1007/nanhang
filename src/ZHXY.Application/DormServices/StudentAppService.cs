@@ -149,7 +149,7 @@ namespace ZHXY.Application
         public void Delete(string id)
         {
             var student= Get<Student>(id);
-            var user= new SysUserAppService().Get(student.F_Users_ID);
+            var user= new UserAppService().Get(student.F_Users_ID);
             if(user!=null)
             {
                 throw new Exception("请先删除相关联用户！");

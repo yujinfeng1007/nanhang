@@ -96,7 +96,7 @@ namespace ZHXY.Application
         }
 
         /// <summary>
-        /// 获取老师机构
+        /// 获取学生机构
         /// </summary>
         public static List<TreeView> GetStudentOrg(this AppService app, string nodeId = "2", int nodeLevel = 0)
         {

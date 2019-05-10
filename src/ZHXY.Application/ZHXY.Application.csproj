@@ -47,6 +47,7 @@
     <Compile Include="01.Base\DataScopeFilterExt.cs" />
     <Compile Include="01.Base\TreeHelper.cs" />
     <Compile Include="DormServices\BuildingAppService.cs" />
+    <Compile Include="DormServices\Buildings\XFTXService.cs" />
     <Compile Include="DormServices\Buildings\Dto\CreateDormBuildingDto.cs" />
     <Compile Include="DormServices\Buildings\Dto\DormBuildingUserView.cs" />
     <Compile Include="DormServices\Buildings\Dto\DormBuildingView.cs" />
@@ -58,7 +59,6 @@
     <Compile Include="DormServices\Gates\Dto\SyncGateDto.cs" />
     <Compile Include="DormServices\Gates\Dto\UpdateGateDto.cs" />
     <Compile Include="DormServices\Gates\GateAppService.cs" />
-    <Compile Include="DormServices\AccessStudentAppService.cs" />
     <Compile Include="DormServices\BedAppService.cs" />
     <Compile Include="DormServices\DormRules\DormRuleService.cs" />
     <Compile Include="DormServices\DormRooms\DormRoomAppService.cs" />
@@ -171,7 +171,7 @@
     <Compile Include="SystemServices\Users\Dto\Users\UpdateUserDto.cs" />
     <Compile Include="SystemServices\Users\Dto\Users\UserListView.cs" />
     <Compile Include="SystemServices\Users\Dto\Users\UserView.cs" />
-    <Compile Include="SystemServices\Users\SysUserAppService.cs" />
+    <Compile Include="SystemServices\Users\UserAppService.cs" />
     <Compile Include="SystemServices\Users\SysUserLogOnAppService.cs" />
     <Compile Include="SystemServices\Users\SysUserRoleAppService.cs" />
     <Compile Include="DormServices\TeacherAppService.cs" />

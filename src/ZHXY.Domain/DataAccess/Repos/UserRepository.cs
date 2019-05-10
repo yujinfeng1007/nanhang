@@ -68,7 +68,7 @@ namespace ZHXY.Domain
                     var parameters = "sysid=" + userEntity.F_Id + "&amp;appid=" + appid + "&amp;nickname=" +
                                      userEntity.F_RealName + "&amp;username=" + userEntity.F_Account +
                                      "&amp;password=" + F_UserPassword + "&amp;sysgroupid=" +
-                                     userEntity.F_DepartmentId + "&amp;headicon=" + userEntity.F_HeadIcon +
+                                     userEntity.OrgId + "&amp;headicon=" + userEntity.F_HeadIcon +
                                      "&amp;birthday=" + F_Birthday + "";
                     var Result = WebHelper.SendRequest(CallUrlUpt, parameters, isPost, "application/json");
                 }
@@ -91,7 +91,7 @@ namespace ZHXY.Domain
                     var parameters = "sysid=" + userEntity.F_Id + "&amp;appid=" + appid + "&amp;nickname=" +
                                      userEntity.F_RealName + "&amp;username=" + userEntity.F_Account +
                                      "&amp;password=" + userLogOnEntity.F_UserPassword + "&amp;sysgroupid=" +
-                                     userEntity.F_DepartmentId + "&amp;headicon=" + userEntity.F_HeadIcon +
+                                     userEntity.OrgId + "&amp;headicon=" + userEntity.F_HeadIcon +
                                      "&amp;birthday=" + F_Birthday + "";
                     var Result = WebHelper.SendRequest(CallUrlAdd, parameters, isPost, "application/json");
                 }
@@ -113,7 +113,6 @@ namespace ZHXY.Domain
                     if (user.F_Id.IsEmpty())
                         try
                         {
-                            user.Create();
                             if (!string.IsNullOrEmpty(user.F_RoleId))
                             {
                                 var role = "";
@@ -152,7 +151,7 @@ namespace ZHXY.Domain
                             if (user.F_Birthday != null) F_Birthday = user.F_Birthday.ToDateTimeString();
                             var parameters = "sysid=" + user.F_Id + "&amp;appid=" + appid + "&amp;nickname=" +
                                              user.F_RealName + "&amp;username=" + user.F_Account + "&amp;password=" +
-                                             userLogOnEntity.F_UserPassword + "&amp;sysgroupid=" + user.F_DepartmentId +
+                                             userLogOnEntity.F_UserPassword + "&amp;sysgroupid=" + user.OrgId +
                                              "&amp;headicon=" + user.F_HeadIcon + "&amp;birthday=" + F_Birthday + "";
                             var Result = WebHelper.SendRequest(CallUrlAdd, parameters, isPost, "application/json");
                             db.Insert(user);
@@ -187,14 +186,13 @@ namespace ZHXY.Domain
                                 user.F_RoleId = role;
                             }
 
-                            user.Modify(user.F_Id);
                             var F_UserPassword = db.FindEntity<UserLogin>(t => t.F_Id == user.F_Id).F_UserPassword;
                             var isPost = true;
                             var F_Birthday = "";
                             if (user.F_Birthday != null) F_Birthday = user.F_Birthday.ToDateTimeString();
                             var parameters = "sysid=" + user.F_Id + "&amp;appid=" + appid + "&amp;nickname=" +
                                              user.F_RealName + "&amp;username=" + user.F_Account + "&amp;password=" +
-                                             F_UserPassword + "&amp;sysgroupid=" + user.F_DepartmentId +
+                                             F_UserPassword + "&amp;sysgroupid=" + user.OrgId +
                                              "&amp;headicon=" + user.F_HeadIcon + "&amp;birthday=" + F_Birthday + "";
                             var Result = WebHelper.SendRequest(CallUrlUpt, parameters, isPost, "application/json");
                             db.Update(user);

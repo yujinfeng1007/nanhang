@@ -12,9 +12,9 @@ namespace ZHXY.Web.Controllers
     /// </summary>
     public class SelectController : ZhxyWebControllerBase
     {
-        private SysUserAppService App { get; set; }
+        private UserAppService App { get; set; }
 
-        public SelectController(SysUserAppService app) => App = app;
+        public SelectController(UserAppService app) => App = app;
 
         #region View
 

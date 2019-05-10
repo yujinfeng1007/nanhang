@@ -22,7 +22,8 @@ namespace ZHXY.Application
         public async Task<DormBuildingView> AddAsync(CreateDormBuildingDto input)
         {
             Building entity = input;            
-            AddAndSave(entity);
+            Add(entity);
+            await SaveChangesAsync();
             return entity;
         }
 
@@ -34,7 +35,7 @@ namespace ZHXY.Application
             var entity =  Get<Building>(input.Id);
             if (entity == null) throw new Exception($"No objects were found based on this Id : {input.Id}");
             input.MapTo(entity);            
-             SaveChanges();
+            await SaveChangesAsync();
             return entity;
         }
 
@@ -50,7 +51,21 @@ namespace ZHXY.Application
             query = query.Skip(pagination.Skip).Take(pagination.Rows);
             return query.ToListAsync().Result.MapToList<DormBuildingView>();
         }
-       
+
+        /// <summary>
+        /// 获取所有楼栋
+        /// auth:yujinfeng
+        /// </summary>
+        /// <returns></returns>
+        public dynamic GetAll()
+        {
+            return Read<Building>().Select(p => new
+            {
+                id=p.Id,
+                name=p.Title
+            }).ToListAsync().Result;
+        }
+
 
         /// <summary>
         /// 绑定楼栋的宿管

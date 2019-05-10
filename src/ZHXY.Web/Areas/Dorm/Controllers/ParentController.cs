@@ -14,9 +14,9 @@ namespace ZHXY.Web.Dorm.Controllers
     /// </summary>
     public class ParentController : ZhxyWebControllerBase
     {
-        private SysUserAppService App { get; }
+        private UserAppService App { get; }
 
-        public ParentController(SysUserAppService app) => App = app;
+        public ParentController(UserAppService app) => App = app;
 
         [HttpGet]
 
@@ -35,7 +35,7 @@ namespace ZHXY.Web.Dorm.Controllers
 
         public ActionResult SubmitForm(User userEntity, UserLogin userLogOnEntity, string keyValue)
         {
-            userEntity.F_DepartmentId = "parent";
+            userEntity.OrgId = "parent";
             userEntity.F_OrganizeId = "1";
             userEntity.F_DutyId = "parentDuty";
             userEntity.F_RoleId = "parent";
@@ -50,7 +50,7 @@ namespace ZHXY.Web.Dorm.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult UpdataSubmitForm(User userEntity, UserLogin userLogOnEntity, string keyValue)
         {
-            userEntity.F_DepartmentId = "parent";
+            userEntity.OrgId = "parent";
             userEntity.F_OrganizeId = "1";
             userEntity.F_DutyId = "parentDuty";
             userEntity.F_RoleId = "parent";

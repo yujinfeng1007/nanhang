@@ -231,7 +231,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Areas\Dorm\Controllers\AccessStudentController.cs" />
+    <Compile Include="Areas\Dorm\Controllers\XFTXController.cs" />
     <Compile Include="Areas\Dorm\Controllers\BedController.cs" />
     <Compile Include="Areas\Dorm\Controllers\DormBuildingController.cs" />
     <Compile Include="Areas\Dorm\Controllers\DormRoomController.cs" />
@@ -411,8 +411,7 @@
     <Content Include="Areas\SystemSecurity\Views\Log\LoginHis.cshtml" />
     <Content Include="ApplicationInsights.config" />
     <Content Include="Areas\Dorm\Views\web.config" />
-    <Content Include="Areas\Dorm\Views\AccessStudent\Form.cshtml" />
-    <Content Include="Areas\Dorm\Views\AccessStudent\Index.cshtml" />
+    <Content Include="Areas\Dorm\Views\XFTX\Index.cshtml" />
     <Content Include="Areas\Dorm\Views\Bed\Form.cshtml" />
     <Content Include="Areas\Dorm\Views\Bed\Index.cshtml" />
     <Content Include="Areas\Dorm\Views\ChangeLogs\Form.cshtml" />
@@ -502,6 +501,7 @@
     <Content Include="Areas\Dorm\Views\Teacher\_FromOnePartial.cshtml" />
     <Content Include="Areas\Dorm\Views\Teacher\_FromThreelPartial.cshtml" />
     <Content Include="Areas\Dorm\Views\Teacher\_FromTwolPartial.cshtml" />
+    <Content Include="Areas\Dorm\Views\XFTX\SBYH.cshtml" />
     <None Include="Content\js\bootstrap\bootstrap.min.css.bak" />
     <Content Include="Content\js\bootstrap\bootstrap.min.css" />
     <Content Include="Content\js\charts\Chart.js" />

@@ -7,7 +7,7 @@ namespace ZHXY.Domain
     /// 用户
     /// </summary>
     [Serializable]
-    public class User : EntityBase, ICreationAudited, IDeleteAudited, IModificationAudited
+    public class User : IEntity
     {
         /// <summary>
         /// 用户主键
@@ -91,7 +91,7 @@ namespace ZHXY.Domain
         /// 所属部门
         /// </summary>
         [Display(Name = "所属部门")]
-        public string F_DepartmentId { get; set; }
+        public string OrgId { get; set; }
 
         /// <summary>
         /// 角色主键

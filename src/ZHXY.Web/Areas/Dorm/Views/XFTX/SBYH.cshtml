@@ -1,0 +1,135 @@
+﻿
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+    let GRID_WIDTH = window.innerWidth * 0.74;
+    let GRID_HEIGHT = window.innerHeight * 0.84;
+    let TREE_GRID_WIDTH = window.innerWidth * 0.24;
+    let TREE_GRID_HEIGHT = window.innerHeight * 0.92;
+    let GRID_STYLE = "Bootstrap";
+
+    $(function () {
+        $('#layout').layout({
+            west__resizable: false
+        }).sizePane("west", "25%");
+        gridList();
+
+        westGrid();
+
+        $("#btn_search").click(() => {
+            let rowId = $("#treeGrid").jqGrid("getGridParam", "selrow");
+            reloadGrid(rowId)
+        });
+    })
+
+    function gridList() {
+        $("#gridList").jqGrid({
+            styleUI: GRID_STYLE,
+            height: GRID_HEIGHT,
+            width: GRID_WIDTH,
+            datatype: 'json',
+            url: `/Dorm/Gate/GetUsers`,
+            autoGridWidth: true,
+            multiselect: true,
+            loadonce: false,
+            viewrecords: true,
+            jsonReader: {
+                root: function (r) { return r.data; }
+            },
+            pager: "#gridPager",
+            rowNum: -1,
+            colModel: [
+                { label: "主键", name: "id", hidden: true, key: true },
+                { label: '名称', name: 'name' },
+            ],
+
+        });
+    }
+
+    function reloadGrid(rowId) {
+        $("#gridList").jqGrid('setGridParam', {
+            postData: {
+                keyword: $("#keyword").val(),
+                id: rowId
+            },
+        }).trigger('reloadGrid');
+    }
+
+    function westGrid() {
+        $("#westGrid").jqGrid({
+            styleUI: GRID_STYLE,
+            url: "/dorm/dormbuilding/getall",
+            datatype: "json",
+            gridview: true,
+            altRows: true,
+            viewrecords: true,
+            autoGridWidth: true,
+            rowNum: -1,
+            autoGridHeight: true,
+            multiselect: false,
+            height: TREE_GRID_HEIGHT,
+            width: TREE_GRID_WIDTH,
+
+            jsonReader: {
+                root: function (r) { return r.data; }
+            },
+            colModel: [
+                { label: '主键', name: "id", key: true, hidden: true },
+                { label: '楼栋', name: 'name', width: 100, align: 'left', sortable: false },
+
+            ],
+            subGrid: true,
+            subGridRowExpanded: showChild,
+
+        });
+    }
+
+    function showChild(parentRow, parentRowKey) {
+        let childGrid = parentRow + "_table";
+        $('#' + parentRow).append('<table class="table-striped" id=' + childGrid + '></table>');
+        $("#" + childGrid).jqGrid({
+            url: `/dorm/gate/getbybuilding?id=${parentRowKey}`,
+            mtype: "GET",
+            datatype: "json",
+            jsonReader: {
+                root: function (r) { return r.data },
+            },
+            colModel: [
+                { label: '设备名称', name: 'name', sortable: false },
+                { name: 'id', key: true, hidden: true },
+            ],
+            autoGridWidth: true,
+            styleUI: GRID_STYLE,
+            width: window.innerWidth * 0.2,
+            height: window.innerHeight * 0.4,
+            footerrow: true,
+            userDataOnFooter: true,
+            rownumbers: true,
+            rowNum: -1,
+            onSelectRow: reloadGrid,
+        });
+    }
+
+
+</script>
+
+<div class="ui-layout" id="layout" style="height: 100%; width: 100%;">
+
+    <div class="ui-layout-west">
+        <table id="westGrid"></table>
+    </div>
+
+    <div class="ui-layout-center">
+        <form class="form-inline topPanel" autocomplete="off">
+            <button type="button" class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></button>
+            <input type="text" class="form-control" id="keyword" placeholder="关键字">
+            <button type="button" id="btn_search" class="btn btn-primary"><i class="fa fa-search"></i></button>
+        </form>
+        <div class="gridPanel">
+            <table id="gridList"></table>
+            <div id="gridPager"></div>
+        </div>
+    </div>
+</div>
