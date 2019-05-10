@@ -65,7 +65,7 @@ namespace ZHXY.Application
             }
             return  Read(expression).ToList();
         }
-        public List<object> GetListByDivisList(List<Organize> divisList,List<Organize> classList, string startTime, string endTime)
+        public List<object> GetListByDivisList(List<Organ> divisList,List<Organ> classList, string startTime, string endTime)
         {
             var expression = ExtLinq.True<LateReturnReport>();
             if (!string.IsNullOrEmpty(startTime))
@@ -79,29 +79,29 @@ namespace ZHXY.Application
                 expression = expression.And(p => p.F_CreatorTime <= end);
             }
             var lateReturnlist = Read(expression).ToList();
-            List<object> resObjList = new List<object>();
+            var resObjList = new List<object>();
             foreach (var item in divisList)
             {
-                var classIds= classList.Where(p => p.F_ParentId.Equals(item.F_Id)).Select(p=>p.F_Id).ToList();
+                var classIds= classList.Where(p => p.ParentId.Equals(item.Id)).Select(p=>p.Id).ToList();
                 var stuLateList= lateReturnlist.Where(p => classIds.Contains(p.F_Class));
                 if (stuLateList.Count() < 1) continue;
                 var group = stuLateList.GroupBy(p => p.F_Class);
-                List<object> classObjList = new List<object>(); ;
+                var classObjList = new List<object>(); ;
                 foreach (var g in group)
                 {
 
                     var classObj = new
                     {
                         classId = g.Key,
-                        className = classList.FirstOrDefault(p => p.F_Id.Equals(g.Key)).F_FullName,
+                        className = classList.FirstOrDefault(p => p.Id.Equals(g.Key)).Name,
                         count = g.Count()
                     };
                     classObjList.Add(classObj);
                 }
                 object divisObj = new
                 {
-                    divisId = item.F_Id,
-                    divisName = item.F_FullName,
+                    divisId = item.Id,
+                    divisName = item.Name,
                     list = classObjList
                 };
                 resObjList.Add(divisObj);

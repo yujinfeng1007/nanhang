@@ -13,8 +13,8 @@ namespace ZHXY.Web.SystemSecurity.Controllers
         [HttpGet]
         public ActionResult Load(GetLogListDto input)
         {
-            var (list, recordCount, pageCount) = App.Load(input);
-            return Resultaat.PagingRst(list, recordCount, pageCount);
+            var list = App.Load(input);
+            return Resultaat.PagingRst(list, input.Records, input.Total);
         }
     }
 }

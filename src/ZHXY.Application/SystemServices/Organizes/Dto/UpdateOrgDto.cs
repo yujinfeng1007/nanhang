@@ -1,6 +1,6 @@
 ﻿namespace ZHXY.Application
 {
-    public class UpdateOrganizeDto:CreateOrganizeDto
+    public class UpdateOrgDto:AddOrgDto
     {
         public string Id { get; set; }
     }

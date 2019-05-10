@@ -3,7 +3,7 @@ using ZHXY.Common;
 
 namespace ZHXY.Application
 {
-    public class GetBuildingAccessStatisticsDto : PagingDto
+    public class GetBuildingAccessStatisticsDto : Pagination
     {
         /// <summary>
         /// 0:自定义时间  1:本周 2:本月  

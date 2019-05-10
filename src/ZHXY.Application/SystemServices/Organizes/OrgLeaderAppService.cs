@@ -7,13 +7,13 @@ namespace ZHXY.Application
     /// <summary>
     /// 机构负责人管理
     /// </summary>
-    public class SysOrgLeaderAppService : AppService
+    public class OrgLeaderAppService : AppService
     {
-        public SysOrgLeaderAppService(IZhxyRepository r) => R = r;
+        public OrgLeaderAppService(IZhxyRepository r) => R = r;
 
         public dynamic Get( string orgId)
         {
-            return Read<OrgLeader>(p => p.OrgId.Equals(orgId)).Select(p => new { orgId = p.OrgId, orgName = p.Org.F_FullName, userId = p.UserId, userName = p.User.F_RealName }).ToListAsync().Result;
+            return Read<OrgLeader>(p => p.OrgId.Equals(orgId)).Select(p => new { orgId = p.OrgId, orgName = p.Org.Name, userId = p.UserId, userName = p.User.F_RealName }).ToListAsync().Result;
         }
 
         /// <summary>

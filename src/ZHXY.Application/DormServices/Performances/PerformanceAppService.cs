@@ -50,7 +50,7 @@ namespace ZHXY.Application
         {
             var user = Read<User>(p => p.F_Id.Equals(input.UserId)).FirstOrDefaultAsync().Result;
             if (null == user) return null;
-            var departmentName = Read<Organize>(p => p.F_Id.Equals(user.F_DepartmentId)).Select(p => p.F_FullName).FirstOrDefaultAsync().Result;
+            var departmentName = Read<Organ>(p => p.Id.Equals(user.F_DepartmentId)).Select(p => p.Name).FirstOrDefaultAsync().Result;
             var query = Read<SysLog>(p => p.Type == "Login" && p.UserId.Equals(input.UserId) && p.Result == true && p.CreateTime >= input.StartTime && p.CreateTime <= input.EndOfTime);
             var ordering = input.GetOrdering<SysLog>();
             return query.OrderBy(ordering)

@@ -67,27 +67,27 @@ namespace ZHXY.Application
             var query = Read<Student>();
             //判断是否精确到班级
             if (null != OrganClass && !"".Equals(OrganClass)) {
-                var StudentIds = query.Where(p => p.F_Class_ID.Equals(OrganClass)).Select(p => p.F_Id).ToArray<string>();
+                var StudentIds = query.Where(p => p.F_Class_ID.Equals(OrganClass)).Select(p => p.F_Id).ToArray();
                 SetVisitTimes(StudentIds, TimesOfWeek, AutoSet);
                 return;
             }
             //判断是否精确到分院
             if (null != OrganCourts && !"".Equals(OrganCourts)) {
-                var StudentIds = query.Where(p => p.F_Grade_ID.Equals(OrganCourts)).Select(p => p.F_Id).ToArray<string>();
+                var StudentIds = query.Where(p => p.F_Grade_ID.Equals(OrganCourts)).Select(p => p.F_Id).ToArray();
                 SetVisitTimes(StudentIds, TimesOfWeek, AutoSet);
                 return;
             } 
             //判断是否精确到年级
             if(null != OrganGrade && !"".Equals(OrganGrade))
             {
-                var StudentIds = query.Where(p => p.F_Divis_ID.Contains(OrganGrade)).Select(p => p.F_Id).ToArray<string>();
+                var StudentIds = query.Where(p => p.F_Divis_ID.Contains(OrganGrade)).Select(p => p.F_Id).ToArray();
                 SetVisitTimes(StudentIds, TimesOfWeek, AutoSet);
                 return;
             }
             //判断是否精确到学院
             if (null != Organ && !"".Equals(Organ))
             {
-                var StudentIds = query.Select(p => p.F_Id).ToArray<string>();
+                var StudentIds = query.Select(p => p.F_Id).ToArray();
                 SetVisitTimes(StudentIds, TimesOfWeek, AutoSet);
                 return;
             }
@@ -96,45 +96,45 @@ namespace ZHXY.Application
         //查询学院
         public object FindOrgan(string OrganName)
         {
-            var query = Read<Organize>(p => p.F_ParentId.Equals("2"));
+            var query = Read((Organ p) => p.ParentId.Equals("2"));
             if(null != OrganName && !"".Equals(OrganName))
             {
-                query.Where(p => p.F_FullName.Contains(OrganName));
+                query.Where(p => p.Name.Contains(OrganName));
             }
-            return query.Select(p => new { id = p.F_Id, text = p.F_FullName }).ToList();
+            return query.Select(p => new { id = p.Id, text = p.Name }).ToList();
         }
 
         //查询年级
         public object FindOrganGrade(string OrganId, string GradeName)
         {
-            var query = Read<Organize>(p => p.F_ParentId.Equals(OrganId));
+            var query = Read((Organ p) => p.ParentId.Equals(OrganId));
             if(null != GradeName && !"".Equals(GradeName))
             {
-                query.Where(p => p.F_FullName.Contains(GradeName));
+                query.Where(p => p.Name.Contains(GradeName));
             }
-            return query.Select(p => new { id = p.F_Id, text = p.F_FullName}).ToList();
+            return query.Select(p => new { id = p.Id, text = p.Name}).ToList();
         }
 
         //查询分院
         public object FindOrganCourts(string GradeId, string CourtName)
         {
-            var query = Read<Organize>(p => p.F_ParentId.Equals(GradeId));
+            var query = Read((Organ p) => p.ParentId.Equals(GradeId));
             if (null != CourtName && !"".Equals(CourtName))
             {
-                query.Where(p => p.F_FullName.Contains(CourtName));
+                query.Where(p => p.Name.Contains(CourtName));
             }
-            return query.Select(p => new { id = p.F_Id, text = p.F_FullName }).ToList();
+            return query.Select(p => new { id = p.Id, text = p.Name }).ToList();
         }
 
         //查询班级
         public object FindOrganClass(string CourtsId, string ClassName)
         {
-            var query = Read<Organize>(p => p.F_ParentId.Equals(CourtsId));
+            var query = Read((Organ p) => p.ParentId.Equals(CourtsId));
             if (null != ClassName && !"".Equals(ClassName))
             {
-                query.Where(p => p.F_FullName.Contains(ClassName));
+                query.Where(p => p.Name.Contains(ClassName));
             }
-            return query.Select(p => new { id = p.F_Id, text = p.F_FullName }).ToList();
+            return query.Select(p => new { id = p.Id, text = p.Name }).ToList();
         }
 
 
@@ -148,7 +148,7 @@ namespace ZHXY.Application
         /// <returns></returns>
         public void SetVisitTimes(string[] Ids, int TimesOfWeek, int AutoSet)
         {
-            List<string> DormStudents = Read<DormVisitLimit>(p => p.F_EnabledMark == true).Select(p => p.Student_Id).ToList<string>();
+            var DormStudents = Read<DormVisitLimit>(p => p.F_EnabledMark == true).Select(p => p.Student_Id).ToList();
             var InsertIds = Ids.Except(DormStudents); //需添加的数据
             var UpdateIds = Ids.Intersect(DormStudents); // 需修改的数据
             var DateTimeNow = DateTime.Now;
@@ -159,11 +159,11 @@ namespace ZHXY.Application
                 if(InsertIds.Count() >= ProcessRows)
                 {
                     int Page = InsertIds.Count() / ProcessRows;
-                    StringBuilder SqlText = new StringBuilder("INSERT INTO [dbo].[Dorm_Visit_Limit]([F_Id], [Student_Id], [TotalLimit], [UsableLimit], [IsAutoSet], [CreateTime], [UpdaetTime], [F_EnabledMark]) VALUES ");
+                    var SqlText = new StringBuilder("INSERT INTO [dbo].[Dorm_Visit_Limit]([F_Id], [Student_Id], [TotalLimit], [UsableLimit], [IsAutoSet], [CreateTime], [UpdaetTime], [F_EnabledMark]) VALUES ");
 
                     for(int i=1; i<= Page+1; i++)
                     {
-                        List<string> processList = InsertIds.Skip((i - 1) * ProcessRows).Take(ProcessRows).ToList();
+                        var processList = InsertIds.Skip((i - 1) * ProcessRows).Take(ProcessRows).ToList();
                         foreach (string id in processList)
                         {
                             SqlText.Append("('" + Guid.NewGuid().ToString() + "', '" + id + "', " + TimesOfWeek + ", " + TimesOfWeek + ", " + AutoSet + ", '" + DateTimeNow.ToString() + "', '" + DateTimeNow.ToString() + "', '" + true + "'),");
@@ -174,7 +174,7 @@ namespace ZHXY.Application
                 }
                 else
                 {
-                    StringBuilder SqlText = new StringBuilder("INSERT INTO [dbo].[Dorm_Visit_Limit]([F_Id], [Student_Id], [TotalLimit], [UsableLimit], [IsAutoSet], [CreateTime], [UpdaetTime], [F_EnabledMark]) VALUES ");
+                    var SqlText = new StringBuilder("INSERT INTO [dbo].[Dorm_Visit_Limit]([F_Id], [Student_Id], [TotalLimit], [UsableLimit], [IsAutoSet], [CreateTime], [UpdaetTime], [F_EnabledMark]) VALUES ");
                     foreach (string id in InsertIds)
                     {
                         SqlText.Append("('" + Guid.NewGuid().ToString() + "', '" + id + "', " + TimesOfWeek + ", " + TimesOfWeek + ", " + AutoSet + ", '" + DateTimeNow.ToString() + "', '" + DateTimeNow.ToString() + "', '" + true + "'),");
@@ -190,10 +190,10 @@ namespace ZHXY.Application
                 if (UpdateIds.Count() >= ProcessRows)
                 {
                     int Page = InsertIds.Count() / ProcessRows;
-                    StringBuilder UpdateSql = new StringBuilder("UPDATE [dbo].[Dorm_Visit_Limit] SET [TotalLimit] = " + TimesOfWeek + ", [UsableLimit] = " + TimesOfWeek + ", [IsAutoSet] = " + AutoSet + ", [UpdaetTime] = '" + DateTimeNow + "' WHERE [Student_Id] in (");
+                    var UpdateSql = new StringBuilder("UPDATE [dbo].[Dorm_Visit_Limit] SET [TotalLimit] = " + TimesOfWeek + ", [UsableLimit] = " + TimesOfWeek + ", [IsAutoSet] = " + AutoSet + ", [UpdaetTime] = '" + DateTimeNow + "' WHERE [Student_Id] in (");
                     for (int i = 1; i <= Page + 1; i++)
                     {
-                        List<string> processList = UpdateIds.Skip((i - 1) * ProcessRows).Take(ProcessRows).ToList();
+                        var processList = UpdateIds.Skip((i - 1) * ProcessRows).Take(ProcessRows).ToList();
                         foreach (string id in processList)
                         {
                             UpdateSql.Append("'" + id + "',");
@@ -204,7 +204,7 @@ namespace ZHXY.Application
                 }
                 else
                 {
-                    StringBuilder UpdateSql = new StringBuilder("UPDATE [dbo].[Dorm_Visit_Limit] SET [TotalLimit] = " + TimesOfWeek + ", [UsableLimit] = " + TimesOfWeek + ", [IsAutoSet] = " + AutoSet + ", [UpdaetTime] = '" + DateTimeNow + "' WHERE [Student_Id] in (");
+                    var UpdateSql = new StringBuilder("UPDATE [dbo].[Dorm_Visit_Limit] SET [TotalLimit] = " + TimesOfWeek + ", [UsableLimit] = " + TimesOfWeek + ", [IsAutoSet] = " + AutoSet + ", [UpdaetTime] = '" + DateTimeNow + "' WHERE [Student_Id] in (");
                     foreach (string id in UpdateIds)
                     {
                         UpdateSql.Append("'" + id + "',");

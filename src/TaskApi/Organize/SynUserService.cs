@@ -65,16 +65,16 @@ namespace TaskApi
             var student = new Student();
             if (catetoryId == "Class")
             {
-                var org = db.FindEntity<ZHXY.Domain.Organize>(p => p.F_Id == entity.F_DepartmentId);
+                var org = db.FindEntity<Organ>(p => p.Id == entity.F_DepartmentId);
                 student.F_Class_ID = entity.F_DepartmentId;
-                student.F_Grade_ID = org?.F_ParentId;
-                student.F_Divis_ID = org?.Parent?.F_ParentId;
+                student.F_Grade_ID = org?.ParentId;
+                student.F_Divis_ID = org?.Parent?.ParentId;
             }
             if (catetoryId == "Grade")
             {
-                var org = db.FindEntity<ZHXY.Domain.Organize>(p => p.F_Id == entity.F_DepartmentId);
+                var org = db.FindEntity<Organ>(p => p.Id == entity.F_DepartmentId);
                 student.F_Grade_ID = entity.F_DepartmentId;
-                student.F_Divis_ID = org?.F_ParentId;
+                student.F_Divis_ID = org?.ParentId;
             }
             if (catetoryId == "Division")
                 student.F_Divis_ID = entity.F_DepartmentId;
@@ -132,13 +132,13 @@ namespace TaskApi
             var teacher = new Teacher();
             if (catetoryId == "Class")
             {
-                var org = db.FindEntity<ZHXY.Domain.Organize>(p => p.F_Id == entity.F_DepartmentId);
-                teacher.F_Divis_ID = org?.Parent?.F_ParentId;
+                var org = db.FindEntity<Organ>(p => p.Id == entity.F_DepartmentId);
+                teacher.F_Divis_ID = org?.Parent?.ParentId;
             }
             if (catetoryId == "Grade")
             {
-                var org = db.FindEntity<ZHXY.Domain.Organize>(p => p.F_Id == entity.F_DepartmentId);
-                teacher.F_Divis_ID = org?.F_ParentId;
+                var org = db.FindEntity<Organ>(p => p.Id == entity.F_DepartmentId);
+                teacher.F_Divis_ID = org?.ParentId;
             }
             if (catetoryId == "Division")
                 teacher.F_Divis_ID = entity.F_DepartmentId;
@@ -214,13 +214,13 @@ namespace TaskApi
             entity.F_DeleteMark = isDelete == "1" ? true : false;
             if (catetoryId == "Class")
             {
-                var org = db.FindEntity<ZHXY.Domain.Organize>(p => p.F_Id == orgId);
-                entity.F_OrganizeId = org?.Parent?.F_ParentId;
+                var org = db.FindEntity<Organ>(p => p.Id == orgId);
+                entity.F_OrganizeId = org?.Parent?.ParentId;
             }
             if (catetoryId == "Grade")
             {
-                var org = db.FindEntity<ZHXY.Domain.Organize>(p => p.F_Id == orgId);
-                entity.F_OrganizeId = org?.F_ParentId;
+                var org = db.FindEntity<Organ>(p => p.Id == orgId);
+                entity.F_OrganizeId = org?.ParentId;
             }
             if (catetoryId == "Division")
                 entity.F_OrganizeId = orgId;

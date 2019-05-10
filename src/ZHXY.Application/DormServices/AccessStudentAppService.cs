@@ -49,7 +49,7 @@ namespace ZHXY.Application
             var userService = new SysUserAppService();
             foreach (var id in ids)
             {
-                var devData = new ZHXY.Dorm.Device.tools.PersonMoudle();
+                var devData = new Dorm.Device.tools.PersonMoudle();
 
                 var entity = new AccessStudent();
                 entity.F_DeviceId = deviceId;
@@ -135,9 +135,9 @@ namespace ZHXY.Application
             return data;
         }
 
-        private ZHXY.Dorm.Device.tools.PersonMoudle getTeacherDevData(Teacher teacher)
+        private Dorm.Device.tools.PersonMoudle getTeacherDevData(Teacher teacher)
         {
-            var data = new ZHXY.Dorm.Device.tools.PersonMoudle
+            var data = new Dorm.Device.tools.PersonMoudle
             {
                 //accessCardsn,
                 code = teacher.F_Num,
@@ -179,7 +179,7 @@ namespace ZHXY.Application
             return data;
         }
 
-        private void PUSH_DH(string deviceId, ZHXY.Dorm.Device.tools.PersonMoudle data)
+        private void PUSH_DH(string deviceId, Dorm.Device.tools.PersonMoudle data)
         {
             var r = DHAccount.PUSH_DH_ADD_PERSON(data);
             var result=Json.ToJObject(r.ToString());

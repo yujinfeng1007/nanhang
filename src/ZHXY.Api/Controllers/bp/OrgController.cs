@@ -17,7 +17,7 @@ namespace ZHXY.Api.Controllers
         [IpFilter]
         public IHttpActionResult GetAll()
         {
-            var app = new SysOrganizeAppService();
+            var app = new OrgAppService();
             var orgs = app.GetList();
             return Json(orgs);
         }

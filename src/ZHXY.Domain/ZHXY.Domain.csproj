@@ -83,7 +83,7 @@
     <Compile Include="EntityConfig\System\RoleAuthorizeMap.cs" />
     <Compile Include="EntityConfig\System\RoleMap.cs" />
     <Compile Include="EntityConfig\System\SysOrgLeaderMap.cs" />
-    <Compile Include="EntityConfig\System\SysOrgMap.cs" />
+    <Compile Include="EntityConfig\System\OrgMap.cs" />
     <Compile Include="EntityConfig\System\SysTableDefMap.cs" />
     <Compile Include="EntityConfig\System\UserLogOnMap.cs" />
     <Compile Include="EntityConfig\System\UserMap.cs" />
@@ -126,7 +126,7 @@
     <Compile Include="Entity\System\SysButton.cs" />
     <Compile Include="EntityExtensions\ModuleComparer.cs" />
     <Compile Include="Entity\System\SysModule.cs" />
-    <Compile Include="Entity\System\Organize.cs" />
+    <Compile Include="Entity\System\Organ.cs" />
     <Compile Include="Entity\System\OrganizeGrade.cs" />
     <Compile Include="Entity\System\RoleAuthorize.cs" />
     <Compile Include="Entity\System\Role.cs" />

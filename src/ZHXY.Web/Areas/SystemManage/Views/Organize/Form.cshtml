@@ -1,25 +1,25 @@
 ﻿@{
-    
+
     Layout = "~/Views/Shared/_Index.cshtml";
 }
 <script>
-    var keyValue = $.request("keyValue");
+    let id = $.request("id");
     $(function () {
         initControl();
         $.addRequired('#form1');
-        if (!!keyValue) {
+        if (!!id) {
             $.ajax({
-                url: "/SystemManage/Organize/GetFormJson",
-                data: { keyValue: keyValue },
+                url: "/SystemManage/Organize/Get",
+                data: { id: id },
                 dataType: "json",
                 async: false,
                 success: function (data) {
-                    $("#form1").formSerialize(data);
+                    $("#form1").formSerialize(data.data);
                 }
             });
         } else {
             $.ajax({
-                url: "/SystemManage/Organize/GetFormJson",
+                url: "/SystemManage/Organize/Get",
                 dataType: "json",
                 async: false,
                 success: function (data) {
@@ -29,52 +29,49 @@
         }
     });
     function initControl() {
-        // $("#F_CategoryId").select2({ minimumResultsForSearch: -1 })
-        $("#F_CategoryId").bindSelect({
+        $("#categoryId").bindSelect({
             dictionary: "OrganizeCategory"
         });
-        $("#F_ParentId").bindSelect({
+        $("#parentId").bindSelect({
             url: "/SystemManage/Organize/GetTreeSelectJson",
             displayBlank: false
-        });
-        $("#F_Template").bindSelect({
-            dictionary: "F_Template"
-        });
-        $("#F_Year").bindSelect({
-            dictionary: "F_Year"
-        });
-        $("#F_Class_Type").bindSelect({
-            dictionary: "Class_Type"
         });
     }
     function submitForm() {
         if (!$('#form1').formValid()) {
             return false;
         }
+        let url = (!!id) ? 'update' : 'add';
         $.submitForm({
-            url: "/SystemManage/Organize/SubmitForm?keyValue=" + keyValue,
+            url: url,
             param: $("#form1").formSerialize(),
-            success: function () {
-                $.currentWindow().$("#gridList").resetSelection();
-                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            success: function (r) {
+                if (r.state === 'success') {
+                    $.currentWindow().$("#gridList").resetSelection();
+                    $.currentWindow().$("#gridList").trigger("reloadGrid");
+                     $.modalMsg('success', 'error');
+                } else {
+                    $.modalMsg(r.message, 'error');
+                }
             }
         })
     }
 </script>
 <form id="form1" autocomplete="off">
+    <input type="hidden" name="id" />
     <div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
         <div style="padding-top: 20px; margin-right: 30px;">
             <table class="form">
                 <tr>
                     <th class="formTitle">上级</th>
                     <td class="formValue">
-                        <select id="F_ParentId" name="F_ParentId" class="form-control required">
+                        <select id="parentId" name="parentId" class="form-control required">
                             <option value="0">根节点</option>
                         </select>
                     </td>
                     <th class="formTitle">类型</th>
                     <td class="formValue">
-                        <select id="F_CategoryId" name="F_CategoryId" class="form-control required">
+                        <select id="categoryId" name="categoryId" class="form-control required">
                             <option value="">==请选择==</option>
                         </select>
                     </td>
@@ -82,18 +79,18 @@
                 <tr>
                     <th class="formTitle">名称</th>
                     <td class="formValue">
-                        <input id="F_FullName" name="F_FullName" type="text" class="form-control required" placeholder="请输入名称" />
+                        <input id="name" name="name" type="text" class="form-control required" placeholder="请输入名称" />
                     </td>
                     <th class="formTitle">机构编号</th>
                     <td class="formValue">
-                        <input data-rule-isNumOrLetter="true" id="F_EnCode" name="F_EnCode" type="text" class="form-control required" placeholder="请输入编号" />
+                        <input data-rule-isNumOrLetter="true" id="enCode" name="enCode" type="text" class="form-control required" placeholder="请输入编号" />
                     </td>
                 </tr>
                 <tr>
                 <tr>
                     <th class="formTitle">负责人</th>
                     <td class="formValue">
-                        <input id="F_ManagerId" name="F_ManagerId" type="text" class="form-control" />
+                        <input id="head" name="head" type="text" class="form-control" />
                     </td>
                     <th class="formTitle">手机</th>
                     <td class="formValue">
@@ -101,30 +98,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <th class="formTitle">微信</th>
-                    <td class="formValue">
-                        <input id="F_WeChat" name="F_WeChat" type="text" class="form-control" />
-                    </td>
-                    <th class="formTitle">电话</th>
-                    <td class="formValue">
-                        <input data-rule-isTel="true" id="F_TelePhone" name="F_TelePhone" type="text" class="form-control" />
-                    </td>
-                </tr>
-                <tr>
-
-                    <th class="formTitle">邮箱</th>
-                    <td class="formValue">
-                        <input data-rule-email="true" id="F_Email" name="F_Email" type="text" class="form-control" />
-                    </td>
-                    <th class="formTitle">传真</th>
-                    <td class="formValue">
-                        <input id="F_Fax" name="F_Fax" type="text" class="form-control" />
-                    </td>
-                </tr>
-                <tr>
                     <th class="formTitle">地址</th>
                     <td class="formValue" colspan="3">
-                        <input data-rule-maxlength="150" id="F_Address" name="F_Address" type="text" class="form-control" />
+                        <input data-rule-maxlength="150" id="address" name="address" type="text" class="form-control" />
                     </td>
                 </tr>
                 <tr>
@@ -132,7 +108,7 @@
                         备注
                     </th>
                     <td class="formValue" colspan="3">
-                        <textarea id="F_Description" name="F_Description" data-rule-maxlength="150" class="form-control" style="height: 60px;"></textarea>
+                        <textarea name="description" data-rule-maxlength="150" class="form-control" style="height: 60px;"></textarea>
                     </td>
                 </tr>
             </table>

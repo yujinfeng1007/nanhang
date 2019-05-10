@@ -17,7 +17,7 @@ namespace ZHXY.Domain
         /// </summary>
         public DateTime? F_InTime { get; set; }
 
-        public virtual Organize Class { get; set; }
+        public virtual Organ Class { get; set; }
         public virtual DormRoom Dorm{ get; set; }
     }
 }

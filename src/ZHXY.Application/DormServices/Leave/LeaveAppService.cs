@@ -457,7 +457,7 @@ create table School_CancelHoliday(
         {
             var query = Read<Student>();
             if (string.IsNullOrEmpty(orgId)) return null;
-            var orgs = Read<Organize>(p => p.F_ParentId.Equals(orgId)).Select(p => p.F_Id).ToListAsync().Result;
+            var orgs = Read<Organ>(p => p.ParentId.Equals(orgId)).Select(p => p.Id).ToListAsync().Result;
             orgs?.Add(orgId);
             query = query.Where(p => orgs.Contains(p.F_Class_ID));
             query = string.IsNullOrEmpty(keyword) ? query : query.Where(p => p.F_Name.Contains(keyword));

@@ -207,13 +207,13 @@ namespace ZHXY.Application
         /// <returns>  </returns>
         public static object GetOrganizeList()
         {
-            var organizeApp = new SysOrganizeAppService();
+            var organizeApp = new OrgAppService();
             var data = organizeApp.GetList();
             var dictionary = new Dictionary<string, object>();
             foreach (var item in data)
             {
-                var fieldItem = new FieldItem { encode = item.F_EnCode, fullname = item.F_FullName };
-                dictionary.Add(item.F_Id, fieldItem);
+                var fieldItem = new FieldItem { encode = item.EnCode, fullname = item.Name };
+                dictionary.Add(item.Id, fieldItem);
             }
             return dictionary;
         }

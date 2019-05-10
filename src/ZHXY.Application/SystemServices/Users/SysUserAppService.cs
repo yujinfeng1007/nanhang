@@ -16,9 +16,9 @@ namespace ZHXY.Application
     public class SysUserAppService : AppService
     {
         private IUserRepository UserRepository { get; }
-        private SysOrganizeAppService OrgApp { get; }
+        private OrgAppService OrgApp { get; }
 
-        public SysUserAppService(IZhxyRepository repos, IUserRepository userRepository, SysOrganizeAppService organizeApp)
+        public SysUserAppService(IZhxyRepository repos, IUserRepository userRepository, OrgAppService organizeApp)
         {
             R = repos;
             UserRepository = userRepository;
@@ -28,7 +28,7 @@ namespace ZHXY.Application
         {
             R = new ZhxyRepository();
             UserRepository = new UserRepository();
-            OrgApp = new SysOrganizeAppService();
+            OrgApp = new OrgAppService();
         }
         public List<User> GetList(Expression<Func<User, bool>> expr = null)
         {
@@ -64,7 +64,7 @@ namespace ZHXY.Application
                 var orgs = OrgApp.GetListByParentId(F_DepartmentId);
                 if (orgs != null && orgs.Count != 0)
                 {
-                    var deps = orgs.Select(p => p.F_Id).ToArray();
+                    var deps = orgs.Select(p => p.Id).ToArray();
                     query = query.Where(p => deps.Contains(p.F_DepartmentId) || p.F_DepartmentId.Equals(F_DepartmentId));
                 }
                 else
@@ -115,7 +115,7 @@ namespace ZHXY.Application
         {
             var query = Read<User>(p => p.F_Account != "admin");
             if (string.IsNullOrEmpty(orgId)) return query.ToList();
-            var orgs = recursive ? OrgApp.GetListByParentId(orgId)?.Select(p => p.F_Id).ToList() : Read<Organize>(p => p.F_ParentId.Equals(orgId)).Select(p => p.F_Id).ToListAsync().Result;
+            var orgs = recursive ? OrgApp.GetListByParentId(orgId)?.Select(p => p.Id).ToList() : Read<Organ>(p => p.ParentId.Equals(orgId)).Select(p => p.Id).ToListAsync().Result;
             orgs.Add(orgId);
             return query.Where(p => orgs.Contains(p.F_DepartmentId)).ToListAsync().Result;
         }
@@ -265,14 +265,14 @@ namespace ZHXY.Application
             var userQuery = Read<User>();
             userQuery = !string.IsNullOrWhiteSpace(keyword) ? userQuery.Where(p => p.F_RealName.Contains(keyword)) : userQuery.Where(p => p.F_OrganizeId.Equals(orgId));
             return userQuery.Join(
-                Read<Organize>(),
+                Read<Organ>(),
                 u => u.F_OrganizeId,
-                d => d.F_Id,
+                d => d.Id,
                 (u, o) => new
                 {
                     userId = u.F_Id,
                     userName = u.F_RealName,
-                    orgName = o.F_FullName,
+                    orgName = o.Name,
                 }).ToListAsync().Result;
         }
     }

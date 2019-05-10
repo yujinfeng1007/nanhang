@@ -87,7 +87,6 @@
     <Compile Include="DormServices\Leave\Dto\LeaveApprovalDto.cs" />
     <Compile Include="DormServices\Leave\Dto\LeaveApproveView.cs" />
     <Compile Include="DormServices\Leave\Dto\OneKeyApprovalDto.cs" />
-    <Compile Include="01.Base\PagingDto.cs" />
     <Compile Include="DormServices\Leave\LeaveAppService.cs" />
     <Compile Include="DormServices\Leave\Dto\LeaveRequestDto.cs" />
     <Compile Include="DormServices\Leave\Dto\LeaveListView.cs" />
@@ -109,7 +108,7 @@
     <Compile Include="SystemServices\Logs\Dto\AddLogDto.cs" />
     <Compile Include="SystemServices\Logs\Dto\GetLogListDto.cs" />
     <Compile Include="SystemServices\Organizes\Dto\AddOrRemoveOrgLeaderDto.cs" />
-    <Compile Include="SystemServices\Organizes\SysOrgLeaderManage.cs" />
+    <Compile Include="SystemServices\Organizes\OrgLeaderAppService.cs" />
     <Compile Include="RequestDto\Api\CheckVersionInput.cs" />
     <Compile Include="RequestDto\Api\StudentLeaveInput.cs" />
     <Compile Include="RequestDto\BaseApiInput.cs" />
@@ -156,11 +155,11 @@
     <Compile Include="SystemServices\Logs\SysLogAppService.cs" />
     <Compile Include="SystemServices\Modules\SysButtonAppService.cs" />
     <Compile Include="SystemServices\Modules\SysModuleAppService.cs" />
-    <Compile Include="SystemServices\Organizes\Dto\CreateOrganizeDto.cs" />
+    <Compile Include="SystemServices\Organizes\Dto\AddOrgDto.cs" />
     <Compile Include="SystemServices\Users\Dto\Login\SsoUserInfo.cs" />
     <Compile Include="SystemServices\Organizes\Dto\OrganizeView.cs" />
-    <Compile Include="SystemServices\Organizes\Dto\UpdateOrganizeDto.cs" />
-    <Compile Include="SystemServices\Organizes\SysOrganizeAppService.cs" />
+    <Compile Include="SystemServices\Organizes\Dto\UpdateOrgDto.cs" />
+    <Compile Include="SystemServices\Organizes\OrgAppService.cs" />
     <Compile Include="SystemServices\Roles\SysRoleAppService.cs" />
     <Compile Include="SystemServices\Roles\SysRoleAuthorizeAppService.cs" />
     <Compile Include="SystemServices\Tables\SysFieldDefAppService.cs" />

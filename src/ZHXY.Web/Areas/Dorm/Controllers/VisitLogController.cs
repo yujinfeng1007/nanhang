@@ -25,7 +25,7 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult GetGridJson(Pagination pagination, string F_Building, int Time_Type, string startTime, string endTime)
         {
 
-            if (Time_Type != 7) { Dictionary<string, string> DateTimes = DateHelper.GetDateTimes(Time_Type); startTime = DateTimes["startTime"]; endTime = DateTimes["endTime"]; }
+            if (Time_Type != 7) { var DateTimes = DateHelper.GetDateTimes(Time_Type); startTime = DateTimes["startTime"]; endTime = DateTimes["endTime"]; }
             var data = new
             {
                 rows = App.GetList(pagination, F_Building, Time_Type, startTime, endTime),

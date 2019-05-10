@@ -518,9 +518,6 @@
     <Content Include="Areas\Dorm\Views\Teacher\_FromOnePartial.cshtml" />
     <Content Include="Areas\Dorm\Views\Teacher\_FromThreelPartial.cshtml" />
     <Content Include="Areas\Dorm\Views\Teacher\_FromTwolPartial.cshtml" />
-    <None Include="Configs\system.config.2019.05.05.bak">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Content\js\bootstrap\bootstrap.min.css.bak" />
     <Content Include="Content\js\bootstrap\bootstrap.min.css" />
     <Content Include="Content\js\charts\Chart.js" />
@@ -1593,9 +1590,6 @@
     <Content Include="Areas\SystemManage\Views\Organize\Form.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\Organize\Details.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Areas\SystemManage\Views\Role\Form.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -1674,12 +1668,6 @@
     <Content Include="Areas\SystemManage\Views\TableDef\FieldForm.cshtml" />
     <Content Include="Areas\SystemManage\Views\TableDef\Form.cshtml" />
     <Content Include="Areas\SystemManage\Views\TableDef\index.cshtml" />
-    <Content Include="Areas\SystemManage\Views\Organize\Class_Form.cshtml" />
-    <Content Include="Areas\SystemManage\Views\Organize\Divis_Form.cshtml" />
-    <Content Include="Areas\SystemManage\Views\Organize\Grade_Form.cshtml" />
-    <Content Include="Areas\SystemManage\Views\Organize\Class_Details.cshtml" />
-    <Content Include="Areas\SystemManage\Views\Organize\Divis_Details.cshtml" />
-    <Content Include="Areas\SystemManage\Views\Organize\Grade_Details.cshtml" />
     <Content Include="Views\Home\Import.cshtml" />
     <Content Include="Views\Login\MobileIndex.cshtml" />
     <Content Include="Views\Web.config" />

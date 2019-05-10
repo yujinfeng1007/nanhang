@@ -1,6 +1,8 @@
-﻿namespace ZHXY.Application
+﻿using ZHXY.Common;
+
+namespace ZHXY.Application
 {
-    public class GetLogListDto:PagingDto
+    public class GetLogListDto: Pagination
     {
 
     }
