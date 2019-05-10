@@ -41,8 +41,8 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult SubmitForm(Role roleEntity, string keyValue)
         {
             App.SubmitForm(roleEntity, keyValue);
-            CacheFactory.Cache().RemoveCache(SmartCampusConsts.DUTY);
-            CacheFactory.Cache().WriteCache(SysCacheAppService.GetDutyList(), SmartCampusConsts.DUTY);
+            CacheFactory.Cache().RemoveCache(SYS_CONSTS.DUTY);
+            CacheFactory.Cache().WriteCache(SysCacheAppService.GetDutyList(), SYS_CONSTS.DUTY);
             return Message("操作成功。");
         }
 
@@ -56,8 +56,8 @@ namespace ZHXY.Web.SystemManage.Controllers
             for (var i = 0; i < F_Id.Length - 1; i++)
             {
                 App.Delete(F_Id[i]);
-                CacheFactory.Cache().RemoveCache(SmartCampusConsts.DUTY);
-                CacheFactory.Cache().WriteCache(SysCacheAppService.GetDutyList(), SmartCampusConsts.DUTY);
+                CacheFactory.Cache().RemoveCache(SYS_CONSTS.DUTY);
+                CacheFactory.Cache().WriteCache(SysCacheAppService.GetDutyList(), SYS_CONSTS.DUTY);
             }
             return Message("删除成功。");
         }

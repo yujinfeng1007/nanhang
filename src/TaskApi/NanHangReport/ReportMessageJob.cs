@@ -14,11 +14,11 @@ namespace TaskApi.Job
         private ILog Logger { get; } = LogManager.GetLogger(typeof(ReportMessageJob));
         private static readonly string schoolCode = ConfigurationManager.AppSettings["NanHangSchoolCode"];
         private readonly DateTime now = DateTime.Now;
-        private Repository<LateReturnReport> lateRepo = new Repository<LateReturnReport>(schoolCode);
-        private Repository<NoReturnReport> noReturnRepo = new Repository<NoReturnReport>(schoolCode);
-        private Repository<NoOutReport> noOutRepo = new Repository<NoOutReport>(schoolCode);
-        private Repository<InOutReceive> inOutReceiveRepo = new Repository<InOutReceive>(schoolCode);
-        private Repository<User> sysUserRepo = new Repository<User>(schoolCode);
+        private Repository<LateReturnReport> lateRepo = new Repository<LateReturnReport>();
+        private Repository<NoReturnReport> noReturnRepo = new Repository<NoReturnReport>();
+        private Repository<NoOutReport> noOutRepo = new Repository<NoOutReport>();
+        private Repository<InOutReceive> inOutReceiveRepo = new Repository<InOutReceive>();
+        private Repository<User> sysUserRepo = new Repository<User>();
 
         public void Execute(IJobExecutionContext context)
         {

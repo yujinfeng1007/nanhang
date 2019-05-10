@@ -1,15 +1,17 @@
 ﻿using System;
+using ZHXY.Common;
 
 namespace ZHXY.Application
 {
     /// <summary>
     /// 获取请假历史Dto
     /// </summary>
-    public class GetLeaveHistoryDto:PagingDto
+    public class GetLeaveHistoryDto: Pagination
     {
         /// <summary>
         /// 用户Id(请假人Id)
         /// </summary>
+        public string Keyword { get; set; }
         public string UserId { get; set; }
 
         /// <summary>

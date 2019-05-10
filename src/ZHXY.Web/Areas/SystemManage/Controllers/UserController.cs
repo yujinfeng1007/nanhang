@@ -16,9 +16,9 @@ namespace ZHXY.Web.SystemManage.Controllers
     /// </summary>
     public class UserController : ZhxyWebControllerBase
     {
-        private SysUserAppService App { get; }
+        private UserAppService App { get; }
 
-        public UserController(SysUserAppService app) => App = app;
+        public UserController(UserAppService app) => App = app;
 
         #region view
 
@@ -117,8 +117,8 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult DeleteForm(string keyValue)
         {
             App.Delete(keyValue);
-            CacheFactory.Cache().RemoveCache(SmartCampusConsts.USERS);
-            CacheFactory.Cache().WriteCache(SysCacheAppService.GetUserList(), SmartCampusConsts.USERS);
+            CacheFactory.Cache().RemoveCache(SYS_CONSTS.USERS);
+            CacheFactory.Cache().WriteCache(SysCacheAppService.GetUserList(), SYS_CONSTS.USERS);
             return Message("删除成功。");
         }
 
@@ -241,7 +241,11 @@ namespace ZHXY.Web.SystemManage.Controllers
         }
 
 
+        /// <summary>
+        /// 获取机构下的用户
+        /// </summary>
         [HttpGet]
-        public async Task<ActionResult> GetByOrg(string orgId,string keyword) => await Task.Run(() => Resultaat.Success(App.GetUserByOrg(orgId, keyword)));
+        public async Task<ActionResult> GetOrgUsers(string orgId, string keyword) => await Task.Run(() => Resultaat.Success(App.GetByOrg(orgId, keyword)));
+
     }
 }

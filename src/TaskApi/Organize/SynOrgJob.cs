@@ -138,8 +138,8 @@ namespace TaskApi
         {
             try
             {
-                var db = new ZhxyDbContext(schoolCode);
-                var parentdata = db.Set<Organize>().Where(t => t.F_Id == f_ParentId).FirstOrDefault();
+                var db = new ZhxyDbContext();
+                var parentdata = db.Set<Organ>().Where(t => t.Id == f_ParentId).FirstOrDefault();
                 if (parentdata == null)
                 {
                     return false;
@@ -158,24 +158,21 @@ namespace TaskApi
         {
             try
             {
-                using (var db = new UnitWork(schoolCode).BeginTrans(schoolCode))
+                using (var db = new UnitWork().BeginTrans())
                 {
-                    var entity = new ZHXY.Domain.Organize();
-                    entity.F_EnCode = f_EnCode;
-                    entity.F_FullName = f_FullName;
-                    entity.F_ParentId = f_ParentId;
-                    entity.F_CategoryId = CateGoryId;
-                    entity.F_DeleteMark = isDelete == "1" ? true : false;
-                    var data = db.QueryAsNoTracking<Organize>(t => t.F_Id == f_id).FirstOrDefault();
+                    var entity = new Organ();
+                    entity.EnCode = f_EnCode;
+                    entity.Name = f_FullName;
+                    entity.ParentId = f_ParentId;
+                    entity.CategoryId = CateGoryId;
+                    var data = db.QueryAsNoTracking<Organ>(t => t.Id == f_id).FirstOrDefault();
                     if (data != null)
                     {
-                        entity.Modify(f_id);
                         db.Update(entity);
                     }
                     else
                     {
-                        entity.Create();
-                        entity.F_Id = f_id;
+                        entity.Id = f_id;
                         db.Insert(entity);
                     }
                     if (CateGoryId == "Class")
@@ -235,8 +232,8 @@ namespace TaskApi
         {
             try
             {
-                var db = new ZhxyDbContext(schoolCode);
-                var parentdata = db.Set<Organize>().Where(t => t.F_Id == data.OrgId).FirstOrDefault();
+                var db = new ZhxyDbContext();
+                var parentdata = db.Set<Organ>().Where(t => t.Id == data.OrgId).FirstOrDefault();
                 if (parentdata == null)
                 {
                     return false;

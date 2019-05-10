@@ -30,7 +30,7 @@ create table School_CancelHoliday(
     /// </summary>
     public class LeaveAppService : AppService
     {
-        public LeaveAppService(IZhxyRepository r) => R = r;
+        public LeaveAppService(IZhxyRepository r) : base(r) { }
 
         /// <summary>
         /// 请假申请
@@ -259,13 +259,12 @@ create table School_CancelHoliday(
         /// 获取请假列表
         /// </summary>
         /// <param name="status"> -1:所有的  1:已审批  0:未审批 </param>
-        public (List<LeaveListView> list, int recordCount, int pageCount) GetLeaveHistory(GetLeaveHistoryDto input)
+        public dynamic GetLeaveHistory(GetLeaveHistoryDto input)
         {
             var query = Read<StuLeaveOrder>(p => p.LeaveerId.Equals(input.UserId));
             query = string.IsNullOrEmpty(input.Status) ? query : query.Where(p => p.Status.Equals(input.Status));
             query = string.IsNullOrEmpty(input.Keyword) ? query : query.Where(p => p.ReasonForLeave.Contains(input.Keyword));
-            var (recordCount, pageCount) = query.CountAsync().Result.ComputePage(input.Take);
-            query = query.OrderByDescending(p => p.CreatedTime).Skip(input.Skip).Take(input.Take);
+            query=query.Paging(input);
             var list = query.Select(p => new LeaveListView
             {
                 Id = p.Id,
@@ -304,13 +303,13 @@ create table School_CancelHoliday(
                     continue;
                 }
             }
-            return (list, recordCount, pageCount);
+            return list;
         }
 
         /// <summary>
         /// 获取审批列表
         /// </summary>
-        public (List<LeaveListView> list, int recordCount, int pageCount) GetApprovalList(GetApprovalListDto input)
+        public dynamic GetApprovalList(GetApprovalListDto input)
         {
             var leaveIds = Read<LeaveApprove>(p => p.ApproverId.Equals(input.CurrentUserId)).Select(p => p.OrderId).ToListAsync().Result;
             var query = Read<StuLeaveOrder>(p => leaveIds.Contains(p.Id));
@@ -321,8 +320,7 @@ create table School_CancelHoliday(
             query = string.IsNullOrEmpty(input.Keyword)
                 ? query
                 : query.Where(p => p.ReasonForLeave.Contains(input.Keyword));
-            var (recordCount, pageCount) = query.CountAsync().Result.ComputePage(input.Take);
-            query = query.OrderByDescending(p => p.CreatedTime).Skip(input.Skip).Take(input.Take);
+            query=query.Paging(input);
             var list = query.Select(p => new LeaveListView
             {
                 Id = p.Id,
@@ -336,7 +334,7 @@ create table School_CancelHoliday(
                 CreatedTime = p.CreatedTime
             }).ToListAsync().Result;
             SetViewStatus(input.CurrentUserId, ref list);
-            return (list, recordCount, pageCount);
+            return list;
         }
 
         /// <summary>
@@ -459,7 +457,7 @@ create table School_CancelHoliday(
         {
             var query = Read<Student>();
             if (string.IsNullOrEmpty(orgId)) return null;
-            var orgs = Read<Organize>(p => p.F_ParentId.Equals(orgId)).Select(p => p.F_Id).ToListAsync().Result;
+            var orgs = Read<Organ>(p => p.ParentId.Equals(orgId)).Select(p => p.Id).ToListAsync().Result;
             orgs?.Add(orgId);
             query = query.Where(p => orgs.Contains(p.F_Class_ID));
             query = string.IsNullOrEmpty(keyword) ? query : query.Where(p => p.F_Name.Contains(keyword));
@@ -486,7 +484,7 @@ create table School_CancelHoliday(
         /// 2.请假截至时间大于当前时间的
         /// 3.审批通过的
         /// </summary>
-        public (List<CancellableLeaveView> list, int recordCount, int pageCount) GetCanceList(GetCancelListDto input)
+        public dynamic GetCanceList(GetCancelListDto input)
         {
             var passIds = Read<LeaveApprove>(p => p.Result == 1).Select(p => p.OrderId).Distinct().ToListAsync().Result;
             var rejectIds = Read<LeaveApprove>(p => p.Result == -1).Select(p => p.OrderId).Distinct().ToListAsync().Result;
@@ -506,8 +504,7 @@ create table School_CancelHoliday(
                  LeaveType = p.LeaveType
              }).ToListAsync()
              .Result.Where(p => DateTime.Parse(p.EndOfTime).Date >= DateTime.Now.Date);
-            var (recordCount, pageCount) = query.Count().ComputePage(input.Take);
-            return (query.OrderBy(input.Sort).Skip(input.Skip).Take(input.Take).ToList(), recordCount, pageCount);
+            return query.AsQueryable().Paging(input).ToListAsync().Result;
         }
 
         /// <summary>

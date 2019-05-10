@@ -1,0 +1,151 @@
+﻿
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+    let GRID_WIDTH = window.innerWidth * 0.74;
+    let GRID_HEIGHT = window.innerHeight * 0.9;
+    let TREE_GRID_WIDTH = window.innerWidth * 0.24;
+    let TREE_GRID_HEIGHT = window.innerHeight * 0.96;
+    let GRID_STYLE = "Bootstrap";
+
+    $(function () {
+        $('#layout').layout({
+            west__resizable: false
+        }).sizePane("west", "25%");
+        gridList();
+
+        gridTree();
+
+        $("#btn_search").click(() => {
+            let rowId = $("#treeGrid").jqGrid("getGridParam", "selrow");
+            reloadGrid(rowId)
+        });
+
+        $("#btn_xf").click(() => {
+            let rows = $("#gridList").jqGrid("getGridParam", "selarrrow");
+            $.post('xf', { userId: rows }, function (r) {
+                if (r.state === 'success') {
+                    $.modalMsg("下发成功", 'success');
+                } else {
+                    $.modalMsg(r.message, 'error');
+                }
+            })
+        });
+
+        $("#btn_zx").click(() => {
+            let rows = $("#gridList").jqGrid("getGridParam", "selarrrow");
+            $.post('zx', { userId: rows }, function (r) {
+                if (r.state === 'success') {
+                    $.modalMsg("下发成功", 'success');
+                } else {
+                    $.modalMsg(r.message, 'error');
+                }
+            })
+        });
+
+        $("#btn_sbyh").click(() => {
+            $.modalOpen({
+                id: "Form",
+                title: "修改",
+                url: `/dorm/xftx/sbyh`,
+                width: "1400px",
+                height: "1000px",
+                callBack: function (iframeId) {
+                    top.frames[iframeId].submitForm();
+                }
+            });
+        });
+
+
+    })
+
+    function gridList() {
+        $("#gridList").jqGrid({
+            styleUI: GRID_STYLE,
+            height: GRID_HEIGHT,
+            width: GRID_WIDTH,
+            datatype: 'json',
+            url: `/SystemManage/User/GetOrgUsers`,
+            autoGridWidth: true,
+            multiselect: true,
+            loadonce: false,
+            viewrecords: true,
+            jsonReader: {
+                root: function (r) { return r.data; }
+            },
+            pager: "#gridPager",
+            rowNum: -1,
+            colModel: [
+                { label: "主键", name: "id", hidden: true, key: true },
+                { label: '名称', name: 'name' },
+            ],
+
+        });
+    }
+
+    function reloadGrid(rowId) {
+        $("#gridList").jqGrid('setGridParam', {
+            postData: {
+                keyword: $("#keyword").val(),
+                orgId: rowId
+            },
+        }).trigger('reloadGrid');
+    }
+
+    function gridTree() {
+        $("#treeGrid").jqGrid({
+            styleUI: GRID_STYLE,
+            treeGrid: true,
+            url: "/SystemManage/Organize/GetSubOrg",
+            treeGridModel: "adjacency",
+            datatype: "json",
+            gridview: true,
+            altRows: true,
+            viewrecords: true,
+            autoGridWidth: true,
+            rowNum: -1,
+            shrinkToFit: true,
+            autoGridHeight: true,
+            multiselect: false,
+            height: TREE_GRID_HEIGHT,
+            width: TREE_GRID_WIDTH,
+            ExpandColumn: 'name',
+            ExpandColClick: false,
+            onSelectRow: reloadGrid,
+            jsonReader: {
+                root: function (r) { return r.data; }
+            },
+            colModel: [
+                { label: '机构名称', name: 'name', width: 100, align: 'left', sortable: false },
+                { label: '主键', name: "id", width: 150, align: 'left', key: true, hidden: true },
+                { label: 'level', name: "level", hidden: true },
+            ],
+            
+        });
+    }
+</script>
+
+<div class="ui-layout" id="layout" style="height: 100%; width: 100%;">
+
+    <div class="ui-layout-west">
+        <table id="treeGrid"></table>
+    </div>
+
+    <div class="ui-layout-center">
+        <form class="form-inline topPanel" autocomplete="off">
+            <button type="button" class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></button>
+            <input type="text" class="form-control" id="keyword" placeholder="关键字">
+            <button type="button" id="btn_search" class="btn btn-primary"><i class="fa fa-search"></i></button>
+            <button type="button" id="btn_xf" class="btn btn-primary">下发</button>
+            <button type="button" id="btn_zx" class="btn btn-primary">注销</button>
+            <button type="button" id="btn_sbyh" class="btn btn-primary pull-right">查看设备用户</button>
+        </form>
+        <div class="gridPanel">
+            <table id="gridList"></table>
+            <div id="gridPager"></div>
+        </div>
+    </div>
+
+</div>

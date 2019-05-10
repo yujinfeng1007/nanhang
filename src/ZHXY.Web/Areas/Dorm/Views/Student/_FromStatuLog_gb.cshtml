@@ -1,0 +1,44 @@
+﻿<script src="/Content/js/jqgrid/jqgrid.min.js"></script>
+<link href="/Content/js/jqgrid/jqgrid.css" rel="stylesheet" />
+<script src="/Content/js/jqgrid/grid.locale-cn.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        gridList();
+    });
+
+    function gridList() {
+        var keyValue = $.request("keyValue");
+        var $gridList = $("#gridList");
+        $gridList.dataGrid({
+            url: "/Dorm/School_Students/GetStudentsStatuLog?keyValue=" + keyValue,
+            height: $(window).height() - 173,
+            width: 800,
+            autowidth:false,
+            colModel: [
+
+			 	{ label: '主键', name: 'F_Id', hidden: true, key: true },
+                { label: '创建时间', name: 'F_CreatorTime', width: 180, align: 'left' },
+                {
+                    label: '日常类型', name: 'F_CurStatu', width: 180, align: 'left',
+                    formatter: function (cellvalue, options, rowObject) {
+                        return top.clients.dataItems["F_CurStatu"] == null ? "" : top.clients.dataItems["F_CurStatu"][cellvalue];
+                    }
+                }
+
+            ],
+            pager: "#gridPager",
+            sortname: 'F_DepartmentId asc,F_CreatorTime desc',
+            viewrecords: true
+        });
+        //$("#btn_search").click(function () {
+        //    $gridList.jqGrid('setGridParam', {
+        //        postData: { keyword: $("#txt_keyword").val(), F_DepartmentId: $("#F_Divis_ID").val(), F_Grade: $("#F_Grade_ID").val(), F_Class: $("#F_Class_ID").val(), F_Year: $("#F_Year").val() },
+        //    }).trigger('reloadGrid');
+        //});
+    }
+</script>
+<div class="gridPanel">
+    <table id="gridList"></table>
+    <div id="gridPager"></div>
+</div>

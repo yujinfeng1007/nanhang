@@ -23,11 +23,11 @@ namespace ZHXY.Dorm.Device.DH
         {
             if(X_SUBJECT_TOKEN == null)
             {
-                IDatabase db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
+                var db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
                 X_SUBJECT_TOKEN = db.StringGet(REDIS_TOKEN_SET_KEY);
             }
             string cookieStr = "X-Subject-Token="+ X_SUBJECT_TOKEN;
-            Dictionary<string, string> DataDic = new Dictionary<string, string>();
+            var DataDic = new Dictionary<string, string>();
             DataDic.Add("userName", Constants.DAHUA_LOGIN_USERNAME);
             DataDic.Add("token", X_SUBJECT_TOKEN);
             return HttpHelper.ExecutePost(Constants.UPDATE_TOKEN_URI, JsonConvert.SerializeObject(DataDic), cookieStr);
@@ -41,7 +41,7 @@ namespace ZHXY.Dorm.Device.DH
         {
             if (X_SUBJECT_TOKEN == null)
             {
-                IDatabase db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
+                var db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
                 X_SUBJECT_TOKEN = db.StringGet(REDIS_TOKEN_SET_KEY);
             }
 
@@ -60,7 +60,7 @@ namespace ZHXY.Dorm.Device.DH
         {
             if (X_SUBJECT_TOKEN == null)
             {
-                IDatabase db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
+                var db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
                 X_SUBJECT_TOKEN = db.StringGet(REDIS_TOKEN_SET_KEY);
             }
             if (personMoudle.photoUrl != null && personMoudle.photoUrl.Length != 0 && personMoudle.photoBase64 != null && personMoudle.photoBase64.Length != 0)
@@ -78,7 +78,7 @@ namespace ZHXY.Dorm.Device.DH
         {
             if (X_SUBJECT_TOKEN == null)
             {
-                IDatabase db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
+                var db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
                 X_SUBJECT_TOKEN = db.StringGet(REDIS_TOKEN_SET_KEY);
             }
             return HttpHelper.ExecuteDelete(Constants.SELECT_STUDENTS_INFO+ "?sessionId=" + X_SUBJECT_TOKEN, JsonConvert.SerializeObject(Ids), X_SUBJECT_TOKEN);
@@ -94,7 +94,7 @@ namespace ZHXY.Dorm.Device.DH
         {
             if (X_SUBJECT_TOKEN == null)
             {
-                IDatabase db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
+                var db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
                 X_SUBJECT_TOKEN = db.StringGet(REDIS_TOKEN_SET_KEY);
             }
             return HttpHelper.ExecuteGetPersons(Constants.SELECT_STUDENTS_INFO, personMoudle, X_SUBJECT_TOKEN);
@@ -111,11 +111,11 @@ namespace ZHXY.Dorm.Device.DH
         {
             if (X_SUBJECT_TOKEN == null)
             {
-                IDatabase db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
+                var db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
                 X_SUBJECT_TOKEN = db.StringGet(REDIS_TOKEN_SET_KEY);
             }
-            Dictionary<string, object> dicObj = new Dictionary<string, object>();
-            Dictionary<string, string> dic = new Dictionary<string, string>();
+            var dicObj = new Dictionary<string, object>();
+            var dic = new Dictionary<string, string>();
             dic.Add("name", name);
             dic.Add("pname", pid);
             dic.Add("level", level.ToString());
@@ -136,7 +136,7 @@ namespace ZHXY.Dorm.Device.DH
         {
             if (X_SUBJECT_TOKEN == null)
             {
-                IDatabase db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
+                var db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
                 X_SUBJECT_TOKEN = db.StringGet(REDIS_TOKEN_SET_KEY);
             }
             return HttpHelper.GetDormitorInfo(Constants.SELECT_DORMITORY_INFOS_URI, name, pid, X_SUBJECT_TOKEN);
@@ -151,11 +151,11 @@ namespace ZHXY.Dorm.Device.DH
         {
             if (X_SUBJECT_TOKEN == null)
             {
-                IDatabase db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
+                var db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
                 X_SUBJECT_TOKEN = db.StringGet(REDIS_TOKEN_SET_KEY);
             }
 
-            DirectoryInfo dire = new DirectoryInfo(zipFilePath);
+            var dire = new DirectoryInfo(zipFilePath);
             foreach(var file in dire.GetFiles())
             {
                 HttpHelper.UploadFileToDH(Constants.UPLOAD_PHOTO_ZIP_URI, X_SUBJECT_TOKEN, file.FullName);
@@ -171,7 +171,7 @@ namespace ZHXY.Dorm.Device.DH
         {
             if (X_SUBJECT_TOKEN == null)
             {
-                IDatabase db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
+                var db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
                 X_SUBJECT_TOKEN = db.StringGet(REDIS_TOKEN_SET_KEY);
             }
             HttpHelper.UploadFileToDH(Constants.UPLOAD_PERSON_EXCEL_URI, X_SUBJECT_TOKEN, excelFilePath);
@@ -189,10 +189,10 @@ namespace ZHXY.Dorm.Device.DH
         {
             if (X_SUBJECT_TOKEN == null)
             {
-                IDatabase db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
+                var db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
                 X_SUBJECT_TOKEN = db.StringGet(REDIS_TOKEN_SET_KEY);
             }
-            Dictionary<string, string> DataDic = new Dictionary<string, string>();
+            var DataDic = new Dictionary<string, string>();
             DataDic.Add("id", id);
             DataDic.Add("type", type);
             DataDic.Add("isDomain", isDomain);
@@ -209,12 +209,12 @@ namespace ZHXY.Dorm.Device.DH
         {
             if (X_SUBJECT_TOKEN == null)
             {
-                IDatabase db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
+                var db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
                 X_SUBJECT_TOKEN = db.StringGet(REDIS_TOKEN_SET_KEY);
             }
             mqMoudle.data.optional = Constants.GET_MQ_CONFIG_URI + "?token=" + X_SUBJECT_TOKEN;
             string response = HttpHelper.ExecutePostMachineInfo(mqMoudle.data.optional, JsonConvert.SerializeObject(mqMoudle), X_SUBJECT_TOKEN);
-            JObject jo = (JObject)JsonConvert.DeserializeObject(response);
+            var jo = (JObject)JsonConvert.DeserializeObject(response);
             int code = jo.Value<int>("code"); //返回码
             string desc = jo.Value<string>("desc"); //结果描述  Success
             string userName = jo["data"]["userName"].ToString(); //用户名

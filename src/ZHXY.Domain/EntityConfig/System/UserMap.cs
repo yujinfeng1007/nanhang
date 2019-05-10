@@ -8,6 +8,8 @@ namespace ZHXY.Domain
         {
             ToTable("Sys_User");
             HasKey(t => t.F_Id);
+
+            Property(p => p.OrgId).HasColumnName("F_DepartmentId");
         }
     }
 }

@@ -262,7 +262,7 @@ namespace ZHXY.Common
                 case 6: startTime = DateTime.Today.AddMonths(-1).AddDays(-(int)DateTime.Now.Date.Day + 1).ToString(); endTime = DateTime.Today.AddDays(-(int)DateTime.Now.Day + 1).AddSeconds(-1).ToString(); break;
                 default: break;
             }
-            Dictionary<string, string> hashtable = new Dictionary<string, string>();
+            var hashtable = new Dictionary<string, string>();
             hashtable.Add("startTime", startTime);
             hashtable.Add("endTime", endTime);
             return hashtable;
@@ -318,7 +318,7 @@ namespace ZHXY.Common
         /// <returns></returns>
         public static DateTime GetTime(string timestamp)
         {
-            DateTime StartDateTime = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
+            var StartDateTime = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
             var timespan = timestamp.Trim();
             var length = timespan.Length;
             if (string.IsNullOrEmpty(timespan)) { return DateTime.Now; }
@@ -332,7 +332,7 @@ namespace ZHXY.Common
             try
             {
                 long lTime = long.Parse(timespan) * 10000L;
-                TimeSpan toNow = new TimeSpan(lTime);
+                var toNow = new TimeSpan(lTime);
                 return StartDateTime.Add(toNow);
             }
             catch
@@ -350,7 +350,7 @@ namespace ZHXY.Common
         /// <returns></returns>
         public static long ConvertDateTimeInt(DateTime time)
         {
-            System.DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
+            var startTime = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
             return (long)(time - startTime).Ticks / 10000;
         }
         #endregion

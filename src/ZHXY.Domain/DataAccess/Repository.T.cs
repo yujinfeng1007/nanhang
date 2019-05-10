@@ -23,13 +23,7 @@ namespace ZHXY.Domain
 
         public Repository() => DbContext = new ZhxyDbContext();
 
-        public Repository(string schoolCode)
-        {
-            if (schoolCode.IsEmpty())
-                DbContext = new ZhxyDbContext();
-            else
-                DbContext = new ZhxyDbContext(schoolCode);
-        }
+       
 
         protected string GetFullErrorText(DbEntityValidationException exc)
         {
@@ -227,15 +221,15 @@ namespace ZHXY.Domain
         /// <returns></returns>
         public List<TObject> DataTableToList<TObject>(DataTable dataTable)
         {
-            List<TObject> list = new List<TObject>();
-            Type targetType = typeof(TObject);
+            var list = new List<TObject>();
+            var targetType = typeof(TObject);
             PropertyInfo[] allPropertyArray = targetType.GetProperties();
             foreach (DataRow rowElement in dataTable.Rows)
             {
-                TObject element = Activator.CreateInstance<TObject>();
+                var element = Activator.CreateInstance<TObject>();
                 foreach (DataColumn columnElement in dataTable.Columns)
                 {
-                    foreach (PropertyInfo property in allPropertyArray)
+                    foreach (var property in allPropertyArray)
                     {
                         if (property.Name.Trim().ToUpper().Equals(columnElement.ColumnName.Trim().ToUpper()))
                         {

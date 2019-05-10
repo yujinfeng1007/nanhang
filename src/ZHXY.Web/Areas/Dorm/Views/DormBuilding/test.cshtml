@@ -1,0 +1,69 @@
+﻿@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+
+    $(function () {
+        pageInit();
+    });
+    function pageInit() {
+        jQuery("#list11").jqGrid(
+            {
+                url: ctx + '/JSONData',
+                datatype: "json",
+                height: 200,
+                colNames: ['Inv No', 'Date', 'Client', 'Amount', 'Tax', 'Total', 'Notes'],
+                colModel: [
+                    { name: 'id', index: 'id', width: 55 },
+                    { name: 'invdate', index: 'invdate', width: 90 },
+                    { name: 'name', index: 'name', width: 100 },
+                    { name: 'amount', index: 'amount', width: 80, align: "right" },
+                    { name: 'tax', index: 'tax', width: 80, align: "right" },
+                    { name: 'total', index: 'total', width: 80, align: "right" },
+                    { name: 'note', index: 'note', width: 150, sortable: false }
+                ],
+                rowNum: 10,
+                rowList: [10, 20, 30],
+                pager: '#pager11',
+                sortname: 'id',
+                viewrecords: true,
+                sortorder: "desc",
+                multiselect: false,
+                subGrid: true,
+                subGridUrl: ctx + '/SubGrid',
+                subGridModel: [{
+                    name: ['No', 'Item', 'Qty', 'Unit', 'Line Total'],
+                    width: [55, 200, 80, 80, 80]
+                }],
+                caption: "Subgrid Example"
+            });
+        jQuery("#list11").jqGrid('navGrid', '#pager11', {
+            add: false,
+            edit: false,
+            del: false
+        });
+    }
+
+</script>
+<div class="topPanel">
+    <div class="search">
+        <table>
+            <tr>
+                <td>
+                    <div class="input-group">
+                        <input id="txt_keyword" type="text" class="form-control" placeholder="姓名" style="width: 200px;">
+                        <span class="input-group-btn">
+                            <button id="btn_search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </td>
+                
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="gridPanel">
+    <table id="gridList"></table>
+    <div id="gridPager"></div>
+</div>

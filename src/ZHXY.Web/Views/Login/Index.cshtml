@@ -36,9 +36,6 @@
                         <input id="txt_password" type="password" placeholder="登录密码">
                     </div>
                     <div class="row">
-                        <select id="txt_belongSchool"></select>
-                    </div>
-                    <div class="row">
                         <input id="txt_code" maxlength="4" type="text" placeholder="验证码" style="width: 190px; float: left;">
                         <div style="width: 110px; float: right; padding-top: 14px; padding-left: 14px;">
                             看不清？<span id="switchCode" style="text-decoration: none;cursor:pointer">换一张</span>
@@ -56,19 +53,6 @@
         </div>
     </div>
     <script type="text/javascript">
-
-        function setSchoolList(elementId) {
-            var url = "/Config/GetSchoolList";
-            $.getJSON(url, function (data) {
-                var select = $(`#${elementId}`);
-                select.html("");
-                for (var i = 0; i < data.length; i++) {
-                    select.append(`<option value="${data[i].schoolCode}">${data[i].schoolName}</option>`)
-                }
-            })
-
-        }
-
         (function ($) {
             $.login = {
                 formMessage: function (msg) {
@@ -152,7 +136,6 @@
                 }
             };
             $(function () {
-                setSchoolList("txt_belongSchool");
                 $.login.init();
 
                 $("#txt_belongSchool").on("change", function () {

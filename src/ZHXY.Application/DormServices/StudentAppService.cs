@@ -14,17 +14,14 @@ namespace ZHXY.Application
     /// </summary>
     public class StudentAppService : AppService
     {
+        public StudentAppService(IZhxyRepository r) : base(r)
+        {
+        }
 
         public StudentAppService()
         {
             R = new ZhxyRepository();
         }
-
-        public StudentAppService(IZhxyRepository repos)
-        {
-            R = repos;
-        }
-
         public Student GetByStuNum(string stuNum)
         {
             return Read<Student>(p => p.F_StudentNum.Equals(stuNum)).FirstOrDefaultAsync().Result;
@@ -152,7 +149,7 @@ namespace ZHXY.Application
         public void Delete(string id)
         {
             var student= Get<Student>(id);
-            var user= new SysUserAppService().Get(student.F_Users_ID);
+            var user= new UserAppService().Get(student.F_Users_ID);
             if(user!=null)
             {
                 throw new Exception("请先删除相关联用户！");

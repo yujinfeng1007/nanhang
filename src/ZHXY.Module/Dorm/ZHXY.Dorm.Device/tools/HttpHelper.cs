@@ -11,18 +11,18 @@ namespace ZHXY.Dorm.Device.tools
         {
             try
             {
-                HttpWebRequest myRequest = HttpWebRequest.Create(URI) as HttpWebRequest;
+                var myRequest = HttpWebRequest.Create(URI) as HttpWebRequest;
                 myRequest.Method = "POST";
                 myRequest.ContentType = "application/json;charset=UTF-8";
                 myRequest.ReadWriteTimeout = 30000;
                 if(token != null){ myRequest.Headers.Add("X-Subject-Token", token);}
                 byte[] data = Encoding.UTF8.GetBytes(Param);
                 myRequest.ContentLength = data.Length;
-                Stream myStream = myRequest.GetRequestStream();
+                var myStream = myRequest.GetRequestStream();
                 myStream.Write(data, 0, data.Length);
                 myStream.Close();
-                HttpWebResponse myResponse = myRequest.GetResponse() as HttpWebResponse;
-                StreamReader sr = new StreamReader(myResponse.GetResponseStream(), Encoding.UTF8);
+                var myResponse = myRequest.GetResponse() as HttpWebResponse;
+                var sr = new StreamReader(myResponse.GetResponseStream(), Encoding.UTF8);
                 string res = sr.ReadToEnd();
                 return res;
             }
@@ -32,7 +32,7 @@ namespace ZHXY.Dorm.Device.tools
                 int statucCode = (int) rsp.StatusCode;
                 if(statucCode == 401)
                 {
-                    StreamReader sr = new StreamReader(rsp.GetResponseStream(), Encoding.UTF8);
+                    var sr = new StreamReader(rsp.GetResponseStream(), Encoding.UTF8);
                     string res = sr.ReadToEnd();
                     return res;
                 }
@@ -45,13 +45,13 @@ namespace ZHXY.Dorm.Device.tools
             string url = returnParam(URI, personMoudle);
             try
             {
-                HttpWebRequest myRequest = HttpWebRequest.Create(url) as HttpWebRequest;
+                var myRequest = HttpWebRequest.Create(url) as HttpWebRequest;
                 myRequest.Method = "GET";
                 myRequest.ContentType = "application/json;charset=UTF-8";
                 myRequest.ReadWriteTimeout = 30000;
                 if (token != null) { myRequest.Headers.Add("Cookie", "JSESSIONID=636972042564F947376441F073B8160D;token=" + token); }
-                HttpWebResponse myResponse = myRequest.GetResponse() as HttpWebResponse;
-                StreamReader sr = new StreamReader(myResponse.GetResponseStream(), Encoding.UTF8);
+                var myResponse = myRequest.GetResponse() as HttpWebResponse;
+                var sr = new StreamReader(myResponse.GetResponseStream(), Encoding.UTF8);
                 string res = sr.ReadToEnd();
                 return res;
             }
@@ -61,7 +61,7 @@ namespace ZHXY.Dorm.Device.tools
                 int statucCode = (int)rsp.StatusCode;
                 if (statucCode == 401)
                 {
-                    StreamReader sr = new StreamReader(rsp.GetResponseStream(), Encoding.UTF8);
+                    var sr = new StreamReader(rsp.GetResponseStream(), Encoding.UTF8);
                     string res = sr.ReadToEnd();
                     return res;
                 }
@@ -73,19 +73,19 @@ namespace ZHXY.Dorm.Device.tools
         {
             try
             {
-                HttpWebRequest myRequest = HttpWebRequest.Create(URI) as HttpWebRequest;
+                var myRequest = HttpWebRequest.Create(URI) as HttpWebRequest;
                 myRequest.Method = "POST";
                 myRequest.ContentType = "application/json;charset=UTF-8";
                 myRequest.ReadWriteTimeout = 30000;
                 if (token != null) { myRequest.Headers.Add("Cookie", "JSESSIONID=636972042564F947376441F073B8160D;token=" + token); }
                 byte[] data = Encoding.UTF8.GetBytes(Param);
                 myRequest.ContentLength = data.Length;
-                Stream myStream = myRequest.GetRequestStream();
+                var myStream = myRequest.GetRequestStream();
                 myStream.Write(data, 0, data.Length);
                 myStream.Close();
 
-                HttpWebResponse myResponse = myRequest.GetResponse() as HttpWebResponse;
-                StreamReader sr = new StreamReader(myResponse.GetResponseStream(), Encoding.UTF8);
+                var myResponse = myRequest.GetResponse() as HttpWebResponse;
+                var sr = new StreamReader(myResponse.GetResponseStream(), Encoding.UTF8);
                 string res = sr.ReadToEnd();
                 return res;
             }
@@ -95,7 +95,7 @@ namespace ZHXY.Dorm.Device.tools
                 int statucCode = (int)rsp.StatusCode;
                 if (statucCode == 401)
                 {
-                    StreamReader sr = new StreamReader(rsp.GetResponseStream(), Encoding.UTF8);
+                    var sr = new StreamReader(rsp.GetResponseStream(), Encoding.UTF8);
                     string res = sr.ReadToEnd();
                     return res;
                 }
@@ -107,7 +107,7 @@ namespace ZHXY.Dorm.Device.tools
         {
             try
             {
-                StringBuilder strBuild = new StringBuilder(url + "?");
+                var strBuild = new StringBuilder(url + "?");
                 if(name != null && name.Length != 0)
                 {
                     strBuild.Append("name=" + name + "&");
@@ -117,13 +117,13 @@ namespace ZHXY.Dorm.Device.tools
                     strBuild.Append("pid=" + pid + "&");
                 }
                 url = strBuild.ToString().Substring(0, strBuild.ToString().Length - 1);
-                HttpWebRequest myRequest = HttpWebRequest.Create(url) as HttpWebRequest;
+                var myRequest = HttpWebRequest.Create(url) as HttpWebRequest;
                 myRequest.Method = "GET";
                 myRequest.ContentType = "application/json;charset=UTF-8";
                 myRequest.ReadWriteTimeout = 30000;
                 if (token != null) { myRequest.Headers.Add("Cookie", "JSESSIONID=636972042564F947376441F073B8160D;token=" + token); }
-                HttpWebResponse myResponse = myRequest.GetResponse() as HttpWebResponse;
-                StreamReader sr = new StreamReader(myResponse.GetResponseStream(), Encoding.UTF8);
+                var myResponse = myRequest.GetResponse() as HttpWebResponse;
+                var sr = new StreamReader(myResponse.GetResponseStream(), Encoding.UTF8);
                 string res = sr.ReadToEnd();
                 return res;
             }
@@ -133,7 +133,7 @@ namespace ZHXY.Dorm.Device.tools
                 int statucCode = (int)rsp.StatusCode;
                 if (statucCode == 401)
                 {
-                    StreamReader sr = new StreamReader(rsp.GetResponseStream(), Encoding.UTF8);
+                    var sr = new StreamReader(rsp.GetResponseStream(), Encoding.UTF8);
                     string res = sr.ReadToEnd();
                     return res;
                 }
@@ -152,18 +152,18 @@ namespace ZHXY.Dorm.Device.tools
         {
             try
             {
-                HttpWebRequest myRequest = HttpWebRequest.Create(URI) as HttpWebRequest;
+                var myRequest = HttpWebRequest.Create(URI) as HttpWebRequest;
                 myRequest.Method = "PUT";
                 myRequest.ContentType = "application/json;charset=UTF-8";
                 myRequest.ReadWriteTimeout = 30000;
                 if (token != null) { myRequest.Headers.Add("Cookie", "JSESSIONID=636972042564F947376441F073B8160D;token=" + token); }
                 byte[] data = Encoding.UTF8.GetBytes(Param);
                 myRequest.ContentLength = data.Length;
-                Stream myStream = myRequest.GetRequestStream();
+                var myStream = myRequest.GetRequestStream();
                 myStream.Write(data, 0, data.Length);
                 myStream.Close();
-                HttpWebResponse myResponse = myRequest.GetResponse() as HttpWebResponse;
-                StreamReader sr = new StreamReader(myResponse.GetResponseStream(), Encoding.UTF8);
+                var myResponse = myRequest.GetResponse() as HttpWebResponse;
+                var sr = new StreamReader(myResponse.GetResponseStream(), Encoding.UTF8);
                 string res = sr.ReadToEnd();
                 return res;
             }
@@ -183,18 +183,18 @@ namespace ZHXY.Dorm.Device.tools
         {
             try
             {
-                HttpWebRequest myRequest = HttpWebRequest.Create(URI) as HttpWebRequest;
+                var myRequest = HttpWebRequest.Create(URI) as HttpWebRequest;
                 myRequest.Method = "DELETE";
                 myRequest.ContentType = "application/json;charset=UTF-8";
                 myRequest.ReadWriteTimeout = 30000;
                 if (token != null){myRequest.Headers.Add("Cookie", "JSESSIONID=636972042564F947376441F073B8160D;token=" + token); }
                 byte[] data = Encoding.UTF8.GetBytes(Param);
                 myRequest.ContentLength = data.Length;
-                Stream myStream = myRequest.GetRequestStream();
+                var myStream = myRequest.GetRequestStream();
                 myStream.Write(data, 0, data.Length);
                 myStream.Close();
-                HttpWebResponse myResponse = myRequest.GetResponse() as HttpWebResponse;
-                StreamReader sr = new StreamReader(myResponse.GetResponseStream(), Encoding.UTF8);
+                var myResponse = myRequest.GetResponse() as HttpWebResponse;
+                var sr = new StreamReader(myResponse.GetResponseStream(), Encoding.UTF8);
                 string res = sr.ReadToEnd();
                 return res;
             }
@@ -215,7 +215,7 @@ namespace ZHXY.Dorm.Device.tools
         {
             try
             {
-                HttpWebRequest myRequest = HttpWebRequest.Create(URI) as HttpWebRequest;
+                var myRequest = HttpWebRequest.Create(URI) as HttpWebRequest;
                 myRequest.Method = "POST";
                 myRequest.ReadWriteTimeout = 1000 * 60 * 60;
                 if (token != null) {myRequest.Headers.Add("Cookie", "JSESSIONID=636972042564F947376441F073B8160D;token=" + token); }
@@ -227,21 +227,21 @@ namespace ZHXY.Dorm.Device.tools
                 byte[] endBoundaryBytes = Encoding.UTF8.GetBytes("\r\n--" + boundary + "--\r\n");
                 int pos = filePath.LastIndexOf("\\");
                 string fileName = filePath.Substring(pos + 1);
-                StringBuilder sbHeader = new StringBuilder(string.Format("Content-Disposition:form-data;name=\"file\";filename=\"{0}\"\r\nContent-Type:application/octet-stream\r\n\r\n", fileName));
+                var sbHeader = new StringBuilder(string.Format("Content-Disposition:form-data;name=\"file\";filename=\"{0}\"\r\nContent-Type:application/octet-stream\r\n\r\n", fileName));
 
                 byte[] postHeaderBytes = Encoding.UTF8.GetBytes(sbHeader.ToString());
-                FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+                var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read);
                 byte[] bArr = new byte[fs.Length];
                 fs.Read(bArr, 0, bArr.Length);
                 fs.Close();
-                Stream postStream = myRequest.GetRequestStream();
+                var postStream = myRequest.GetRequestStream();
                 postStream.Write(itemBoundaryBytes, 0, itemBoundaryBytes.Length);
                 postStream.Write(postHeaderBytes, 0, postHeaderBytes.Length);
                 postStream.Write(bArr, 0, bArr.Length);
                 postStream.Write(endBoundaryBytes, 0, endBoundaryBytes.Length);
                 postStream.Close();
-                HttpWebResponse myResponse = myRequest.GetResponse() as HttpWebResponse;
-                StreamReader sr = new StreamReader(myResponse.GetResponseStream(), Encoding.UTF8);
+                var myResponse = myRequest.GetResponse() as HttpWebResponse;
+                var sr = new StreamReader(myResponse.GetResponseStream(), Encoding.UTF8);
                 string res = sr.ReadToEnd();
                 return res;
             }
@@ -261,7 +261,7 @@ namespace ZHXY.Dorm.Device.tools
         /// <returns></returns>
         public static string returnParam(string Url, PersonMoudle personMoudle)
         {
-            StringBuilder Param = new StringBuilder("?");
+            var Param = new StringBuilder("?");
             if (personMoudle.code != null && personMoudle.code.Length != 0)
             {
                 Param.Append("code=" + personMoudle.code + "&");

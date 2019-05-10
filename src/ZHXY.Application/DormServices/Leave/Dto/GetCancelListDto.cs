@@ -1,6 +1,8 @@
-﻿namespace ZHXY.Application
+﻿using ZHXY.Common;
+
+namespace ZHXY.Application
 {
-    public class GetCancelListDto:PagingDto
+    public class GetCancelListDto: Pagination
     {
         public string CurrentUserId { get; set; }
 

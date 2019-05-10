@@ -69,6 +69,6 @@
         /// 闸机和楼栋的关系
         /// </summary>
         public const string REL_GATE_BUILDING = "GATE_BUILDING";
-
+        public const string REL_BUILDING_USERS = "Building_User";
     }
 }

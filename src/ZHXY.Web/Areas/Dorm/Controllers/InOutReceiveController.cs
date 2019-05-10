@@ -29,6 +29,7 @@ namespace ZHXY.Web.Dorm.Controllers
                 page = pagination.Page,
                 records = pagination.Records
             };
+
             return Content(data.ToJson());
         }
         

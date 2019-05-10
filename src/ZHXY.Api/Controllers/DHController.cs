@@ -70,7 +70,7 @@ namespace ZHXY.Api.Controllers
         public static void process()
         {
             //批量同步11栋和12栋学生数据，到12栋1楼101室
-            NHModel model = new NHModel();
+            var model = new NHModel();
             var stuList = model.StudentInfoes.Where(p => p.studentBuildingId.Contains("12栋") || p.studentBuildingId.Contains("11栋")).Select(p => new PersonMoudle
             {
                 orgId = "org001",
@@ -86,7 +86,7 @@ namespace ZHXY.Api.Controllers
                 photoUrl = p.ImgUri
             }).ToList();
 
-            foreach (PersonMoudle person in stuList)
+            foreach (var person in stuList)
             {
                 DHAccount.PUSH_DH_ADD_PERSON(person);
             }

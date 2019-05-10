@@ -6,7 +6,7 @@ namespace ZHXY.Application
     /// <summary>
     /// 获取登录考核dto
     /// </summary>
-    public class GetLoginStatisticsDto : PagingDto
+    public class GetLoginStatisticsDto : Pagination
     {
         /// <summary>
         /// 0:自定义时间  1:本周 2:本月  
@@ -15,6 +15,7 @@ namespace ZHXY.Application
         public string Start { get; set; }
         public string End { get; set; }
         public string OrgId { get; set; }
+        public string Keyword { get; set; }
         public DateTime StartTime
         {
             get

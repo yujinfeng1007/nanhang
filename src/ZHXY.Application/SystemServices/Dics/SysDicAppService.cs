@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ZHXY.Common;
 
 namespace ZHXY.Application
 {
@@ -10,40 +11,39 @@ namespace ZHXY.Application
     /// </summary>
     public class SysDicAppService : AppService
     {
-        private IRepositoryBase<SysDic> Repository { get; }
-
-        public SysDicAppService() => Repository = new Repository<SysDic>();
-
-        public SysDicAppService(IRepositoryBase<SysDic> repos) => Repository = repos;
-
-        public List<SysDic> GetList() => Repository.QueryAsNoTracking().ToList();
-
-        public SysDic GetForm(string keyValue) => Repository.Find(keyValue);
-
-        public void DeleteForm(string keyValue)
+        public SysDicAppService(IZhxyRepository r) : base(r)
         {
-            if (Repository.QueryAsNoTracking().Count(t => t.F_ParentId.Equals(keyValue)) > 0)
-            {
-                throw new Exception("删除失败！操作的对象包含了下级数据。");
-            }
-            else
-            {
-                Repository.BatchDelete(t => t.F_Id == keyValue);
-            }
+            
         }
 
-        public void SubmitForm(SysDic itemsEntity, string keyValue)
+        public SysDicAppService()
         {
-            if (!string.IsNullOrEmpty(keyValue))
+            R = new ZhxyRepository();
+        }
+
+        public List<SysDic> GetAll() =>Read<SysDic>().ToList();
+
+        public SysDic GetById(string id) => Get<SysDic>(id);
+
+        public void Delete(string id)
+        {
+            if(Read<SysDic>(p=>p.F_ParentId.Equals(id)).Any()) throw new Exception("删除失败！操作的对象包含了下级数据。");
+            DelAndSave<SysDic>(id);
+        }
+
+        public void Submit(SysDic input, string id)
+        {
+            if (!string.IsNullOrEmpty(id))
             {
-                itemsEntity.Modify(keyValue);
-                Repository.Update(itemsEntity);
+                var dic = Get<SysDic>(id);
+                input.MapTo(dic);
             }
             else
             {
-                itemsEntity.Create();
-                Repository.Insert(itemsEntity);
+                input.F_Id = Guid.NewGuid().ToString();
+                Add(input);
             }
+            SaveChanges();
         }
     }
 }

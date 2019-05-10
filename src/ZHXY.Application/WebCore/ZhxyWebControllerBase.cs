@@ -19,9 +19,6 @@ using ZHXY.Common;
 
 namespace ZHXY.Application
 {
-    /// <summary>
-    /// 些为基础类，禁止修改，如需修改，请发需求易本辰
-    /// </summary>
     [LoginAuthentication]
     [ValidataParam]
     public abstract class ZhxyWebControllerBase : Controller
@@ -595,7 +592,7 @@ namespace ZHXY.Application
                             {
                                 case "F_OrganizeId":
                                     {
-                                        if (CacheFactory.Cache().GetCache<Dictionary<string, object>>(SmartCampusConsts.ORGANIZE).TryGetValue((string)pi.GetValue(t), out value2))
+                                        if (CacheFactory.Cache().GetCache<Dictionary<string, object>>(SYS_CONSTS.ORGANIZE).TryGetValue((string)pi.GetValue(t), out value2))
                                         {
                                             row[kv.Value[0]] = GetPropertyValue(value2, "fullname");
                                         }
@@ -604,7 +601,7 @@ namespace ZHXY.Application
                                     }
                                 case "F_DepartmentId":
                                     {
-                                        if (CacheFactory.Cache().GetCache<Dictionary<string, object>>(SmartCampusConsts.ORGANIZE).TryGetValue((string)pi.GetValue(t), out value2))
+                                        if (CacheFactory.Cache().GetCache<Dictionary<string, object>>(SYS_CONSTS.ORGANIZE).TryGetValue((string)pi.GetValue(t), out value2))
                                         {
                                             row[kv.Value[0]] = GetPropertyValue(value2, "fullname");
                                         }
@@ -613,7 +610,7 @@ namespace ZHXY.Application
                                     }
                                 case "F_RoleId":
                                     {
-                                        if (CacheFactory.Cache().GetCache<Dictionary<string, object>>(SmartCampusConsts.ROLE).TryGetValue((string)pi.GetValue(t), out value2))
+                                        if (CacheFactory.Cache().GetCache<Dictionary<string, object>>(SYS_CONSTS.ROLE).TryGetValue((string)pi.GetValue(t), out value2))
                                         {
                                             row[kv.Value[0]] = GetPropertyValue(value2, "fullname");
                                         }
@@ -622,7 +619,7 @@ namespace ZHXY.Application
                                     }
                                 case "F_DutyId":
                                     {
-                                        if (CacheFactory.Cache().GetCache<Dictionary<string, object>>(SmartCampusConsts.DUTY).TryGetValue((string)pi.GetValue(t), out value2))
+                                        if (CacheFactory.Cache().GetCache<Dictionary<string, object>>(SYS_CONSTS.DUTY).TryGetValue((string)pi.GetValue(t), out value2))
                                         {
                                             row[kv.Value[0]] = GetPropertyValue(value2, "fullname");
                                         }
@@ -631,7 +628,7 @@ namespace ZHXY.Application
                                     }
                                 case "F_AreaId":
                                     {
-                                        if (CacheFactory.Cache().GetCache<Dictionary<string, object>>(SmartCampusConsts.AREA).TryGetValue((string)pi.GetValue(t), out value2))
+                                        if (CacheFactory.Cache().GetCache<Dictionary<string, object>>(SYS_CONSTS.AREA).TryGetValue((string)pi.GetValue(t), out value2))
                                         {
                                             row[kv.Value[0]] = GetPropertyValue(value2, "fullname");
                                         }
@@ -640,7 +637,7 @@ namespace ZHXY.Application
                                     }
                                 default:
                                     {
-                                        if (CacheFactory.Cache().GetCache<Dictionary<string, object>>(SmartCampusConsts.DATAITEMS).TryGetValue(kv.Value[1], out value2))
+                                        if (CacheFactory.Cache().GetCache<Dictionary<string, object>>(SYS_CONSTS.DATAITEMS).TryGetValue(kv.Value[1], out value2))
                                         {
                                             string key;
                                             if (pi.GetValue(t).GetType().Name.Equals("Boolean"))

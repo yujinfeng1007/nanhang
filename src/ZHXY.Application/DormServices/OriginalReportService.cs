@@ -14,11 +14,11 @@ namespace ZHXY.Application
     /// </summary>
     public class OriginalReportService : AppService
     {
-        public OriginalReportService(IZhxyRepository r) => R = r;
+        public OriginalReportService(IZhxyRepository r) : base(r) { }
 
         public List<OriginalReport> GetMonthOriginalList(Pagination pagination, string studentNum,string startTime,string endTime)
         {
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             string tablePart = now.ToString("yyyyMM");
             string sql = "select * from dhflow_" + tablePart;
             var data = GetDataTable(sql, null);
@@ -43,13 +43,13 @@ namespace ZHXY.Application
         }
         public List<OriginalReport> GetOriginalList(Pagination pagination, string studentNum, string startTime, string endTime)
         {
-            List<OriginalReport> list = new List<OriginalReport>();
+            var list = new List<OriginalReport>();
             var hasStudentNum = !string.IsNullOrEmpty(studentNum);
             if (!string.IsNullOrEmpty(startTime)&&!string.IsNullOrEmpty(endTime))
             {
                 var start = Convert.ToDateTime(startTime);
                 var end = Convert.ToDateTime(endTime);
-                StringBuilder sb = new StringBuilder("select * from dhflow_");
+                var sb = new StringBuilder("select * from dhflow_");
                 if (DateHelper.IsExtendIntoNext("month", end, start))
                 {
                     sb.Append(start.ToString("yyyyMM"));
@@ -67,14 +67,14 @@ namespace ZHXY.Application
                     sb.Append(" where "+ nameof(OriginalReport.Date) + ">='"+startTime+"' and "+ nameof(OriginalReport.Date) + "<='"+endTime+"'");
                     if (hasStudentNum) sb.Append(" and code='"+studentNum+"'");
                 }
-                StringBuilder ressb = new StringBuilder();
+                var ressb = new StringBuilder();
                 ressb.Append("select top "+pagination.Rows+" *");
                 ressb.Append(" from(select row_number() over(order by "+nameof(OriginalReport.Date)+" asc) as rownumber,*");
                 ressb.Append(" from(" + sb.ToString() + ") as a) temp_row");
                 ressb.Append(" where rownumber>(("+pagination.Page+"-1)*"+pagination.Rows+ ") order by " + nameof(OriginalReport.Date) + " asc");
                 var data = GetDataTable(ressb.ToString(), null);
                 list = data.TableToList<OriginalReport>();
-                StringBuilder countsb = new StringBuilder();
+                var countsb = new StringBuilder();
                 countsb.Append("select COUNT(*) " + nameof(Pagination.Records));
                 countsb.Append(" from ("+sb.ToString()+") as a");
                 var countData = GetDataTable(countsb.ToString(), null);
@@ -83,14 +83,14 @@ namespace ZHXY.Application
             }
             else
             {
-                DateTime now = DateTime.Now;
+                var now = DateTime.Now;
                 string tablePart = now.ToString("yyyyMM");
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
                 sb.Append(" select top "+pagination.Rows+" *");
                 sb.Append(" from(select row_number()");
                 sb.Append(" over(order by "+nameof(OriginalReport.Date)+" asc) as rownumber, *");
                 sb.Append(" from dhflow_" + tablePart);
-                StringBuilder countsb = new StringBuilder();
+                var countsb = new StringBuilder();
                 countsb.Append("select COUNT(*) "+nameof(Pagination.Records)+" from DHFLOW_");
                 countsb.Append(tablePart);
                 if (hasStudentNum)
@@ -113,7 +113,7 @@ namespace ZHXY.Application
             var end = datetime.ToString("yyyy-MM-dd") + " 23:59:59";
             var start = datetime.ToString("yyyy-MM-dd") + " 00:00:00";
             var tablePart = datetime.ToString("yyyyMM");
-            StringBuilder sb = new StringBuilder("select * from dhflow_");
+            var sb = new StringBuilder("select * from dhflow_");
             sb.Append(tablePart);
             sb.Append(" where");
             sb.Append(" "+nameof(OriginalReport.Date)+" >=@start and "+nameof(OriginalReport.Date)+"<=@end");
@@ -140,7 +140,7 @@ namespace ZHXY.Application
             var end = datetime.ToString("yyyy-MM-dd") + " 23:59:59";
             var start = datetime.ToString("yyyy-MM-dd") + " 00:00:00";
             var tablePart = datetime.ToString("yyyyMM");
-            StringBuilder sb = new StringBuilder("select * from dhflow_");
+            var sb = new StringBuilder("select * from dhflow_");
             sb.Append(tablePart);
             sb.Append(" where");
             sb.Append(" "+nameof(OriginalReport.Date)+" >=@start and "+ nameof(OriginalReport.Date) + "<=@end");
@@ -163,7 +163,7 @@ namespace ZHXY.Application
         public string CreateSql(string stuId, ref IDictionary<string, string> parms)
         {
             string tablePart = DateTime.Now.ToString("yyyyMM");
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append("select * from dhflow_");
             sb.Append(tablePart);
             if (!string.IsNullOrEmpty(stuId))

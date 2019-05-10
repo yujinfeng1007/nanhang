@@ -6,8 +6,6 @@ using System.Data.Entity;
 using System.Linq;
 using System.Linq.Dynamic;
 using System.Threading.Tasks;
-using ZHXY.Application.DormServices.Gates.Dto;
-using ZHXY.Domain.Entity.Dorm;
 
 namespace ZHXY.Application
 {
@@ -19,14 +17,13 @@ namespace ZHXY.Application
     /// </summary>
     public class DormBuildingService : AppService
     {
-        public DormBuildingService(IZhxyRepository r) => R = r;
+        public DormBuildingService(IZhxyRepository r) : base(r) { }
 
         public async Task<DormBuildingView> AddAsync(CreateDormBuildingDto input)
         {
-            Building entity = input;
-            //if (Read<Building>(p => p.Title.Equals(input.ShortName)).AnyAsync().Result) throw new Exception("已有相同的名称!");
-            //entity.SearchIndex = entity.GetSearchString(new[] { nameof(entity.ShortName), nameof(entity.Contact), nameof(entity.Address), nameof(entity.Remark) });
-            AddAndSave(entity);
+            Building entity = input;            
+            Add(entity);
+            await SaveChangesAsync();
             return entity;
         }
 
@@ -37,11 +34,8 @@ namespace ZHXY.Application
             if (string.IsNullOrEmpty(input.Id)) throw new ArgumentNullException(nameof(input.Id));
             var entity =  Get<Building>(input.Id);
             if (entity == null) throw new Exception($"No objects were found based on this Id : {input.Id}");
-            input.MapTo(entity);
-            //if (Read<Building>(p => p.ShortName.Equals(entity.ShortName) && p.Id != entity.Id).AnyAsync().Result) throw new Exception("已有相同的名称!");
-            //entity.SearchIndex = entity.GetSearchString(new[] { nameof(entity.ShortName), nameof(entity.Contact), nameof(entity.Address), nameof(entity.Remark) });
-            //Modify(entity);
-             SaveChanges();
+            input.MapTo(entity);            
+            await SaveChangesAsync();
             return entity;
         }
 
@@ -52,42 +46,74 @@ namespace ZHXY.Application
             var query = Read<Building>();
             query = string.IsNullOrEmpty(keyword) ? query : query.Where(p => p.Title.Contains(keyword));
             pagination.Records = query.CountAsync().Result;
-            pagination.CheckSort<Building>();
+            pagination.GetOrdering<Building>();
             query = string.Equals("false", pagination.Sidx, StringComparison.CurrentCultureIgnoreCase) ? query.OrderBy(p => p.BuildingNo) : query.OrderBy(pagination.Sidx);
             query = query.Skip(pagination.Skip).Take(pagination.Rows);
             return query.ToListAsync().Result.MapToList<DormBuildingView>();
         }
 
-        public void BindBuilding(GateDto input)
+        /// <summary>
+        /// 获取所有楼栋
+        /// auth:yujinfeng
+        /// </summary>
+        /// <returns></returns>
+        public dynamic GetAll()
         {
-            var entity = Query<Dorm_BuildingDevice>(p => p.building_id== input.F_GateId && p.device_id==input.F_Sn).FirstOrDefault();
-            
-            if(entity == null)
+            return Read<Building>().Select(p => new
             {
-                entity = new Dorm_BuildingDevice();
-                entity.building_id = input.F_GateId;
-                entity.device_id = input.F_Sn;
+                id=p.Id,
+                name=p.Title
+            }).ToListAsync().Result;
+        }
 
-                AddAndSave(entity);
 
+        /// <summary>
+        /// 绑定楼栋的宿管
+        /// </summary>
+        public void BindUsers(string id, string[] users) {
+            foreach (var user in users) {
+                var rel = new Relevance
+                {
+                    Name = SYS_CONSTS.REL_BUILDING_USERS,
+                    FirstKey = id,
+                    SecondKey = user
+                };
+                Add(rel);
             }
+            SaveChanges();
         }
 
-        public void UnbindBuilding(GateDto input)
+      
+        /// <summary>
+        /// 解除楼栋所绑定的宿管
+        /// </summary>
+        public void UnBindUser(string id, string userId)
         {
-            var entity = Query<Dorm_BuildingDevice>(p =>p.device_id == input.F_Sn).FirstOrDefault();
-
-            if (entity != null)
-            {
-                DelAndSave(entity);
-            }
+            var user = Query<Relevance>(p => p.Name.Equals(SYS_CONSTS.REL_BUILDING_USERS) && p.FirstKey.Equals(id) && p.SecondKey.Equals(userId)).FirstOrDefault();
+            DelAndSave(user);
         }
 
 
-
-        public Building GetBuildingByNo(string buildingNo)
+        /// <summary>
+        /// 获取楼栋所绑定的宿管
+        /// </summary>        
+        public List<User> GetSubBindUsers(string id)
         {
-            return Query<Building>(t => t.BuildingNo == buildingNo).FirstOrDefault();
+            var usersIds = Read<Relevance>(p => p.Name.Equals(SYS_CONSTS.REL_BUILDING_USERS) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
+            var list = Read<User>(p => usersIds.Contains(p.F_Id)).ToList();
+            return list;
         }
+
+        /// <summary>
+        /// 获取楼栋未绑定的宿管 宿管机构ID:27e1854fd963d24b8c5d88506a775c2a  或者根据角色宿管进行过滤
+        /// </summary>        
+        public List<User> GetNotBindUsers(string id)
+        {
+            var usersIds = Read<Relevance>(p => p.Name.Equals(SYS_CONSTS.REL_BUILDING_USERS) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
+            var list = Read<User>(p => !usersIds.Contains(p.F_Id) && p.F_OrganizeId == "27e1854fd963d24b8c5d88506a775c2a").ToList();
+            return list;
+        }
+       
+
     }
 }

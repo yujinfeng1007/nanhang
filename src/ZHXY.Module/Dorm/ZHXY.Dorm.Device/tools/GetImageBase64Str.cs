@@ -13,7 +13,7 @@ namespace ZHXY.Dorm.Device.tools
             bool flag = DownLoadPic(ImageURI, fileName);
             if (flag)
             {
-                Stream stream = FileToStream(fileName);
+                var stream = FileToStream(fileName);
                 byte[] by = StreamToBytes(stream);
                 return Convert.ToBase64String(by);
             }
@@ -26,7 +26,7 @@ namespace ZHXY.Dorm.Device.tools
         public static Stream FileToStream(string fileName)
         {
             // 打开文件
-            FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
+            var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
             // 读取文件的 byte[]
             byte[] bytes = new byte[fileStream.Length];
             fileStream.Read(bytes, 0, bytes.Length);
@@ -50,10 +50,10 @@ namespace ZHXY.Dorm.Device.tools
             bool flag = true;
             try
             {
-                HttpWebRequest request = WebRequest.CreateHttp(url);
+                var request = WebRequest.CreateHttp(url);
                 request.Method = "GET";
                 var response = request.GetResponse() as HttpWebResponse;
-                Stream stream = response.GetResponseStream();
+                var stream = response.GetResponseStream();
                 Stream fileStream = new FileStream(fileName, FileMode.Create);
                 byte[] bArr = new byte[1024];
                 int size;

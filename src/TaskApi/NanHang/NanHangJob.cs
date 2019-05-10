@@ -39,15 +39,15 @@ namespace TaskApi.Job
         }
         public static void downImage()
         {
-            NHModel model = new NHModel();
+            var model = new NHModel();
             var stuList = model.StudentInfoes.Where(p => p.studentBuildingId.Contains("12栋") || p.studentBuildingId.Contains("11栋")).ToList();
-            System.Data.DataTable dt = new System.Data.DataTable();
-            DataColumn dc1 = new DataColumn("姓名", Type.GetType("System.String"));
-            DataColumn dc2 = new DataColumn("性别", Type.GetType("System.String"));
-            DataColumn dc3 = new DataColumn("学工号", Type.GetType("System.String"));
-            DataColumn dc4 = new DataColumn("所属组织", Type.GetType("System.String"));
-            DataColumn dc5 = new DataColumn("身份证号", Type.GetType("System.String"));
-            DataColumn dc6 = new DataColumn("类别", Type.GetType("System.String"));
+            var dt = new DataTable();
+            var dc1 = new DataColumn("姓名", Type.GetType("System.String"));
+            var dc2 = new DataColumn("性别", Type.GetType("System.String"));
+            var dc3 = new DataColumn("学工号", Type.GetType("System.String"));
+            var dc4 = new DataColumn("所属组织", Type.GetType("System.String"));
+            var dc5 = new DataColumn("身份证号", Type.GetType("System.String"));
+            var dc6 = new DataColumn("类别", Type.GetType("System.String"));
             dt.Columns.Add(dc1);
             dt.Columns.Add(dc2);
             dt.Columns.Add(dc3);
@@ -61,7 +61,7 @@ namespace TaskApi.Job
                 bool t= GetImageBase64Str.DownLoadPic(d.ImgUri, fileName);
                 if (t)
                 {
-                    DataRow dr = dt.NewRow();
+                    var dr = dt.NewRow();
                     dr["姓名"] = d.studentName;
                     dr["性别"] = d.studentSex=="0"?"女":"男";
                     dr["学工号"] = d.studentNo;
@@ -77,7 +77,7 @@ namespace TaskApi.Job
         {
             Console.WriteLine("------------批量同步11栋和12栋学生数据，到12栋1楼101室");
             //批量同步11栋和12栋学生数据，到12栋1楼101室
-            NHModel model = new NHModel();
+            var model = new NHModel();
             var stuList = model.StudentInfoes.Where(p => p.studentBuildingId.Contains("12栋") || p.studentBuildingId.Contains("11栋")).Select(p => new PersonMoudle
             {
                 orgId = "org001",
@@ -93,7 +93,7 @@ namespace TaskApi.Job
                 photoUrl = p.ImgUri
             }).ToList();
 
-            foreach (PersonMoudle person in stuList)
+            foreach (var person in stuList)
             {
                 try
                 {
@@ -114,11 +114,11 @@ namespace TaskApi.Job
         public void ProcessStudent()
         {
             Console.WriteLine("南航项目：开始同步学生信息 --> " + DateTime.Now.ToLocalTime());
-            Stopwatch sw = new Stopwatch();
+            var sw = new Stopwatch();
             sw.Start();
 
-            NHModel newDb = new NHModel();
-            NanHangAccept oldDb = new NanHangAccept();
+            var newDb = new NHModel();
+            var oldDb = new NanHangAccept();
 
             ///---------      Step1: 更新 School_Students 表数据      ---------///
             ProcessSchoolStudentInfo(oldDb, newDb);
@@ -153,11 +153,11 @@ namespace TaskApi.Job
         public void ProcessTeacher()
         {
             Console.WriteLine("南航项目：开始同步教师信息 --> " + DateTime.Now.ToLocalTime());
-            Stopwatch sw = new Stopwatch();
+            var sw = new Stopwatch();
             sw.Start();
-            
-            NHModel newDb = new NHModel();
-            NanHangAccept oldDb = new NanHangAccept();
+
+            var newDb = new NHModel();
+            var oldDb = new NanHangAccept();
 
             ///---------      Step1: 更新 School_Teachers 表数据      ---------///
             ProcessSchoolTeacherInfo(oldDb, newDb);
@@ -181,14 +181,14 @@ namespace TaskApi.Job
         public void ProcessOrgInfo()
         {
             Console.WriteLine("开始同步组织机构信息: 南航项目 --> " + DateTime.Now.ToLocalTime());
-            Stopwatch sw = new Stopwatch();
+            var sw = new Stopwatch();
             sw.Start();
             //校方数据集(分为两种：修改数据和新增数据)
-            NHModel newDb = new NHModel();
+            var newDb = new NHModel();
             var newData = newDb.OrganizationInfoes.Select(p => new Sys_Organize { F_Id = p.OrgId, F_FullName = p.OrgName, F_ParentId = p.ParentOrgId, F_CreatorTime = p.CreatedTime, F_LastModifyTime = p.LastUpdatedTime, F_EnCode = p.OrgId, F_DeleteMark=false }).ToList();
 
             //获取生产环境数据库数据集
-            NanHangAccept oldDb = new NanHangAccept();
+            var oldDb = new NanHangAccept();
             //var oldData = oldDb.Sys_Organize.Select(p => new Sys_Organize { F_Id = p.F_Id, F_FullName = p.F_FullName, F_ParentId = p.F_ParentId, F_CreatorTime = p.F_CreatorTime, F_LastModifyTime = p.F_LastModifyTime }).ToList();
             var oldData = oldDb.Sys_Organize.ToList();
             var interList = newData.Intersect(oldData).ToList(); //取交集 （不作任何操作）
@@ -196,8 +196,8 @@ namespace TaskApi.Job
             newData = newData.Except(interList).ToList();
             var addList = newData.Except(oldData).ToList(); //取差集 （新增和修改数据）
 
-            List<String> idList = oldData.Select(p => p.F_Id).ToList();
-            List<Sys_Organize> endList = new List<Sys_Organize>();
+            var idList = oldData.Select(p => p.F_Id).ToList();
+            var endList = new List<Sys_Organize>();
             foreach(var org in addList)
             {
                 if (org.F_ParentId == null){org.F_ParentId = "3";}
@@ -232,14 +232,14 @@ namespace TaskApi.Job
         public void ProcessOrgInfoStu()
         {
             Console.WriteLine("开始同步组织机构信息: 南航项目 --> " + DateTime.Now.ToLocalTime());
-            Stopwatch sw = new Stopwatch();
+            var sw = new Stopwatch();
             sw.Start();
             //校方数据集(分为两种：修改数据和新增数据)
-            NHModel newDb = new NHModel();
+            var newDb = new NHModel();
             var newData = newDb.OrganizationInfo_stu.Select(p => new Sys_Organize { F_Id = p.OrgId, F_FullName = p.OrgName, F_ParentId = p.ParentOrgId, F_CreatorTime = p.CreatedTime, F_LastModifyTime = p.LastUpdatedTime, F_EnCode=p.OrgId, F_DeleteMark=false }).ToList();
 
             //获取生产环境数据库数据集
-            NanHangAccept oldDb = new NanHangAccept();
+            var oldDb = new NanHangAccept();
             //var oldData = oldDb.Sys_Organize.Select(p => new Sys_Organize { F_Id = p.F_Id, F_FullName = p.F_FullName, F_ParentId = p.F_ParentId, F_CreatorTime = p.F_CreatorTime, F_LastModifyTime = p.F_LastModifyTime }).ToList();
             var oldData = oldDb.Sys_Organize.ToList();
             var interList = newData.Intersect(oldData).ToList(); //取交集 （不作任何操作）
@@ -247,8 +247,8 @@ namespace TaskApi.Job
             newData = newData.Except(interList).ToList();
             var addList = newData.Except(oldData).ToList(); //取差集 （新增和修改数据）
 
-            List<String> idList = oldData.Select(p => p.F_Id).ToList();
-            List<Sys_Organize> endList = new List<Sys_Organize>();
+            var idList = oldData.Select(p => p.F_Id).ToList();
+            var endList = new List<Sys_Organize>();
             foreach (var org in addList)
             {
                 if (org.F_ParentId == null) { org.F_ParentId = "2"; }
@@ -282,7 +282,7 @@ namespace TaskApi.Job
         /// </summary>
         public void ProcessSysOrgan()
         {
-            NanHangAccept oldDb = new NanHangAccept();
+            var oldDb = new NanHangAccept();
             //修改学生年级的 F_CategoryId 为 "Division"
             string UpdateDivSql = "UPDATE organ2 set organ2.F_CategoryId='Division' from [dbo].[Sys_Organize] organ1  left join Sys_Organize organ2 on organ2.F_ParentId=organ1.F_id where organ1.F_ParentId='2'";
             //修改学生的学部（）
@@ -320,7 +320,7 @@ namespace TaskApi.Job
             //获取本地生产环境数据集
             var oldData = oldDb.School_Teachers.ToList();
             var addList = newData.Except(oldData).ToList(); //取新数据对于生产环境数据的差集，这个结果就是添加或修改的数据集
-            List<string> ids = oldData.Select(p => p.F_Id).ToList();
+            var ids = oldData.Select(p => p.F_Id).ToList();
             var InsertList = new List<School_Teachers>(); //批量新增数据集
             foreach (var tea in addList)
             {
@@ -391,7 +391,7 @@ namespace TaskApi.Job
             });
             var oldData = oldDb.Sys_User.ToList();
             var addList = newData;
-            List<String> Ids = oldData.Select(p => p.F_Id).ToList();
+            var Ids = oldData.Select(p => p.F_Id).ToList();
             var InsertList = new List<Sys_User>();
             foreach(var tea in addList)
             {
@@ -440,7 +440,7 @@ namespace TaskApi.Job
 
             var oldData = oldDb.Sys_User_Role.ToList();
             var addList = newData;
-            List<String> Ids = oldData.Select(p => p.F_User).ToList();
+            var Ids = oldData.Select(p => p.F_User).ToList();
             var InsertList = new List<Sys_User_Role>();
             foreach(var userRole in addList)
             {
@@ -472,7 +472,7 @@ namespace TaskApi.Job
             });
             var oldData = oldDb.Sys_UserLogOn.ToList();
             var addList = newData;
-            List<String> Ids = oldData.Select(p => p.F_UserId).ToList();
+            var Ids = oldData.Select(p => p.F_UserId).ToList();
             var InsertList = new List<Sys_UserLogOn>();
             foreach(var tea in addList)
             {
@@ -513,8 +513,8 @@ namespace TaskApi.Job
                 F_Tel = p.studentPhone
                 
             }).ToList();
-            List<string> Ids = oldData.Select(p => p.F_Id).ToList();
-            List<School_Students> insertList = new List<School_Students>();
+            var Ids = oldData.Select(p => p.F_Id).ToList();
+            var insertList = new List<School_Students>();
             foreach(var stu in newData)
             {
                 string GradeID = oldDb.Sys_Organize.Where(p => p.F_Id == stu.F_Class_ID).Select(p => p.F_ParentId).ToList().FirstOrDefault();
@@ -588,8 +588,8 @@ namespace TaskApi.Job
                 F_DepartmentId = p.studentClass
             });
 
-            List<string> Ids = oldData.Select(p => p.F_Id).ToList();
-            List<Sys_User> insertList = new List<Sys_User>();
+            var Ids = oldData.Select(p => p.F_Id).ToList();
+            var insertList = new List<Sys_User>();
             foreach(var sysUser in newData)
             {
                 sysUser.F_RoleId = "student";
@@ -635,8 +635,8 @@ namespace TaskApi.Job
             {
                 F_User = p.studentId
             });
-            List<string> Ids = oldData.Select(p => p.F_User).ToList();
-            List<Sys_User_Role> insertList = new List<Sys_User_Role>();
+            var Ids = oldData.Select(p => p.F_User).ToList();
+            var insertList = new List<Sys_User_Role>();
             foreach(var Rold in newData)
             {
                 if (!Ids.Contains(Rold.F_User))
@@ -666,8 +666,8 @@ namespace TaskApi.Job
                 F_UserId = p.studentId
             });
             var oldData = oldDb.Sys_UserLogOn.ToList();
-            List<string> Ids = oldData.Select(p => p.F_UserId).ToList();
-            List<Sys_UserLogOn> InsertList = new List<Sys_UserLogOn>();
+            var Ids = oldData.Select(p => p.F_UserId).ToList();
+            var InsertList = new List<Sys_UserLogOn>();
             foreach(var logOn in newData)
             {
                 if (!Ids.Contains(logOn.F_UserId))
@@ -690,10 +690,10 @@ namespace TaskApi.Job
         /// <param name="newDb"></param>
         public void ProcessSchoolStudentDormInfo(NanHangAccept oldDb, NHModel newDb)
         {
-            List<string> oldData = oldDb.Dorm_DormInfo.Select(p => p.F_Title).ToList();
-            List<string> newData = newDb.StudentInfoes.Select(p => p.studentBuildingId).ToList();
+            var oldData = oldDb.Dorm_DormInfo.Select(p => p.F_Title).ToList();
+            var newData = newDb.StudentInfoes.Select(p => p.studentBuildingId).ToList();
             newData = newData.Distinct().Except(oldData).ToList(); //取出新增的宿舍信息(先去重，然后再取差集)
-            List<Dorm_DormInfo> InsertList = new List<Dorm_DormInfo>();
+            var InsertList = new List<Dorm_DormInfo>();
             foreach(var data in newData)
             {
                 try
@@ -701,7 +701,7 @@ namespace TaskApi.Job
                     string[] split = data.Trim().Replace("栋", "#").Split('#');
                     if (split.Length == 2)
                     {
-                        Dorm_DormInfo dorm = new Dorm_DormInfo();
+                        var dorm = new Dorm_DormInfo();
                         dorm.F_Id = Guid.NewGuid().ToString();
                         dorm.F_Memo = data;
                         dorm.F_CreatorTime = DateTime.Now;
@@ -738,8 +738,8 @@ namespace TaskApi.Job
                 F_Sex = p.studentSex
             });
 
-            List<string> StudentIds = oldData.Select(p => p.F_Student_ID).ToList();
-            List<Dorm_DormStudent> InsertStudent = new List<Dorm_DormStudent>();
+            var StudentIds = oldData.Select(p => p.F_Student_ID).ToList();
+            var InsertStudent = new List<Dorm_DormStudent>();
             foreach(var info in newData)
             {
                 if (StudentIds.Contains(info.F_Student_ID))
@@ -765,7 +765,7 @@ namespace TaskApi.Job
                         if (split.Length == 2)
                         {
                             string ClassRoomId = oldDb.Dorm_DormInfo.Where(p => p.F_Title.Equals(info.F_Memo)).Select(p => p.F_Id).ToList().FirstOrDefault();
-                            Dorm_DormStudent student = new Dorm_DormStudent();
+                            var student = new Dorm_DormStudent();
                             student.F_Id = Guid.NewGuid().ToString();
                             student.F_CreatorTime = DateTime.Now;
                             student.F_Student_ID = info.F_Student_ID;
