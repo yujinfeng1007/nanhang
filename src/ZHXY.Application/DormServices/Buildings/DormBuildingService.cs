@@ -44,7 +44,7 @@ namespace ZHXY.Application
         public List<DormBuildingView> GetList(Pagination pagination, string keyword)
         {
             var query = Read<Building>();
-            query = string.IsNullOrEmpty(keyword) ? query : query.Where(p => p.Title.Contains(keyword));
+            query = string.IsNullOrEmpty(keyword) ? query : query.Where(p => p.BuildingNo.Contains(keyword));
             pagination.Records = query.CountAsync().Result;
             pagination.GetOrdering<Building>();
             query = string.Equals("false", pagination.Sidx, StringComparison.CurrentCultureIgnoreCase) ? query.OrderBy(p => p.BuildingNo) : query.OrderBy(pagination.Sidx);
@@ -62,7 +62,7 @@ namespace ZHXY.Application
             return Read<Building>().Select(p => new
             {
                 id=p.Id,
-                name=p.Title
+                name=p.BuildingNo
             }).ToListAsync().Result;
         }
 
@@ -74,7 +74,7 @@ namespace ZHXY.Application
             foreach (var user in users) {
                 var rel = new Relevance
                 {
-                    Name = SYS_CONSTS.REL_BUILDING_USERS,
+                    Name = Relation.BuildingUser,
                     FirstKey = id,
                     SecondKey = user
                 };
@@ -89,7 +89,7 @@ namespace ZHXY.Application
         /// </summary>
         public void UnBindUser(string id, string userId)
         {
-            var user = Query<Relevance>(p => p.Name.Equals(SYS_CONSTS.REL_BUILDING_USERS) && p.FirstKey.Equals(id) && p.SecondKey.Equals(userId)).FirstOrDefault();
+            var user = Query<Relevance>(p => p.Name.Equals(Relation.BuildingUser) && p.FirstKey.Equals(id) && p.SecondKey.Equals(userId)).FirstOrDefault();
             DelAndSave(user);
         }
 
@@ -99,8 +99,8 @@ namespace ZHXY.Application
         /// </summary>        
         public List<User> GetSubBindUsers(string id)
         {
-            var usersIds = Read<Relevance>(p => p.Name.Equals(SYS_CONSTS.REL_BUILDING_USERS) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
-            var list = Read<User>(p => usersIds.Contains(p.F_Id)).ToList();
+            var usersIds = Read<Relevance>(p => p.Name.Equals(Relation.BuildingUser) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
+            var list = Read<User>(p => usersIds.Contains(p.Id)).ToList();
             return list;
         }
 
@@ -109,8 +109,8 @@ namespace ZHXY.Application
         /// </summary>        
         public List<User> GetNotBindUsers(string id)
         {
-            var usersIds = Read<Relevance>(p => p.Name.Equals(SYS_CONSTS.REL_BUILDING_USERS) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
-            var list = Read<User>(p => !usersIds.Contains(p.F_Id) && p.F_OrganizeId == "27e1854fd963d24b8c5d88506a775c2a").ToList();
+            var usersIds = Read<Relevance>(p => p.Name.Equals(Relation.BuildingUser) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
+            var list = Read<User>(p => !usersIds.Contains(p.Id) && p.OrganId == "27e1854fd963d24b8c5d88506a775c2a").ToList();
             return list;
         }
        

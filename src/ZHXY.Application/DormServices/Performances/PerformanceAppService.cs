@@ -24,8 +24,8 @@ namespace ZHXY.Application
             if (string.IsNullOrEmpty(input.OrgId)) return null;
             var orgs = new List<string> { input.OrgId };
             this.GetChildOrg(input.OrgId, orgs);
-            var userQuery = Read<Teacher>(p => orgs.Contains(p.F_Divis_ID));
-            userQuery = string.IsNullOrWhiteSpace(input.Keyword) ? userQuery : userQuery.Where(p => p.F_Name.Contains(input.Keyword));
+            var userQuery = Read<Teacher>(p => orgs.Contains(p.OrganId));
+            userQuery = string.IsNullOrWhiteSpace(input.Keyword) ? userQuery : userQuery.Where(p => p.Name.Contains(input.Keyword));
             var query = userQuery.GroupJoin(
                 Read<SysLog>(p => p.Type == "Login" && !string.IsNullOrEmpty(p.UserId) && p.Result == true && p.CreateTime >= input.StartTime && p.CreateTime <= input.EndOfTime),
                 u => u.Id,
@@ -33,7 +33,7 @@ namespace ZHXY.Application
                 (user, log) => new LoginStatisticsView
                 {
                     UserId = user.Id,
-                    Name = user.F_Name,
+                    Name = user.Name,
                     LastLoginTime = log.Max(p => p.CreateTime),
                     LoginTimes = log.Count(),
                     StartTime = input.StartTime,
@@ -48,15 +48,15 @@ namespace ZHXY.Application
         /// <param name="input"></param>
         public dynamic GetLoginDetail(GetLoginDetailDto input)
         {
-            var user = Read<User>(p => p.F_Id.Equals(input.UserId)).FirstOrDefaultAsync().Result;
+            var user = Read<User>(p => p.Id.Equals(input.UserId)).FirstOrDefaultAsync().Result;
             if (null == user) return null;
-            var departmentName = Read<Organ>(p => p.Id.Equals(user.OrgId)).Select(p => p.Name).FirstOrDefaultAsync().Result;
+            var departmentName = Read<Organ>(p => p.Id.Equals(user.OrganId)).Select(p => p.Name).FirstOrDefaultAsync().Result;
             var query = Read<SysLog>(p => p.Type == "Login" && p.UserId.Equals(input.UserId) && p.Result == true && p.CreateTime >= input.StartTime && p.CreateTime <= input.EndOfTime);
             var ordering = input.GetOrdering<SysLog>();
             return query.OrderBy(ordering)
               .Select(p => new LoginDetailView
               {
-                  Name = user.F_RealName,
+                  Name = user.Name,
                   Department = departmentName,
                   LoginTime = p.CreateTime,
                   WayOfLogin = p.ModuleName

@@ -148,33 +148,12 @@ namespace ZHXY.Application
 
         public void Delete(string id)
         {
-            var student= Get<Student>(id);
-            var user= new UserAppService().Get(student.F_Users_ID);
-            if(user!=null)
-            {
-                throw new Exception("请先删除相关联用户！");
-            }
-            DelAndSave<Student>(id);
+            
         }
 
 
-        public void UpdClass(string keyValue, string F_Class_ID, string F_Grade_ID)
-        {
-            var entitys = new List<Student>();
-            var F_Id = keyValue.Split('|');
-            for (var i = 0; i < F_Id.Length - 1; i++)
-            {
-                entitys.Add(new Student
-                {
-                    F_Id = F_Id[i],
-                    F_Class_ID = F_Class_ID,
-                    F_Grade_ID = F_Grade_ID,
-                    F_DepartmentId = F_Class_ID
-                });
-            }
-        }
-
-        public void SubmitForm(Student entity, string keyValue)
+        
+        public void Submit(Student entity, string keyValue)
         {
             
         }

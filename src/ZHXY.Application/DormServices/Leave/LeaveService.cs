@@ -8,29 +8,13 @@ using ZHXY.Common;
 
 namespace ZHXY.Application
 {
-    /**
-create table School_StudentHolidayLimit(
-    F_SemesterId varchar(64) not null,
-    F_StudentId varchar(64) not null,
-    F_UsedDays decimal(3,1) not null
-);
-create table School_CancelHoliday(
-    F_LeaveId varchar(64) not null,
-    F_OperatorId varchar(64) not null,
-    F_OperationTime datetime not null,
-    F_Days decimal(3,1) not null
-);
-    **/
-
-
-
     /// <summary>
     /// 请假服务
     /// <author>yujinfeng</author>
     /// </summary>
-    public class LeaveAppService : AppService
+    public class LeaveService : AppService
     {
-        public LeaveAppService(IZhxyRepository r) : base(r) { }
+        public LeaveService(IZhxyRepository r) : base(r) { }
 
         /// <summary>
         /// 请假申请
@@ -124,7 +108,7 @@ create table School_CancelHoliday(
             var view = new LeaveView
             {
                 Id = leave.Id,
-                LeaveerName = leave.Leaveer.F_RealName,
+                LeaveerName = leave.Leaveer.Name,
                 StartTime = leave.StartTime,
                 EndOfTime = leave.EndOfTime,
                 LeaveDays = leave.LeaveDays,
@@ -160,7 +144,7 @@ create table School_CancelHoliday(
         /// <returns></returns>
         public object GetPrevApprove(string leaveId)
         {
-            return Read<LeaveApprove>(p => p.OrderId.Equals(leaveId) && p.ApproveLevel == 1 && p.Result != 0).Select(p => new { Name = p.Approver.F_RealName, p.Opinion }).FirstOrDefaultAsync().Result;
+            return Read<LeaveApprove>(p => p.OrderId.Equals(leaveId) && p.ApproveLevel == 1 && p.Result != 0).Select(p => new { Name = p.Approver.Name, p.Opinion }).FirstOrDefaultAsync().Result;
         }
 
         /// <summary>
@@ -171,7 +155,7 @@ create table School_CancelHoliday(
             var leave = Get<StuLeaveOrder>(id);
             var leaveApproves = Read<LeaveApprove>(p => p.OrderId.Equals(id) && p.Result != 0).Select(p => new LeaveApproveView
             {
-                ApproverName = p.Approver.F_RealName,
+                ApproverName = p.Approver.Name,
                 Opinion = p.Opinion,
                 Result = p.Result > 0 ? "同意" : "不同意"
             }).ToListAsync().Result;
@@ -179,13 +163,13 @@ create table School_CancelHoliday(
             var obj = new ApproveDetailView
             {
                 Id = leave.Id,
-                LeaveerName = leave.Leaveer?.F_RealName,
+                LeaveerName = leave.Leaveer?.Name,
                 StartTime = leave.StartTime,
                 EndOfTime = leave.EndOfTime,
                 LeaveDays = leave.LeaveDays,
                 LeaveType = leave.LeaveType,
                 ReasonForLeave = leave.ReasonForLeave,
-                Approvers = Read<LeaveApprove>(p => p.OrderId.Equals(id)).Select(p => p.Approver.F_RealName).ToArrayAsync().Result,
+                Approvers = Read<LeaveApprove>(p => p.OrderId.Equals(id)).Select(p => p.Approver.Name).ToArrayAsync().Result,
                 Approves = leaveApproves
             };
             if (Read<LeaveApprove>(p => p.OrderId.Equals(id) && p.Result == -1).Any())
@@ -268,7 +252,7 @@ create table School_CancelHoliday(
             var list = query.Select(p => new LeaveListView
             {
                 Id = p.Id,
-                LeaveerName = p.Leaveer.F_RealName,
+                LeaveerName = p.Leaveer.Name,
                 StartTime = p.StartTime,
                 EndOfTime = p.EndOfTime,
                 LeaveDays = p.LeaveDays,
@@ -324,7 +308,7 @@ create table School_CancelHoliday(
             var list = query.Select(p => new LeaveListView
             {
                 Id = p.Id,
-                LeaveerName = p.Leaveer.F_RealName,
+                LeaveerName = p.Leaveer.Name,
                 StartTime = p.StartTime,
                 EndOfTime = p.EndOfTime,
                 LeaveDays = p.LeaveDays,
@@ -342,9 +326,9 @@ create table School_CancelHoliday(
         /// </summary>
         public object GetFinalJudgeList(string search)
         {
-            var query = Read<User>(p => p.F_RoleId.Contains("teacher"));
-            query = string.IsNullOrEmpty(search) ? query : query.Where(p => p.F_RealName.Contains(search));
-            return query.Select(p => new { Id = p.F_Id, Text = p.F_RealName }).ToListAsync().Result;
+            var query = Read<User>(p => p.RoleId.Contains("teacher"));
+            query = string.IsNullOrEmpty(search) ? query : query.Where(p => p.Name.Contains(search));
+            return query.Select(p => new { Id = p.Id, Text = p.Name }).ToListAsync().Result;
         }
 
         /// <summary>
@@ -436,7 +420,7 @@ create table School_CancelHoliday(
             var list = query.Select(p => new LeaveListView
             {
                 Id = p.Id,
-                LeaveerName = p.Leaveer.F_RealName,
+                LeaveerName = p.Leaveer.Name,
                 StartTime = p.StartTime,
                 EndOfTime = p.EndOfTime,
                 LeaveDays = p.LeaveDays,
@@ -471,7 +455,7 @@ create table School_CancelHoliday(
         /// <returns></returns>
         public List<ContactGroupView> GetTeachers()
         {
-            return Read<Teacher>().Select(p => new ContactView { Id = p.UserId, Name = p.F_Name }).ToListAsync().Result.GroupBy(p => p.GroupName).Select(g => new ContactGroupView
+            return Read<Teacher>().Select(p => new ContactView { Id = p.UserId, Name = p.Name }).ToListAsync().Result.GroupBy(p => p.GroupName).Select(g => new ContactGroupView
             {
                 GroupName = g.Key,
                 Items = g.Where(s => s.GroupName.Equals(g.Key)).ToList()
@@ -496,7 +480,7 @@ create table School_CancelHoliday(
              {
                  OrderId = p.Id,
                  ApplicantId = p.ApplicantId,
-                 ApplicantName = p.Applicant.F_RealName,
+                 ApplicantName = p.Applicant.Name,
                  StartTime = p.StartTime,
                  EndOfTime = p.EndOfTime,
                  LeaveDays = p.LeaveDays,

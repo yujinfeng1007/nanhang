@@ -14,7 +14,7 @@ namespace ZHXY.Application
             var expression = "";
             var user = OperatorProvider.Current;
             var roles = user.Roles;
-            var orgApp = new OrgAppService();
+            var orgApp = new OrgService();
             if (OperatorProvider.Current.IsSystem)
             {
                 return oldExpression;
@@ -102,7 +102,7 @@ namespace ZHXY.Application
                     else if ("CurrentDepAndSubDep".Equals(datatype))
                     {
                         expression = expression.Or(t => t.F_DepartmentId == currentUser.DepartmentId);
-                        var orgs = new OrgAppService().GetListByParentId(currentUser.DepartmentId);
+                        var orgs = new OrgService().GetListByParentId(currentUser.DepartmentId);
                         foreach (var org in orgs)
                         {
                             expression = expression.Or(t => t.F_DepartmentId == org.Id);

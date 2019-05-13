@@ -487,13 +487,9 @@
     <Content Include="Areas\Dorm\Views\Student\_FromRegPartial_gb.cshtml" />
     <Content Include="Areas\Dorm\Views\Student\_FromStatuLog.cshtml" />
     <Content Include="Areas\Dorm\Views\Student\_FromStatuLog_gb.cshtml" />
-    <Content Include="Areas\Dorm\Views\Teacher\Details.cshtml" />
-    <Content Include="Areas\Dorm\Views\Teacher\Form.cshtml" />
     <Content Include="Areas\Dorm\Views\Teacher\Index.cshtml" />
-    <Content Include="Areas\Dorm\Views\Teacher\_FromOnePartial.cshtml" />
-    <Content Include="Areas\Dorm\Views\Teacher\_FromThreelPartial.cshtml" />
-    <Content Include="Areas\Dorm\Views\Teacher\_FromTwolPartial.cshtml" />
     <Content Include="Areas\Dorm\Views\XFTX\SBYH.cshtml" />
+    <Content Include="Areas\Dorm\Views\DormBuilding\BindUsers.cshtml" />
     <None Include="Content\js\bootstrap\bootstrap.min.css.bak" />
     <Content Include="Content\js\bootstrap\bootstrap.min.css" />
     <Content Include="Content\js\charts\Chart.js" />
@@ -1559,19 +1555,10 @@
     <Content Include="Content\fonts\FontAwesome.otf" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\User\Form.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\User\RevisePassword.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Areas\SystemManage\Views\Duty\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\SystemManage\Views\Duty\Form.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\User\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\SystemSecurity\Views\DbBackup\Form.cshtml" />
@@ -1601,7 +1588,6 @@
     <Content Include="Content\js\simditor\css\simditor.scss" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\User\Info.cshtml" />
     <Content Include="Content\js\webuploader\README.md" />
     <Content Include="packages.config">
       <SubType>Designer</SubType>

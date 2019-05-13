@@ -31,7 +31,7 @@ namespace TaskApi.Job
                
                 var ids = receiveUsers.Where(t => t.F_Type == 2).FirstOrDefault()?.F_ReceiveUser.Split(',');
                 ids = ids ?? new string[0];
-                var userNames = sysUserRepo.QueryAsNoTracking(x => ids.Contains(x.F_Id)).ToList().Select(x => x.F_Account);
+                var userNames = sysUserRepo.QueryAsNoTracking(x => ids.Contains(x.Id)).ToList().Select(x => x.Account);
 
                 //foreach (var data in lateData)
                 //{
@@ -47,7 +47,7 @@ namespace TaskApi.Job
                 var noInDatas = noReturnRepo.Query(t => t.F_CreatorTime >= time);
                 ids = receiveUsers.Where(t => t.F_Type == 1).FirstOrDefault()?.F_ReceiveUser.Split(',');
                 ids = ids ?? new string[0];
-                userNames = sysUserRepo.QueryAsNoTracking(x => ids.Contains(x.F_Id)).Select(x => x.F_Account);
+                userNames = sysUserRepo.QueryAsNoTracking(x => ids.Contains(x.Id)).Select(x => x.Account);
 
                 var noInData = noInDatas.FirstOrDefault();
                 foreach (var userName in userNames)
@@ -60,7 +60,7 @@ namespace TaskApi.Job
                 var noOutDatas = noOutRepo.Query(t => t.F_CreatorTime >= time);
                 ids = receiveUsers.Where(t => t.F_Type == 3).FirstOrDefault()?.F_ReceiveUser.Split(',');
                 ids = ids ?? new string[0];
-                userNames = sysUserRepo.QueryAsNoTracking(x => ids.Contains(x.F_Id)).Select(x => x.F_Account);
+                userNames = sysUserRepo.QueryAsNoTracking(x => ids.Contains(x.Id)).Select(x => x.Account);
                 var noOutData = noOutDatas.FirstOrDefault();
                 foreach (var userName in userNames)
                 {

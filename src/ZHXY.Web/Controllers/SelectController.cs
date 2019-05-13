@@ -12,9 +12,14 @@ namespace ZHXY.Web.Controllers
     /// </summary>
     public class SelectController : ZhxyWebControllerBase
     {
-        private UserAppService App { get; set; }
+        private UserService App { get; set; }
+        private TeacherAppService TeacherApp { get; set; }
 
-        public SelectController(UserAppService app) => App = app;
+        public SelectController(UserService app, TeacherAppService teacherApp)
+        {
+            App = app;
+            TeacherApp = teacherApp;
+        }
 
         #region View
 
@@ -81,20 +86,20 @@ namespace ZHXY.Web.Controllers
             var query = App.Read<User>();
             if (hasKeyword)
             {
-                query = query.Where(p => p.F_RealName.Contains(keyword));
+                query = query.Where(p => p.Name.Contains(keyword));
             }
             pagination.Records = query.Count();
-            query = string.IsNullOrEmpty(pagination.Sidx) ? query.OrderByDescending(p => p.F_CreatorTime) : query.OrderBy($"{pagination.Sidx} {pagination.Sord}");
+            query = string.IsNullOrEmpty(pagination.Sidx) ? query.OrderByDescending(p => p.CreatorTime) : query.OrderBy($"{pagination.Sidx} {pagination.Sord}");
             query = query.Skip(pagination.Skip).Take(pagination.Rows);
             var list = (from user in query
-                        join org in App.Read<Organ>() on user.F_OrganizeId equals org.Id into orgJoin
+                        join org in App.Read<Organ>() on user.OrganId equals org.Id into orgJoin
                         from org in orgJoin.DefaultIfEmpty()
-                        join role in App.Read<Role>() on user.F_DutyId equals role.Id into roleJoin
+                        join role in App.Read<Role>() on user.DutyId equals role.Id into roleJoin
                         from role in roleJoin.DefaultIfEmpty()
                         select new
                         {
-                            Id = user.F_Id,
-                            RealName = user.F_RealName,
+                            Id = user.Id,
+                            RealName = user.Name,
                             OrgId = org.Id ?? "",
                             OrgName = org.Name ?? "",
                             Duty = role.Name
@@ -118,13 +123,7 @@ namespace ZHXY.Web.Controllers
                         F_Divis_ID = t.F_Divis_ID
                     });
             else
-                obj = new TeacherAppService().GetList(pagination, keyword, null, null, null)
-                    .Select(t => new
-                    {
-                        F_Name = t.F_Name,
-                        F_Num = t.F_Num,
-                        F_Divis_ID = t.F_Divis_ID
-                    });
+                obj = TeacherApp.GetList(pagination, keyword);
 
             var data = new
             {

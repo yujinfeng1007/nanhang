@@ -85,7 +85,7 @@
     <Compile Include="DormServices\Leave\Dto\LeaveApprovalDto.cs" />
     <Compile Include="DormServices\Leave\Dto\LeaveApproveView.cs" />
     <Compile Include="DormServices\Leave\Dto\OneKeyApprovalDto.cs" />
-    <Compile Include="DormServices\Leave\LeaveAppService.cs" />
+    <Compile Include="DormServices\Leave\LeaveService.cs" />
     <Compile Include="DormServices\Leave\Dto\LeaveRequestDto.cs" />
     <Compile Include="DormServices\Leave\Dto\LeaveListView.cs" />
     <Compile Include="DormServices\Messages\Dto\OrgHeadView.cs" />
@@ -156,7 +156,7 @@
     <Compile Include="SystemServices\Users\Dto\Login\SsoUserInfo.cs" />
     <Compile Include="SystemServices\Organizes\Dto\OrganizeView.cs" />
     <Compile Include="SystemServices\Organizes\Dto\UpdateOrgDto.cs" />
-    <Compile Include="SystemServices\Organizes\OrgAppService.cs" />
+    <Compile Include="SystemServices\Organizes\OrgService.cs" />
     <Compile Include="SystemServices\Roles\RoleService.cs" />
     <Compile Include="SystemServices\Roles\SysRoleAuthorizeAppService.cs" />
     <Compile Include="SystemServices\Users\Dto\Parents\CreateParentDto.cs" />
@@ -166,7 +166,7 @@
     <Compile Include="SystemServices\Users\Dto\Users\UpdateUserDto.cs" />
     <Compile Include="SystemServices\Users\Dto\Users\UserListView.cs" />
     <Compile Include="SystemServices\Users\Dto\Users\UserView.cs" />
-    <Compile Include="SystemServices\Users\UserAppService.cs" />
+    <Compile Include="SystemServices\Users\UserService.cs" />
     <Compile Include="SystemServices\Users\SysUserLogOnAppService.cs" />
     <Compile Include="SystemServices\Users\SysUserRoleAppService.cs" />
     <Compile Include="DormServices\TeacherAppService.cs" />

@@ -20,13 +20,6 @@
 
         public static string CLASSTEACHERS { get; } = "classTeachers";
 
-        // 关系名称
-        /// <summary>
-        /// 闸机和楼栋的关系
-        /// </summary>
-        public static string REL_GATE_BUILDING { get; } = "GATE_BUILDING";
-
-        public static string REL_BUILDING_USERS { get; } = "BUILDING_USER";
 
     }
 }

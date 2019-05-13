@@ -12,10 +12,10 @@ namespace ZHXY.Application
     /// <summary>
     /// 机构管理
     /// </summary>
-    public class OrgAppService : AppService
+    public class OrgService : AppService
     {
-        public OrgAppService() => R = new ZhxyRepository();
-        public OrgAppService(IZhxyRepository r) => R = r;
+        public OrgService() => R = new ZhxyRepository();
+        public OrgService(IZhxyRepository r) => R = r;
         public List<Organ> GetList()
         {
             return Read<Organ>().ToListAsync().Result;

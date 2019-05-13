@@ -15,9 +15,14 @@ namespace ZHXY.Web.SystemManage.Controllers
     /// </summary>
     public class OrganizeController : ZhxyWebControllerBase
     {
-        private OrgAppService App { get; }
+        private OrgService App { get; }
+        private UserService UserApp { get; }
 
-        public OrganizeController(OrgAppService app) => App = app;
+        public OrganizeController(OrgService app, UserService userApp)
+        {
+            App = app;
+            UserApp = UserApp;
+        }
 
         [HttpGet]
         public ActionResult GetSelectJson(string F_OrgId)
@@ -91,9 +96,9 @@ namespace ZHXY.Web.SystemManage.Controllers
             }
             else
             {
-                var user = new UserAppService().Get(keyword);
+                var user = UserApp.Get(keyword);
                 if (!user.IsEmpty())
-                    data_deeps = user.F_Data_Deps;
+                    data_deeps = user.DataDeps;
             }
 
             var treeList = new List<TreeViewModel>();

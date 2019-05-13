@@ -68,7 +68,7 @@ namespace ZHXY.Application
 
                 var rel = new Relevance
                 {
-                    Name = SYS_CONSTS.REL_GATE_BUILDING,
+                    Name = Relation.GateBuilding,
                     FirstKey = id,
                     SecondKey = item
                 };
@@ -80,7 +80,7 @@ namespace ZHXY.Application
 
         public void UnbindBuilding(string id, string buildingId)
         {
-            var obj = Query<Relevance>(p => p.Name.Equals(SYS_CONSTS.REL_GATE_BUILDING) && p.FirstKey.Equals(id) && p.SecondKey.Equals(buildingId)).FirstOrDefault();
+            var obj = Query<Relevance>(p => p.Name.Equals(Relation.GateBuilding) && p.FirstKey.Equals(id) && p.SecondKey.Equals(buildingId)).FirstOrDefault();
             DelAndSave(obj);
         }
 
@@ -90,7 +90,7 @@ namespace ZHXY.Application
         /// <param name="id"></param>
         public List<Building> GetBoundBuildings(string id)
         {
-            var buildingIds = Read<Relevance>(p => p.Name.Equals(SYS_CONSTS.REL_GATE_BUILDING) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
+            var buildingIds = Read<Relevance>(p => p.Name.Equals(Relation.GateBuilding) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
             var list = Read<Building>(p => buildingIds.Contains(p.Id)).ToList();
             return list;
         }
@@ -103,7 +103,7 @@ namespace ZHXY.Application
 
         public List<Building> GetNotBoundBuildings(string id)
         {
-            var buildingIds = Read<Relevance>(p => p.Name.Equals(SYS_CONSTS.REL_GATE_BUILDING) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
+            var buildingIds = Read<Relevance>(p => p.Name.Equals(Relation.GateBuilding) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
             var list = Read<Building>(p => !buildingIds.Contains(p.Id)).ToList();
             return list;
         }
@@ -115,16 +115,16 @@ namespace ZHXY.Application
         /// <returns></returns>
         public dynamic GetUsers(string id)
         {
-            return Read<User>().OrderBy(p => p.F_NickName).Take(10).Select(p => new
+            return Read<User>().OrderBy(p => p.NickName).Take(10).Select(p => new
             {
-                id = p.F_Id,
-                name = p.F_RealName
+                id = p.Id,
+                name = p.Name
             }).ToListAsync().Result;
         }
 
         public dynamic GetByBuilding(string id)
         {
-            var buildingIds = Read<Relevance>(p => p.Name.Equals(SYS_CONSTS.REL_GATE_BUILDING) && p.FirstKey.Equals(id)).Select(p => p.FirstKey).ToArray();
+            var buildingIds = Read<Relevance>(p => p.Name.Equals(Relation.GateBuilding) && p.FirstKey.Equals(id)).Select(p => p.FirstKey).ToArray();
             var list = Read<Gate>(p => !buildingIds.Contains(p.Id)).Select(p =>
             new
             {

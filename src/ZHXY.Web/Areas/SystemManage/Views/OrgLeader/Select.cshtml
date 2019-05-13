@@ -1,21 +1,20 @@
 ﻿@{Layout = "~/Views/Shared/_Layout.cshtml"; }
 
 <script>
-    const GRID_URL = `/SystemManage/User/GetByOrg`;
+    const GRID_URL = `/SystemManage/User/GetOrgUsers`;
     const TREE_URL = `/SystemManage/Organize/GetTeacherOrg`;
     const ADD_URL = `/SystemManage/OrgLeader/Add`;
-
 
 
     $(function () {
         $('#layout').layout({
             west__resizable: false
-        }).sizePane("west", 400);
+        }).sizePane("west", "50%");
 
         gridList();
         gridTree();
 
-        $("#search").bind('click',()=>reloadGrid());
+        $("#search").bind('click', () => reloadGrid());
     })
 
     function add() {
@@ -25,30 +24,32 @@
             if (result.state === 'success') {
                 $.modalMsg('添加成功', 'success');
                 $(top.window.gridList).jqGrid().trigger('reload');
+                $("#gridList").resetSelection();
             } else {
-                 $.modalMsg(result.message, 'error');
+                $.modalMsg(result.message, 'error');
             }
         })
     }
 
     function gridList() {
-        $("#gridList").dataGrid({
+        $("#gridList").jqGrid({
+            styleUI: 'Bootstrap',
             url: GRID_URL,
-            autoGridHeight: () => window.innerHeight * 0.6,
+            datatype: "json",
+            height: window.innerHeight * 0.9,
+            width: window.innerWidth * 0.48,
             jsonReader: {
-                root: function (r) {
-                    return r.data;
-                }
+                root: function (r) {  return r.data;  }
             },
             colModel: [
-                { label: "主键", name: "userId", hidden: true, key: true },
-                { label: '姓名', name: 'userName' },
-                { label: '机构名称', name: 'orgName' },
+                { label: "主键", name: "id", hidden: true, key: true },
+                { label: '姓名', name: 'name', sortable: false },
             ],
             autoGridWidth: true,
             multiselect: true,
             loadonce: false,
             viewrecords: true,
+            rowNum: -1,
         });
     }
 
@@ -79,7 +80,7 @@
                 root: function (r) { return r.data; }
             },
             height: window.innerHeight * 0.9,
-            width: top.window.innerWidth * 0.2,
+            width: window.innerWidth * 0.48,
             ExpandColumn: 'name',
             ExpandColClick: false,
             onSelectRow: reloadGrid,
@@ -89,7 +90,7 @@
                 { label: 'level', name: "level", hidden: true },
             ],
             multiselect: false,
-            rowNum: "all",
+            rowNum: -1,
         });
     }
 </script>

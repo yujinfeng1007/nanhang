@@ -116,7 +116,7 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult SubmitForm(Student entity, string keyValue)
         {
             //entity.F_DepartmentId = OperatorProvider.Current.DepartmentId;
-            App.SubmitForm(entity, keyValue);
+            App.Submit(entity, keyValue);
             return Message("操作成功。");
         }
 

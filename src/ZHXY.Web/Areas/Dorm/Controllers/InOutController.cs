@@ -44,7 +44,7 @@ namespace ZHXY.Web.Dorm.Controllers
             if (string.IsNullOrEmpty(studentId)) return Error("请输入日期");
             var student = new StudentAppService().GetOrDefault(studentId);
             if (student == null) return Error("未找到学生");
-            var classInfo = new OrgAppService().GetById(student.F_Class_ID);
+            var classInfo = new OrgService().GetById(student.F_Class_ID);
             var list = OriginalReportApp.GetOriginalListBydate(studentId, date);
             var data = new
             {
@@ -182,7 +182,7 @@ namespace ZHXY.Web.Dorm.Controllers
         {
             var objlist = new List<object>();
 
-            var sysApp = new OrgAppService();
+            var sysApp = new OrgService();
             var classList = new List<Organ>();
             var name = sysApp.GetClassInfosByDivisId(divisId,ref classList);
             var list = LateReturnReportApp.GetListByClassList(classList.Select(p=>p.Id).ToList(), startTime, endTime);
@@ -203,7 +203,7 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult GetLateListByGrade(string gradeId, string startTime, string endTime)
         {
             var objlist = new List<object>();
-            var sysApp = new OrgAppService();
+            var sysApp = new OrgService();
             var classList = new List<Organ>();
             var divisList = new List<Organ>();
             sysApp.GetClassInfosByGradeId(gradeId, ref classList,ref divisList);
