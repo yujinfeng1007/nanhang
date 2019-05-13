@@ -97,35 +97,14 @@ namespace TaskApi
             }
             else
             {
-                //student.F_StudentNum = entity.F_Id;
                 student.F_Users_ID = entity.F_Id;
                 student.F_CurStatu = "1";
                 student.Create();
                 db.Insert(student);
             }
 
-            //AddStudentAsParent(db, student.F_Id, student.F_StudentNum, parentId, parentName);
         }
-        //// 创建学生和家长关联表
-        //private void AddStudentAsParent(IUnitWork db, string studentId, string studentNum, string parentId
-        //    , string parentName)
-        //{
-        //    if (string.IsNullOrEmpty(parentId))
-        //        return;
-        //    var data = db.FindEntity<StuParent>(t => t.F_Stu_Id == studentId && t.F_ParentId == parentId);
-        //    if (data != null)
-        //        return;
-        //    var e = new StuParent();
-        //    e.F_ParentId = parentId;
-        //    e.F_ParentName = parentName;
-        //    e.F_Parent_CardNo = string.Empty;
-        //    e.F_Parent_Phone = "";
-        //    e.F_Stu_Id = studentId;
-        //    //e.F_Stu_Name = student.F_Name;
-        //    e.F_Stu_Num = studentNum;
-        //    e.Create();
-        //    db.Insert(e);
-        //}
+       
         private void AddOrUpdTeacher(IUnitWork db, User entity, string catetoryId, string gw, string num,
             string credNum, string profession, string politstatu, string credType, DateTime? entryTime)
         {
