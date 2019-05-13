@@ -58,16 +58,17 @@ namespace ZHXY.Api.Controllers.bp
             try
             {
 
-                dormBuildingApp.BindBuilding(input);
+                // dormBuildingApp.BindBuilding(input);
 
-                var building = dormBuildingApp.GetBuildingByNo(input.F_GateId);
+                // var building = dormBuildingApp.GetBuildingByNo(input.F_GateId);
 
-                var json = new
-                {
-                    F_BuildingId = building.Id,
-                    F_BuildingName = building.Title
-                };
-                return Success(json);
+                //var json = new
+                //{
+                //    F_BuildingId = building.Id,
+                //    F_BuildingName = building.Title
+                //};
+                //return Success(json);
+                return Success("");
 
             }
             catch (Exception e)
@@ -86,7 +87,7 @@ namespace ZHXY.Api.Controllers.bp
             try
             {
 
-                dormBuildingApp.UnbindBuilding(input);
+               // dormBuildingApp.UnbindBuilding(input);
 
                 return Success();
 
