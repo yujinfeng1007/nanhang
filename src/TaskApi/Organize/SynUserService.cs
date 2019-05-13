@@ -162,38 +162,9 @@ namespace TaskApi
                 db.Insert(teacher);
             }
 
-            if (catetoryId == "Class" && (gw == "班主任" || gw == "副班主任"))
-            {
-               // AddOrUpdClassTeacher(db, entity.F_DepartmentId, teacher.F_Id, gw);
-            }
         }
 
-        //private void AddOrUpdClassTeacher(IUnitWork db, string classId, string teacherId, string gw)
-        //{
-        //    var datas = db.QueryAsNoTracking<ClassTeacher>(t => t.F_ClassID == classId).ToList();
-        //    if (datas.Count > 0)
-        //    {
-        //        foreach (var data in datas)
-        //        {
-        //            if (gw == "班主任")
-        //                data.F_Leader_Tea = teacherId;
-        //            if (gw == "副班主任")
-        //                data.F_Leader_Tea2 = teacherId;
-        //            db.Update(data);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        var ent = new ClassTeacher();
-        //        ent.Create();
-        //        ent.F_ClassID = classId;
-        //        if (gw == "班主任")
-        //            ent.F_Leader_Tea = teacherId;
-        //        if (gw == "副班主任")
-        //            ent.F_Leader_Tea2 = teacherId;
-        //        db.Insert(ent);
-        //    }
-        //}
+      
 
         private User AddOrUpdUser(IUnitWork db, string loginId, string mobilePhone, string orgId, string passWord, string telephone, string userId, string userName, string userStatus, string userType, string catetoryId, string gw, string sex, string ico, string isAdmin, string isDelete)
         {
