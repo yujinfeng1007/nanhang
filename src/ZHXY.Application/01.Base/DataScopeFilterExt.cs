@@ -14,7 +14,7 @@ namespace ZHXY.Application
             var expression = "";
             var user = OperatorProvider.Current;
             var roles = user.Roles;
-            var orgApp = new SysOrganizeAppService();
+            var orgApp = new OrgAppService();
             if (OperatorProvider.Current.IsSystem)
             {
                 return oldExpression;
@@ -46,7 +46,7 @@ namespace ZHXY.Application
                                 var orgs = orgApp.GetListByParentId(user.DepartmentId);
                                 foreach (var org in orgs)
                                 {
-                                    expression += " or t.F_DepartmentId='" + org.F_Id + "'";
+                                    expression += " or t.F_DepartmentId='" + org.Id + "'";
                                 }
                             }
                             //自定义部门创建数据
@@ -102,10 +102,10 @@ namespace ZHXY.Application
                     else if ("CurrentDepAndSubDep".Equals(datatype))
                     {
                         expression = expression.Or(t => t.F_DepartmentId == currentUser.DepartmentId);
-                        var orgs = new SysOrganizeAppService().GetListByParentId(currentUser.DepartmentId);
+                        var orgs = new OrgAppService().GetListByParentId(currentUser.DepartmentId);
                         foreach (var org in orgs)
                         {
-                            expression = expression.Or(t => t.F_DepartmentId == org.F_Id);
+                            expression = expression.Or(t => t.F_DepartmentId == org.Id);
                         }
                     }
                     //自定义部门创建数据

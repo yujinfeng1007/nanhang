@@ -14,7 +14,7 @@ namespace ZHXY.Api.Controllers
 
             string MoudleFilePath = "C:\\人员信息Moudle.xlsx";
             string DataFilePath = "C:\\人员信息.xlsx";
-            NanHangAccept moudle = new NanHangAccept();
+            var moudle = new NanHangAccept();
             //var DormStudentInfos = moudle.Dorm_DormStudent.Where(s => s.F_Student_ID == s.Student.F_Id && s.Student.F_DeleteMark == false && !s.F_Memo.Contains("11栋") && !s.F_Memo.Contains("12栋")).Select(p => new DHStudentMoudle
             var DormStudentInfos = moudle.Dorm_DormStudent.Where(s => s.F_Student_ID == s.Student.F_Id && s.Student.F_DeleteMark == false).Select(p => new DHStudentMoudle
             {
@@ -24,7 +24,7 @@ namespace ZHXY.Api.Controllers
                 CredNum = p.Student.F_CredNum,
                 sex = p.Student.F_Gender.Equals("1") ?"女":"男"
             }).ToList();
-            foreach (DHStudentMoudle info in DormStudentInfos)
+            foreach (var info in DormStudentInfos)
             {
                 var Split = info.DormName.Split('栋');
                 info.BuildName = Split[0] + "栋"; //楼栋   XX栋

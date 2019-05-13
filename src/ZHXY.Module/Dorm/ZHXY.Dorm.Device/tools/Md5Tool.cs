@@ -13,7 +13,7 @@ namespace ZHXY.Dorm.Device.tools
         /// <returns></returns>
         public static string Md532(string str)
         {
-            MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
+            var md5 = new MD5CryptoServiceProvider();
             string t2 = BitConverter.ToString(md5.ComputeHash(UTF8Encoding.Default.GetBytes(str)));
             t2 = t2.Replace("-", "");
             return t2.ToLower();

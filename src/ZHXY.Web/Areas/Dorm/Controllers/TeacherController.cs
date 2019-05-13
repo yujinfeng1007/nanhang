@@ -129,7 +129,7 @@ namespace ZHXY.Web.Dorm.Controllers
             {
                 try
                 {
-                    var user = new SysUserAppService().GetByAccount(item["教师工号"].ToString());
+                    var user = new UserAppService().GetByAccount(item["教师工号"].ToString());
                     var userroledata = new SysUserRoleAppService().GetListByUserId(user.F_Id);
                     var RoleId = string.Empty;
                     object tmp = string.Empty;

@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Dynamic;
+using ZHXY.Application.DormServices.Gates.Dto;
 using ZHXY.Common;
 using ZHXY.Domain;
 
@@ -20,6 +23,10 @@ namespace ZHXY.Application
             pag.Records = query.Count();
             var list = query.Paging(pag).ToList();
             return list.MapToList<GateView>();
+        }
+
+        public List<Gate> GetList(){
+            return Query<Gate>().ToList();
         }
 
         public void SetStatus(string[] ids, int status)
@@ -73,7 +80,7 @@ namespace ZHXY.Application
 
         public void UnbindBuilding(string id, string buildingId)
         {
-            var obj=Query<Relevance>(p => p.Name.Equals(SYS_CONSTS.REL_GATE_BUILDING) && p.FirstKey.Equals(id) && p.SecondKey.Equals(buildingId)).FirstOrDefault();
+            var obj = Query<Relevance>(p => p.Name.Equals(SYS_CONSTS.REL_GATE_BUILDING) && p.FirstKey.Equals(id) && p.SecondKey.Equals(buildingId)).FirstOrDefault();
             DelAndSave(obj);
         }
 
@@ -83,9 +90,14 @@ namespace ZHXY.Application
         /// <param name="id"></param>
         public List<Building> GetBoundBuildings(string id)
         {
-            var buildingIds=Read<Relevance>(p => p.Name.Equals(SYS_CONSTS.REL_GATE_BUILDING) && p.FirstKey.Equals(id)).Select(p=>p.SecondKey).ToArray();
+            var buildingIds = Read<Relevance>(p => p.Name.Equals(SYS_CONSTS.REL_GATE_BUILDING) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
             var list = Read<Building>(p => buildingIds.Contains(p.Id)).ToList();
             return list;
+        }
+
+        public List<Building> GetBuildings()
+        {
+            return Read<Building>().ToList();
         }
 
 
@@ -93,6 +105,32 @@ namespace ZHXY.Application
         {
             var buildingIds = Read<Relevance>(p => p.Name.Equals(SYS_CONSTS.REL_GATE_BUILDING) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
             var list = Read<Building>(p => !buildingIds.Contains(p.Id)).ToList();
+            return list;
+        }
+
+        /// <summary>
+        /// 获取闸机的用户
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public dynamic GetUsers(string id)
+        {
+            return Read<User>().OrderBy(p => p.F_NickName).Take(10).Select(p => new
+            {
+                id = p.F_Id,
+                name = p.F_RealName
+            }).ToListAsync().Result;
+        }
+
+        public dynamic GetByBuilding(string id)
+        {
+            var buildingIds = Read<Relevance>(p => p.Name.Equals(SYS_CONSTS.REL_GATE_BUILDING) && p.FirstKey.Equals(id)).Select(p => p.FirstKey).ToArray();
+            var list = Read<Gate>(p => !buildingIds.Contains(p.Id)).Select(p =>
+            new
+            {
+                id = p.Id,
+                name = p.Name
+            }).ToList();
             return list;
         }
     }

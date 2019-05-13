@@ -27,7 +27,7 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult GetOriginalListBydate(GetOriginalListBydateParms parms)
         {
             if (string.IsNullOrEmpty(parms.date)) return Error("请输入日期");
-            Pagination pagination = new Pagination() { Page = parms.PageIndex, Rows = parms.PageSize };
+            var pagination = new Pagination() { Page = parms.PageIndex, Rows = parms.PageSize };
             var list = OriginalReportApp.GetOriginalListBydate(pagination, parms.userId, parms.date);
             return PagingResult(list, pagination);
         }
@@ -44,7 +44,7 @@ namespace ZHXY.Web.Dorm.Controllers
             if (string.IsNullOrEmpty(studentId)) return Error("请输入日期");
             var student = new StudentAppService().GetOrDefault(studentId);
             if (student == null) return Error("未找到学生");
-            var classInfo = new SysOrganizeAppService().GetById(student.F_Class_ID);
+            var classInfo = new OrgAppService().GetById(student.F_Class_ID);
             var list = OriginalReportApp.GetOriginalListBydate(studentId, date);
             var data = new
             {
@@ -69,7 +69,7 @@ namespace ZHXY.Web.Dorm.Controllers
              new
              {
                  name = p.F_Name,
-                 className = p.Class?.F_FullName,
+                 className = p.Class?.Name,
                  address = p.Dorm?.Area + p.Dorm?.UnitNumber+ p.Dorm?.BuildingId + p.Dorm?.FloorNumber+p.Dorm?.Title,
                  record = p.F_InTime
              });
@@ -141,7 +141,7 @@ namespace ZHXY.Web.Dorm.Controllers
               new
               {
                   name = p.F_Name,
-                  className = p.Class.F_FullName,
+                  className = p.Class.Name,
                   address = p.Dorm?.Area + p.Dorm?.UnitNumber + p.Dorm?.BuildingId + p.Dorm?.FloorNumber + p.Dorm?.Title,
                   date = p.F_OutTime,
                   count = p.F_DayCount
@@ -162,7 +162,7 @@ namespace ZHXY.Web.Dorm.Controllers
               new
               {
                   name = p.F_Name,
-                  className = p.Class.F_FullName,
+                  className = p.Class.Name,
                   address = p.Dorm?.Area + p.Dorm?.UnitNumber + p.Dorm?.BuildingId + p.Dorm?.FloorNumber + p.Dorm?.Title,
                   date = p.F_InTime,
                   count = p.F_Time
@@ -180,19 +180,19 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpGet]
         public ActionResult GetLateListByDivis(string divisId, string startTime, string endTime)
         {
-            List<object> objlist = new List<object>();
-           
-            SysOrganizeAppService sysApp = new SysOrganizeAppService();
-            List<Organize> classList = new List<Organize>();
+            var objlist = new List<object>();
+
+            var sysApp = new OrgAppService();
+            var classList = new List<Organ>();
             var name = sysApp.GetClassInfosByDivisId(divisId,ref classList);
-            var list = LateReturnReportApp.GetListByClassList(classList.Select(p=>p.F_Id).ToList(), startTime, endTime);
+            var list = LateReturnReportApp.GetListByClassList(classList.Select(p=>p.Id).ToList(), startTime, endTime);
             var group = list.GroupBy(p => p.F_Class);
             foreach (var item in group)
             {
                 var obj = new
                 {
                     classId=item.Key,
-                    className = classList.FirstOrDefault(p => p.F_Id.Equals(item.Key)).F_FullName,
+                    className = classList.FirstOrDefault(p => p.Id.Equals(item.Key)).Name,
                     count = item.Count()
                 };
                 objlist.Add(obj);
@@ -202,10 +202,10 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpGet]
         public ActionResult GetLateListByGrade(string gradeId, string startTime, string endTime)
         {
-            List<object> objlist = new List<object>();
-            SysOrganizeAppService sysApp = new SysOrganizeAppService();
-            List<Organize> classList = new List<Organize>();
-            List<Organize> divisList = new List<Organize>();
+            var objlist = new List<object>();
+            var sysApp = new OrgAppService();
+            var classList = new List<Organ>();
+            var divisList = new List<Organ>();
             sysApp.GetClassInfosByGradeId(gradeId, ref classList,ref divisList);
             var data = LateReturnReportApp.GetListByDivisList(divisList,classList, startTime, endTime);
             return Result(data);

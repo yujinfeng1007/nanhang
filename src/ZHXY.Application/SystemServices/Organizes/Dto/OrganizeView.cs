@@ -1,6 +1,6 @@
 ﻿namespace ZHXY.Application
 {
-    public class OrganizeView:UpdateOrganizeDto
+    public class OrganizeView:UpdateOrgDto
     {
 
     }

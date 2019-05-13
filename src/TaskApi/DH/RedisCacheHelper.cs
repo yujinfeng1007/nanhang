@@ -113,7 +113,7 @@ namespace TaskApi.DH
             {
                 return default(T);
             }
-            T obj = default(T);
+            var obj = default(T);
             try
             {
                 if (pool != null)
@@ -192,7 +192,7 @@ namespace TaskApi.DH
 
             if (keys.Count() == 1)
             {
-                T obj = Get<T>(keys.Single());
+                var obj = Get<T>(keys.Single());
 
                 if (obj != null)
                 {

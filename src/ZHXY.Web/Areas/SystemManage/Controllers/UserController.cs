@@ -16,9 +16,9 @@ namespace ZHXY.Web.SystemManage.Controllers
     /// </summary>
     public class UserController : ZhxyWebControllerBase
     {
-        private SysUserAppService App { get; }
+        private UserAppService App { get; }
 
-        public UserController(SysUserAppService app) => App = app;
+        public UserController(UserAppService app) => App = app;
 
         #region view
 
@@ -241,7 +241,11 @@ namespace ZHXY.Web.SystemManage.Controllers
         }
 
 
+        /// <summary>
+        /// 获取机构下的用户
+        /// </summary>
         [HttpGet]
-        public async Task<ActionResult> GetByOrg(string orgId,string keyword) => await Task.Run(() => Resultaat.Success(App.GetUserByOrg(orgId, keyword)));
+        public async Task<ActionResult> GetOrgUsers(string orgId, string keyword) => await Task.Run(() => Resultaat.Success(App.GetByOrg(orgId, keyword)));
+
     }
 }

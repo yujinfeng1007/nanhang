@@ -12,9 +12,9 @@ namespace ZHXY.Web.Controllers
     /// </summary>
     public class SelectController : ZhxyWebControllerBase
     {
-        private SysUserAppService App { get; set; }
+        private UserAppService App { get; set; }
 
-        public SelectController(SysUserAppService app) => App = app;
+        public SelectController(UserAppService app) => App = app;
 
         #region View
 
@@ -87,7 +87,7 @@ namespace ZHXY.Web.Controllers
             query = string.IsNullOrEmpty(pagination.Sidx) ? query.OrderByDescending(p => p.F_CreatorTime) : query.OrderBy($"{pagination.Sidx} {pagination.Sord}");
             query = query.Skip(pagination.Skip).Take(pagination.Rows);
             var list = (from user in query
-                        join org in App.Read<Organize>() on user.F_OrganizeId equals org.F_Id into orgJoin
+                        join org in App.Read<Organ>() on user.F_OrganizeId equals org.Id into orgJoin
                         from org in orgJoin.DefaultIfEmpty()
                         join role in App.Read<Role>() on user.F_DutyId equals role.F_Id into roleJoin
                         from role in roleJoin.DefaultIfEmpty()
@@ -95,8 +95,8 @@ namespace ZHXY.Web.Controllers
                         {
                             Id = user.F_Id,
                             RealName = user.F_RealName,
-                            OrgId = org.F_Id ?? "",
-                            OrgName = org.F_FullName ?? "",
+                            OrgId = org.Id ?? "",
+                            OrgName = org.Name ?? "",
                             Duty = role.F_FullName
                         }
 
@@ -141,30 +141,30 @@ namespace ZHXY.Web.Controllers
         public ActionResult GetDeptTree(string nodeid, string keyword)
         {
             var hasKeyword = !string.IsNullOrEmpty(keyword);
-            var query = App.Read<Organize>();
+            var query = App.Read<Organ>();
             if (hasKeyword)
             {
-                query = query.Where(p => p.F_FullName.Contains(keyword));
+                query = query.Where(p => p.Name.Contains(keyword));
             }
             else
             {
                 query = string.IsNullOrEmpty(nodeid)
-                 ? query.Where(p => p.F_ParentId.Equals("1"))
-                 : query.Where(p => p.F_ParentId.Equals(nodeid));
+                 ? query.Where(p => p.ParentId.Equals("1"))
+                 : query.Where(p => p.ParentId.Equals(nodeid));
             }
             var list = query.Select(p =>
                 new TreeView
                 {
-                    Id = p.F_Id,
-                    Parent = p.F_ParentId,
+                    Id = p.Id,
+                    Parent = p.ParentId,
                     //Level = p.F_Level,
                     Loaded = hasKeyword ? true : false,
                     IsLeaf = p.Children.Count == 0,
                     Expanded = hasKeyword ? true : false,
-                    Name = p.F_FullName,
-                    ParentName = p.Parent.F_FullName,
-                    IsDisabled = p.F_EnabledMark.HasValue ? p.F_EnabledMark.Value : false,
-                    SortCode = p.F_SortCode.HasValue ? p.F_SortCode.Value : 0
+                    Name = p.Name,
+                    ParentName = p.Parent.Name,
+                    IsDisabled = false,
+                    SortCode = p.SortCode.HasValue ? p.SortCode.Value : 0
                 }).ToList();
             list = list.OrderBy(p => string.IsNullOrEmpty(p.ParentName) ? p.Name : p.ParentName + p.SortCode).ToList();
 

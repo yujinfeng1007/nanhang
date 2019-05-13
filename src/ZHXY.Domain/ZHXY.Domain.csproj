@@ -38,6 +38,8 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -83,7 +85,7 @@
     <Compile Include="EntityConfig\System\RoleAuthorizeMap.cs" />
     <Compile Include="EntityConfig\System\RoleMap.cs" />
     <Compile Include="EntityConfig\System\SysOrgLeaderMap.cs" />
-    <Compile Include="EntityConfig\System\SysOrgMap.cs" />
+    <Compile Include="EntityConfig\System\OrgMap.cs" />
     <Compile Include="EntityConfig\System\SysTableDefMap.cs" />
     <Compile Include="EntityConfig\System\UserLogOnMap.cs" />
     <Compile Include="EntityConfig\System\UserMap.cs" />
@@ -95,6 +97,7 @@
     <Compile Include="Entity\Dorm\DormRoom.cs" />
     <Compile Include="Entity\Dorm\DormStudent.cs" />
     <Compile Include="Entity\Dorm\DormVisitLimit.cs" />
+    <Compile Include="Entity\Dorm\Dorm_BuildingDevice.cs" />
     <Compile Include="Entity\Dorm\Gate.cs" />
     <Compile Include="Entity\Dorm\InOutReceive.cs" />
     <Compile Include="Entity\Dorm\LateReturnReport.cs" />
@@ -126,7 +129,7 @@
     <Compile Include="Entity\System\SysButton.cs" />
     <Compile Include="EntityExtensions\ModuleComparer.cs" />
     <Compile Include="Entity\System\SysModule.cs" />
-    <Compile Include="Entity\System\Organize.cs" />
+    <Compile Include="Entity\System\Organ.cs" />
     <Compile Include="Entity\System\OrganizeGrade.cs" />
     <Compile Include="Entity\System\RoleAuthorize.cs" />
     <Compile Include="Entity\System\Role.cs" />

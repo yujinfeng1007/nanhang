@@ -24,11 +24,9 @@ namespace ZHXY.Application
             AddAndSave(log);
         }
 
-        public (List<SysLog> list, int recordCount, int pageCount) Load(GetLogListDto input)
+        public dynamic Load(GetLogListDto input)
         {
-            var query = Read<SysLog>();
-            var (recordCount, pageCount) = query.CountAsync().Result.ComputePage(input.Take);
-            return (query.OrderBy(input.Sort).Skip(input.Skip).Take(input.Take).ToListAsync().Result, recordCount, pageCount);
+            return Read<SysLog>().Paging(input).ToListAsync().Result;
         }
 
 

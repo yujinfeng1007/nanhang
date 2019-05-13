@@ -149,7 +149,7 @@ namespace ZHXY.Web.Controllers
             try
             {
                 CheckVerifyCode(code);
-                var userEntity = new SysUserAppService().CheckLogin(username, password);
+                var userEntity = new UserAppService().CheckLogin(username, password);
                 var duty = string.Empty;
                 if (userEntity != null)
                 {
@@ -171,7 +171,7 @@ namespace ZHXY.Web.Controllers
 
                   
 
-                    operatorModel.DepartmentId = userEntity.F_DepartmentId;
+                    operatorModel.DepartmentId = userEntity.OrgId;
                     operatorModel.RoleId = userEntity.F_RoleId;
                     operatorModel.HeadIcon = userEntity.F_HeadIcon;
                     operatorModel.LoginIPAddress = Net.Ip;
@@ -237,7 +237,7 @@ namespace ZHXY.Web.Controllers
             try
             {
                 CheckVerifyCode(code);
-                var userEntity = new SysUserAppService().CheckLogin(username, password);
+                var userEntity = new UserAppService().CheckLogin(username, password);
                 var roleList = new SysUserRoleAppService().GetListByUserId(userEntity.F_Id);
                 var F_Type = true;
                 foreach (var item in roleList)
@@ -283,7 +283,7 @@ namespace ZHXY.Web.Controllers
 
                     //学校老师
                
-                    op.DepartmentId = userEntity.F_DepartmentId;
+                    op.DepartmentId = userEntity.OrgId;
                     op.RoleId = userEntity.F_RoleId;
                     op.HeadIcon = userEntity.F_HeadIcon;
                     op.LoginIPAddress = Net.Ip;
@@ -376,7 +376,7 @@ namespace ZHXY.Web.Controllers
         public ActionResult AdminLogin(string uname, string pass, string schoolCode)
         {
             OperatorProvider.Set(new OperatorModel { SchoolCode = schoolCode });
-            var userEntity = new SysUserAppService().CheckLogin(uname, pass);
+            var userEntity = new UserAppService().CheckLogin(uname, pass);
             var operatorModel = new OperatorModel
             {
                 UserId = userEntity.F_Id,
@@ -384,7 +384,7 @@ namespace ZHXY.Web.Controllers
                 UserName = userEntity.F_RealName,
                 F_User_SetUp = userEntity.F_User_SetUp,
                 CompanyId = userEntity.F_OrganizeId, //学校ID
-                DepartmentId = userEntity.F_DepartmentId,
+                DepartmentId = userEntity.OrgId,
                 RoleId = userEntity.F_RoleId,
                 HeadIcon = userEntity.F_HeadIcon,
                 LoginIPAddress = Net.Ip
@@ -536,7 +536,7 @@ namespace ZHXY.Web.Controllers
             if (ok)
             {
                 var uid = client.GetUID().ToLower();
-                var exist = new SysUserAppService().Read<User>(p => p.F_Account.Equals(uid)).AnyAsync().Result;
+                var exist = new UserAppService().Read<User>(p => p.F_Account.Equals(uid)).AnyAsync().Result;
                 if (!exist) throw new Exception("无权进入本系统!");
                 var user = BuildCurrent(uid);
                 OperatorProvider.Set(user);
@@ -548,7 +548,7 @@ namespace ZHXY.Web.Controllers
 
         private OperatorModel BuildCurrent(string account)
         {
-            var app = new SysUserAppService();
+            var app = new UserAppService();
             var user = app.Read<User>(p => p.F_Account.Equals(account)).FirstOrDefaultAsync().Result;
             if (user == null) throw new Exception("用户不存在!");
             var roleIds = app.Read<UserRole>(p => p.F_User.Equals(user.F_Id)).Select(p => p.F_Role).ToListAsync()
@@ -563,7 +563,7 @@ namespace ZHXY.Web.Controllers
                 UserName = user.F_RealName,
                 F_User_SetUp = user.F_User_SetUp,
                 CompanyId = user.F_OrganizeId,
-                DepartmentId = user.F_DepartmentId,
+                DepartmentId = user.OrgId,
                 RoleId = user.F_RoleId,
                 HeadIcon = user.F_HeadIcon,
                 LoginIPAddress = Net.Ip,

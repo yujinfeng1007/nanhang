@@ -1,5 +1,5 @@
 ﻿@{
-    
+
     Layout = "~/Views/Shared/_Index.cshtml";
 }
 <script>
@@ -31,9 +31,17 @@
         $.submitForm({
             url: "/SystemManage/Area/SubmitForm?keyValue=" + keyValue,
             param: $("#form1").formSerialize(),
-            success: function () {
-                $.currentWindow().$("#gridList").resetSelection();
-                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            success: function (r) {
+
+                console.log(r);
+                if (r.state === 'success') {
+                    $.currentWindow().$("#gridList").resetSelection();
+                    $.currentWindow().$("#gridList").trigger("reloadGrid");
+                     $.modalMsg('success', 'error');
+                } else {
+                    $.modalMsg(r.message, 'error');
+                }
+
             }
         })
     }
@@ -71,7 +79,8 @@
                 </td>
             </tr>
             <tr>
-                <th class="formTitle" valign="top" style="padding-top: 5px;">备注
+                <th class="formTitle" valign="top" style="padding-top: 5px;">
+                    备注
                 </th>
                 <td class="formValue">
                     <textarea id="F_Description" name="F_Description" class="form-control" style="height: 60px;"></textarea>

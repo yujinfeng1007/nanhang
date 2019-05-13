@@ -18,16 +18,16 @@ namespace TaskApi.DH
 
         public void Execute(IJobExecutionContext context)
         {
-            IDatabase db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
+            var db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
             RedisValue[] valueArr = db.SetRandomMembers(REDIS_LINE_RECORD_SET_KEY, REDIS_PROCESS_COUNT);
             Console.WriteLine("处理闸机流水信息,处理数据长度为： " + valueArr.Length + "   DateTime : " + DateTime.Now.ToString());
-            List<LineRecordMoudle> ListLineRecord = new List<LineRecordMoudle>();
+            var ListLineRecord = new List<LineRecordMoudle>();
             for (int i = 0; i < valueArr.Length; i++)
             {
-                JObject jo = ((JObject)JsonConvert.DeserializeObject(valueArr[i])).Value<JObject>("info");
+                var jo = ((JObject)JsonConvert.DeserializeObject(valueArr[i])).Value<JObject>("info");
                 jo.Add("id", Guid.NewGuid().ToString());
                 jo.Add("date", DateTime.Now);
-                LineRecordMoudle line = JsonConvert.DeserializeObject<LineRecordMoudle>(JsonConvert.SerializeObject(jo));
+                var line = JsonConvert.DeserializeObject<LineRecordMoudle>(JsonConvert.SerializeObject(jo));
                 ListLineRecord.Add(line);
             }
 
@@ -41,16 +41,16 @@ namespace TaskApi.DH
         public void InsertLineRecordToSqlServer(List<LineRecordMoudle> lineRecordMoudles)
         {
             //有可能一次性获取的流水记录有当前月份和上个月的（月份交替，凌晨时分的数据）
-            List<LineRecordMoudle> LastMonthList = new List<LineRecordMoudle>();  //上个月数据入库集合
-            List<LineRecordMoudle> CurrentMonthList = new List<LineRecordMoudle>(); //当前月份数据入库集合
+            var LastMonthList = new List<LineRecordMoudle>();  //上个月数据入库集合
+            var CurrentMonthList = new List<LineRecordMoudle>(); //当前月份数据入库集合
 
-            DateTime dateTitle = GetDateTime(Int32.Parse(lineRecordMoudles[0].swipDate));
+            var dateTitle = GetDateTime(Int32.Parse(lineRecordMoudles[0].swipDate));
             int TableIntTitle = Int32.Parse(dateTitle.Year + "" + dateTitle.Month);
             string tableNameTitle = "DHFLOW_" + dateTitle.Year + dateTitle.Month.ToString().PadLeft(2, '0');
             string tableNameOther = null;
-            foreach (LineRecordMoudle lineRecord in lineRecordMoudles)
+            foreach (var lineRecord in lineRecordMoudles)
             {
-                DateTime date = GetDateTime(Int32.Parse(lineRecord.swipDate));
+                var date = GetDateTime(Int32.Parse(lineRecord.swipDate));
                 int TableInt = Int32.Parse(date.Year + "" + date.Month);
                 if(TableInt == TableIntTitle)
                 {
@@ -78,10 +78,10 @@ namespace TaskApi.DH
        public void  InsertSql(List<LineRecordMoudle> RecordList , string tableName)
         {
             SqlHelper.CheckExistsTable(tableName, CreateSqlStr(tableName));
-            StringBuilder InsertSql = new StringBuilder("INSERT INTO [dbo].["+ tableName + "]([code],[id], [date], [channelCode], [channelName], " +
+            var InsertSql = new StringBuilder("INSERT INTO [dbo].["+ tableName + "]([code],[id], [date], [channelCode], [channelName], " +
                 "[departmentCode], [departmentName], [cardNum], [firstName], [lastName], [tel], [gender], [idNum], [personId], [cardType], " +
                 "[inOut], [eventType], [deviceType], [swipDate], [picture1], [picture2], [picture3], [picture4], [memo], [alarmCode], [pictureUrl]) VALUES ");
-            foreach(LineRecordMoudle record in RecordList)
+            foreach(var record in RecordList)
             {
                 InsertSql.Append("('"+ record .code+ "', '" + record.id + "', '" + record.date + "', '" + record.channelCode
                     + "', '"+record.channelName + "', '"+record.departmentCode + "', '"+record.departmentName 
@@ -100,7 +100,7 @@ namespace TaskApi.DH
         /// <returns></returns>
         private int GetTimeStamp(DateTime dt)
         {
-            DateTime dateStart = new DateTime(1970, 1, 1, 8, 0, 0);
+            var dateStart = new DateTime(1970, 1, 1, 8, 0, 0);
             int timeStamp = Convert.ToInt32((dt - dateStart).TotalSeconds);
             return timeStamp;
         }
@@ -112,10 +112,10 @@ namespace TaskApi.DH
         /// <returns></returns>
         private DateTime GetDateTime(int timeStamp)
         {
-            DateTime dtStart = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
+            var dtStart = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
             long lTime = ((long)timeStamp * 10000000);
-            TimeSpan toNow = new TimeSpan(lTime);
-            DateTime targetDt = dtStart.Add(toNow);
+            var toNow = new TimeSpan(lTime);
+            var targetDt = dtStart.Add(toNow);
             return targetDt;
         }
 

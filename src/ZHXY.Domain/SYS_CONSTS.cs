@@ -8,7 +8,6 @@
     /// </summary>
     public static class SYS_CONSTS
     {
-
         //缓存key
         public static string DATAITEMS { get; } = "dataItems";
         public static string ORGANIZE { get; } = "organize";

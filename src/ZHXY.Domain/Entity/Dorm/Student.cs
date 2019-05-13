@@ -972,7 +972,7 @@ namespace ZHXY.Domain
         public string F_Introduction { get; set; }
 
         [ForeignKey("F_Divis_ID")]
-        public Organize sysOrganize { get; set; }
+        public Organ sysOrganize { get; set; }
 
         [ForeignKey("F_Id")]
         public DormStudent DormStudent { get; set; }

@@ -34,7 +34,7 @@ namespace ZHXY.Web.Dorm.Controllers
              {
                  Account = p.F_Account,
                  Name = p.F_Name,
-                 Class = p.Class?.F_FullName,
+                 Class = p.Class?.Name,
                  Dorm = p.Dorm?.Title,
                  College = p.F_College,
                  InTime = p.F_InTime,
@@ -49,7 +49,7 @@ namespace ZHXY.Web.Dorm.Controllers
             {
                 Account = p.F_Account,
                 Name = p.F_Name,
-                Class = p.Class?.F_FullName,
+                Class = p.Class?.Name,
                 Dorm = p.Dorm?.Title,
                 College = p.F_College,
                 Time = p.F_CreatorTime
@@ -64,7 +64,7 @@ namespace ZHXY.Web.Dorm.Controllers
             {
                 Account = p.F_Account,
                 Name = p.F_Name,
-                Class = p.Class?.F_FullName,
+                Class = p.Class?.Name,
                 Dorm = p.Dorm?.Title,
                 College = p.F_College,
                 InTime = p.F_InTime,

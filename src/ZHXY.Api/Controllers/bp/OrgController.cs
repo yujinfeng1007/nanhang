@@ -17,7 +17,7 @@ namespace ZHXY.Api.Controllers
         [IpFilter]
         public IHttpActionResult GetAll()
         {
-            var app = new SysOrganizeAppService();
+            var app = new OrgAppService();
             var orgs = app.GetList();
             return Json(orgs);
         }
@@ -30,7 +30,7 @@ namespace ZHXY.Api.Controllers
         {
             if (!F_Id.IsEmpty())
             {
-                var app = new SysUserAppService();
+                var app = new UserAppService();
                 var user = app.Get(F_Id);
                 return Json(user);
             }
@@ -48,7 +48,7 @@ namespace ZHXY.Api.Controllers
         {
             if (!user.IsEmpty())
             {
-                var app = new SysUserAppService();
+                var app = new UserAppService();
                 var tmp = app.Get(user.F_Id);
                 return Json(tmp);
             }
