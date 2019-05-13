@@ -54,6 +54,7 @@
     <Compile Include="DormServices\Buildings\DormBuildingService.cs" />
     <Compile Include="DormServices\DormRules\Dto\UpdateDormRuleDto.cs" />
     <Compile Include="DormServices\Gates\Dto\AddGateDto.cs" />
+    <Compile Include="DormServices\Gates\Dto\GateDto.cs" />
     <Compile Include="DormServices\Gates\Dto\GateView.cs" />
     <Compile Include="DormServices\Gates\Dto\SyncGateDto.cs" />
     <Compile Include="DormServices\Gates\Dto\UpdateGateDto.cs" />
