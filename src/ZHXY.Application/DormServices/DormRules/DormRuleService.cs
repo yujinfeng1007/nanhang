@@ -11,14 +11,14 @@ namespace ZHXY.Application
     public class DormRuleAppService : AppService
     {
         public DormRuleAppService(IZhxyRepository r) : base(r) { }
-        public DormRule GetById(string id) => Get<DormRule>(id);
+        public DormTimeRule GetById(string id) => Get<DormTimeRule>(id);
         public void Update(UpdateDormRuleDto input)
         {
-            var rule= Get<DormRule>(input.DayOfWeek);
+            var rule= Get<DormTimeRule>(input.DayOfWeek);
             input.MapTo(rule);
             SaveChanges();
         }
 
-        public List<DormRule> Load() => Read<DormRule>().ToListAsync().Result;
+        public List<DormTimeRule> Load() => Read<DormTimeRule>().ToListAsync().Result;
     }
 }

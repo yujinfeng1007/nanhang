@@ -3,9 +3,9 @@
 namespace ZHXY.Domain
 {
 
-    public class DormMap: EntityTypeConfiguration<DormRoom>
+    public class DormRoomMap : EntityTypeConfiguration<DormRoom>
     {
-        public DormMap()
+        public DormRoomMap()
         {
             ToTable("dorm_dorm");
             HasKey(t => t.Id);

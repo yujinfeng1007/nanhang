@@ -232,7 +232,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Areas\Dorm\Controllers\XFTXController.cs" />
-    <Compile Include="Areas\Dorm\Controllers\BedController.cs" />
     <Compile Include="Areas\Dorm\Controllers\DormBuildingController.cs" />
     <Compile Include="Areas\Dorm\Controllers\DormRoomController.cs" />
     <Compile Include="Areas\Dorm\Controllers\DormRuleController.cs" />
@@ -244,7 +243,6 @@
     <Compile Include="Areas\Dorm\Controllers\LeaveController.cs" />
     <Compile Include="Areas\Dorm\Controllers\ParentController.cs" />
     <Compile Include="Areas\Dorm\Controllers\PerformanceController.cs" />
-    <Compile Include="Areas\Dorm\Controllers\RepairController.cs" />
     <Compile Include="Areas\Dorm\Controllers\ReportController.cs" />
     <Compile Include="Areas\Dorm\Controllers\SpecialLeaveController.cs" />
     <Compile Include="Areas\Dorm\Controllers\StudentController.cs" />

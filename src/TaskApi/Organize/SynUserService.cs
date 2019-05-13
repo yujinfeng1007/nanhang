@@ -146,22 +146,19 @@ namespace TaskApi
             teacher.F_Num = num;
             //student.F_Users_ID = entity.F_Id;
             teacher.F_MobilePhone = entity.F_MobilePhone;
-            teacher.F_DepartmentId = entity.OrgId;
             teacher.F_CredNum = credNum;
             teacher.F_Profession = profession;
             teacher.F_PolitStatu = politstatu;
             teacher.F_CredType = credType;
             teacher.F_EntryTime = entryTime;
-            var t = db.FindEntity<Teacher>(p => p.F_User_ID == entity.F_Id);
+            var t = db.FindEntity<Teacher>(p => p.UserId == entity.F_Id);
             if (t != null)
             {
-                teacher.Modify(t.F_Id);
                 db.Update(teacher);
             }
             else
             {
-                teacher.F_User_ID = entity.F_Id;
-                teacher.Create();
+                teacher.UserId = entity.F_Id;
                 db.Insert(teacher);
             }
 

@@ -46,7 +46,6 @@
   <ItemGroup>
     <Compile Include="01.Base\DataScopeFilterExt.cs" />
     <Compile Include="01.Base\TreeHelper.cs" />
-    <Compile Include="DormServices\BuildingAppService.cs" />
     <Compile Include="DormServices\Buildings\XFTXService.cs" />
     <Compile Include="DormServices\Buildings\Dto\CreateDormBuildingDto.cs" />
     <Compile Include="DormServices\Buildings\Dto\DormBuildingUserView.cs" />
@@ -59,7 +58,6 @@
     <Compile Include="DormServices\Gates\Dto\SyncGateDto.cs" />
     <Compile Include="DormServices\Gates\Dto\UpdateGateDto.cs" />
     <Compile Include="DormServices\Gates\GateAppService.cs" />
-    <Compile Include="DormServices\BedAppService.cs" />
     <Compile Include="DormServices\DormRules\DormRuleService.cs" />
     <Compile Include="DormServices\DormRooms\DormRoomAppService.cs" />
     <Compile Include="DormServices\DormStudentAppService.cs" />
@@ -67,7 +65,6 @@
     <Compile Include="DormServices\LateReturnReportService.cs" />
     <Compile Include="DormServices\NoOutReportService.cs" />
     <Compile Include="DormServices\NoReturnReportService.cs" />
-    <Compile Include="DormServices\DormRepairAppService.cs" />
     <Compile Include="DormServices\OriginalReportService.cs" />
     <Compile Include="DormServices\Performances\Dto\BuildingAccessStatisticsView.cs" />
     <Compile Include="DormServices\ReportHelper.cs" />

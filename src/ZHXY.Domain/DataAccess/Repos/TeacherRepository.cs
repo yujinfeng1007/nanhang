@@ -69,7 +69,7 @@ namespace ZHXY.Domain
                     var model = db.Find<Teacher>(F_Id[i]);
                     if (model != null)
                     {
-                        db.Delete<User>(t => t.F_Id == model.F_User_ID);
+                        db.Delete<User>(t => t.F_Id == model.UserId);
                         db.Delete(model);
 
                         var isPost = true;
@@ -87,9 +87,8 @@ namespace ZHXY.Domain
             using (var db = new UnitWork().BeginTrans())
             {
                 foreach (var data in datas)
-                    if (data.F_Id.IsEmpty())
+                    if (data.Id.IsEmpty())
                     {
-                        data.Create();
                         var teach = new TeacherRepository().QueryAsNoTracking()
                                     .Where(t => t.F_Num.Equals(data.F_Num));
                         //是否被使用
@@ -132,10 +131,10 @@ namespace ZHXY.Domain
                                     userLogOnEntity.F_UserSecretkey).ToLower(), 32).ToLower();
                         db.Insert(user);
                         db.Insert(userLogOnEntity);
-                        data.F_User_ID = user.F_Id;
+                        data.UserId = user.F_Id;
                         var us = new UserRole();
                         us.F_Id = Guid.NewGuid().ToString("N").ToUpper();
-                        us.F_User = data.F_User_ID;
+                        us.F_User = data.UserId;
                         us.F_Role = user.F_RoleId;
 
                         var isPost = true;
@@ -160,12 +159,12 @@ namespace ZHXY.Domain
                         }
                         else
                         {
-                            if (data.F_Id != teach.First().F_Id)
+                            if (data.Id != teach.First().Id)
                             {
                                 throw new Exception("教师姓名为'" + data.F_Name + "'更新失败（手机号已被使用）");
                             }
                         }
-                        var user = db.FindEntity<User>(t => t.F_Id == data.F_User_ID);
+                        var user = db.FindEntity<User>(t => t.F_Id == data.UserId);
                         user.F_Gender = Convert.ToBoolean(Convert.ToInt32(data.F_Gender));
                         user.OrgId = data.F_Divis_ID;
                         user.F_RealName = data.F_Name;
@@ -197,7 +196,6 @@ namespace ZHXY.Domain
                                          "&amp;headicon=" + user.F_HeadIcon + "&amp;birthday=" + F_Birthday + "";
                         var Result = WebHelper.SendRequest(CallUrlUpt, parameters, isPost, "application/json");
 
-                        data.Modify(data.F_Id);
                         db.Update(data);
                     }
 
@@ -211,7 +209,7 @@ namespace ZHXY.Domain
             var mod = "<p>导入错误如下：</p>";
             var kk = 1;
             foreach (var data in datas)
-                if (data.F_Id.IsEmpty())
+                if (data.Id.IsEmpty())
                     try
                     {
                         using (var db = new UnitWork().BeginTrans())
@@ -245,7 +243,7 @@ namespace ZHXY.Domain
                             var role = "";
                             if (!string.IsNullOrEmpty(data.F_RoleId))
                             {
-                                db.Delete<UserRole>(t => t.F_User == data.F_User_ID);
+                                db.Delete<UserRole>(t => t.F_User == data.UserId);
                                 var rolelength = data.F_RoleId.Length;
                                 var rolelengthlast = data.F_RoleId.LastIndexOf(',');
                                 var k = 0;
@@ -293,7 +291,7 @@ namespace ZHXY.Domain
                                         userLogOnEntity.F_UserSecretkey).ToLower(), 32).ToLower();
                             //db.Insert(user);
                             //db.Insert(userLogOnEntity);
-                            data.F_User_ID = user.F_Id;
+                            data.UserId = user.F_Id;
                             //service.AddDatasImport(user, userLogOnEntity, data);
 
                             db.Insert(user);
@@ -319,7 +317,7 @@ namespace ZHXY.Domain
                                 {
                                     var us = new UserRole();
                                     us.F_Id = Guid.NewGuid().ToString("N").ToUpper();
-                                    us.F_User = data.F_User_ID;
+                                    us.F_User = data.UserId;
                                     us.F_Role = GetRoleListByCache().FirstOrDefault(q =>
                                         GetPropertyValue(q.Value, "fullname").Equals(F_RoleId[i].ToString())).Key;
                                     db.Insert(us);
@@ -329,12 +327,11 @@ namespace ZHXY.Domain
                             {
                                 var us = new UserRole();
                                 us.F_Id = Guid.NewGuid().ToString("N").ToUpper();
-                                us.F_User = data.F_User_ID;
+                                us.F_User = data.UserId;
                                 us.F_Role = user.F_RoleId;
                                 db.Insert(us);
                             }
 
-                            data.Create();
                             db.Insert(data);
                             db.Commit();
                         }
@@ -350,7 +347,7 @@ namespace ZHXY.Domain
                         using (var db = new UnitWork().BeginTrans())
                         {
                             data.F_Num = data.F_MobilePhone;
-                            var teachentity = db.FindEntity<Teacher>(t => t.F_Id == data.F_Id);
+                            var teachentity = db.FindEntity<Teacher>(t => t.Id == data.Id);
                             var teach = new TeacherRepository().QueryAsNoTracking()
                                 .Where(t => t.F_Num.Equals(data.F_Num));
                             //是否被使用
@@ -359,7 +356,7 @@ namespace ZHXY.Domain
                             }
                             else
                             {
-                                if (data.F_Id != teach.First().F_Id)
+                                if (data.Id != teach.First().Id)
                                 {
                                     list.Add("<p>" + kk + ". 教师姓名为'" + data.F_Name + "'更新失败（手机号已被使用）</p> ");
                                     kk++;
@@ -369,7 +366,7 @@ namespace ZHXY.Domain
                             var role = "";
                             if (!string.IsNullOrEmpty(data.F_RoleId))
                             {
-                                db.Delete<UserRole>(t => t.F_User == data.F_User_ID);
+                                db.Delete<UserRole>(t => t.F_User == data.UserId);
                                 var rolelength = data.F_RoleId.Length;
                                 var rolelengthlast = data.F_RoleId.LastIndexOf(',');
                                 var k = 0;
@@ -383,7 +380,7 @@ namespace ZHXY.Domain
                                 }
                             }
 
-                            var user = db.FindEntity<User>(t => t.F_Id == teachentity.F_User_ID);
+                            var user = db.FindEntity<User>(t => t.F_Id == teachentity.UserId);
                             user.F_Account = data.F_Num;
                             user.F_Gender = Convert.ToBoolean(Convert.ToInt32(data.F_Gender));
                             user.OrgId = data.F_Divis_ID;
@@ -408,7 +405,7 @@ namespace ZHXY.Domain
                                         userLogOnEntity.F_UserSecretkey).ToLower(), 32).ToLower();
                             //db.Insert(user);
                             //db.Insert(userLogOnEntity);
-                            data.F_User_ID = user.F_Id;
+                            data.UserId = user.F_Id;
                             //service.AddDatasImport(user, userLogOnEntity, data);
                             db.Update(user);
                             db.Update(userLogOnEntity);
@@ -424,7 +421,7 @@ namespace ZHXY.Domain
 
                             if (!string.IsNullOrEmpty(data.F_RoleId))
                             {
-                                db.Delete<UserRole>(t => t.F_User == data.F_User_ID);
+                                db.Delete<UserRole>(t => t.F_User == data.UserId);
                                 var rolelength = data.F_RoleId.Length;
                                 var rolelengthlast = data.F_RoleId.LastIndexOf(',');
                                 var k = 0;
@@ -434,21 +431,20 @@ namespace ZHXY.Domain
                                 {
                                     var us = new UserRole();
                                     us.F_Id = Guid.NewGuid().ToString("N").ToUpper();
-                                    us.F_User = data.F_User_ID;
+                                    us.F_User = data.UserId;
                                     us.F_Role = GetRoleListByCache().FirstOrDefault(q =>
                                         GetPropertyValue(q.Value, "fullname").Equals(F_RoleId[i].ToString())).Key;
                                     db.Insert(us);
                                 }
                             }
 
-                            data.Modify(data.F_Id);
                             db.Update(data);
                             db.Commit();
                         }
                     }
                     catch
                     {
-                        list.Add("<p>" + kk + ". 主键为'" + data.F_Id + "'更新失败 </p>");
+                        list.Add("<p>" + kk + ". 主键为'" + data.Id + "'更新失败 </p>");
                         kk++;
                     }
 
@@ -470,7 +466,7 @@ namespace ZHXY.Domain
         {
             using (var db = new UnitWork().BeginTrans())
             {
-                if (string.IsNullOrEmpty(entity.F_Id))
+                if (string.IsNullOrEmpty(entity.Id))
                 {
                     db.Insert(userentity);
                     db.Insert(userlogentity);
@@ -496,14 +492,13 @@ namespace ZHXY.Domain
                         {
                             var us = new UserRole();
                             us.F_Id = Guid.NewGuid().ToString("N").ToUpper();
-                            us.F_User = entity.F_User_ID;
+                            us.F_User = entity.UserId;
                             us.F_Role = GetRoleListByCache().FirstOrDefault(q =>
                                 GetPropertyValue(q.Value, "fullname").Equals(F_RoleId[i].ToString())).Key;
                             db.Insert(us);
                         }
                     }
 
-                    entity.Create();
                     db.Insert(entity);
                 }
                 else
@@ -532,15 +527,14 @@ namespace ZHXY.Domain
                         {
                             var us = new UserRole();
                             us.F_Id = Guid.NewGuid().ToString("N").ToUpper();
-                            us.F_User = entity.F_User_ID;
+                            us.F_User = entity.UserId;
                             us.F_Role = GetRoleListByCache().FirstOrDefault(q =>
                                 GetPropertyValue(q.Value, "fullname").Equals(F_RoleId[i].ToString())).Key;
-                            db.Delete<UserRole>(t => t.F_User == entity.F_User_ID);
+                            db.Delete<UserRole>(t => t.F_User == entity.UserId);
                             db.Insert(us);
                         }
                     }
 
-                    entity.Modify(entity.F_Id);
                     db.Update(entity);
                 }
 

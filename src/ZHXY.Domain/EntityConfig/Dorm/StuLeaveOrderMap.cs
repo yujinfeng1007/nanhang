@@ -5,11 +5,16 @@ namespace ZHXY.Domain
     /// <summary>
     /// 学生请假
     /// </summary>
-    public class StuLeaveMap : EntityTypeConfiguration<StuLeaveOrder>
+    public class StuLeaveOrderMap : EntityTypeConfiguration<StuLeaveOrder>
     {
-        public StuLeaveMap()
+        public StuLeaveOrderMap()
         {
             ToTable("School_Stu_Leave");
+
+            HasKey(p => p.Id);
+
+            Property(p => p.Id).HasColumnName("F_Id");
+            Property(p => p.CreatedTime).HasColumnName("F_CreatorTime");
             Property(p => p.ApplicantId).HasColumnName("F_Applicant").HasColumnType("varchar").HasMaxLength(50);
             Property(p => p.StartTime).HasColumnName("F_StartTime").HasColumnType("varchar").HasMaxLength(50);
             Property(p => p.EndOfTime).HasColumnName("F_EndTime").HasColumnType("varchar").HasMaxLength(50);

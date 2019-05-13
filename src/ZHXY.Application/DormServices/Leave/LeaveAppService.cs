@@ -471,7 +471,7 @@ create table School_CancelHoliday(
         /// <returns></returns>
         public List<ContactGroupView> GetTeachers()
         {
-            return Read<Teacher>().Select(p => new ContactView { Id = p.F_User_ID, Name = p.F_Name }).ToListAsync().Result.GroupBy(p => p.GroupName).Select(g => new ContactGroupView
+            return Read<Teacher>().Select(p => new ContactView { Id = p.UserId, Name = p.F_Name }).ToListAsync().Result.GroupBy(p => p.GroupName).Select(g => new ContactGroupView
             {
                 GroupName = g.Key,
                 Items = g.Where(s => s.GroupName.Equals(g.Key)).ToList()

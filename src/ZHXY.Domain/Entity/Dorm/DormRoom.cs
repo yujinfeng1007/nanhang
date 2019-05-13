@@ -1,11 +1,13 @@
-﻿namespace ZHXY.Domain
+﻿using System;
+
+namespace ZHXY.Domain
 {
     /// <summary>
     /// 宿舍
     /// </summary>
     public class DormRoom : IEntity
     {
-        public string Id { get; set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString("N").ToUpper();
         /// <summary>
         /// 校区
         /// </summary>

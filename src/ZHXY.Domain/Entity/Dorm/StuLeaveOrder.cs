@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ZHXY.Domain
@@ -9,66 +8,10 @@ namespace ZHXY.Domain
     /// </summary>
     public class StuLeaveOrder : IEntity
     {
-        [Key]
-        [Column("F_Id", TypeName = "varchar")]
-        [MaxLength(50)]
         public string Id { get; set; } = Guid.NewGuid().ToString("N").ToUpper();
 
-        [Column("F_Memo", TypeName = "varchar")]
-        [MaxLength(500)]
-        public string Remark { get; set; }
 
-        /// <summary>
-        ///     创建人(外键)
-        /// </summary>
-        [Column("F_CreatorUserId", TypeName = "varchar")]
-        [StringLength(50)]
-        public string CreatedByUserId { get; set; }
-
-        /// <summary>
-        ///     创建时间
-        /// </summary>
-        [Column("F_CreatorTime", TypeName = "datetime")]
         public DateTime CreatedTime { get; set; } = DateTime.Now;
-
-        /// <summary>
-        ///     所属部门
-        /// </summary>
-        [Column("F_DepartmentId", TypeName = "varchar")]
-        [StringLength(50)]
-        public string OwnerDeptId { get; set; }
-
-        /// <summary>
-        ///     最后修改的用户(外键)
-        /// </summary>
-        [Column("F_LastModifyUserId", TypeName = "varchar")]
-        [StringLength(50)]
-        public string LastModifiedByUserId { get; set; }
-
-        /// <summary>
-        ///     最后修改的时间
-        /// </summary>
-        [Column("F_LastModifyTime", TypeName = "datetime")]
-        public DateTime? LastModifiedTime { get; set; }
-
-        /// <summary>
-        ///     删除标记(逻辑删除)
-        /// </summary>
-        [Column("F_DeleteMark")]
-        public bool IsDeleted { get; set; }
-
-        /// <summary>
-        ///     删除的用户(外键)
-        /// </summary>
-        [Column("F_DeleteUserId", TypeName = "varchar")]
-        [StringLength(50)]
-        public string DeletedByUserId { get; set; }
-
-        /// <summary>
-        ///     删除的时间
-        /// </summary>
-        [Column("F_DeleteTime", TypeName = "datetime")]
-        public DateTime? DeletedTime { get; set; }
 
         /// <summary>
         /// 申请人id

@@ -42,7 +42,7 @@ namespace ZHXY.Application
             var ListData = R.Db.Database.SqlQuery<VisitApply>(sqlStr.ToString()).ToList();
             foreach(var visit in ListData)
             {
-                visit.DormId = R.Db.Set<DormStudent>().Where(p => p.F_Student_ID == visit.ApplicantId).Select(p => p.F_Memo).FirstOrDefault();
+                visit.DormId = R.Db.Set<DormStudent>().Where(p => p.StudentId == visit.ApplicantId).Select(p => p.F_Memo).FirstOrDefault();
                 visit.ApplicantId = R.Db.Set<Student>().Where(p => p.F_Id == visit.ApplicantId).Select(p => p.F_Name).FirstOrDefault();
             }
             return ListData;

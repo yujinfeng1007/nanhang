@@ -2,9 +2,9 @@
 
 namespace ZHXY.Domain
 {
-    public class DormRuleMap: EntityTypeConfiguration<DormRule>
+    public class DormTimeRuleMap: EntityTypeConfiguration<DormTimeRule>
     {
-        public DormRuleMap()
+        public DormTimeRuleMap()
         {
             ToTable("dorm_rule");
             HasKey(p => p.DayOfWeek);

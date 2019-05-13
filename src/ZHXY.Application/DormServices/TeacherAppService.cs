@@ -31,7 +31,7 @@ namespace ZHXY.Application
         }
 
         public Teacher GetTeacherByCardNum(string f_CardNum) => Read<Teacher>(p => p.F_Mac_No == f_CardNum).FirstOrDefaultAsync().Result;
-        public string GetMacNoById(string Id)=> Read<Teacher>(p => p.F_Id.Equals(Id)).Select(p => p.F_Mac_No).FirstOrDefaultAsync().Result;
+        public string GetMacNoById(string Id)=> Read<Teacher>(p => p.Id.Equals(Id)).Select(p => p.F_Mac_No).FirstOrDefaultAsync().Result;
         public List<Teacher> GetSelect(string F_Name, string F_Divis_ID)
         {
             var expression = ExtLinq.True<Teacher>();
@@ -59,7 +59,7 @@ namespace ZHXY.Application
 
         public Teacher GetByNum(string num) => Read<Teacher>(p => p.F_Num.Equals(num)).FirstOrDefaultAsync().Result;
 
-        public Teacher GetByUser(string userId) => Read<Teacher>(p => p.F_User_ID.Equals(userId)).FirstOrDefaultAsync().Result;
+        public Teacher GetByUser(string userId) => Read<Teacher>(p => p.UserId.Equals(userId)).FirstOrDefaultAsync().Result;
 
         /// <summary>
         /// 批量导入数据
@@ -84,19 +84,6 @@ namespace ZHXY.Application
                 expression = expression.And(t => t.F_Divis_ID.Equals(F_DepartmentId));
             }
 
-            if (!string.IsNullOrEmpty(F_CreatorTime_Start))
-            {
-                var CreatorTime_Start = Convert.ToDateTime(F_CreatorTime_Start + " 00:00:00");
-                expression = expression.And(t => t.F_CreatorTime >= CreatorTime_Start);
-            }
-
-            if (!string.IsNullOrEmpty(F_CreatorTime_Stop))
-            {
-                var CreatorTime_Stop = Convert.ToDateTime(F_CreatorTime_Stop + " 23:59:59");
-                expression = expression.And(t => t.F_CreatorTime <= CreatorTime_Stop);
-            }
-            expression = expression.And(t => t.F_DeleteMark == false);
-            expression = expression.And(this.DataScopeFilter(expression));
             return Repository.FindList(expression, pagination);
         }
 
@@ -105,9 +92,8 @@ namespace ZHXY.Application
             var expression = ExtLinq.True<Teacher>();
             if (!string.IsNullOrEmpty(teacherId))
             {
-                expression = expression.And(t => t.F_Id.Equals(teacherId));
+                expression = expression.And(t => t.Id.Equals(teacherId));
             }
-            expression = expression.And(t => t.F_DeleteMark == false);
             return Read(expression).OrderBy(t => t.F_Num).ToListAsync().Result;
         }
 
@@ -117,9 +103,9 @@ namespace ZHXY.Application
 
         public void Delete(string id)
         {
-            if (!Read<Teacher>(p => p.F_Id.Equals(id)).Any()) throw new Exception("未找到老师!");
+            if (!Read<Teacher>(p => p.Id.Equals(id)).Any()) throw new Exception("未找到老师!");
             var teacher = Get<Teacher>(id);
-            if (Read<User>(p => p.F_Id.Equals(teacher.F_User_ID)).Any()) throw new Exception("请先删除相关联用户!");
+            if (Read<User>(p => p.F_Id.Equals(teacher.UserId)).Any()) throw new Exception("请先删除相关联用户!");
             DelAndSave(teacher);
         }
 
@@ -127,7 +113,7 @@ namespace ZHXY.Application
         {
             if (!string.IsNullOrEmpty(keyValue))
             {
-                var oldEntity = Repository.Query().Where(t => t.F_Id == keyValue).FirstOrDefault();
+                var oldEntity = Repository.Query().Where(t => t.Id == keyValue).FirstOrDefault();
                 var F_EntryTime = DateTime.Parse(entity.F_EntryTime.ToString());
                 var datenow = DateTime.Parse(DateTime.Now.ToString());
                 entity.F_GL = (datenow.Year - F_EntryTime.Year).ToString();
@@ -135,7 +121,6 @@ namespace ZHXY.Application
 
                 var F_Birthday = DateTime.Parse(entity.F_Birthday.ToString());
                 entity.F_NL = (datenow.Year - F_Birthday.Year).ToString();
-                entity.Modify(keyValue);
                 entity.F_Num = entity.F_MobilePhone;
                 Repository.AddDatas(new List<Teacher> { entity });
             }

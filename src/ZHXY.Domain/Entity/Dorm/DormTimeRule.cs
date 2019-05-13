@@ -3,7 +3,7 @@
     /// <summary>
     /// 宿舍考勤规则
     /// </summary>
-    public class DormRule:IEntity
+    public class DormTimeRule:IEntity
     {
         /// <summary>
         /// 星期几

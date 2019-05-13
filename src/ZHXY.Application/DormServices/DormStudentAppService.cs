@@ -26,7 +26,7 @@ namespace ZHXY.Application
                 F_Grade,
                 F_Class
             };
-            return Read<DormStudent>().Paging(pagination).Where(p => p.F_Bed_ID == "s").ToList();
+            return Read<DormStudent>().Paging(pagination).Where(p => p.BedId == "s").ToList();
             
         }
 

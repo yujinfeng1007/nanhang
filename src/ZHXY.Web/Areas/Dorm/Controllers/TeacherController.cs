@@ -178,7 +178,7 @@ namespace ZHXY.Web.Dorm.Controllers
             var tea = new TeacherModel();
             if (entity != null)
             {
-                tea.F_Id = entity.F_Id;
+                tea.F_Id = entity.Id;
                 tea.F_Name = entity.F_Name;
                 tea.F_HeadPic = entity.teacherSysUser.F_HeadIcon;
                 tea.F_Sex = entity.F_Gender;

@@ -28,11 +28,11 @@ namespace ZHXY.Application
             userQuery = string.IsNullOrWhiteSpace(input.Keyword) ? userQuery : userQuery.Where(p => p.F_Name.Contains(input.Keyword));
             var query = userQuery.GroupJoin(
                 Read<SysLog>(p => p.Type == "Login" && !string.IsNullOrEmpty(p.UserId) && p.Result == true && p.CreateTime >= input.StartTime && p.CreateTime <= input.EndOfTime),
-                u => u.F_Id,
+                u => u.Id,
                 l => l.UserId,
                 (user, log) => new LoginStatisticsView
                 {
-                    UserId = user.F_Id,
+                    UserId = user.Id,
                     Name = user.F_Name,
                     LastLoginTime = log.Max(p => p.CreateTime),
                     LoginTimes = log.Count(),

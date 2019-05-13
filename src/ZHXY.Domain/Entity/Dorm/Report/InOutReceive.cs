@@ -3,7 +3,6 @@ namespace ZHXY.Domain
 {
     public class InOutReceive : Entity
     {
-        #region Declarations
         
         /// <summary>
         /// 
@@ -17,7 +16,5 @@ namespace ZHXY.Domain
         public string F_ReceiveUser{ get; set; }
         
                 
-        
-        #endregion
     }
 }
