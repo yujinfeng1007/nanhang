@@ -22,7 +22,8 @@ namespace ZHXY.Application
         public async Task<DormBuildingView> AddAsync(CreateDormBuildingDto input)
         {
             Building entity = input;            
-            AddAndSave(entity);
+             Add(entity);
+            await SaveChangesAsync();
             return entity;
         }
 
@@ -33,8 +34,8 @@ namespace ZHXY.Application
             if (string.IsNullOrEmpty(input.Id)) throw new ArgumentNullException(nameof(input.Id));
             var entity =  Get<Building>(input.Id);
             if (entity == null) throw new Exception($"No objects were found based on this Id : {input.Id}");
-            input.MapTo(entity);            
-             SaveChanges();
+            input.MapTo(entity);
+            await SaveChangesAsync();
             return entity;
         }
 
