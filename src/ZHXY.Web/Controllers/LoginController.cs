@@ -23,7 +23,12 @@ namespace ZHXY.Web.Controllers
     public class LoginController : Controller
     {
 
+        private DutyService DutyApp { get; }
 
+        public LoginController(DutyService app)
+        {
+            DutyApp = app;
+        }
 
         /// <summary>
         /// 获取验证码
@@ -153,21 +158,13 @@ namespace ZHXY.Web.Controllers
                 var duty = string.Empty;
                 if (userEntity != null)
                 {
-                    var organize = SysCacheAppService.GetOrganizeListByCache();
                     var operatorModel = new OperatorModel();
                     operatorModel.UserId = userEntity.F_Id;
                     operatorModel.UserCode = userEntity.F_Account;
                     operatorModel.UserName = userEntity.F_RealName;
                     operatorModel.F_User_SetUp = userEntity.F_User_SetUp;
                     operatorModel.CompanyId = userEntity.F_OrganizeId; //学校ID
-                    try
-                    {
-                        operatorModel.SchoolName = ((FieldItem)organize[operatorModel.CompanyId]).fullname; //学校名称
-                    }
-                    catch (Exception)
-                    {
-                        operatorModel.SchoolName = "";
-                    }
+                   
 
                   
 
@@ -187,7 +184,7 @@ namespace ZHXY.Web.Controllers
                     }
                     else
                     {
-                        duty = new SysDutyAppService().Get(userEntity.F_DutyId).F_EnCode;
+                        duty=DutyApp.GetEnCode(userEntity.F_DutyId);
                         operatorModel.IsSystem = false;
                     }
 
@@ -242,7 +239,7 @@ namespace ZHXY.Web.Controllers
                 var F_Type = true;
                 foreach (var item in roleList)
                 {
-                    if (new SysRoleAppService().Get(item.F_Role).F_Type.Equals("1"))
+                    if (new RoleService().Get(item.F_Role).Type.Equals("1"))
                     {
                         F_Type = true;
                         break;
@@ -263,7 +260,6 @@ namespace ZHXY.Web.Controllers
                 var duty = string.Empty;
                 if (userEntity != null)
                 {
-                    var org = SysCacheAppService.GetOrganizeListByCache();
                     var op = new OperatorModel
                     {
                         UserId = userEntity.F_Id,
@@ -272,14 +268,6 @@ namespace ZHXY.Web.Controllers
                         F_User_SetUp = userEntity.F_User_SetUp,
                         CompanyId = userEntity.F_OrganizeId //学校ID
                     };
-                    try
-                    {
-                        op.SchoolName = ((FieldItem)org[op.CompanyId]).fullname; //学校名称
-                    }
-                    catch (Exception)
-                    {
-                        op.SchoolName = "";
-                    }
 
                     //学校老师
                
@@ -299,7 +287,7 @@ namespace ZHXY.Web.Controllers
                     }
                     else
                     {
-                        duty = new SysDutyAppService().Get(userEntity.F_DutyId).F_EnCode;
+                        duty = DutyApp.GetEnCode(userEntity.F_DutyId);
                         op.IsSystem = false;
                     }
 
@@ -308,7 +296,7 @@ namespace ZHXY.Web.Controllers
                     var roles = new Dictionary<string, Dictionary<string, string>>();
 
                     var sysUserRoleApp = new SysUserRoleAppService();
-                    var roleApp = new SysRoleAppService();
+                    var roleApp = new RoleService();
                     var list = sysUserRoleApp.GetListByUserId(op.UserId);
                     //获得数据权限,支持多角色
                     foreach (var e in list)
@@ -318,8 +306,8 @@ namespace ZHXY.Web.Controllers
 
                         if (userEntity.F_Data_Type.IsEmpty())
                         {
-                            if (role.F_Data_Type != null)
-                                dic.Add(role.F_Data_Type, role.F_Data_Deps);
+                            if (role.DataType != null)
+                                dic.Add(role.DataType, role.DataDeps);
                         }
                         else
                         {
@@ -399,7 +387,7 @@ namespace ZHXY.Web.Controllers
             var roles = new Dictionary<string, Dictionary<string, string>>();
 
             var sysUserRoleApp = new SysUserRoleAppService();
-            var roleApp = new SysRoleAppService();
+            var roleApp = new RoleService();
             var list = sysUserRoleApp.GetListByUserId(operatorModel.UserId);
             //获得数据权限,支持多角色
             foreach (var e in list)
@@ -409,8 +397,8 @@ namespace ZHXY.Web.Controllers
 
                 if (userEntity.F_Data_Type.IsEmpty())
                 {
-                    if (role.F_Data_Type != null)
-                        dic.Add(role.F_Data_Type, role.F_Data_Deps);
+                    if (role.DataType != null)
+                        dic.Add(role.DataType, role.DataDeps);
                 }
                 else
                 {
@@ -478,7 +466,7 @@ namespace ZHXY.Web.Controllers
             //权限判断，先看个人有没有设置数据权限，再看角色是否有数据权限
             var roles = new Dictionary<string, Dictionary<string, string>>();
             var sysUserRoleApp = new SysUserRoleAppService();
-            var roleApp = new SysRoleAppService();
+            var roleApp = new RoleService();
             var list = sysUserRoleApp.GetListByUserId(user.F_Id);
             //获得数据权限,支持多角色
             foreach (var e in list)
@@ -488,8 +476,8 @@ namespace ZHXY.Web.Controllers
 
                 if (user.F_Data_Type.IsEmpty())
                 {
-                    if (role.F_Data_Type != null)
-                        dic.Add(role.F_Data_Type, role.F_Data_Deps);
+                    if (role.DataType != null)
+                        dic.Add(role.DataType, role.DataDeps);
                 }
                 else
                 {
@@ -555,7 +543,6 @@ namespace ZHXY.Web.Controllers
                 .Result;
             //var canLogin = app.Read<SysRole>(p => roleIds.Contains(p.F_Id) && p.F_Type.Equals("1")).AnyAsync().Result;
             //if (!canLogin) throw new Exception("无权限登录后台系统！");
-            var organize = SysCacheAppService.GetOrganizeListByCache();
             var current = new OperatorModel
             {
                 UserId = user.F_Id,

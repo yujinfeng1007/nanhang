@@ -84,10 +84,10 @@ namespace ZHXY.Web.SystemManage.Controllers
         {
             var data = App.GetList();
             var data_deeps = "";
-            var role = new SysRoleAppService().Get(keyword);
+            var role = new RoleService().Get(keyword);
             if (!role.IsEmpty())
             {
-                data_deeps = role.F_Data_Deps;
+                data_deeps = role.DataDeps;
             }
             else
             {
@@ -211,8 +211,6 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult Delete(string id)
         {
             App.Delete(id);
-            CacheFactory.Cache().RemoveCache(SYS_CONSTS.ORGANIZE);
-            CacheFactory.Cache().WriteCache(SysCacheAppService.GetOrganizeList(), SYS_CONSTS.ORGANIZE);
             return Resultaat.Success();
         }
 

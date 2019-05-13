@@ -70,7 +70,6 @@
     <Compile Include="EntityConfig\Dorm\StuLeaveOrderMap.cs" />
     <Compile Include="EntityConfig\Dorm\TeacherMap.cs" />
     <Compile Include="EntityConfig\System\DbBackupMap.cs" />
-    <Compile Include="EntityConfig\System\FieldDefMap.cs" />
     <Compile Include="EntityConfig\System\FilterIPMap.cs" />
     <Compile Include="EntityConfig\System\ItemsDetailMap.cs" />
     <Compile Include="EntityConfig\System\ItemsMap.cs" />
@@ -83,7 +82,6 @@
     <Compile Include="EntityConfig\System\RoleMap.cs" />
     <Compile Include="EntityConfig\System\SysOrgLeaderMap.cs" />
     <Compile Include="EntityConfig\System\OrgMap.cs" />
-    <Compile Include="EntityConfig\System\SysTableDefMap.cs" />
     <Compile Include="EntityConfig\System\UserLogOnMap.cs" />
     <Compile Include="EntityConfig\System\UserMap.cs" />
     <Compile Include="EntityConfig\System\UserRoleMap.cs" />
@@ -127,8 +125,6 @@
     <Compile Include="Entity\System\OrganizeGrade.cs" />
     <Compile Include="Entity\System\RoleAuthorize.cs" />
     <Compile Include="Entity\System\Role.cs" />
-    <Compile Include="Entity\System\FieldDef.cs" />
-    <Compile Include="Entity\System\TableDef.cs" />
     <Compile Include="Entity\System\User.cs" />
     <Compile Include="Entity\System\UserRole.cs" />
     <Compile Include="Entity\System\DbBackup.cs" />

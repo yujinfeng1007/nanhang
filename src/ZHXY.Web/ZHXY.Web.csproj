@@ -241,7 +241,6 @@
     <Compile Include="Areas\Dorm\Controllers\InOutController.cs" />
     <Compile Include="Areas\Dorm\Controllers\InOutReceiveController.cs" />
     <Compile Include="Areas\Dorm\Controllers\LeaveController.cs" />
-    <Compile Include="Areas\Dorm\Controllers\ParentController.cs" />
     <Compile Include="Areas\Dorm\Controllers\PerformanceController.cs" />
     <Compile Include="Areas\Dorm\Controllers\ReportController.cs" />
     <Compile Include="Areas\Dorm\Controllers\SpecialLeaveController.cs" />
@@ -260,7 +259,6 @@
     <Compile Include="Areas\SystemManage\Controllers\OrgLeaderController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\RoleAuthorizeController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\RoleController.cs" />
-    <Compile Include="Areas\SystemManage\Controllers\TableDefController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\UserRoleController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\UserController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\ItemsTypeController.cs" />
@@ -456,10 +454,6 @@
     <Content Include="Areas\Dorm\Views\Leave\Cancel.cshtml" />
     <Content Include="Areas\Dorm\Views\Leave\CancelForm.cshtml" />
     <Content Include="Areas\Dorm\Views\Leave\Index.cshtml" />
-    <Content Include="Areas\Dorm\Views\Parent\Details.cshtml" />
-    <Content Include="Areas\Dorm\Views\Parent\Form.cshtml" />
-    <Content Include="Areas\Dorm\Views\Parent\Index.cshtml" />
-    <Content Include="Areas\Dorm\Views\Parent\RevisePassword.cshtml" />
     <Content Include="Areas\Dorm\Views\Performance\BuildingAccess.cshtml" />
     <Content Include="Areas\Dorm\Views\Performance\SysLogin.cshtml" />
     <Content Include="Areas\Dorm\Views\SpecialLeave\ApplyForm.cshtml" />
@@ -1575,12 +1569,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\SystemManage\Views\Duty\Form.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\Duty\Details.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\Role\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\SystemManage\Views\User\Details.cshtml" />

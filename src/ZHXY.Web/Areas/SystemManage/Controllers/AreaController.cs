@@ -163,20 +163,5 @@ namespace ZHXY.Web.SystemManage.Controllers
             return Message("删除成功。");
         }
 
-        //导出excel
-        [HttpGet]
-        [HandlerAuthorize]
-        public FileResult Export(string keyword)
-        {
-            IDictionary<string, string> parms = new Dictionary<string, string>();
-            if (!keyword.IsEmpty()) parms.Add("F_RealName", keyword);
-            var dbParameter = CreateParms(parms);
-            var exportSql = CreateExportSql("Sys_Area", parms);
-            var dt = App.getDataTable(exportSql, dbParameter);
-            var ms = new NPOIExcel().ToExcelStream(dt, "Sys_Area区域列表");
-            ms.Seek(0, SeekOrigin.Begin);
-            var filename = "Sys_Area区域列表" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xls";
-            return File(ms, "application/ms-excel", filename);
-        }
     }
 }

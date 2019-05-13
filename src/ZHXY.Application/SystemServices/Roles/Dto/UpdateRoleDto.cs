@@ -1,7 +1,9 @@
 ﻿namespace ZHXY.Application
 {
-    public class UpdateDutyDto: AddDutyDto
+    public class UpdateRoleDto:AddRoleDto
     {
         public string Id { get; set; }
+      
+
     }
 }

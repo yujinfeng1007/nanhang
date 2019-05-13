@@ -13,12 +13,7 @@ namespace ZHXY.Web.Controllers
         {
             var data = new data();
             var cache = CacheFactory.Cache();
-            data.area = SysCacheAppService.GetAreaListByCache();
-            data.areachild = SysCacheAppService.GetAreaListChildByCache();
             data.dataItems = SysCacheAppService.GetDataItemListByCache();
-            data.duty = SysCacheAppService.GetDutyListByCache();
-            data.organize = SysCacheAppService.GetOrganizeListByCache();
-            data.role = SysCacheAppService.GetRoleListByCache();
             if (OperatorProvider.Current == null) return Json(data, JsonRequestBehavior.AllowGet);
             //菜单按钮权限
             var roles = OperatorProvider.Current.Roles;

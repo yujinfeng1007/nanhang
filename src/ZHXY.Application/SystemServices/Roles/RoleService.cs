@@ -12,13 +12,13 @@ namespace ZHXY.Application
     /// <summary>
     /// 角色管理
     /// </summary>
-    public class SysRoleAppService : AppService
+    public class RoleService : AppService
     {
         private IRoleRepository Repository { get; }
         private SysModuleAppService ModuleApp { get; }
         private SysButtonAppService ModuleButtonApp { get; }
 
-        public SysRoleAppService()
+        public RoleService()
         {
             R = new ZhxyRepository();
             Repository = new RoleRepository();
@@ -26,49 +26,38 @@ namespace ZHXY.Application
             ModuleButtonApp = new SysButtonAppService();
         }
 
-        public SysRoleAppService(IRoleRepository roleAuthorizeRepository, SysModuleAppService moduleApp, SysButtonAppService moduleButtonApp,IZhxyRepository  r)
+        public RoleService(IRoleRepository roleAuthorizeRepository, SysModuleAppService moduleApp, SysButtonAppService moduleButtonApp,IZhxyRepository  r)
         {
             Repository = roleAuthorizeRepository;
             ModuleApp = moduleApp;
             ModuleButtonApp = moduleButtonApp;
             R = r;
         }
-
-        public List<Role> GetList(Pagination pagination, string keyword = "")
+      
+        public List<Role> GetListById(string id)
         {
-            var query = Read<Role>();
-            query = string.IsNullOrEmpty(keyword) ? query : query.Where(p =>  p.F_Category == 1&&(p.F_FullName.Contains(keyword) || p.F_EnCode.Contains(keyword)));
-            pagination.Records = query.CountAsync().Result;
-            return query.OrderBy(t => t.F_SortCode).Skip(pagination.Skip).Take(pagination.Rows).ToListAsync().Result;
+            var query = Read<Role>(p => p.Category == 1);
+            return query.Where(p => p.Id.Contains(id)).OrderBy(p => p.SortCode).ToListAsync().Result;
         }
 
-        public List<Role> GetList(string keyword = "")
+        public void Delete(string id)
         {
-            var query = Read<Role>();
-            query = string.IsNullOrEmpty(keyword) ? query : query.Where(p => p.F_FullName.Contains(keyword) || p.F_EnCode.Contains(keyword));
-            return query.OrderBy(t => t.F_SortCode).ToListAsync().Result;
+            Repository.Delete(id);
         }
-
-        public List<Role> GetListById(string id) => Read<Role>(p => p.F_Id.Contains(id) && p.F_Category == 1).OrderBy(p => p.F_SortCode).ToListAsync().Result;
-
-        public Role Get(string id) => Get<Role>(id);
-
-        public void DeleteForm(string keyValue) => Repository.Delete(keyValue);
 
         public void SubmitForm(Role roleEntity, string[] permissionIds2, string[] permissionIds3, string[] permissionIds4, string keyValue)
         {
-            var count = Repository.QueryAsNoTracking().Count(t => t.F_EnCode == roleEntity.F_EnCode && t.F_Id != keyValue && t.F_Category != 2);
+            var count = Repository.QueryAsNoTracking().Count(t => t.EnCode == roleEntity.EnCode && t.Id != keyValue && t.Category != 2);
             if (count > 0)
                 throw new Exception("编号重复");
 
             if (!string.IsNullOrEmpty(keyValue))
             {
-                roleEntity.F_Id = keyValue;
+                roleEntity.Id = keyValue;
             }
             else
             {
-                roleEntity.Create();
-                roleEntity.F_EnCode = roleEntity.F_Id;
+                roleEntity.EnCode = roleEntity.Id;
             }
 
             var moduledata = ModuleApp.GetList();
@@ -79,7 +68,7 @@ namespace ZHXY.Application
                 var roleAuthorizeEntity = new RoleAuthorize();
                 roleAuthorizeEntity.F_Id = Guid.NewGuid().ToString("N").ToUpper();
                 roleAuthorizeEntity.F_ObjectType = 1;
-                roleAuthorizeEntity.F_ObjectId = roleEntity.F_Id;
+                roleAuthorizeEntity.F_ObjectId = roleEntity.Id;
                 roleAuthorizeEntity.F_ItemId = itemId;
                 if (moduledata.Find(t => t.F_Id == itemId) != null)
                 {
@@ -96,7 +85,7 @@ namespace ZHXY.Application
                 var roleAuthorizeEntity = new RoleAuthorize();
                 roleAuthorizeEntity.F_Id = Guid.NewGuid().ToString("N").ToUpper();
                 roleAuthorizeEntity.F_ObjectType = 1;
-                roleAuthorizeEntity.F_ObjectId = roleEntity.F_Id;
+                roleAuthorizeEntity.F_ObjectId = roleEntity.Id;
                 roleAuthorizeEntity.F_ItemId = itemId;
                 if (moduledata.Find(t => t.F_Id == itemId) != null)
                 {
@@ -113,7 +102,7 @@ namespace ZHXY.Application
                 var roleAuthorizeEntity = new RoleAuthorize();
                 roleAuthorizeEntity.F_Id = Guid.NewGuid().ToString("N").ToUpper();
                 roleAuthorizeEntity.F_ObjectType = 1;
-                roleAuthorizeEntity.F_ObjectId = roleEntity.F_Id;
+                roleAuthorizeEntity.F_ObjectId = roleEntity.Id;
                 roleAuthorizeEntity.F_ItemId = itemId;
                 if (moduledata.Find(t => t.F_Id == itemId) != null)
                 {
@@ -143,6 +132,37 @@ namespace ZHXY.Application
             var Sql = "SELECT * FROM Sys_Role WHERE F_Category = 1 " +
               strSql.ToString();
             return Repository.FindList(Sql);
+        }
+
+        public dynamic GetList(string keyword = null)
+        {
+            var query = Read<Role>(p => p.Category == 1);
+            query = string.IsNullOrWhiteSpace(keyword) ? query : query.Where(p => p.Name.Contains(keyword) || p.EnCode.Contains(keyword));
+            return query.OrderBy(t => t.SortCode).ToListAsync().Result;
+        }
+
+        public dynamic Get(string id) => Get<Role>(id);
+        public void Add(AddRoleDto dto)
+        {
+            var duty = dto.MapTo<Role>();
+            duty.Category = 1;
+            AddAndSave(duty);
+        }
+
+        public void Update(UpdateRoleDto dto)
+        {
+            var duty = Get<Role>(dto.Id);
+            dto.MapTo(duty);
+            SaveChanges();
+        }
+
+        public void Delete(string[] id)
+        {
+            foreach (var item in id)
+            {
+                Del<Role>(item);
+            }
+            SaveChanges();
         }
     }
 }

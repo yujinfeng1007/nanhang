@@ -22,15 +22,15 @@ namespace ZHXY.Domain
         public object GetRoleList()
         {
             var expression = ExtLinq.True<Role>();
-            expression = expression.And(t => t.F_Category == 1);
-            var data = role.QueryAsNoTracking(expression).OrderBy(t => t.F_SortCode).ToList();
+            expression = expression.And(t => t.Category == 1);
+            var data = role.QueryAsNoTracking(expression).OrderBy(t => t.SortCode).ToList();
             var dictionary = new Dictionary<string, object>();
             foreach (var item in data)
             {
                 var fieldItem = new fieldItem();
-                fieldItem.encode = item.F_EnCode;
-                fieldItem.fullname = item.F_FullName;
-                dictionary.Add(item.F_Id, fieldItem);
+                fieldItem.encode = item.EnCode;
+                fieldItem.fullname = item.Name;
+                dictionary.Add(item.Id, fieldItem);
             }
 
             return dictionary;
