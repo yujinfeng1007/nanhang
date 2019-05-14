@@ -2,14 +2,10 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Web.Mvc;
-using DotNetOpenAuth.OAuth2;
-using System.Net.Http;
-using Newtonsoft.Json.Linq;
 using System.Linq;
 using System.Net;
 using SSO_ClientSDK;
 using System.Data.Entity;
-using System.Web;
 using ZHXY.Application;
 using ZHXY.Domain;
 using ZHXY.Common;

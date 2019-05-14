@@ -66,40 +66,38 @@ namespace TaskApi
             if (catetoryId == "Class")
             {
                 var org = db.FindEntity<Organ>(p => p.Id == entity.OrganId);
-                student.F_Class_ID = entity.OrganId;
-                student.F_Grade_ID = org?.ParentId;
-                student.F_Divis_ID = org?.Parent?.ParentId;
+                student.ClassId = entity.OrganId;
+                student.GradeId = org?.ParentId;
+                student.DivisId = org?.Parent?.ParentId;
             }
             if (catetoryId == "Grade")
             {
                 var org = db.FindEntity<Organ>(p => p.Id == entity.OrganId);
-                student.F_Grade_ID = entity.OrganId;
-                student.F_Divis_ID = org?.ParentId;
+                student.GradeId = entity.OrganId;
+                student.DivisId = org?.ParentId;
             }
             if (catetoryId == "Division")
-                student.F_Divis_ID = entity.OrganId;
-            student.F_Name = entity.Name;
-            student.F_StudentNum = num;
-            student.F_CredNum = credNum;
-            student.F_CredType = credType;
-            student.F_Gender = entity.Gender != false ? "1" : "0";
-            student.F_PolitStatu = politstatu;
-            student.F_InitDTM = entryTime;
+                student.DivisId = entity.OrganId;
+            student.Name = entity.Name;
+            student.StudentNumber = num;
+            student.CredNumber = credNum;
+            student.CredType = credType;
+            student.Gender = entity.Gender != false ? "1" : "0";
+            student.PolitStatu = politstatu;
+            student.InitDTM = entryTime;
             //student.F_Users_ID = entity.F_Id;
-            student.F_Tel = entity.MobilePhone;
-            student.F_DepartmentId = entity.OrganId;
+            student.MobilePhone = entity.MobilePhone;
+            student.OrganId = entity.OrganId;
 
-            var s = db.FindEntity<Student>(p => p.F_Users_ID == entity.Id);
+            var s = db.FindEntity<Student>(p => p.UserId == entity.Id);
             if (s != null)
             {
-                student.Modify(s.F_Id);
                 db.Update(student);
             }
             else
             {
-                student.F_Users_ID = entity.Id;
-                student.F_CurStatu = "1";
-                student.Create();
+                student.UserId = entity.Id;
+                student.CurStatu = "1";
                 db.Insert(student);
             }
 

@@ -129,8 +129,8 @@
     <Compile Include="SystemServices\Users\Dto\Login\SsoAuth.cs" />
     <Compile Include="01.Base\AppService.cs" />
     <Compile Include="SystemServices\Users\Dto\Users\AuthorizeActionModel.cs" />
-    <Compile Include="DormServices\SemesterAppService.cs" />
-    <Compile Include="DormServices\StudentAppService.cs" />
+    <Compile Include="DormServices\SemesterService.cs" />
+    <Compile Include="DormServices\StudentService.cs" />
     <Compile Include="SystemServices\Dics\Dto\CreateDicItemDto.cs" />
     <Compile Include="SystemServices\Dics\Dto\DicItemView.cs" />
     <Compile Include="SystemServices\Modules\Dto\CreateModuleDto.cs" />
@@ -171,7 +171,7 @@
     <Compile Include="SystemServices\Users\UserService.cs" />
     <Compile Include="SystemServices\Users\SysUserLogOnAppService.cs" />
     <Compile Include="SystemServices\Users\SysUserRoleAppService.cs" />
-    <Compile Include="DormServices\TeacherAppService.cs" />
+    <Compile Include="DormServices\TeacherService.cs" />
     <Compile Include="01.Base\DbLogType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebCore\Response\CheckBox\CheckBoxSelectModel.cs" />

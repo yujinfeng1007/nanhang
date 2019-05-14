@@ -46,7 +46,7 @@
     function btn_approve() {
         let status = ($("#gridList").jqGridRowValue('approvalStatus'))[0];
         if (status != "待审批") {
-            top.layer.alert("已审核，请勿操作", { icon: "fa-times-circle", title: "系统提示", btn: ["确认"], btnclass: ["btn btn-primary"] });
+            top.layer.alert("已审核，请勿操作", { icon: "fa-times-circle", title: "系统提示", btn: ["确认"], btnclass: ["btn btn-default"] });
             return;
         }
         let id = ($("#gridList").jqGridRowValue('id'))[0];
@@ -164,7 +164,7 @@
 <div class="topPanel">
     <div class="toolbar">
         <div class="btn-group">
-            <a class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
+            <a class="btn btn-default" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
         </div>
         <div class="operate">
             <ul class="nav nav-pills">
@@ -189,7 +189,7 @@
                 <div class="input-group">
                     <input id="txt_keyword" type="text" class="form-control" placeholder="学生" style="width: 150px;">
                     <span class="input-group-btn">
-                        <button id="btn_search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
+                        <button id="btn_search" type="button" class="btn  btn-default"><i class="fa fa-search"></i></button>
                     </span>
                 </div>
             </li>
