@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using ZHXY.Application;
 using ZHXY.Domain;
 using ZHXY.Common;
+using ZHXY.Application.DormServices.Gates;
 
 namespace ZHXY.Web.SystemManage.Controllers
 {
@@ -99,5 +100,38 @@ namespace ZHXY.Web.SystemManage.Controllers
         [HttpGet]
         public async Task<ActionResult> GetOrgUsers(string orgId, string keyword) => await Task.Run(() => Resultaat.Success(App.GetByOrg(orgId, keyword)));
 
+
+        public JsonResult UpdIco(string userId)
+        {
+            var filepath = string.Empty;
+            var existen = string.Empty;
+            var mapPath = Configs.GetValue("MapPath") + DateTime.Now.ToString("yyyyMMdd") + "/";
+            var basePath = Server.MapPath(mapPath);
+            var files = System.Web.HttpContext.Current.Request.Files;
+            if (files.Count > 0)
+            {
+                if (!Directory.Exists(basePath)) Directory.CreateDirectory(basePath);
+                var random = RandomHelper.GetRandom();
+                var todayStr = DateTime.Now.ToString("yyyyMMddHHmmss");
+                for (var i = 0; i < files.Count; i++)
+                {
+                    var strRandom = random.Next(1000, 10000).ToString(); //生成编号
+                    var uploadName = $"{todayStr}{strRandom}";
+                    existen = files[i].FileName.Substring(files[i].FileName.LastIndexOf('.') + 1);
+                  
+                    var fullPath = $"{basePath}{uploadName}.{existen}";
+                    files[i].SaveAs(fullPath);
+                    filepath = $"{Request.Url.Host}{mapPath}{uploadName}.{existen}";
+                }
+            }
+            if(string.IsNullOrEmpty( filepath))
+            {
+                var userEntity = new User { Id =userId,HeadIcon=filepath };
+                App.Update(userEntity);
+                new UserToGateService().SendUserHeadIco(new string[] { userId });
+            }
+            return Json(new { state=ResultState.Success, message= "上传成功！", url = filepath});
+
+        }
     }
 }
