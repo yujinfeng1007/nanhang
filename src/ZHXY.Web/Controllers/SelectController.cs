@@ -13,12 +13,14 @@ namespace ZHXY.Web.Controllers
     public class SelectController : ZhxyWebControllerBase
     {
         private UserService App { get; set; }
-        private TeacherAppService TeacherApp { get; set; }
+        private TeacherService TeacherApp { get; set; }
+        private StudentService StudentApp { get; set; }
 
-        public SelectController(UserService app, TeacherAppService teacherApp)
+        public SelectController(UserService app, TeacherService teacherApp, StudentService studentApp)
         {
             App = app;
             TeacherApp = teacherApp;
+            StudentApp = studentApp;
         }
 
         #region View
@@ -115,13 +117,7 @@ namespace ZHXY.Web.Controllers
         {
             var obj = new object();
             if (UserType == 1)
-                obj = new StudentAppService().GetList(pagination, keyword, null, null, null, null)
-                    .Select(t => new
-                    {
-                        F_Name = t.F_Name,
-                        F_Num = t.F_StudentNum,
-                        F_Divis_ID = t.F_Divis_ID
-                    });
+                obj = StudentApp.GetList(pagination, keyword);
             else
                 obj = TeacherApp.GetList(pagination, keyword);
 

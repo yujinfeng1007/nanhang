@@ -42,13 +42,13 @@ namespace ZHXY.Web.Dorm.Controllers
         {
             if (string.IsNullOrEmpty(date)) return Error("请输入日期");
             if (string.IsNullOrEmpty(studentId)) return Error("请输入日期");
-            var student = new StudentAppService().GetOrDefault(studentId);
+            var student = new StudentService().GetById(studentId);
             if (student == null) return Error("未找到学生");
-            var classInfo = new OrgService().GetById(student.F_Class_ID);
+            var classInfo = new OrgService().GetById(student.ClassId);
             var list = OriginalReportApp.GetOriginalListBydate(studentId, date);
             var data = new
             {
-                name = student.F_Name,
+                name = student.Name,
                 classname = classInfo.F_FullName,
                 records = list.Select(p => new { p.InOut, p.Date, p.ChannelName })
             };
