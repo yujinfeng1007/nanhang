@@ -443,9 +443,9 @@ namespace ZHXY.Application
             if (string.IsNullOrEmpty(orgId)) return null;
             var orgs = Read<Organ>(p => p.ParentId.Equals(orgId)).Select(p => p.Id).ToListAsync().Result;
             orgs?.Add(orgId);
-            query = query.Where(p => orgs.Contains(p.F_Class_ID));
-            query = string.IsNullOrEmpty(keyword) ? query : query.Where(p => p.F_Name.Contains(keyword));
-            return query.Select(p => new { UserId = p.F_Users_ID, Name = p.F_Name }).ToListAsync().Result;
+            query = query.Where(p => orgs.Contains(p.ClassId));
+            query = string.IsNullOrEmpty(keyword) ? query : query.Where(p => p.Name.Contains(keyword));
+            return query.Select(p => new { UserId = p.UserId, Name = p.Name }).ToListAsync().Result;
         }
         #endregion
 

@@ -12,8 +12,8 @@ namespace ZHXY.Web.Dorm.Controllers
     public class TeacherController : ZhxyWebControllerBase
     {
 
-        private TeacherAppService App { get; }
-        public TeacherController(TeacherAppService app) => App = app;
+        private TeacherService App { get; }
+        public TeacherController(TeacherService app) => App = app;
 
         [HttpGet]
 

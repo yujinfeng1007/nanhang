@@ -54,11 +54,14 @@ namespace ZHXY.Application
             input.MapTo(gate);
             SaveChanges();
         }
-        public void Sync(SyncGateDto input)
+        public void Sync(AddGateDto input)
         {
-            var gate = Get<Gate>(input.Id);
-            input.MapTo(gate);
-            SaveChanges();
+            var gate = Read<Gate>(t=>t.DeviceNumber==input.DeviceNumber);
+            if (gate != null)
+            {
+                var entity = input.MapTo<Gate>();
+                AddAndSave(entity);
+            }
         }
 
         public void BindBuilding(string id, string[] buildings)

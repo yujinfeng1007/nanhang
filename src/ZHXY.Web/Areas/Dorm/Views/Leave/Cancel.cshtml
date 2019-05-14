@@ -11,7 +11,7 @@
             postData: { keyword: $("#txt_keyword").val(), searchPattern: $("#searchPattern").val() },
             height: $(window).height() - 128,
             colModel: [
-                { label: '请假单Id', name: 'orderId', hidden: true,key:true },
+                { label: '请假单Id', name: 'orderId', hidden: true, key: true },
                 { label: '请假人Id', name: 'applicantId', hidden: true },
                 { label: '请假人', name: 'applicantName', width: 80, align: 'left', sortable: false },
                 { label: '开始时间', name: 'startTime', width: 80, align: 'left', sortable: false },
@@ -40,7 +40,7 @@
     $(function () {
         gridList();
 
-         window.addEventListener("keydown", function (e) {
+        window.addEventListener("keydown", function (e) {
             console.log(e)
         })
     });
@@ -61,7 +61,7 @@
         });
 
 
-       
+
     }
 
 </script>
@@ -69,7 +69,7 @@
 <div class="topPanel">
     <div class="toolbar">
         <div class="btn-group">
-            <a class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
+            <a class="btn btn-default" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
         </div>
         <div class="operate">
             <ul class="nav nav-pills">
@@ -78,7 +78,6 @@
             </ul>
             <a href="javascript:;" class="close"></a>
         </div>
-        @*<script>$('.toolbar').authorizeButton()</script>*@
     </div>
     <div class="search">
         <ul>
@@ -87,7 +86,7 @@
                 <div class="input-group">
                     <input id="txt_keyword" type="text" class="form-control" placeholder="学生" style="width: 150px;">
                     <span class="input-group-btn">
-                        <button id="btn_search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
+                        <button id="btn_search" type="button" class="btn  btn-default"><i class="fa fa-search"></i></button>
                     </span>
                 </div>
             </li>

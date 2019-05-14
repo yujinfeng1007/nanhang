@@ -1,20 +1,26 @@
 ﻿
 @{
-
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <script>
-    let GRID_WIDTH = window.innerWidth;
-    let GRID_HEIGHT = window.innerHeight * 0.9;
+    let GRID_WIDTH = window.innerWidth * 0.74;
+    let GRID_HEIGHT = window.innerHeight * 0.84;
+    let TREE_GRID_WIDTH = window.innerWidth * 0.24;
+    let TREE_GRID_HEIGHT = window.innerHeight * 0.94;
     let GRID_STYLE = "Bootstrap";
 
     $(function () {
+        $('#layout').layout({
+            west__resizable: true
+        }).sizePane("west", "25%");
         gridList();
+        gridTree();
 
         $("#btn_search").click(() => {
             let rowId = $("#treeGrid").jqGrid("getGridParam", "selrow");
             reloadGrid(rowId)
         });
+
     })
 
     function gridList() {
@@ -28,20 +34,15 @@
             loadonce: false,
             viewrecords: true,
             pager: "#gridPager",
+            toppager: true,
             rowNum: 30,
+            rowList: [30, 50, 100, 500, 1000],
             colModel: [
                 { label: "主键", name: "userId", hidden: true, key: true },
-                {
-                    label: '头像', name: 'headIcon',
-                    width: 96,
-                    formatter: function (cellvalue) {
-                        return `<img src='${cellvalue}';"/>`
-                    }
-                },
-                { label: '姓名', name: 'name' },
+                { label: '姓名', name: 'name', "editable": true },
                 { label: '账户', name: 'account' },
-                { label: '昵称', name: 'nickName' },
-                { label: '岗位', name: 'dutyId' },
+                { label: '昵称', name: 'nickName', "editable": true },
+                { label: '岗位', name: 'dutyId', "editable": true },
                 {
                     label: '性别', name: 'gender',
                     formatter: function (cellvalue) {
@@ -62,11 +63,43 @@
                         }
                     }
                 },
-                { label: '隶属机构', name: 'organId' },
-                { label: '手机号码', name: 'mobilePhone' },
+                { label: '隶属机构', name: 'organId', "editable": true },
+                { label: '手机号码', name: 'mobilePhone', "editable": true },
 
             ],
         });
+        $("#gridList").jqGrid('navGrid', '#gridPager',
+            {
+                edit: true,
+                add: true,
+                del: true,
+                search: false,
+                refresh: true,
+                view: true,
+                cloneToTop: true,
+            },
+            {
+                url: "update",
+                top: 200,
+                left:200,
+                drag: true,
+                resize: false,
+                closeOnEscape: true,
+            },
+            {
+                url:"add",
+                drag: true,
+                resize: false,
+                closeOnEscape: true,
+            },
+            {
+                url:"delete",
+                drag: true,
+                resize: false,
+                closeOnEscape: true,
+            },
+        );
+        $("#gridList").jqGrid('bindKeys');
     }
 
     function reloadGrid(rowId) {
@@ -77,17 +110,57 @@
             },
         }).trigger('reloadGrid');
     }
+
+    function gridTree() {
+        $("#treeGrid").jqGrid({
+            styleUI: GRID_STYLE,
+            treeGrid: true,
+            url: "/SystemManage/Organize/GetSubOrg",
+            treeGridModel: "adjacency",
+            datatype: "json",
+            gridview: true,
+            altRows: true,
+            viewrecords: true,
+            autoGridWidth: true,
+            rowNum: -1,
+            shrinkToFit: true,
+            autoGridHeight: true,
+            multiselect: false,
+            height: TREE_GRID_HEIGHT,
+            width: TREE_GRID_WIDTH,
+            ExpandColumn: 'name',
+            ExpandColClick: false,
+            onSelectRow: reloadGrid,
+            jsonReader: {
+                root: function (r) { return r.data; }
+            },
+            colModel: [
+                { label: '机构名称', name: 'name', width: 100, align: 'left', sortable: false },
+                { label: '主键', name: "id", width: 150, align: 'left', key: true, hidden: true },
+                { label: 'level', name: "level", hidden: true },
+            ],
+
+        });
+    }
 </script>
 
-<form class="form-inline topPanel" autocomplete="off">
-    <button type="button" class="btn btn-default" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></button>
-    <input type="text" class="form-control" id="keyword" placeholder="关键字">
-    <button type="button" id="btn_search" class="btn btn-default"><i class="fa fa-search"></i></button>
-    @*<button type="button" id="btn_xf" class="btn btn-primary">下发</button>
-        <button type="button" id="btn_zx" class="btn btn-primary">注销</button>
-        <button type="button" id="btn_sbyh" class="btn btn-primary pull-right">查看设备用户</button>*@
-</form>
-<div class="gridPanel">
-    <table id="gridList"></table>
-    <div id="gridPager"></div>
+<div class="ui-layout" id="layout" style="height: 100%; width: 100%;">
+
+    <div class="ui-layout-west">
+        <table id="treeGrid"></table>
+    </div>
+
+    <div class="ui-layout-center">
+        <div class="form-inline topPanel" autocomplete="off">
+            <button type="button" class="btn btn-default" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></button>
+            <input type="text" class="form-control" id="keyword" placeholder="关键字">
+            <button type="button" id="btn_search" class="btn btn-default"><i class="fa fa-search"></i></button>
+            <button type="button" id="role_set" class="btn btn-default">角色设置</button>
+        </div>
+        <div class="gridPanel">
+            <table id="gridList"></table>
+            <div id="gridPager"></div>
+        </div>
+    </div>
+
 </div>
