@@ -17,9 +17,10 @@ namespace ZHXY.Application
     {
         public UserService(IZhxyRepository r) : base(r) { }
 
-        public dynamic GetList(Pagination pag, string keyword)
+        public dynamic GetList(Pagination pag, string orgId,string keyword)
         {
-            var query = Read<User>();
+            if (string.IsNullOrWhiteSpace(orgId)) return null;
+            var query = Read<User>(p=>p.OrganId.Equals(orgId));
             query = string.IsNullOrWhiteSpace(keyword) ? query : query.Where(p => p.Name.Contains(keyword));
             return query.Paging(pag).ToListAsync().Result;
 

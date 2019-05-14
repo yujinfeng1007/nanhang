@@ -67,27 +67,27 @@ namespace ZHXY.Application
             var query = Read<Student>();
             //判断是否精确到班级
             if (null != OrganClass && !"".Equals(OrganClass)) {
-                var StudentIds = query.Where(p => p.F_Class_ID.Equals(OrganClass)).Select(p => p.F_Id).ToArray();
+                var StudentIds = query.Where(p => p.ClassId.Equals(OrganClass)).Select(p => p.Id).ToArray();
                 SetVisitTimes(StudentIds, TimesOfWeek, AutoSet);
                 return;
             }
             //判断是否精确到分院
             if (null != OrganCourts && !"".Equals(OrganCourts)) {
-                var StudentIds = query.Where(p => p.F_Grade_ID.Equals(OrganCourts)).Select(p => p.F_Id).ToArray();
+                var StudentIds = query.Where(p => p.GradeId.Equals(OrganCourts)).Select(p => p.Id).ToArray();
                 SetVisitTimes(StudentIds, TimesOfWeek, AutoSet);
                 return;
             } 
             //判断是否精确到年级
             if(null != OrganGrade && !"".Equals(OrganGrade))
             {
-                var StudentIds = query.Where(p => p.F_Divis_ID.Contains(OrganGrade)).Select(p => p.F_Id).ToArray();
+                var StudentIds = query.Where(p => p.DivisId.Contains(OrganGrade)).Select(p => p.Id).ToArray();
                 SetVisitTimes(StudentIds, TimesOfWeek, AutoSet);
                 return;
             }
             //判断是否精确到学院
             if (null != Organ && !"".Equals(Organ))
             {
-                var StudentIds = query.Select(p => p.F_Id).ToArray();
+                var StudentIds = query.Select(p => p.Id).ToArray();
                 SetVisitTimes(StudentIds, TimesOfWeek, AutoSet);
                 return;
             }

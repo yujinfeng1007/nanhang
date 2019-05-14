@@ -20,7 +20,6 @@
         }
     });
     function initControl() {
-
         $("#type").bindSelect({
             dictionary: 'RoleType'
         })
@@ -31,7 +30,7 @@
         }
         let op = (!!id) ? `update` : `add`;
         $.submitForm({
-            url: `/SystemManage/Duty/${op}`,
+            url: `/SystemManage/Role/${op}`,
             param: $("#form1").formSerialize(),
             success: function () {
                 $.currentWindow().$("#gridList").trigger("reloadGrid");

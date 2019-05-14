@@ -124,7 +124,7 @@ namespace ZHXY.Application
             };
             if (!string.IsNullOrEmpty(userId))
             {
-                var studentNum = new StudentAppService().Query<Student>(t => t.F_Users_ID == userId).FirstOrDefault()?.F_StudentNum;
+                var studentNum = new StudentService().Query<Student>(t => t.UserId == userId).FirstOrDefault()?.StudentNumber;
                 sb.Append(" and code=@code");
                 paramDic.Add("code", studentNum);
             }
@@ -151,7 +151,7 @@ namespace ZHXY.Application
             };
             if (!string.IsNullOrEmpty(userId))
             {
-                var studentNum = new StudentAppService().Read<Student>(t => t.F_Users_ID == userId).FirstOrDefault()?.F_StudentNum;
+                var studentNum = new StudentService().Read<Student>(t => t.UserId == userId).FirstOrDefault()?.StudentNumber;
                 sb.Append(" and code=@code");
                 paramDic.Add("code", studentNum);
             }

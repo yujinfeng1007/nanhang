@@ -30,9 +30,9 @@ namespace ZHXY.Web.SystemManage.Controllers
 
         [HttpGet]
         
-        public ActionResult Load(Pagination pag, string keyword)
+        public ActionResult Load(Pagination pag,string orgId, string keyword)
         {
-            var rows = App.GetList(pag, keyword);
+            var rows = App.GetList(pag, orgId,keyword);
             return Resultaat.PagingRst(rows, pag.Records, pag.Total);
         }
 
