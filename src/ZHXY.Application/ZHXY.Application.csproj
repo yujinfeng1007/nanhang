@@ -53,6 +53,7 @@
     <Compile Include="DormServices\Buildings\Dto\UpdateDormBuildingDto.cs" />
     <Compile Include="DormServices\Buildings\DormBuildingService.cs" />
     <Compile Include="DormServices\DormRules\Dto\UpdateDormRuleDto.cs" />
+    <Compile Include="DormServices\Gates\BatchUserToGateService.cs" />
     <Compile Include="DormServices\Gates\Dto\AddGateDto.cs" />
     <Compile Include="DormServices\Gates\Dto\GateDto.cs" />
     <Compile Include="DormServices\Gates\Dto\GateView.cs" />
@@ -62,7 +63,7 @@
     <Compile Include="DormServices\DormRules\DormRuleService.cs" />
     <Compile Include="DormServices\DormRooms\DormRoomAppService.cs" />
     <Compile Include="DormServices\DormStudentAppService.cs" />
-    <Compile Include="DormServices\Gates\GateUserService.cs" />
+    <Compile Include="DormServices\Gates\UserToGateService.cs" />
     <Compile Include="DormServices\InOutReceiveAppService.cs" />
     <Compile Include="DormServices\LateReturnReportService.cs" />
     <Compile Include="DormServices\NoOutReportService.cs" />

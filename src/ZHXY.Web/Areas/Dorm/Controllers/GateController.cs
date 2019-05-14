@@ -57,7 +57,7 @@ namespace ZHXY.Web.Dorm.Controllers
         {
             var data = DHAccount.GetMachineInfo("001", "01;01,02,05,07_4,08_3,08_5,34,38;01@9,07,12", "0", "");
             var entity = new AddGateDto();
-            if( data["data"].ToString()=="[]")
+            if (data == null || data["data"].ToString() == "[]")
                 return Message("无数据！");
             var datas = (List<object>)data["data"].ToObject(typeof(List<object>));
             for (int i = 0; i < datas.Count; i++)

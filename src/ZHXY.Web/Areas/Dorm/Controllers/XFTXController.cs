@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using ZHXY.Application;
+using ZHXY.Application.DormServices.Gates;
 
 namespace ZHXY.Web.Dorm.Controllers
 {
@@ -10,6 +11,11 @@ namespace ZHXY.Web.Dorm.Controllers
     /// </summary>
     public class XFTXController : ZhxyWebControllerBase
     {
+        private UserToGateService App { get; }
+
+        public XFTXController(UserToGateService app) => App = app;
+
+
         [HttpGet]
         public async Task<ViewResult> SBYH() => await Task.Run(()=> View());
 
@@ -19,6 +25,7 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpPost]
         public ActionResult XF(string[] userId)
         {
+            App.SendUserHeadIco(userId);
             return Resultaat.Success();
         }
 
