@@ -155,11 +155,11 @@ namespace ZHXY.Dorm.Device.DH
                 X_SUBJECT_TOKEN = db.StringGet(REDIS_TOKEN_SET_KEY);
             }
 
-            var dire = new DirectoryInfo(zipFilePath);
-            foreach(var file in dire.GetFiles())
-            {
-                HttpHelper.UploadFileToDH(Constants.UPLOAD_PHOTO_ZIP_URI, X_SUBJECT_TOKEN, file.FullName);
-            }
+            //var dire = new DirectoryInfo(zipFilePath);
+            //foreach(var file in dire.GetFiles())
+            //{
+                HttpHelper.UploadFileToDH(Constants.UPLOAD_PHOTO_ZIP_URI, X_SUBJECT_TOKEN, zipFilePath);
+            //}
             return null;
         }
 
