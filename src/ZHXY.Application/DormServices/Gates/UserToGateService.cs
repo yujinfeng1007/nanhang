@@ -30,7 +30,7 @@ namespace ZHXY.Application.DormServices.Gates
                 string imgUri = d.HeadIcon;
                 int gender = 0;
                 string certificateNo = "";
-                string userType = "访客";
+                string userType = "teacher001";
                 string ss = "";
                 string lc = "";
                 string ld = "";
@@ -40,7 +40,8 @@ namespace ZHXY.Application.DormServices.Gates
                     studentNo = stu?.StudentNumber;
                     gender = stu?.Gender == "0" ? 2 : 1;
                     certificateNo = stu?.CardNumber;
-                    userType = "学生";
+                    userType = "student001";// "学生";
+                    
                     var ssdata = Query<DormStudent>(p => p.StudentId == stu.Id).FirstOrDefault();
                     ss = ssdata?.DormInfo?.Title;
                     lc = ssdata?.DormInfo?.FloorNumber;
@@ -55,7 +56,7 @@ namespace ZHXY.Application.DormServices.Gates
                     //imgUri = tea?.FacePhoto;
                     gender = tea?.Gender == "0" ? 2 : 1;
                     certificateNo = tea?.CredNum;
-                    userType = "教职工";
+                    userType = "teacher001";// "教职工";
                 }
                 return new PersonMoudle
                 {
