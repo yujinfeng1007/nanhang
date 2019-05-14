@@ -22,6 +22,8 @@ namespace ZHXY.Application.DormServices.Gates
     {
         public UserToGateService(IZhxyRepository r) : base(r) { }
 
+        public UserToGateService() => R = new ZhxyRepository();
+
         public void SendUserHeadIco(string[] userId)
         {
             var stuList = Read<User>().Where(t => userId.Contains(t.Id)).ToList().Select(d =>
