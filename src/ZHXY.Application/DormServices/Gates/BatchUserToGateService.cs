@@ -75,13 +75,13 @@ namespace ZHXY.Application.DormServices.Gates
                 string ld = "";
                 if (d.RoleId.Contains("student"))
                 {
-                    var stu = Read<Student>(p => p.F_Users_ID == d.Id).FirstOrDefault();
-                    studentNo = stu?.F_StudentNum;
-                    imgUri = stu?.F_FacePic_File;
-                    gender = stu?.F_Gender == "0" ? "女" : "男";
-                    certificateNo = stu?.F_CredNum;
+                    var stu = Read<Student>(p => p.UserId == d.Id).FirstOrDefault();
+                    studentNo = stu?.StudentNumber;
+                    //imgUri = stu?.F_FacePic_File;
+                    gender = stu?.Gender == "0" ? "女" : "男";
+                    certificateNo = stu?.CardNumber;
                     userType = "学生";
-                    var ssdata = Query<DormStudent>(p => p.StudentId == stu.F_Id).FirstOrDefault();
+                    var ssdata = Query<DormStudent>(p => p.StudentId == stu.Id).FirstOrDefault();
                     ss = ssdata?.DormInfo?.Title;
                     lc = ssdata?.DormInfo?.FloorNumber;
                     var ldid = ssdata?.DormInfo?.BuildingId;
