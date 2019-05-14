@@ -1,4 +1,4 @@
-namespace TaskApi.NanHang
+namespace TaskApi.NHExceptionReport
 {
     using System;
     using System.Collections.Generic;
@@ -6,17 +6,24 @@ namespace TaskApi.NanHang
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Sys_User_Role
+    public partial class Dorm_DormStudent
     {
         [StringLength(50)]
-        public string F_User { get; set; }
+        public string F_Student_ID { get; set; }
 
         [StringLength(50)]
-        public string F_Role { get; set; }
+        public string F_DormId { get; set; }
+
+        [StringLength(50)]
+        public string F_Bed_ID { get; set; }
+
+        public DateTime? F_In_Time { get; set; }
 
         [Key]
         [StringLength(50)]
         public string F_Id { get; set; }
+
+        public DateTime? F_CreatorTime { get; set; }
 
         public int? F_SortCode { get; set; }
 
@@ -25,9 +32,8 @@ namespace TaskApi.NanHang
 
         public bool? F_DeleteMark { get; set; }
 
-        public bool? F_EnabledMark { get; set; }
-
-        public DateTime? F_CreatorTime { get; set; }
+        [StringLength(50)]
+        public string F_Sex { get; set; }
 
         [StringLength(50)]
         public string F_CreatorUserId { get; set; }
@@ -39,9 +45,12 @@ namespace TaskApi.NanHang
 
         public DateTime? F_DeleteTime { get; set; }
 
+        [StringLength(500)]
+        public string F_Memo { get; set; }
+
         [StringLength(50)]
         public string F_DeleteUserId { get; set; }
 
-        public Guid msrepl_tran_version { get; set; }
+        public bool? F_EnabledMark { get; set; }
     }
 }

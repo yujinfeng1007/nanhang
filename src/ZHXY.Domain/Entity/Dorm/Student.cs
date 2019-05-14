@@ -977,6 +977,8 @@ namespace ZHXY.Domain
         [ForeignKey("F_Id")]
         public DormStudent DormStudent { get; set; }
 
+        public int F_InOut { get; set; }
+
         #endregion Declarations
     }
 }

@@ -335,7 +335,7 @@ namespace TaskApi.Job
                         F_MobilePhone = tea.F_MobilePhone,
                         F_CredType = tea.F_CredType,
                         F_CredNum = tea.F_CredNum,
-                        F_FacePhoto = tea.F_FacePhoto,
+                        //F_FacePhoto = tea.F_FacePhoto,
                         F_LastModifyTime = DateTime.Now,
                         F_Gender = tea.F_Gender,
                         F_DeleteMark = false,
@@ -387,7 +387,8 @@ namespace TaskApi.Job
                 F_OrganizeId = p.orgId,
                 F_MobilePhone = p.teacherPhone,
                 F_CreatorTime = DateTime.Now,
-                F_DepartmentId = p.orgId
+                F_DepartmentId = p.orgId,
+                F_HeadIcon = p.ImgUri
             });
             var oldData = oldDb.Sys_User.ToList();
             var addList = newData;
@@ -535,7 +536,7 @@ namespace TaskApi.Job
                         F_CredType = stu.F_CredType,
                         F_CredNum = stu.F_CredNum,
                         F_Introduction = stu.F_Introduction,
-                        F_FacePic_File = stu.F_FacePic_File,
+                        //F_FacePic_File = stu.F_FacePic_File,
                         F_Tel = stu.F_Tel,
                         F_Grade_ID = stu.F_Grade_ID,
                         F_Divis_ID = stu.F_Divis_ID,
@@ -585,7 +586,8 @@ namespace TaskApi.Job
                 F_OrganizeId = p.orgId,
                 F_MobilePhone = p.studentPhone,
                 F_CreatorTime = DateTime.Now,
-                F_DepartmentId = p.studentClass
+                F_DepartmentId = p.studentClass,
+                F_HeadIcon = p.ImgUri
             });
 
             var Ids = oldData.Select(p => p.F_Id).ToList();
@@ -690,36 +692,37 @@ namespace TaskApi.Job
         /// <param name="newDb"></param>
         public void ProcessSchoolStudentDormInfo(NanHangAccept oldDb, NHModel newDb)
         {
-            var oldData = oldDb.Dorm_DormInfo.Select(p => p.F_Title).ToList();
+            var oldData = oldDb.dorm_dorm.Select(p => p.F_Title).ToList();
             var newData = newDb.StudentInfoes.Select(p => p.studentBuildingId).ToList();
-            newData = newData.Distinct().Except(oldData).ToList(); //取出新增的宿舍信息(先去重，然后再取差集)
-            var InsertList = new List<Dorm_DormInfo>();
-            foreach(var data in newData)
-            {
-                try
-                {
-                    string[] split = data.Trim().Replace("栋", "#").Split('#');
-                    if (split.Length == 2)
-                    {
-                        var dorm = new Dorm_DormInfo();
-                        dorm.F_Id = Guid.NewGuid().ToString();
-                        dorm.F_Memo = data;
-                        dorm.F_CreatorTime = DateTime.Now;
-                        dorm.F_Building_No = split[0]; //楼栋
-                        dorm.F_Floor_No = split[1].Replace(split[1].Substring(1), ""); //楼层
-                        dorm.F_Unit_No = ""; //单元
-                        dorm.F_Classroom_No = split[1]; //宿舍号
-                        dorm.F_Title = data; //完整的宿舍编号
-                        InsertList.Add(dorm);
-                    }
-                }
-                catch
-                {
 
+            var InsertData = newData.Distinct().Except(oldData).ToList(); //取出新增的宿舍信息(先去重，然后再取差集)
+            var BuildData = InsertData.Select(p => p.Trim().Replace("栋", "#").Split('#')[0]).Distinct().ToList(); //新增至宿舍楼栋表（dorm_building）
+            List<dorm_building> BuildArr = BuildData.Select(p => new dorm_building
+            {
+                id = Guid.NewGuid().ToString(),
+                building_no = p
+            }).ToList();
+            var InsertList = new List<dorm_dorm>();
+            foreach(var data in InsertData)
+            {
+                string[] split = data.Trim().Replace("栋", "#").Split('#');
+                if (split.Length == 2)
+                {
+                    var dorm = new dorm_dorm();
+                    dorm.F_Id = Guid.NewGuid().ToString();
+                    dorm.F_Memo = data;
+                    dorm.F_CreatorTime = DateTime.Now;
+                    dorm.F_Building_No = split[0]; //楼栋
+                    dorm.F_Floor_No = split[1].Replace(split[1].Substring(1), ""); //楼层
+                    dorm.F_Unit_No = BuildArr.Where(p => p.building_no.Equals(split[0])).Select(p => p.id).First(); //单元 （作为楼栋表 dorm_building 的关联ID）
+                    dorm.F_Classroom_No = split[1]; //宿舍号
+                    dorm.F_Title = data; //完整的宿舍编号
+                    InsertList.Add(dorm);
                 }
             }
             //oldDb.BulkInsert(InsertList);
-            oldDb.Dorm_DormInfo.AddRange(InsertList);
+            oldDb.dorm_dorm.AddRange(InsertList);
+            oldDb.dorm_building.AddRange(BuildArr);
             oldDb.SaveChanges();
         }
 
@@ -747,7 +750,7 @@ namespace TaskApi.Job
                     string[] split = info.F_Memo.Trim().Replace("栋", "#").Split('#');
                     if(split.Length == 2)
                     {
-                        string ClassRoomId = oldDb.Dorm_DormInfo.Where(p => p.F_Title.Equals(info.F_Memo)).Select(p => p.F_Id).ToList().FirstOrDefault();
+                        string ClassRoomId = oldDb.dorm_dorm.Where(p => p.F_Title.Equals(info.F_Memo)).Select(p => p.F_Id).ToList().FirstOrDefault();
                         oldDb.Set<Dorm_DormStudent>().Where(p => p.F_Student_ID == info.F_Student_ID).Update(p => new Dorm_DormStudent
                         {
                             F_DormId = ClassRoomId,
@@ -764,7 +767,7 @@ namespace TaskApi.Job
                         string[] split = info.F_Memo.Trim().Replace("栋", "#").Split('#');
                         if (split.Length == 2)
                         {
-                            string ClassRoomId = oldDb.Dorm_DormInfo.Where(p => p.F_Title.Equals(info.F_Memo)).Select(p => p.F_Id).ToList().FirstOrDefault();
+                            string ClassRoomId = oldDb.dorm_dorm.Where(p => p.F_Title.Equals(info.F_Memo)).Select(p => p.F_Id).ToList().FirstOrDefault();
                             var student = new Dorm_DormStudent();
                             student.F_Id = Guid.NewGuid().ToString();
                             student.F_CreatorTime = DateTime.Now;

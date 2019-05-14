@@ -155,26 +155,41 @@ namespace ZHXY.Dorm.Device.DH
                 X_SUBJECT_TOKEN = db.StringGet(REDIS_TOKEN_SET_KEY);
             }
 
-            var dire = new DirectoryInfo(zipFilePath);
-            foreach(var file in dire.GetFiles())
-            {
-                HttpHelper.UploadFileToDH(Constants.UPLOAD_PHOTO_ZIP_URI, X_SUBJECT_TOKEN, file.FullName);
-            }
+            //var dire = new DirectoryInfo(zipFilePath);
+            //foreach(var file in dire.GetFiles())
+            //{
+            //    HttpHelper.UploadFileToDH(Constants.UPLOAD_PHOTO_ZIP_URI, X_SUBJECT_TOKEN, file.FullName);
+            //}
+            HttpHelper.UploadFileToDH(Constants.UPLOAD_PHOTO_ZIP_URI, X_SUBJECT_TOKEN, zipFilePath);
             return null;
         }
 
         /// <summary>
-        /// 导入人员信息 （Excel表格）
+        /// 导入人员信息 （学生Excel表格）
         /// </summary>
         /// <param name="excelFilePath">填入数据的Excel表格所在路径</param>
-        public static void PUSH_DH_PERSON_EXCEL(string excelFilePath)
+        public static void PUSH_DH_STUDENT_EXCEL(string excelFilePath)
         {
             if (X_SUBJECT_TOKEN == null)
             {
                 var db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
                 X_SUBJECT_TOKEN = db.StringGet(REDIS_TOKEN_SET_KEY);
             }
-            HttpHelper.UploadFileToDH(Constants.UPLOAD_PERSON_EXCEL_URI, X_SUBJECT_TOKEN, excelFilePath);
+            HttpHelper.UploadFileToDH(Constants.UPLOAD_STUDENT_EXCEL_URI, X_SUBJECT_TOKEN, excelFilePath);
+        }
+
+        /// <summary>
+        /// 导入人员信息（教师Excel）
+        /// </summary>
+        /// <param name="excelFilePath"></param>
+        public static void PUSH_DH_TEACHER_EXCEL(string excelFilePath)
+        {
+            if (X_SUBJECT_TOKEN == null)
+            {
+                var db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
+                X_SUBJECT_TOKEN = db.StringGet(REDIS_TOKEN_SET_KEY);
+            }
+            HttpHelper.UploadFileToDH(Constants.UPLOAD_TEACHER_EXCEL_URI, X_SUBJECT_TOKEN, excelFilePath);
         }
 
         /*****************************        接口调用方法：查询大华闸机的设备信息         ********************************/
