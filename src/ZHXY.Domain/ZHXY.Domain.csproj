@@ -44,6 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EntityConfig\Dorm\Dorm_FlowInAndOutOfBuildingMap.cs" />
+    <Compile Include="Entity\Dorm\Dorm_FlowInAndOutOfBuilding.cs" />
+    <Compile Include="Relation.cs" />
     <Compile Include="SYS_CONSTS.cs" />
     <Compile Include="DataAccess\Extensions\DbHelper.cs" />
     <Compile Include="DataAccess\Extensions\SqlHelper.cs" />
@@ -70,7 +73,6 @@
     <Compile Include="EntityConfig\Dorm\StuLeaveOrderMap.cs" />
     <Compile Include="EntityConfig\Dorm\TeacherMap.cs" />
     <Compile Include="EntityConfig\System\DbBackupMap.cs" />
-    <Compile Include="EntityConfig\System\FieldDefMap.cs" />
     <Compile Include="EntityConfig\System\FilterIPMap.cs" />
     <Compile Include="EntityConfig\System\ItemsDetailMap.cs" />
     <Compile Include="EntityConfig\System\ItemsMap.cs" />
@@ -83,7 +85,6 @@
     <Compile Include="EntityConfig\System\RoleMap.cs" />
     <Compile Include="EntityConfig\System\SysOrgLeaderMap.cs" />
     <Compile Include="EntityConfig\System\OrgMap.cs" />
-    <Compile Include="EntityConfig\System\SysTableDefMap.cs" />
     <Compile Include="EntityConfig\System\UserLogOnMap.cs" />
     <Compile Include="EntityConfig\System\UserMap.cs" />
     <Compile Include="EntityConfig\System\UserRoleMap.cs" />
@@ -127,8 +128,6 @@
     <Compile Include="Entity\System\OrganizeGrade.cs" />
     <Compile Include="Entity\System\RoleAuthorize.cs" />
     <Compile Include="Entity\System\Role.cs" />
-    <Compile Include="Entity\System\FieldDef.cs" />
-    <Compile Include="Entity\System\TableDef.cs" />
     <Compile Include="Entity\System\User.cs" />
     <Compile Include="Entity\System\UserRole.cs" />
     <Compile Include="Entity\System\DbBackup.cs" />
@@ -141,7 +140,6 @@
     <Compile Include="DataAccess\IRepоsitory.cs" />
     <Compile Include="DataAccess\IUnitWork.cs" />
     <Compile Include="DataAccess\IZhxyRepository.cs" />
-    <Compile Include="DataAccess\Repos\Interface\ITeacherRepository.cs" />
     <Compile Include="DataAccess\Repos\Interface\IItemDetailRepository.cs" />
     <Compile Include="DataAccess\IRepositoryBase.T.cs" />
     <Compile Include="DataAccess\Repos\Interface\IModuleButtonRepository.cs" />
@@ -149,7 +147,6 @@
     <Compile Include="DataAccess\Repos\Interface\IUserRepository.cs" />
     <Compile Include="Entity\Dorm\Building.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DataAccess\Repos\TeacherRepository.cs" />
     <Compile Include="DataAccess\Repos\ItemsDetailRepository.cs" />
     <Compile Include="DataAccess\Repos\ModuleButtonRepository.cs" />
     <Compile Include="DataAccess\Repos\RoleRepository.cs" />

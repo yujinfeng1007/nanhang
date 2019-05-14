@@ -10,7 +10,7 @@ namespace ZHXY.Domain
         /// <summary>
         /// 未归天数
         /// </summary>
-        public int F_DayCount { get; set; }
+        public decimal F_DayCount { get; set; }
         public DateTime? F_OutTime { get; set; }
         public virtual Organ Class { get; set; }
         public virtual DormRoom Dorm { get; set; }

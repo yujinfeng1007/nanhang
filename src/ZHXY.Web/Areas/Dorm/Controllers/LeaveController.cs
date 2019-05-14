@@ -11,8 +11,8 @@ namespace ZHXY.Web.Dorm.Controllers
     /// </summary>
     public class LeaveController : ZhxyWebControllerBase
     {
-        public LeaveAppService App { get; }
-        public LeaveController(LeaveAppService app) => App = app;
+        public LeaveService App { get; }
+        public LeaveController(LeaveService app) => App = app;
 
         #region 请假
 

@@ -70,5 +70,23 @@ namespace ZHXY.Application
             }
             return Read(expression).ToList();
         }
+        //根据学生ID获取未归记录
+        public List<NoReturnReport> GetNoReturnListByStuId(string studentId, string startTime, string endTime)
+        {
+            var expression = ExtLinq.True<NoReturnReport>();
+            if (!string.IsNullOrEmpty(studentId))
+                expression = expression.And(p => p.F_StudentId.Equals(studentId));           
+            if (!string.IsNullOrEmpty(startTime))
+            {
+                var start = Convert.ToDateTime(startTime + " 00:00:00");
+                expression = expression.And(p => p.F_CreatorTime >= start);
+            }
+            if (!string.IsNullOrEmpty(endTime))
+            {
+                var end = Convert.ToDateTime(endTime + " 23:59:59");
+                expression = expression.And(p => p.F_CreatorTime <= end);
+            }
+            return Read(expression).ToList();
+        }
     }
 }

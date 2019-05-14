@@ -41,15 +41,15 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult GetDormRecords(string studentId, string date)
         {
             if (string.IsNullOrEmpty(date)) return Error("请输入日期");
-            if (string.IsNullOrEmpty(studentId)) return Error("请输入日期");
+            if (string.IsNullOrEmpty(studentId)) return Error("请输入学生ID");
             var student = new StudentAppService().GetOrDefault(studentId);
             if (student == null) return Error("未找到学生");
-            var classInfo = new OrgAppService().GetById(student.F_Class_ID);
+            var classInfo = new OrgService().GetById(student.F_Class_ID);
             var list = OriginalReportApp.GetOriginalListBydate(studentId, date);
             var data = new
             {
                 name = student.F_Name,
-                classname = classInfo.F_FullName,
+                classname = classInfo.Name,
                 records = list.Select(p => new { p.InOut, p.Date, p.ChannelName })
             };
             return Result(data);
@@ -92,6 +92,29 @@ namespace ZHXY.Web.Dorm.Controllers
                 });
             return Result(list);
         }
+
+        /// <summary>
+        /// 根据学生ID获取晚归记录
+        /// </summary>
+        /// <param name="studentId"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetLateListByStuId(string studentId, string startTime, string endTime)
+        {
+            if (string.IsNullOrEmpty(studentId)) return Error("请输入学生ID");
+            var student = new StudentAppService().GetOrDefault(studentId);
+            if (student == null) return Error("未找到学生");
+            var list = LateReturnReportApp.GetLateListByStuId(studentId, startTime, endTime).Select(p =>
+                new
+                {
+                    inTime = p.F_InTime,
+                    count = p.F_Time
+                });
+            return Result(list);
+        }
+
         /// <summary>
         /// 获取未归记录
         /// </summary>
@@ -109,6 +132,31 @@ namespace ZHXY.Web.Dorm.Controllers
                });
             return Result(list);
         }
+
+        /// <summary>
+        /// 根据学生ID获取未归记录
+        /// </summary>
+        /// <param name="studentId"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetNoReturnListByStuId(string studentId, string startTime, string endTime)
+        {
+            if (string.IsNullOrEmpty(studentId)) return Error("请输入学生ID");
+            var student = new StudentAppService().GetOrDefault(studentId);
+            if (student == null) return Error("未找到学生");
+            var list = NoReturnReportApp.GetNoReturnListByStuId(studentId,startTime, endTime).Select(p =>
+               new
+               {
+                   outTime = p.F_OutTime,
+                   count = p.F_DayCount
+               });
+            return Result(list);
+        }
+
+        
+
         /// <summary>
         /// 获取未出记录
         /// </summary>
@@ -126,6 +174,30 @@ namespace ZHXY.Web.Dorm.Controllers
                });
             return Result(list);
         }
+
+
+        /// <summary>
+        /// 根据学生ID获取未出记录
+        /// </summary>
+        /// <param name="studentId"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetNoOutListByStuId(string studentId, string startTime, string endTime)
+        {
+            if (string.IsNullOrEmpty(studentId)) return Error("请输入学生ID");
+            var student = new StudentAppService().GetOrDefault(studentId);
+            if (student == null) return Error("未找到学生");
+            var list = NoOutReportApp.GetNoOutListByStuId(studentId, startTime, endTime).Select(p =>
+               new
+               {
+                   inTime = p.F_InTime,
+                   count = p.F_Time
+               });
+            return Result(list);
+        }
+
         /// <summary>
         /// 获取未归统计
         /// </summary>
@@ -182,7 +254,7 @@ namespace ZHXY.Web.Dorm.Controllers
         {
             var objlist = new List<object>();
 
-            var sysApp = new OrgAppService();
+            var sysApp = new OrgService();
             var classList = new List<Organ>();
             var name = sysApp.GetClassInfosByDivisId(divisId,ref classList);
             var list = LateReturnReportApp.GetListByClassList(classList.Select(p=>p.Id).ToList(), startTime, endTime);
@@ -203,7 +275,7 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult GetLateListByGrade(string gradeId, string startTime, string endTime)
         {
             var objlist = new List<object>();
-            var sysApp = new OrgAppService();
+            var sysApp = new OrgService();
             var classList = new List<Organ>();
             var divisList = new List<Organ>();
             sysApp.GetClassInfosByGradeId(gradeId, ref classList,ref divisList);

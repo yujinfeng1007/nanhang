@@ -14,7 +14,7 @@ namespace ZHXY.Domain
         /// <summary>
         /// 晚归时长
         /// </summary>
-        public double F_Time { get; set; }
+        public decimal F_Time { get; set; }
         public virtual Organ Class { get; set; }
         public virtual DormRoom Dorm { get; set; }
     }

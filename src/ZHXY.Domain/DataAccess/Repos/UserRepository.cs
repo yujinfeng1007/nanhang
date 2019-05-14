@@ -22,15 +22,15 @@ namespace ZHXY.Domain
         public object GetRoleList()
         {
             var expression = ExtLinq.True<Role>();
-            expression = expression.And(t => t.F_Category == 1);
-            var data = role.QueryAsNoTracking(expression).OrderBy(t => t.F_SortCode).ToList();
+            expression = expression.And(t => t.Category == 1);
+            var data = role.QueryAsNoTracking(expression).OrderBy(t => t.SortCode).ToList();
             var dictionary = new Dictionary<string, object>();
             foreach (var item in data)
             {
                 var fieldItem = new fieldItem();
-                fieldItem.encode = item.F_EnCode;
-                fieldItem.fullname = item.F_FullName;
-                dictionary.Add(item.F_Id, fieldItem);
+                fieldItem.encode = item.EnCode;
+                fieldItem.fullname = item.Name;
+                dictionary.Add(item.Id, fieldItem);
             }
 
             return dictionary;
@@ -64,18 +64,18 @@ namespace ZHXY.Domain
                     var F_UserPassword = db.FindEntity<UserLogin>(t => t.F_Id == keyValue).F_UserPassword;
                     var isPost = true;
                     var F_Birthday = "";
-                    if (userEntity.F_Birthday != null) F_Birthday = userEntity.F_Birthday.ToDateTimeString();
-                    var parameters = "sysid=" + userEntity.F_Id + "&amp;appid=" + appid + "&amp;nickname=" +
-                                     userEntity.F_RealName + "&amp;username=" + userEntity.F_Account +
+                    if (userEntity.Birthday != null) F_Birthday = userEntity.Birthday.ToDateTimeString();
+                    var parameters = "sysid=" + userEntity.Id + "&amp;appid=" + appid + "&amp;nickname=" +
+                                     userEntity.Name + "&amp;username=" + userEntity.Account +
                                      "&amp;password=" + F_UserPassword + "&amp;sysgroupid=" +
-                                     userEntity.OrgId + "&amp;headicon=" + userEntity.F_HeadIcon +
+                                     userEntity.OrganId + "&amp;headicon=" + userEntity.HeadIcon +
                                      "&amp;birthday=" + F_Birthday + "";
                     var Result = WebHelper.SendRequest(CallUrlUpt, parameters, isPost, "application/json");
                 }
                 else
                 {
-                    userLogOnEntity.F_Id = userEntity.F_Id;
-                    userLogOnEntity.F_UserId = userEntity.F_Id;
+                    userLogOnEntity.F_Id = userEntity.Id;
+                    userLogOnEntity.F_UserId = userEntity.Id;
                     userLogOnEntity.F_UserSecretkey = Md5EncryptHelper.Encrypt(NumberBuilder.Build_18bit(), 16).ToLower();
                     userLogOnEntity.F_UserPassword = Md5EncryptHelper
                         .Encrypt(
@@ -87,16 +87,16 @@ namespace ZHXY.Domain
 
                     var isPost = true;
                     var F_Birthday = "";
-                    if (userEntity.F_Birthday != null) F_Birthday = userEntity.F_Birthday.ToDateTimeString();
-                    var parameters = "sysid=" + userEntity.F_Id + "&amp;appid=" + appid + "&amp;nickname=" +
-                                     userEntity.F_RealName + "&amp;username=" + userEntity.F_Account +
+                    if (userEntity.Birthday != null) F_Birthday = userEntity.Birthday.ToDateTimeString();
+                    var parameters = "sysid=" + userEntity.Id + "&amp;appid=" + appid + "&amp;nickname=" +
+                                     userEntity.Name + "&amp;username=" + userEntity.Account +
                                      "&amp;password=" + userLogOnEntity.F_UserPassword + "&amp;sysgroupid=" +
-                                     userEntity.OrgId + "&amp;headicon=" + userEntity.F_HeadIcon +
+                                     userEntity.OrganId + "&amp;headicon=" + userEntity.HeadIcon +
                                      "&amp;birthday=" + F_Birthday + "";
                     var Result = WebHelper.SendRequest(CallUrlAdd, parameters, isPost, "application/json");
                 }
 
-                db.Delete<UserRole>(t => t.F_User == userEntity.F_Id);
+                db.Delete<UserRole>(t => t.F_User == userEntity.Id);
                 db.BatchInsert(userRoles);
                 db.Commit();
             }
@@ -110,33 +110,33 @@ namespace ZHXY.Domain
                 var mod = "<p>导入错误如下：</p>";
                 var kk = 1;
                 foreach (var user in data)
-                    if (user.F_Id.IsEmpty())
+                    if (user.Id.IsEmpty())
                         try
                         {
-                            if (!string.IsNullOrEmpty(user.F_RoleId))
+                            if (!string.IsNullOrEmpty(user.RoleId))
                             {
                                 var role = "";
-                                var rolelength = user.F_RoleId.Length;
-                                var rolelengthlast = user.F_RoleId.LastIndexOf(',');
+                                var rolelength = user.RoleId.Length;
+                                var rolelengthlast = user.RoleId.LastIndexOf(',');
                                 var k = 0;
                                 if (rolelength - rolelengthlast == 1) k = 1;
-                                var F_RoleId = user.F_RoleId.Split(',');
+                                var F_RoleId = user.RoleId.Split(',');
                                 for (var i = 0; i < F_RoleId.Length - k; i++)
                                 {
                                     var us = new UserRole();
                                     us.F_Id = Guid.NewGuid().ToString("N").ToUpper();
-                                    us.F_User = user.F_Id;
+                                    us.F_User = user.Id;
                                     us.F_Role = GetRoleListByCache().FirstOrDefault(q =>
                                         GetPropertyValue(q.Value, "fullname").Equals(F_RoleId[i].ToString())).Key;
                                     db.Insert(us);
                                     role += us.F_Role + ",";
                                 }
-                                user.F_RoleId = role;
+                                user.RoleId = role;
                             }
 
                             var userLogOnEntity = new UserLogin();
-                            userLogOnEntity.F_Id = user.F_Id;
-                            userLogOnEntity.F_UserId = user.F_Id;
+                            userLogOnEntity.F_Id = user.Id;
+                            userLogOnEntity.F_UserId = user.Id;
                             userLogOnEntity.F_UserSecretkey = Md5EncryptHelper.Encrypt(NumberBuilder.Build_18bit(), 16).ToLower();
                             userLogOnEntity.F_UserPassword = Md5EncryptHelper
                                 .Encrypt(
@@ -144,62 +144,62 @@ namespace ZHXY.Domain
                                         userLogOnEntity.F_UserSecretkey).ToLower(), 32).ToLower();
                             db.Insert(userLogOnEntity);
 
-                            user.F_EnabledMark = true;
+                            user.EnabledMark = true;
 
                             var isPost = true;
                             var F_Birthday = "";
-                            if (user.F_Birthday != null) F_Birthday = user.F_Birthday.ToDateTimeString();
-                            var parameters = "sysid=" + user.F_Id + "&amp;appid=" + appid + "&amp;nickname=" +
-                                             user.F_RealName + "&amp;username=" + user.F_Account + "&amp;password=" +
-                                             userLogOnEntity.F_UserPassword + "&amp;sysgroupid=" + user.OrgId +
-                                             "&amp;headicon=" + user.F_HeadIcon + "&amp;birthday=" + F_Birthday + "";
+                            if (user.Birthday != null) F_Birthday = user.Birthday.ToDateTimeString();
+                            var parameters = "sysid=" + user.Id + "&amp;appid=" + appid + "&amp;nickname=" +
+                                             user.Name + "&amp;username=" + user.Account + "&amp;password=" +
+                                             userLogOnEntity.F_UserPassword + "&amp;sysgroupid=" + user.OrganId +
+                                             "&amp;headicon=" + user.HeadIcon + "&amp;birthday=" + F_Birthday + "";
                             var Result = WebHelper.SendRequest(CallUrlAdd, parameters, isPost, "application/json");
                             db.Insert(user);
                         }
                         catch (Exception)
                         {
-                            list.Add("<p>" + kk + ". 标题为'" + user.F_Account + "'新增失败</p> ");
+                            list.Add("<p>" + kk + ". 标题为'" + user.Account + "'新增失败</p> ");
                             kk++;
                         }
                     else
                         try
                         {
-                            if (!string.IsNullOrEmpty(user.F_RoleId))
+                            if (!string.IsNullOrEmpty(user.RoleId))
                             {
                                 var role = "";
-                                var rolelength = user.F_RoleId.Length;
-                                var rolelengthlast = user.F_RoleId.LastIndexOf(',');
+                                var rolelength = user.RoleId.Length;
+                                var rolelengthlast = user.RoleId.LastIndexOf(',');
                                 var k = 0;
                                 if (rolelength - rolelengthlast == 1) k = 1;
-                                var F_RoleId = user.F_RoleId.Split(',');
+                                var F_RoleId = user.RoleId.Split(',');
                                 for (var i = 0; i < F_RoleId.Length - k; i++)
                                 {
                                     var us = new UserRole();
                                     us.F_Id = Guid.NewGuid().ToString("N").ToUpper();
-                                    us.F_User = user.F_Id;
+                                    us.F_User = user.Id;
                                     us.F_Role = GetRoleListByCache().FirstOrDefault(q =>
                                         GetPropertyValue(q.Value, "fullname").Equals(F_RoleId[i].ToString())).Key;
-                                    db.Delete<UserRole>(t => t.F_User == user.F_Id);
+                                    db.Delete<UserRole>(t => t.F_User == user.Id);
                                     db.Insert(us);
                                     role += us.F_Role + ",";
                                 }
-                                user.F_RoleId = role;
+                                user.RoleId = role;
                             }
 
-                            var F_UserPassword = db.FindEntity<UserLogin>(t => t.F_Id == user.F_Id).F_UserPassword;
+                            var F_UserPassword = db.FindEntity<UserLogin>(t => t.F_Id == user.Id).F_UserPassword;
                             var isPost = true;
                             var F_Birthday = "";
-                            if (user.F_Birthday != null) F_Birthday = user.F_Birthday.ToDateTimeString();
-                            var parameters = "sysid=" + user.F_Id + "&amp;appid=" + appid + "&amp;nickname=" +
-                                             user.F_RealName + "&amp;username=" + user.F_Account + "&amp;password=" +
-                                             F_UserPassword + "&amp;sysgroupid=" + user.OrgId +
-                                             "&amp;headicon=" + user.F_HeadIcon + "&amp;birthday=" + F_Birthday + "";
+                            if (user.Birthday != null) F_Birthday = user.Birthday.ToDateTimeString();
+                            var parameters = "sysid=" + user.Id + "&amp;appid=" + appid + "&amp;nickname=" +
+                                             user.Name + "&amp;username=" + user.Account + "&amp;password=" +
+                                             F_UserPassword + "&amp;sysgroupid=" + user.OrganId +
+                                             "&amp;headicon=" + user.HeadIcon + "&amp;birthday=" + F_Birthday + "";
                             var Result = WebHelper.SendRequest(CallUrlUpt, parameters, isPost, "application/json");
                             db.Update(user);
                         }
                         catch (Exception)
                         {
-                            list.Add("<p>" + kk + ". 主键为'" + user.F_Id + "'更新失败 </p>");
+                            list.Add("<p>" + kk + ". 主键为'" + user.Id + "'更新失败 </p>");
                             kk++;
                         }
 

@@ -16,7 +16,7 @@ namespace ZHXY.Application
             return list.Select(t =>
             {
                 var ids = t.F_ReceiveUser.Split(',');
-                var names = string.Join(",", Read<User>(x => ids.Contains(x.F_Id)).Select(x => x.F_RealName).ToArray());
+                var names = string.Join(",", Read<User>(x => ids.Contains(x.Id)).Select(x => x.Name).ToArray());
                 return new InOutReceive
                 {
                     F_Id = t.F_Id,

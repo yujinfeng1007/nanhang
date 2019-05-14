@@ -43,7 +43,7 @@ namespace ZHXY.Application
             foreach(var visit in ListData)
             {
                 visit.DormId = R.Db.Set<DormStudent>().Where(p => p.StudentId == visit.ApplicantId).Select(p => p.F_Memo).FirstOrDefault();
-                visit.ApplicantId = R.Db.Set<Student>().Where(p => p.F_Id == visit.ApplicantId).Select(p => p.F_Name).FirstOrDefault();
+                visit.ApplicantId = R.Db.Set<Student>().Where(p => p.Id == visit.ApplicantId).Select(p => p.Name).FirstOrDefault();
             }
             return ListData;
         }
@@ -65,34 +65,18 @@ namespace ZHXY.Application
 
         public object SearchStudents(string KeyWords)
         {
-            var query = R.Db.Set<DormVisitLimit>().Where(p => p.student.F_DeleteMark == false);
+            var query = R.Db.Set<DormVisitLimit>().AsQueryable();
             if (KeyWords != null && KeyWords.Length != 0)
             {
-                query = IsNumeric.isNumeric(KeyWords) ? query.Where(p => p.student.F_StudentNum.Equals(KeyWords)) : query.Where(p => p.student.F_Name.Contains(KeyWords));
+                query = IsNumeric.isNumeric(KeyWords) ? query.Where(p => p.student.StudentNumber.Equals(KeyWords)) : query.Where(p => p.student.Name.Contains(KeyWords));
             }
-            return query.Select(p => new { id = p.student.F_Id, text = p.student.F_Name, limit = p.UsableLimit }).OrderBy(p => p.id).Take(20).ToList();
+            return query.Select(p => new { id = p.student.Id, text = p.student.Name, limit = p.UsableLimit }).OrderBy(p => p.id).Take(20).ToList();
         }
 
         public object GetForm(string keyValue) => throw new NotImplementedException();
 
         public object SupervisorByStudent(string StudentId)
         {
-            //var ReturnVisor = new School_supervisor();
-            //string StudentBuildName = R.Db.Database.SqlQuery<string>("SELECT left(F_Memo,charindex('栋',F_Memo)-1)  FROM [dbo].[Dorm_DormStudent]where F_Student_ID='"+StudentId+"'").FirstOrDefault();
-            //var SuperVBisor = R.Db.Set<School_supervisor>().AsNoTracking().Where(p => p.SupervisorDorm.Contains(StudentBuildName)).ToList();
-            //foreach(var data in SuperVBisor)
-            //{
-            //    var BuildNameArr = data.SupervisorDorm.Split(',');
-            //    foreach(var BuildName in BuildNameArr)
-            //    {
-            //        if (BuildName.Equals(StudentBuildName))
-            //        {
-            //            ReturnVisor = data;
-            //            break;
-            //        }
-            //    }
-            //}
-            //return ReturnVisor;
             return null;
         }
 

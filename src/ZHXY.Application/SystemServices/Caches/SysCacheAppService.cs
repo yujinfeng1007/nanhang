@@ -18,38 +18,7 @@ namespace ZHXY.Application
 
 
      
-        /// <summary>
-        /// 地区缓存
-        /// </summary>
-        /// <returns></returns>
-        public static object GetAreaList()
-        {
-            var areaApp = new SysPlaceAreaAppService();
-            var data = areaApp.GetList();
-            var dictionary = new Dictionary<string, object>();
-            foreach (var item in data)
-            {
-                var fieldItem = new FieldItem
-                {
-                    encode = item.F_EnCode,
-                    fullname = item.F_FullName,
-                    parentid = item.F_ParentId,
-                    level = item.F_Layers
-                };
-                dictionary.Add(item.F_Id, fieldItem);
-            }
-            return dictionary;
-        }
-
-        public static Dictionary<string, object> GetAreaListByCache()
-        {
-            var cache = CacheFactory.Cache();
-            if (CacheFactory.Cache().GetCache<Dictionary<string, object>>(SYS_CONSTS.AREA).IsEmpty())
-            {
-                cache.WriteCache((Dictionary<string, object>)GetAreaList(), SYS_CONSTS.AREA);
-            }
-            return cache.GetCache<Dictionary<string, object>>(SYS_CONSTS.AREA);
-        }
+     
 
         public static object GetAreaListChild()
         {
@@ -128,36 +97,8 @@ namespace ZHXY.Application
             return cache.GetCache<Dictionary<string, object>>(SYS_CONSTS.DATAITEMS);
         }
 
-        /// <summary>
-        /// 岗位缓存
-        /// </summary>
-        /// <returns>  </returns>
-        public static object GetDutyList()
-        {
-            var dutyApp = new SysDutyAppService();
-            var data = dutyApp.GetList();
-            var dictionary = new Dictionary<string, object>();
+       
 
-            foreach (var item in data)
-            {
-                var fieldItem = new FieldItem();
-                fieldItem.encode = item.F_EnCode;
-                fieldItem.fullname = item.F_FullName;
-                dictionary.Add(item.F_Id, fieldItem);
-            }
-            return dictionary;
-        }
-
-        public static Dictionary<string, object> GetDutyListByCache()
-        {
-            var cache = CacheFactory.Cache();
-            if (CacheFactory.Cache().GetCache<Dictionary<string, object>>(SYS_CONSTS.DUTY).IsEmpty())
-            {
-                cache.WriteCache((Dictionary<string, object>)GetDutyList(), SYS_CONSTS.DUTY);
-            }
-
-            return cache.GetCache<Dictionary<string, object>>(SYS_CONSTS.DUTY);
-        }
 
         public static object GetMenuButtonList()
         {
@@ -200,77 +141,6 @@ namespace ZHXY.Application
             }
             return ToMenuJson(data, "0");
         }
-
-        /// <summary>
-        /// 机构缓存
-        /// </summary>
-        /// <returns>  </returns>
-        public static object GetOrganizeList()
-        {
-            var organizeApp = new OrgAppService();
-            var data = organizeApp.GetList();
-            var dictionary = new Dictionary<string, object>();
-            foreach (var item in data)
-            {
-                var fieldItem = new FieldItem { encode = item.EnCode, fullname = item.Name };
-                dictionary.Add(item.Id, fieldItem);
-            }
-            return dictionary;
-        }
-
-        public static Dictionary<string, object> GetOrganizeListByCache()
-        {
-            var cache = CacheFactory.Cache();
-            CacheFactory.Cache().RemoveCache(SYS_CONSTS.ORGANIZE);
-            CacheFactory.Cache().WriteCache(GetOrganizeList(), SYS_CONSTS.ORGANIZE);
-            return cache.GetCache<Dictionary<string, object>>(SYS_CONSTS.ORGANIZE);
-        }
-
-        /// <summary>
-        /// 角色缓存
-        /// </summary>
-        /// <returns>  </returns>
-        public static object GetRoleList()
-        {
-            var roleApp = new SysRoleAppService();
-            var data = roleApp.GetList();
-            var dictionary = new Dictionary<string, object>();
-            foreach (var item in data)
-            {
-                var fieldItem = new FieldItem { encode = item.F_EnCode, fullname = item.F_FullName };
-                dictionary.Add(item.F_Id, fieldItem);
-            }
-            return dictionary;
-        }
-
-        public static Dictionary<string, object> GetRoleListByCache()
-        {
-            var cache = CacheFactory.Cache();
-            if (CacheFactory.Cache().GetCache<Dictionary<string, object>>(SYS_CONSTS.ROLE).IsEmpty())
-            {
-                cache.WriteCache((Dictionary<string, object>)GetRoleList(), SYS_CONSTS.ROLE);
-            }
-
-            return cache.GetCache<Dictionary<string, object>>(SYS_CONSTS.ROLE);
-        }
-
-    
-        /// <summary>
-        /// 用户缓存
-        /// </summary>
-        /// <returns>  </returns>
-        public static object GetUserList()
-        {
-            var dictionary = new Dictionary<string, object>();
-            new UserAppService().GetAll().ForEach(item =>
-            {
-                var fieldItem = new FieldItem { fullname = item.F_RealName };
-                dictionary.Add(item.F_Id, fieldItem);
-            });
-            return dictionary;
-
-        }
-
        
 
         public static string ToMenuJson(List<SysModule> data, string parentId)

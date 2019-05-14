@@ -12,26 +12,15 @@ namespace ZHXY.Domain
 
             Property(p => p.Id).HasColumnName("F_Id");
             Property(p => p.UserId).HasColumnName("F_User_ID");
-            Property(p => p.F_Divis_ID).HasColumnName("F_Divis_ID");
-            Property(p => p.F_Name).HasColumnName("F_Name");
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            HasRequired(t => t.teacherSysUser)
-                .WithMany()
-                .HasForeignKey(t => t.UserId)
-                .WillCascadeOnDelete(false);
+            Property(p => p.OrganId).HasColumnName("F_Divis_ID");
+            Property(p => p.Name).HasColumnName("F_Name");
+            Property(p => p.Gender).HasColumnName("F_Gender");
+            Property(p => p.JobNumber).HasColumnName("F_Num");
+            Property(p => p.CredType).HasColumnName("F_CredType");
+            Property(p => p.CredNum).HasColumnName("F_CredNum");
+            Property(p => p.FacePhoto).HasColumnName("F_FacePhoto");
+            Property(p => p.MobilePhone).HasColumnName("F_MobilePhone");
+            Property(p => p.EntryTime).HasColumnName("F_EntryTime");
         }
     }
 }

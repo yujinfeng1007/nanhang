@@ -44,7 +44,7 @@ namespace ZHXY.Application
         public List<DormBuildingView> GetList(Pagination pagination, string keyword)
         {
             var query = Read<Building>();
-            query = string.IsNullOrEmpty(keyword) ? query : query.Where(p => p.Title.Contains(keyword));
+            query = string.IsNullOrEmpty(keyword) ? query : query.Where(p => p.BuildingNo.Contains(keyword));
             pagination.Records = query.CountAsync().Result;
             pagination.GetOrdering<Building>();
             query = string.Equals("false", pagination.Sidx, StringComparison.CurrentCultureIgnoreCase) ? query.OrderBy(p => p.BuildingNo) : query.OrderBy(pagination.Sidx);
@@ -62,7 +62,7 @@ namespace ZHXY.Application
             return Read<Building>().Select(p => new
             {
                 id=p.Id,
-                name=p.Title
+                name=p.BuildingNo
             }).ToListAsync().Result;
         }
 
@@ -74,7 +74,7 @@ namespace ZHXY.Application
             foreach (var user in users) {
                 var rel = new Relevance
                 {
-                    Name = SYS_CONSTS.REL_BUILDING_USERS,
+                    Name = Relation.BuildingUser,
                     FirstKey = id,
                     SecondKey = user
                 };
@@ -89,7 +89,7 @@ namespace ZHXY.Application
         /// </summary>
         public void UnBindUser(string id, string userId)
         {
-            var user = Query<Relevance>(p => p.Name.Equals(SYS_CONSTS.REL_BUILDING_USERS) && p.FirstKey.Equals(id) && p.SecondKey.Equals(userId)).FirstOrDefault();
+            var user = Query<Relevance>(p => p.Name.Equals(Relation.BuildingUser) && p.FirstKey.Equals(id) && p.SecondKey.Equals(userId)).FirstOrDefault();
             DelAndSave(user);
         }
 
@@ -99,8 +99,8 @@ namespace ZHXY.Application
         /// </summary>        
         public List<User> GetSubBindUsers(string id)
         {
-            var usersIds = Read<Relevance>(p => p.Name.Equals(SYS_CONSTS.REL_BUILDING_USERS) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
-            var list = Read<User>(p => usersIds.Contains(p.F_Id)).ToList();
+            var usersIds = Read<Relevance>(p => p.Name.Equals(Relation.BuildingUser) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
+            var list = Read<User>(p => usersIds.Contains(p.Id)).ToList();
             return list;
         }
 
@@ -109,11 +109,81 @@ namespace ZHXY.Application
         /// </summary>        
         public List<User> GetNotBindUsers(string id)
         {
-            var usersIds = Read<Relevance>(p => p.Name.Equals(SYS_CONSTS.REL_BUILDING_USERS) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
-            var list = Read<User>(p => !usersIds.Contains(p.F_Id) && p.F_OrganizeId == "27e1854fd963d24b8c5d88506a775c2a").ToList();
+            var usersIds = Read<Relevance>(p => p.Name.Equals(Relation.BuildingUser) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
+            var list = Read<User>(p => !usersIds.Contains(p.Id) && p.OrganId == "27e1854fd963d24b8c5d88506a775c2a").ToList();
             return list;
         }
-       
+
+        /// <summary>
+        /// 根据闸机设备号获取绑定的楼栋列表
+        /// </summary>
+        /// <param name="deviceNumber"></param>
+        /// <returns></returns>
+        public List<Building> GetBindGate(string deviceNumber)
+        {
+            var relevances = Read<Relevance>(p => p.FirstKey == deviceNumber && p.Name == "Gate_Building").Select(p => p.SecondKey).ToList();
+
+            var list = Read<Building>(p => relevances.Contains(p.Id)).ToList();
+
+            return list;
+        }
+
+        /// <summary>
+        /// 闸机绑定楼栋信息
+        /// </summary>
+        /// <param name="deviceNumber"></param>
+        /// <param name="buildingId"></param>
+        public void BindBuildings(string deviceNumber,string buildingId)
+        {
+            var relevance = new Relevance();
+            relevance.Name = "Gate_Building";
+            relevance.FirstKey = deviceNumber;
+            relevance.SecondKey = buildingId;
+
+            AddAndSave(relevance);
+        }
+
+        /// <summary>
+        /// 闸机解绑楼栋信息
+        /// </summary>
+        /// <param name="deviceNumber"></param>
+        public void UnBindBuildings(string deviceNumber)
+        {
+            var relevance = Read<Relevance>(p => p.Name == "Gate_Building" && p.FirstKey == deviceNumber).FirstOrDefault();
+
+            if (relevance != null)
+            {
+                DelAndSave(relevance);
+            }
+        }
+
+
+        /// <summary>
+        /// 获取楼栋学生基本外出在寝信息
+        /// </summary>
+        /// <param name="deviceNumber"></param>
+        /// <returns></returns>
+        public dynamic GetDormOutInInfo(string deviceNumber)
+        {
+            var buildingIds = Read<Relevance>(p => p.Name == "Gate_Building" && p.FirstKey==deviceNumber).Select(p => p.FirstKey).ToList();
+
+            var buildingNos = Read<Gate>(p => buildingIds.Contains(p.Id)).Select(p=>p.DeviceNumber).ToList();
+
+            var outs = Read<Dorm_FlowInAndOutOfBuilding>(p => buildingNos.Contains(p.building_no) && p.direction == true)
+                .GroupBy(p => new { p.building_no }).Select(p => new {
+                    F_OutNum = p.Count(),
+                    p.Key.building_no,
+                });
+
+            var ins = Read<Dorm_FlowInAndOutOfBuilding>(p => buildingNos.Contains(p.building_no) && p.direction == false)
+                .GroupBy(p => new { p.building_no }).Select(p => new {
+                    F_InNum = p.Count(),
+                    p.Key.building_no,
+                });
+
+           return  outs.Join(ins, e => e.building_no, o => o.building_no, (e, o) => new { e.building_no,e.F_OutNum,o.F_InNum}).ToList();
+           // var data = outs.GroupJoin(ins, a => new { a.building_no, a.F_OutNum }, b => new { b.building_no, b.F_InNum }, (a, b) => new {  a.building_no, a.F_OutNum, b });
+        }
 
     }
 }

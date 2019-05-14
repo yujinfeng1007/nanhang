@@ -2,14 +2,10 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Web.Mvc;
-using DotNetOpenAuth.OAuth2;
-using System.Net.Http;
-using Newtonsoft.Json.Linq;
 using System.Linq;
 using System.Net;
 using SSO_ClientSDK;
 using System.Data.Entity;
-using System.Web;
 using ZHXY.Application;
 using ZHXY.Domain;
 using ZHXY.Common;
@@ -23,45 +19,13 @@ namespace ZHXY.Web.Controllers
     public class LoginController : Controller
     {
 
+        private DutyService DutyApp { get; }
+        private UserService UserApp { get; }
 
-
-        /// <summary>
-        /// 获取验证码
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public FileContentResult GetAuthCode()
+        public LoginController(DutyService app, UserService userApp)
         {
-            var (code, img) = CaptchaGenerator.Gen();
-            HttpContext.Session.Add("zhxy_verify_code", Md5EncryptHelper.ComputeMd5(code.ToLower()));
-            return File(img, @"image/png");
-        }
-        /// <summary>
-        /// 登出
-        /// </summary>
-        [HttpGet]
-        public ActionResult OutLogin()
-        {
-            if (OperatorProvider.Current != null)
-            {
-                WriteLog(new AddLogDto
-                {
-                    IPAddress = Net.Ip,
-                    IPAddressName = Net.GetLocation(Net.Ip),
-                    ModuleName = "系统登录",
-                    Type = DbLogType.Exit.ToString(),
-                    Account = OperatorProvider.Current.UserCode,
-                    UserId = OperatorProvider.Current.UserId,
-                    NickName = OperatorProvider.Current.UserName,
-                    Result = true,
-                    Description = "安全退出系统",
-                });
-            }
-            Session.Abandon();
-            Session.Clear();
-            OperatorProvider.Remove();
-            return View("Index");
-            //return Redirect(ConfigurationManager.AppSettings["LogoutURL"]);
+            DutyApp = app;
+            UserApp = userApp;
         }
 
         #region view
@@ -111,9 +75,45 @@ namespace ZHXY.Web.Controllers
 
         #endregion view
 
+        /// <summary>
+        /// 获取验证码
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public FileContentResult GetAuthCode()
+        {
+            var (code, img) = CaptchaGenerator.Gen();
+            HttpContext.Session.Add("zhxy_verify_code", Md5EncryptHelper.ComputeMd5(code.ToLower()));
+            return File(img, @"image/png");
+        }
 
-
-
+        /// <summary>
+        /// 登出
+        /// </summary>
+        [HttpGet]
+        public ActionResult OutLogin()
+        {
+            if (OperatorProvider.Current != null)
+            {
+                WriteLog(new AddLogDto
+                {
+                    IPAddress = Net.Ip,
+                    IPAddressName = Net.GetLocation(Net.Ip),
+                    ModuleName = "系统登录",
+                    Type = DbLogType.Exit.ToString(),
+                    Account = OperatorProvider.Current.UserCode,
+                    UserId = OperatorProvider.Current.UserId,
+                    NickName = OperatorProvider.Current.UserName,
+                    Result = true,
+                    Description = "安全退出系统",
+                });
+            }
+            Session.Abandon();
+            Session.Clear();
+            OperatorProvider.Remove();
+            return View("Index");
+            //return Redirect(ConfigurationManager.AppSettings["LogoutURL"]);
+        }
 
         /// <summary>
         /// 移动端登出
@@ -149,45 +149,37 @@ namespace ZHXY.Web.Controllers
             try
             {
                 CheckVerifyCode(code);
-                var userEntity = new UserAppService().CheckLogin(username, password);
+                var userEntity = UserApp.CheckLogin(username, password);
                 var duty = string.Empty;
                 if (userEntity != null)
                 {
-                    var organize = SysCacheAppService.GetOrganizeListByCache();
                     var operatorModel = new OperatorModel();
-                    operatorModel.UserId = userEntity.F_Id;
-                    operatorModel.UserCode = userEntity.F_Account;
-                    operatorModel.UserName = userEntity.F_RealName;
-                    operatorModel.F_User_SetUp = userEntity.F_User_SetUp;
-                    operatorModel.CompanyId = userEntity.F_OrganizeId; //学校ID
-                    try
-                    {
-                        operatorModel.SchoolName = ((FieldItem)organize[operatorModel.CompanyId]).fullname; //学校名称
-                    }
-                    catch (Exception)
-                    {
-                        operatorModel.SchoolName = "";
-                    }
+                    operatorModel.UserId = userEntity.Id;
+                    operatorModel.UserCode = userEntity.Account;
+                    operatorModel.UserName = userEntity.Name;
+                    operatorModel.F_User_SetUp = userEntity.UserSetUp;
+                    operatorModel.CompanyId = userEntity.OrganId; //学校ID
+                   
 
                   
 
-                    operatorModel.DepartmentId = userEntity.OrgId;
-                    operatorModel.RoleId = userEntity.F_RoleId;
-                    operatorModel.HeadIcon = userEntity.F_HeadIcon;
+                    operatorModel.DepartmentId = userEntity.OrganId;
+                    operatorModel.RoleId = userEntity.RoleId;
+                    operatorModel.HeadIcon = userEntity.HeadIcon;
                     operatorModel.LoginIPAddress = Net.Ip;
                     operatorModel.LoginIPAddressName = Net.GetLocation(operatorModel.LoginIPAddress);
                     operatorModel.LoginTime = DateTime.Now;
                     operatorModel.LoginToken = DESEncryptHelper.Encrypt(Guid.NewGuid().ToString());
-                    operatorModel.MobilePhone = userEntity.F_MobilePhone;
+                    operatorModel.MobilePhone = userEntity.MobilePhone;
                     //operatorModel.F_Class = userEntity.F_Class;
-                    if (userEntity.F_Account == "admin")
+                    if (userEntity.Account == "admin")
                     {
                         duty = "admin";
                         operatorModel.IsSystem = true;
                     }
                     else
                     {
-                        duty = new SysDutyAppService().Get(userEntity.F_DutyId).F_EnCode;
+                        duty=DutyApp.GetEnCode(userEntity.DutyId);
                         operatorModel.IsSystem = false;
                     }
 
@@ -196,11 +188,11 @@ namespace ZHXY.Web.Controllers
                     operatorModel.Roles = GetRoles(userEntity);
                     //}
                     //用户岗位 类型
-                    operatorModel.Duty = userEntity.F_DutyId;
+                    operatorModel.Duty = userEntity.DutyId;
                     operatorModel.SchoolCode = schoolCode;
                     OperatorProvider.Set(operatorModel);
-                    logEntity.Account = userEntity.F_Account;
-                    logEntity.NickName = userEntity.F_RealName;
+                    logEntity.Account = userEntity.Account;
+                    logEntity.NickName = userEntity.Name;
                     logEntity.Result = true;
                     logEntity.Description = "登录成功";
 
@@ -237,12 +229,12 @@ namespace ZHXY.Web.Controllers
             try
             {
                 CheckVerifyCode(code);
-                var userEntity = new UserAppService().CheckLogin(username, password);
-                var roleList = new SysUserRoleAppService().GetListByUserId(userEntity.F_Id);
+                var userEntity = UserApp.CheckLogin(username, password);
+                var roleList = new SysUserRoleAppService().GetListByUserId(userEntity.Id);
                 var F_Type = true;
                 foreach (var item in roleList)
                 {
-                    if (new SysRoleAppService().Get(item.F_Role).F_Type.Equals("1"))
+                    if (new RoleService().Get(item.F_Role).Type.Equals("1"))
                     {
                         F_Type = true;
                         break;
@@ -263,43 +255,34 @@ namespace ZHXY.Web.Controllers
                 var duty = string.Empty;
                 if (userEntity != null)
                 {
-                    var org = SysCacheAppService.GetOrganizeListByCache();
                     var op = new OperatorModel
                     {
-                        UserId = userEntity.F_Id,
-                        UserCode = userEntity.F_Account,
-                        UserName = userEntity.F_RealName,
-                        F_User_SetUp = userEntity.F_User_SetUp,
-                        CompanyId = userEntity.F_OrganizeId //学校ID
+                        UserId = userEntity.Id,
+                        UserCode = userEntity.Account,
+                        UserName = userEntity.Name,
+                        F_User_SetUp = userEntity.UserSetUp,
+                        CompanyId = userEntity.OrganId //学校ID
                     };
-                    try
-                    {
-                        op.SchoolName = ((FieldItem)org[op.CompanyId]).fullname; //学校名称
-                    }
-                    catch (Exception)
-                    {
-                        op.SchoolName = "";
-                    }
 
                     //学校老师
                
-                    op.DepartmentId = userEntity.OrgId;
-                    op.RoleId = userEntity.F_RoleId;
-                    op.HeadIcon = userEntity.F_HeadIcon;
+                    op.DepartmentId = userEntity.OrganId;
+                    op.RoleId = userEntity.RoleId;
+                    op.HeadIcon = userEntity.HeadIcon;
                     op.LoginIPAddress = Net.Ip;
                     op.LoginIPAddressName = Net.GetLocation(op.LoginIPAddress);
                     op.LoginTime = DateTime.Now;
                     op.LoginToken = DESEncryptHelper.Encrypt(Guid.NewGuid().ToString());
-                    op.MobilePhone = userEntity.F_MobilePhone;
+                    op.MobilePhone = userEntity.MobilePhone;
 
-                    if (userEntity.F_Account == "admin")
+                    if (userEntity.Account == "admin")
                     {
                         duty = "admin";
                         op.IsSystem = true;
                     }
                     else
                     {
-                        duty = new SysDutyAppService().Get(userEntity.F_DutyId).F_EnCode;
+                        duty = DutyApp.GetEnCode(userEntity.DutyId);
                         op.IsSystem = false;
                     }
 
@@ -308,7 +291,7 @@ namespace ZHXY.Web.Controllers
                     var roles = new Dictionary<string, Dictionary<string, string>>();
 
                     var sysUserRoleApp = new SysUserRoleAppService();
-                    var roleApp = new SysRoleAppService();
+                    var roleApp = new RoleService();
                     var list = sysUserRoleApp.GetListByUserId(op.UserId);
                     //获得数据权限,支持多角色
                     foreach (var e in list)
@@ -316,14 +299,14 @@ namespace ZHXY.Web.Controllers
                         var role = roleApp.Get(e.F_Role);
                         var dic = new Dictionary<string, string>();
 
-                        if (userEntity.F_Data_Type.IsEmpty())
+                        if (userEntity.DataType.IsEmpty())
                         {
-                            if (role.F_Data_Type != null)
-                                dic.Add(role.F_Data_Type, role.F_Data_Deps);
+                            if (role.DataType != null)
+                                dic.Add(role.DataType, role.DataDeps);
                         }
                         else
                         {
-                            dic.Add(userEntity.F_Data_Type, userEntity.F_Data_Deps);
+                            dic.Add(userEntity.DataType, userEntity.DataDeps);
                         }
 
                         roles.Add(e.F_Role, dic);
@@ -332,13 +315,13 @@ namespace ZHXY.Web.Controllers
                     op.Roles = roles;
                     //}
                     //用户岗位 类型
-                    op.Duty = userEntity.F_DutyId;
+                    op.Duty = userEntity.DutyId;
                     //添加学校编码
                     op.SchoolCode = schoolCode;
                     OperatorProvider.Set(op);
-                    log.Account = userEntity.F_Account;
-                    log.UserId = userEntity.F_Id;
-                    log.NickName = userEntity.F_RealName;
+                    log.Account = userEntity.Account;
+                    log.UserId = userEntity.Id;
+                    log.NickName = userEntity.Name;
                     log.Result = true;
                     log.Description = "登录成功";
 
@@ -352,9 +335,9 @@ namespace ZHXY.Web.Controllers
                     data = new
                     {
                         duty,
-                        userEntity.F_User_SetUp,
-                        userEntity.F_RealName,
-                        userEntity.F_Class
+                        userEntity.UserSetUp,
+                        userEntity.Name,
+                        userEntity.Class
                     }
                 }.ToJson());
             }
@@ -376,30 +359,30 @@ namespace ZHXY.Web.Controllers
         public ActionResult AdminLogin(string uname, string pass, string schoolCode)
         {
             OperatorProvider.Set(new OperatorModel { SchoolCode = schoolCode });
-            var userEntity = new UserAppService().CheckLogin(uname, pass);
+            var userEntity = UserApp.CheckLogin(uname, pass);
             var operatorModel = new OperatorModel
             {
-                UserId = userEntity.F_Id,
-                UserCode = userEntity.F_Account,
-                UserName = userEntity.F_RealName,
-                F_User_SetUp = userEntity.F_User_SetUp,
-                CompanyId = userEntity.F_OrganizeId, //学校ID
-                DepartmentId = userEntity.OrgId,
-                RoleId = userEntity.F_RoleId,
-                HeadIcon = userEntity.F_HeadIcon,
+                UserId = userEntity.Id,
+                UserCode = userEntity.Account,
+                UserName = userEntity.Name,
+                F_User_SetUp = userEntity.UserSetUp,
+                CompanyId = userEntity.OrganId, //学校ID
+                DepartmentId = userEntity.OrganId,
+                RoleId = userEntity.RoleId,
+                HeadIcon = userEntity.HeadIcon,
                 LoginIPAddress = Net.Ip
             };
             operatorModel.LoginIPAddressName = Net.GetLocation(operatorModel.LoginIPAddress);
             operatorModel.LoginTime = DateTime.Now;
             operatorModel.LoginToken = DESEncryptHelper.Encrypt(Guid.NewGuid().ToString());
-            operatorModel.MobilePhone = userEntity.F_MobilePhone;
+            operatorModel.MobilePhone = userEntity.MobilePhone;
 
             operatorModel.IsSystem = true;
 
             var roles = new Dictionary<string, Dictionary<string, string>>();
 
             var sysUserRoleApp = new SysUserRoleAppService();
-            var roleApp = new SysRoleAppService();
+            var roleApp = new RoleService();
             var list = sysUserRoleApp.GetListByUserId(operatorModel.UserId);
             //获得数据权限,支持多角色
             foreach (var e in list)
@@ -407,14 +390,14 @@ namespace ZHXY.Web.Controllers
                 var role = roleApp.Get(e.F_Role);
                 var dic = new Dictionary<string, string>();
 
-                if (userEntity.F_Data_Type.IsEmpty())
+                if (userEntity.DataType.IsEmpty())
                 {
-                    if (role.F_Data_Type != null)
-                        dic.Add(role.F_Data_Type, role.F_Data_Deps);
+                    if (role.DataType != null)
+                        dic.Add(role.DataType, role.DataDeps);
                 }
                 else
                 {
-                    dic.Add(userEntity.F_Data_Type, userEntity.F_Data_Deps);
+                    dic.Add(userEntity.DataType, userEntity.DataDeps);
                 }
 
                 roles.Add(e.F_Role, dic);
@@ -429,29 +412,13 @@ namespace ZHXY.Web.Controllers
                 data = new
                 {
                     duty = "admin",
-                    userEntity.F_User_SetUp,
-                    userEntity.F_RealName,
-                    userEntity.F_Class
+                    userEntity.UserSetUp,
+                    userEntity.Name,
+                    userEntity.Class
                 }
             }.ToJson());
         }
 
-        /// <summary>
-        /// 获取学校列表
-        /// </summary>
-        [HttpGet]
-        public ActionResult GetSchoolList()
-        {
-            var qdNo = ConfigurationManager.AppSettings["qdNo"]; //渠道编码
-            var url = ConfigurationManager.AppSettings["getSchoolListUrl"]; //运营平台接口地址
-            //var result = HttpHelper.GetString($"{url}{qdNo}");
-            var result = new HttpClient().GetStringAsync($"{url}{qdNo}").Result;
-            var j = JObject.Parse(result);
-            var isError = (bool)j.GetValue("IsError", StringComparison.InvariantCultureIgnoreCase);
-            if (isError) throw new Exception("获取学校信息失败!");
-            var data = j.GetValue("Data", StringComparison.InvariantCultureIgnoreCase)?.ToString();
-            return Content(data);
-        }
 
         #region private
 
@@ -478,22 +445,22 @@ namespace ZHXY.Web.Controllers
             //权限判断，先看个人有没有设置数据权限，再看角色是否有数据权限
             var roles = new Dictionary<string, Dictionary<string, string>>();
             var sysUserRoleApp = new SysUserRoleAppService();
-            var roleApp = new SysRoleAppService();
-            var list = sysUserRoleApp.GetListByUserId(user.F_Id);
+            var roleApp = new RoleService();
+            var list = sysUserRoleApp.GetListByUserId(user.Id);
             //获得数据权限,支持多角色
             foreach (var e in list)
             {
                 var role = roleApp.Get(e.F_Role);
                 var dic = new Dictionary<string, string>();
 
-                if (user.F_Data_Type.IsEmpty())
+                if (user.DataType.IsEmpty())
                 {
-                    if (role.F_Data_Type != null)
-                        dic.Add(role.F_Data_Type, role.F_Data_Deps);
+                    if (role.DataType != null)
+                        dic.Add(role.DataType, role.DataDeps);
                 }
                 else
                 {
-                    dic.Add(user.F_Data_Type, user.F_Data_Deps);
+                    dic.Add(user.DataType, user.DataDeps);
                 }
 
                 roles.Add(e.F_Role, dic);
@@ -536,7 +503,7 @@ namespace ZHXY.Web.Controllers
             if (ok)
             {
                 var uid = client.GetUID().ToLower();
-                var exist = new UserAppService().Read<User>(p => p.F_Account.Equals(uid)).AnyAsync().Result;
+                var exist = UserApp.Read<User>(p => p.Account.Equals(uid)).AnyAsync().Result;
                 if (!exist) throw new Exception("无权进入本系统!");
                 var user = BuildCurrent(uid);
                 OperatorProvider.Set(user);
@@ -548,32 +515,28 @@ namespace ZHXY.Web.Controllers
 
         private OperatorModel BuildCurrent(string account)
         {
-            var app = new UserAppService();
-            var user = app.Read<User>(p => p.F_Account.Equals(account)).FirstOrDefaultAsync().Result;
+            var user = UserApp.Read<User>(p => p.Account.Equals(account)).FirstOrDefaultAsync().Result;
             if (user == null) throw new Exception("用户不存在!");
-            var roleIds = app.Read<UserRole>(p => p.F_User.Equals(user.F_Id)).Select(p => p.F_Role).ToListAsync()
+            var roleIds = UserApp.Read<UserRole>(p => p.F_User.Equals(user.Id)).Select(p => p.F_Role).ToListAsync()
                 .Result;
-            //var canLogin = app.Read<SysRole>(p => roleIds.Contains(p.F_Id) && p.F_Type.Equals("1")).AnyAsync().Result;
-            //if (!canLogin) throw new Exception("无权限登录后台系统！");
-            var organize = SysCacheAppService.GetOrganizeListByCache();
             var current = new OperatorModel
             {
-                UserId = user.F_Id,
-                UserCode = user.F_Account,
-                UserName = user.F_RealName,
-                F_User_SetUp = user.F_User_SetUp,
-                CompanyId = user.F_OrganizeId,
-                DepartmentId = user.OrgId,
-                RoleId = user.F_RoleId,
-                HeadIcon = user.F_HeadIcon,
+                UserId = user.Id,
+                UserCode = user.Account,
+                UserName = user.Name,
+                F_User_SetUp = user.UserSetUp,
+                CompanyId = user.OrganId,
+                DepartmentId = user.OrganId,
+                RoleId = user.RoleId,
+                HeadIcon = user.HeadIcon,
                 LoginIPAddress = Net.Ip,
-                MobilePhone = user.F_MobilePhone,
-                Duty = user.F_DutyId
+                MobilePhone = user.MobilePhone,
+                Duty = user.DutyId
             };
             current.LoginIPAddressName = Net.GetLocation(current.LoginIPAddress);
             current.LoginToken = DESEncryptHelper.Encrypt(Guid.NewGuid().ToString());
 
-            if (user.F_Account == "admin") current.IsSystem = true;
+            if (user.Account == "admin") current.IsSystem = true;
             return current;
 
         }

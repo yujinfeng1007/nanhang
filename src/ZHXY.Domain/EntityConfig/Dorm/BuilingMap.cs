@@ -12,14 +12,8 @@ namespace ZHXY.Domain
             HasKey(p => p.Id); 
 
             Property(p => p.Id).HasColumnName("id");
-            Property(p => p.Title).HasColumnName("title");
-            Property(p => p.Area).HasColumnName("area");
             Property(p => p.BuildingNo).HasColumnName("building_no");
-            Property(p => p.FloorNum).HasColumnName("floor_num");
-            Property(p => p.UnitNum).HasColumnName("unit_num");
-            Property(p => p.Address).HasColumnName("address");
-            Property(p => p.BuildingType).HasColumnName("classroom_type");
-            Property(p => p.BuildingStatus).HasColumnName("classroom_status");
+          
         }
     }
 }

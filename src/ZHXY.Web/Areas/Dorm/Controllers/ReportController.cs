@@ -138,7 +138,7 @@ namespace ZHXY.Web.Dorm.Controllers
             string stuId = "";
             if (!string.IsNullOrEmpty(studentNum))
             {
-                stuId = new StudentAppService().GetIdByStuNum(studentNum);
+                stuId = new StudentService().GetIdByStudentNumber(studentNum);
                 if (stuId == null) throw new Exception("未找到该学生");
             }
             IDictionary<string, string> parms = new Dictionary<string, string>();

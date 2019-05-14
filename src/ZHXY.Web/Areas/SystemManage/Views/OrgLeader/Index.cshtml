@@ -11,6 +11,24 @@
         }).sizePane("west", 300);
         gridList();
         gridTree();
+
+        setInterval(function () {
+            let orgId = $("#treeGrid").jqGrid('getGridParam', 'selrow');
+            let userIdArr = $("#gridList").jqGrid('getGridParam', 'selarrrow');
+            if (userIdArr == null || userIdArr.length == 0) {
+                $("#btn_remove").addClass("disabled");
+            } else {
+                $("#btn_remove").removeClass("disabled");
+            }
+
+            if (!orgId) {
+                $("#btn_add").addClass("disabled");
+            } else {
+                $("#btn_add").removeClass("disabled");
+            }
+           
+        }, 200)
+
     })
 
     function gridList() {
@@ -83,8 +101,7 @@
             url: `${SELECT_URL}?orgId=${rowId}`,
             width: "1300px",
             height: "600px",
-            callBack: function(iframeId)
-            {
+            callBack: function (iframeId) {
                 top.frames[iframeId].add();
                 $("#gridList").jqGrid().trigger('reloadGrid');
             },
@@ -95,7 +112,6 @@
     function remove() {
         let orgId = $("#treeGrid").jqGrid('getGridParam', 'selrow');
         let userIdArr = $("#gridList").jqGrid('getGridParam', 'selarrrow');
-
         $.post(ROMEVE_URL, { orgId: orgId, users: userIdArr }, (result) => {
             if (result.state === 'success') {
                 $.modalMsg('操作成功', 'success');
@@ -112,15 +128,12 @@
         <table id="treeGrid"></table>
     </div>
     <div class="ui-layout-center" style="height: 100%; width: 100%;">
-        <div class="topPanel">
-            <div class="search">
-                <div class="input-group" style="padding-right:4px;">
-                    <button class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></button>
-                    <button class="btn btn-primary" onclick="add()">添加</button>
-                    <button class="btn btn-primary" onclick="remove()">移除</button>
-                </div>
-            </div>
-        </div>
+        <form class="form-inline topPanel" autocomplete="off">
+            <button type="button" class="btn btn-default" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></button>
+            <button type="button" id="btn_add" class="btn btn-primary" onclick="add()">添加</button>
+            <button type="button" id="btn_remove" class="btn btn-info" onclick="remove()">移除</button>
+        </form>
+
         <div class="gridPanel">
             <table id="gridList"></table>
             <div id="gridPager"></div>

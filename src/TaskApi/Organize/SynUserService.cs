@@ -65,41 +65,39 @@ namespace TaskApi
             var student = new Student();
             if (catetoryId == "Class")
             {
-                var org = db.FindEntity<Organ>(p => p.Id == entity.OrgId);
-                student.F_Class_ID = entity.OrgId;
-                student.F_Grade_ID = org?.ParentId;
-                student.F_Divis_ID = org?.Parent?.ParentId;
+                var org = db.FindEntity<Organ>(p => p.Id == entity.OrganId);
+                student.ClassId = entity.OrganId;
+                student.GradeId = org?.ParentId;
+                student.DivisId = org?.Parent?.ParentId;
             }
             if (catetoryId == "Grade")
             {
-                var org = db.FindEntity<Organ>(p => p.Id == entity.OrgId);
-                student.F_Grade_ID = entity.OrgId;
-                student.F_Divis_ID = org?.ParentId;
+                var org = db.FindEntity<Organ>(p => p.Id == entity.OrganId);
+                student.GradeId = entity.OrganId;
+                student.DivisId = org?.ParentId;
             }
             if (catetoryId == "Division")
-                student.F_Divis_ID = entity.OrgId;
-            student.F_Name = entity.F_RealName;
-            student.F_StudentNum = num;
-            student.F_CredNum = credNum;
-            student.F_CredType = credType;
-            student.F_Gender = entity.F_Gender != false ? "1" : "0";
-            student.F_PolitStatu = politstatu;
-            student.F_InitDTM = entryTime;
+                student.DivisId = entity.OrganId;
+            student.Name = entity.Name;
+            student.StudentNumber = num;
+            student.CredNumber = credNum;
+            student.CredType = credType;
+            student.Gender = entity.Gender != false ? "1" : "0";
+            student.PolitStatu = politstatu;
+            student.InitDTM = entryTime;
             //student.F_Users_ID = entity.F_Id;
-            student.F_Tel = entity.F_MobilePhone;
-            student.F_DepartmentId = entity.OrgId;
+            student.MobilePhone = entity.MobilePhone;
+            student.OrganId = entity.OrganId;
 
-            var s = db.FindEntity<Student>(p => p.F_Users_ID == entity.F_Id);
+            var s = db.FindEntity<Student>(p => p.UserId == entity.Id);
             if (s != null)
             {
-                student.Modify(s.F_Id);
                 db.Update(student);
             }
             else
             {
-                student.F_Users_ID = entity.F_Id;
-                student.F_CurStatu = "1";
-                student.Create();
+                student.UserId = entity.Id;
+                student.CurStatu = "1";
                 db.Insert(student);
             }
 
@@ -111,33 +109,32 @@ namespace TaskApi
             var teacher = new Teacher();
             if (catetoryId == "Class")
             {
-                var org = db.FindEntity<Organ>(p => p.Id == entity.OrgId);
-                teacher.F_Divis_ID = org?.Parent?.ParentId;
+                var org = db.FindEntity<Organ>(p => p.Id == entity.OrganId);
+                teacher.OrganId = org?.Parent?.ParentId;
             }
             if (catetoryId == "Grade")
             {
-                var org = db.FindEntity<Organ>(p => p.Id == entity.OrgId);
-                teacher.F_Divis_ID = org?.ParentId;
+                var org = db.FindEntity<Organ>(p => p.Id == entity.OrganId);
+                teacher.OrganId = org?.ParentId;
             }
             if (catetoryId == "Division")
-                teacher.F_Divis_ID = entity.OrgId;
-            teacher.F_Name = entity.F_RealName;
-            teacher.F_Num = num;
+                teacher.OrganId = entity.OrganId;
+            teacher.Name = entity.Name;
+            teacher.JobNumber = num;
             //student.F_Users_ID = entity.F_Id;
-            teacher.F_MobilePhone = entity.F_MobilePhone;
-            teacher.F_CredNum = credNum;
-            teacher.F_Profession = profession;
-            teacher.F_PolitStatu = politstatu;
-            teacher.F_CredType = credType;
-            teacher.F_EntryTime = entryTime;
-            var t = db.FindEntity<Teacher>(p => p.UserId == entity.F_Id);
+            teacher.MobilePhone = entity.MobilePhone;
+            teacher.CredNum = credNum;
+            //teacher.F_PolitStatu = politstatu;
+            teacher.CredType = credType;
+            teacher.EntryTime = entryTime;
+            var t = db.FindEntity<Teacher>(p => p.UserId == entity.Id);
             if (t != null)
             {
                 db.Update(teacher);
             }
             else
             {
-                teacher.UserId = entity.F_Id;
+                teacher.UserId = entity.Id;
                 db.Insert(teacher);
             }
 
@@ -148,80 +145,79 @@ namespace TaskApi
         private User AddOrUpdUser(IUnitWork db, string loginId, string mobilePhone, string orgId, string passWord, string telephone, string userId, string userName, string userStatus, string userType, string catetoryId, string gw, string sex, string ico, string isAdmin, string isDelete)
         {
             var entity = new User();
-            entity.F_EnabledMark = true;
-            entity.F_Id = userId;
-            entity.EmailPassword = passWord;
-            entity.F_Account = loginId;
-            entity.F_MobilePhone = mobilePhone;
-            entity.F_NickName = userName;
-            entity.F_RealName = userName;
-            entity.OrgId = orgId;
-            entity.F_Gender = sex == "1" ? true : false;
-            entity.F_HeadIcon = ico;
-            entity.F_DeleteMark = isDelete == "1" ? true : false;
+            entity.EnabledMark = true;
+            entity.Id = userId;
+            entity.Account = loginId;
+            entity.MobilePhone = mobilePhone;
+            entity.NickName = userName;
+            entity.Name = userName;
+            entity.OrganId = orgId;
+            entity.Gender = sex == "1" ? true : false;
+            entity.HeadIcon = ico;
+            entity.DeleteMark = isDelete == "1" ? true : false;
             if (catetoryId == "Class")
             {
                 var org = db.FindEntity<Organ>(p => p.Id == orgId);
-                entity.F_OrganizeId = org?.Parent?.ParentId;
+                entity.OrganId = org?.Parent?.ParentId;
             }
             if (catetoryId == "Grade")
             {
                 var org = db.FindEntity<Organ>(p => p.Id == orgId);
-                entity.F_OrganizeId = org?.ParentId;
+                entity.OrganId = org?.ParentId;
             }
             if (catetoryId == "Division")
-                entity.F_OrganizeId = orgId;
+                entity.OrganId = orgId;
             if (userType == "6")
             {
-                entity.F_DutyId = null;
-                entity.F_RoleId = "student";
+                entity.DutyId = null;
+                entity.RoleId = "student";
             }
             if (userType == "1")
             {
-                entity.F_DutyId = "teacherDuty";
-                entity.F_RoleId = "teacher";
+                entity.DutyId = "teacherDuty";
+                entity.RoleId = "teacher";
                 if ((gw == "班主任" || gw == "副班主任"))//catetoryId == "Class" &&
                 {
-                    entity.F_RoleId = "6D8BC58FF1F24924A73F6B86A718BD6C";
+                    entity.RoleId = "6D8BC58FF1F24924A73F6B86A718BD6C";
                 }
             }
             if (userType == "5")
             {
-                entity.F_DutyId = "parentDuty";
-                entity.F_RoleId = "parent";
-                entity.OrgId = "parent";
+                entity.DutyId = "parentDuty";
+                entity.RoleId = "parent";
+                entity.OrganId = "parent";
             }
             if (isAdmin == "1")
             {
-                entity.F_RoleId = "7A6C0ECA17B9433DBD3A0C127E35A696";
+                entity.RoleId = "7A6C0ECA17B9433DBD3A0C127E35A696";
             }
-            var data = db.FindEntity<User>(t => t.F_Id == userId);
+            var data = db.FindEntity<User>(t => t.Id == userId);
             if (data != null)
             {
                 db.Update(entity);
             }
             else
             {
-                entity.F_Id = userId;
+                entity.Id = userId;
                 db.Insert(entity);
 
                 setUserInfo(db, entity);
             }
             // 插入角色
-            if (entity.F_RoleId != null)
+            if (entity.RoleId != null)
             {
-                var role = db.FindEntity<UserRole>(t => t.F_User == entity.F_Id);
+                var role = db.FindEntity<UserRole>(t => t.F_User == entity.Id);
                 if (role != null)
                 {
-                    role.F_Role = entity.F_RoleId;
+                    role.F_Role = entity.RoleId;
                     db.Update(role);
                 }
                 else
                 {
                     var e = new UserRole();
                     e.F_Id = Guid.NewGuid().ToString();
-                    e.F_Role = entity.F_RoleId;
-                    e.F_User = entity.F_Id;
+                    e.F_Role = entity.RoleId;
+                    e.F_User = entity.Id;
                     db.Insert(e);
                 }
             }
@@ -230,23 +226,23 @@ namespace TaskApi
 
         private void setUserInfo(IUnitWork db, User entity)
         {
-            if (db.FindEntity<UserLogin>(t => t.F_Id == entity.F_Id) != null)
+            if (db.FindEntity<UserLogin>(t => t.F_Id == entity.Id) != null)
                 return;
             var userLogOnEntity = new UserLogin
             {
-                F_Id = entity.F_Id,
-                F_UserId = entity.F_Id,
+                F_Id = entity.Id,
+                F_UserId = entity.Id,
                 F_UserSecretkey = Md5EncryptHelper.Encrypt("0000", 16).ToLower()
             };
             userLogOnEntity.F_UserPassword = Md5EncryptHelper.Encrypt(DESEncryptHelper.Encrypt(Md5EncryptHelper.Encrypt("0000", 32).ToLower(), userLogOnEntity.F_UserSecretkey).ToLower(), 32).ToLower();
             db.Insert(userLogOnEntity);
 
             var isPost = true;
-            var parameters = "sysid=" + entity.F_Id + "&amp;appid=" + AppId + "&amp;nickname=" +
-                             entity.F_RealName + "&amp;username=" + entity.F_Account +
+            var parameters = "sysid=" + entity.Id + "&amp;appid=" + AppId + "&amp;nickname=" +
+                             entity.Name + "&amp;username=" + entity.Account +
                              "&amp;password=" + userLogOnEntity.F_UserPassword +
-                             "&amp;sysgroupid=" + entity.OrgId + "&amp;headicon=" +
-                             entity.F_HeadIcon + "&amp;birthday=" + entity.F_Birthday + "";
+                             "&amp;sysgroupid=" + entity.OrganId + "&amp;headicon=" +
+                             entity.HeadIcon + "&amp;birthday=" + entity.Birthday + "";
             WebHelper.SendRequest(CallUrlAdd, parameters, isPost, "application/json");
         }
     }

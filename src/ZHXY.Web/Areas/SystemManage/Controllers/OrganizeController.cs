@@ -15,9 +15,14 @@ namespace ZHXY.Web.SystemManage.Controllers
     /// </summary>
     public class OrganizeController : ZhxyWebControllerBase
     {
-        private OrgAppService App { get; }
+        private OrgService App { get; }
+        private UserService UserApp { get; }
 
-        public OrganizeController(OrgAppService app) => App = app;
+        public OrganizeController(OrgService app, UserService userApp)
+        {
+            App = app;
+            UserApp = UserApp;
+        }
 
         [HttpGet]
         public ActionResult GetSelectJson(string F_OrgId)
@@ -84,16 +89,16 @@ namespace ZHXY.Web.SystemManage.Controllers
         {
             var data = App.GetList();
             var data_deeps = "";
-            var role = new SysRoleAppService().Get(keyword);
+            var role = new RoleService().Get(keyword);
             if (!role.IsEmpty())
             {
-                data_deeps = role.F_Data_Deps;
+                data_deeps = role.DataDeps;
             }
             else
             {
-                var user = new UserAppService().Get(keyword);
+                var user = UserApp.Get(keyword);
                 if (!user.IsEmpty())
-                    data_deeps = user.F_Data_Deps;
+                    data_deeps = user.DataDeps;
             }
 
             var treeList = new List<TreeViewModel>();
@@ -211,8 +216,6 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult Delete(string id)
         {
             App.Delete(id);
-            CacheFactory.Cache().RemoveCache(SYS_CONSTS.ORGANIZE);
-            CacheFactory.Cache().WriteCache(SysCacheAppService.GetOrganizeList(), SYS_CONSTS.ORGANIZE);
             return Resultaat.Success();
         }
 

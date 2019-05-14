@@ -1,288 +1,97 @@
-﻿@{
-    Layout = "~/Views/Shared/_Index.cshtml";
+﻿
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <script>
-    let colModel = [
-        {
-            label: '操作', name: 'operate', width: 95, index: 'operate', frozen: true,
-            formatter: function (e, t, i) {
-                var a = '<div class="operating"  data-id="' + i.F_Id + '">' +
-                    '<i onClick="btn_edit(this)" class="fa fa-pencil" title="修改"></i>' +
-                    '<i onClick="btn_details(this)" class="fa fa-search-plus" title="查看"></i>' +
-                    '</div>';
-                return a
-            }
-        },
-        { label: '主键', name: 'F_Id', hidden: true },
-        { label: '用户ID', name: 'F_User_ID', hidden: true },
-        { label: '姓名', name: 'F_Name', width: 60, align: 'left' },
-        {
-            label: '性别', name: 'F_Gender', width: 50, align: 'left',
-            formatter: function (cellvalue, options, rowObject) {
-                var gender = (cellvalue == true ? 1 : 0)
-                return top.clients.dataItems[104] == null ? "" : top.clients.dataItems[104][gender];
-            }
-        },
-        {
-            label: '学部', name: 'F_Divis_ID', width: 80, align: 'left',
-            formatter: function (cellvalue, options, rowObject) {
-                return top.clients.organize[cellvalue] == null ? "" : top.clients.organize[cellvalue].fullname;
-            }
-        },
+    let GRID_WIDTH = window.innerWidth;
+    let GRID_HEIGHT = window.innerHeight * 0.9;
+    let GRID_STYLE = "Bootstrap";
 
-        { label: '科别', name: 'F_Profession', width: 80, align: 'left' },
-        {
-            label: '进校时间', name: 'F_EntryTime', width: 80, align: 'left',
-            formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' }
-        },
-        { label: '职务', name: 'F_Duties', width: 60, align: 'left' },
-        { label: '职称', name: 'F_Titles', width: 60, align: 'left' },
-        { label: '备注', name: 'F_Remark', width: 80, align: 'left' },
-    ]
     $(function () {
-        gridList()
-        j = Public.mod_PageConfig.register("schoolTeachers", {
-            id: 'test',
-            config: {
-                grid: {
-                    colModel: colModel,
-                    url: "/Dorm/Teacher/Load",
-                    height: 400,
-                    sortname: 'F_CreatorTime',
-                    sortorder: 'desc',
-                },
-                gridButton: {
-                    lim: 3,
-                    data: [{
-                        name: '密码重置',
-                        multiAction: false,
-                        class: 'NF-restpwd',
-                        callBack: function (row, data) {
-                            btn_restpwd(data[0].F_User_ID)
-                        }
-                    }, {
-                        name: '用户角色权限',
-                        multiAction: false,
-                        class: 'NF-edit-userInfo',
-                        callBack: function (row, data) {
-                            btn_editUserInfo(data[0].F_User_ID)
-                        }
-                    }, {
-                        name: '删除',
-                        multiAction: true,
-                        class: 'NF-delete',
-                        callBack: function (row, data) {
-                            btn_delete(data)
-                        }
-                    }
-                    ]
-                },
-                searchParams: {
-                    F_DepartmentId: {
-                        type: 'select',
-                        width: 150,
-                        name: '选择学部',
-                        config: {
-                            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Division",
-                            //displayBlank: false
-                        }
-                    },
-                    keyword: {
-                        type: 'input',
-                        name: '姓名｜工号',
-                        width: 150,
-                    },
-                }
-            }
-        })
-        j.init()
+        gridList();
+
+        $("#btn_search").click(() => {
+            let rowId = $("#treeGrid").jqGrid("getGridParam", "selrow");
+            reloadGrid(rowId)
+        });
     })
+
     function gridList() {
-        var $gridList = $("#gridList");
-        $gridList.dataGrid({
-            url: "/Dorm/Teachers/Load",
-            height: $(window).height() - 173,
-            colModel: [
-                { label: '主键', name: 'F_Id', hidden: true },
-                { label: '用户ID', name: 'F_User_ID', hidden: true },
-                { label: '工号', name: 'F_Num', width: 150, align: 'left' },
-                { label: '姓名', name: 'F_Name', width: 60, align: 'left' },
-                {
-                    label: '性别', name: 'F_Gender', width: 50, align: 'left',
-                    formatter: function (cellvalue, options, rowObject) {
-                        var gender = (cellvalue == true ? 1 : 0)
-                        return top.clients.dataItems[104] == null ? "" : top.clients.dataItems[104][gender];
-                    }
-                },
-                {
-                    label: '学部', name: 'F_Divis_ID', width: 80, align: 'left',
-                    formatter: function (cellvalue, options, rowObject) {
-                        return top.clients.organize[cellvalue] == null ? "" : top.clients.organize[cellvalue].fullname;
-                    }
-                },
-
-                { label: '科别', name: 'F_Profession', width: 80, align: 'left' },
-                {
-                    label: '进校时间', name: 'F_EntryTime', width: 80, align: 'left',
-                    formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' }
-                },
-                { label: '职务', name: 'F_Duties', width: 60, align: 'left' },
-                { label: '职称', name: 'F_Titles', width: 60, align: 'left' },
-                { label: '备注', name: 'F_Remark', width: 80, align: 'left' },
-            ],
+        $("#gridList").jqGrid({
+            styleUI: GRID_STYLE,
+            height: GRID_HEIGHT,
+            width: GRID_WIDTH,
+            datatype: 'json',
+            url: `/Dorm/Teacher/Load`,
+            multiselect: true,
+            loadonce: false,
+            viewrecords: true,
             pager: "#gridPager",
-            sortname: 'F_DepartmentId asc,F_CreatorTime desc',
-            viewrecords: true
-        });
+            rowNum: 15,
+            colModel: [
+                { label: "主键", name: "userId", hidden: true, key: true },
+                {
+                    label: '头像', name: 'facePhoto',
+                    width: 96,
+                    formatter: function (cellvalue) {
+                        return `<img src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1558345778&di=2acba3cb4b02b581f8ff79ae929e2a3c&imgtype=jpg&er=1&src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20160526%2F17294de06245438c980d1d07854cae8a_th.jpg' style="width:96px;height:96px;"/>`;
+                    }
 
-        $("#btn_search").click(function () {
-            $gridList.jqGrid('setGridParam', {
-                postData: { keyword: $("#txt_keyword").val(), F_DepartmentId: $("#F_Divis_ID").val() },
-            }).trigger('reloadGrid');
-        });
-    }
-    function btn_add() {
-        $.modalOpen({
-            id: "Form",
-            title: "新增教师信息",
-            url: "/Dorm/Teacher/Form",
-            width: "900px",
-            height: "610px",
-            callBack: function (iframeId) {
-                top.frames[iframeId].submitForm();
-            }
-        });
-    }
-    function btn_edit(r) {
-        var id = $(r).parents('.operating').attr('data-id')
-        var keyValue = id;
-        $.modalOpen({
-            id: "Form",
-            title: "修改教师信息",
-            url: "/Dorm/Teacher/Form?keyValue=" + keyValue,
-            width: "900px",
-            height: "650px",
-            callBack: function (iframeId) {
-                top.frames[iframeId].submitForm();
-            }
-        });
-    }
-    function btn_delete(ids) {
-        var keyValue = ids.map(function (n) {
-            return n.F_Id
-        }).join('|')
-        console.log(keyValue)
-        $.deleteForm({
-            url: "/Dorm/Teacher/Delete",
-            param: { keyValue: keyValue },
-            success: function () {
-                $.currentWindow().$("#schoolTeachersGrid").trigger("reloadGrid");
-            }
-        })
-    }
-    function btn_details(r) {
-        var id = $(r).parents('.operating').attr('data-id')
-        var keyValue = id;
-        $.modalOpen({
-            id: "Details",
-            title: "查看教师信息",
-            url: "/Dorm/School_Teachers/Details?keyValue=" + keyValue,
-            width: "900px",
-            height: "650px",
-            btn: null,
+                },
+                { label: '姓名', name: 'name' },
+                {
+                    label: '性别', name: 'gender',
+                    formatter: function (cellvalue) {
+                        switch (cellvalue) {
+                            case '1': {
+                                return '男';
+                                break;
+                            }
+                            case '0': {
+                                return '女';
+                                break;
+                            }
+                            default:
+                                {
+                                    return "";
+                                    break;
+                                }
+                        }
+                    }
+                },
+                { label: '工号', name: 'jobNumber' },
+                { label: '证件类型', name: 'credType' },
+                { label: '证件号码', name: 'credNum' },
+                { label: '入校时间', name: 'entryTime' },
+
+                { label: '隶属机构', name: 'organId' },
+                { label: '手机号码', name: 'mobilePhone' },
+
+            ],
+
         });
     }
 
-    function btn_export() {
-        var keyValue = $("#txt_keyword").val();
-        var F_Divis_ID = $("#F_Divis_ID").val();
-        if (keyValue == undefined) {
-            keyValue = "";
-        }
-        if (F_Divis_ID == undefined) {
-            F_Divis_ID = "";
-        }
-        document.location = "/Dorm/Teacher/export?keyword=" + keyValue + "&F_DepartmentId=" + F_Divis_ID;
-    }
-
-    function btn_import() {
-        var title = 'Excel';
-        var extensions = 'xls,xlsx';
-        var mimeTypes = 'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-        $.modalOpen({
-            id: "Form",
-            title: "导入教师信息",
-            url: "/Home/Import?title=" + title + "&extensions=" + extensions + "&mimeTypes=" + mimeTypes + "&fileName=教师信息模版.xls",
-            width: "500px",
-            height: "300px",
-            callBack: function (iframeId) {
-                var filePath = top.frames[iframeId].submitForm();
-                importAcrion(filePath);
-            }
-        });
-    }
-
-    function importAcrion(filePath) {
-        $.submitForm({
-            url: "/Dorm/Teacher/import",
-            param: { filePath: filePath },
-            success: function () {
-                $.currentWindow().$("#schoolTeachersGrid").trigger("reloadGrid");
-            }
-        })
-    }
-    function btn_daily() {
-        var keyValue = ($("#gridList").jqGridRowValue('F_Id'))[0];
-        $.modalOpen({
-            id: "Daily",
-            title: "教师日常",
-            url: "/Dorm/School_Tearchers_Manage/Index?keyValue=" + keyValue,
-            width: "900px",
-            height: "750px",
-            btn: null,
-        });
-    }
-
-    function btn_restpwd(id) {
-        var keyValue = id;
-        $.modalOpen({
-            id: "RevisePassword",
-            title: '重置密码',
-            url: '/SystemManage/User/RevisePassword?keyValue=' + keyValue,
-            width: "450px",
-            height: "260px",
-            callBack: function (iframeId) {
-                top.frames[iframeId].submitForm();
-            }
-        });
-    }
-
-    function btn_editUserInfo(id) {
-        var keyValue = id;
-        $.modalOpen({
-            id: "Form",
-            title: "修改用户",
-            url: "/SystemManage/User/Form?keyValue=" + keyValue,
-            width: "700px",
-            height: "610px",
-            callBack: function (iframeId) {
-                top.frames[iframeId].submitForm();
-            }
-        });
+    function reloadGrid(rowId) {
+        $("#gridList").jqGrid('setGridParam', {
+            postData: {
+                keyword: $("#keyword").val(),
+                orgId: rowId
+            },
+        }).trigger('reloadGrid');
     }
 </script>
 
-<div class="topPanel">
-    <div class="toolbar">
-        <div class="btn-group">
-            <a class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
-        </div>
-        <div class="btn-group">
-            <a id="NF-add" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_add()"><i class="fa fa-plus"></i>添加</a>
-        </div>
-        <div class="btn-group"><a id="NF-export" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_export()"><i class="fa fa-arrow-down"></i>导出</a></div>
-        <div class="btn-group"><a id="NF-import" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_import()"><i class="fa fa-arrow-up"></i>导入</a></div>
-        <script>$('.toolbar').authorizeButton()</script>
-    </div>
+<form class="form-inline topPanel" autocomplete="off">
+    <button type="button" class="btn btn-default" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></button>
+    <input type="text" class="form-control" id="keyword" placeholder="关键字">
+    <button type="button" id="btn_search" class="btn btn-default"><i class="fa fa-search"></i></button>
+    @*<button type="button" id="btn_xf" class="btn btn-primary">下发</button>
+        <button type="button" id="btn_zx" class="btn btn-primary">注销</button>
+        <button type="button" id="btn_sbyh" class="btn btn-primary pull-right">查看设备用户</button>*@
+</form>
+<div class="gridPanel">
+    <table id="gridList"></table>
+    <div id="gridPager"></div>
 </div>
-<div id="test" class="topPanel"></div>

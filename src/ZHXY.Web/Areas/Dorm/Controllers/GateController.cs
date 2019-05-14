@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using ZHXY.Application;
@@ -54,14 +55,18 @@ namespace ZHXY.Web.Dorm.Controllers
 
         public ActionResult SynDevice()
         {
-            var data = DHAccount.GetMachineInfo("001", "", "", "");
-            var entity = new SyncGateDto();
-            if( data["data"].ToString()=="[]")
+            var data = DHAccount.GetMachineInfo("001", "01;01,02,05,07_4,08_3,08_5,34,38;01@9,07,12", "0", "");
+            var entity = new AddGateDto();
+            if (data == null || data["data"].ToString() == "[]")
                 return Message("无数据！");
-            entity.DeviceNumber = data["data"]["id"]?.ToString();
-            entity.Name = data["data"]["name"]?.ToString();
-            entity.Status = data["data"]["online"] == null ? 0 : Convert.ToInt32(data["data"]["online"]);
-            App.Sync(entity);
+            var datas = (List<object>)data["data"].ToObject(typeof(List<object>));
+            for (int i = 0; i < datas.Count; i++)
+            {
+                entity.DeviceNumber = data["data"][i]["id"]?.ToString();
+                entity.Name = data["data"][i]["name"]?.ToString();
+                entity.Status = data["data"][i]["online"] == null ? 0 : Convert.ToInt32(data["data"][i]["online"]);
+                App.Sync(entity);
+            }
             return Resultaat.Success();
         }
 

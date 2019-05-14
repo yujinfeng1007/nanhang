@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using ZHXY.Domain;
 
@@ -13,13 +14,13 @@ namespace ZHXY.Application
 
         public dynamic Get( string orgId)
         {
-            return Read<OrgLeader>(p => p.OrgId.Equals(orgId)).Select(p => new { orgId = p.OrgId, orgName = p.Org.Name, userId = p.UserId, userName = p.User.F_RealName }).ToListAsync().Result;
+            return Read<OrgLeader>(p => p.OrgId.Equals(orgId)).Select(p => new { orgId = p.OrgId, orgName = p.Org.Name, userId = p.UserId, userName = p.User.Name }).ToListAsync().Result;
         }
 
         /// <summary>
         /// 添加负责人
         /// </summary>
-        public  void Add( AddOrRemoveOrgLeaderDto input)
+        public void Add( AddOrRemoveOrgLeaderDto input)
         {
             var already = Read<OrgLeader>(p => p.OrgId.Equals(input.OrgId)).Select(p => p.UserId).ToArrayAsync().Result;
             var users= input.Users.Except(already);
@@ -33,7 +34,9 @@ namespace ZHXY.Application
         /// <summary>
         /// 移除负责人
         /// </summary>
-        public   void Remove(  AddOrRemoveOrgLeaderDto input) => DelAndSave<OrgLeader>(p => p.OrgId.Equals(input.OrgId) && input.Users.Contains(p.UserId));
+        public void Remove(  AddOrRemoveOrgLeaderDto input) => DelAndSave<OrgLeader>(p => p.OrgId.Equals(input.OrgId) && input.Users.Contains(p.UserId));
+
+                      
     }
 
 

@@ -42,11 +42,11 @@ namespace ZHXY.Web.SystemManage.Controllers
             var dic = CacheFactory.Cache().GetCache<Dictionary<string, User>>(SYS_CONSTS.USERS);
             if (data.F_CreatorUserId != null && dic.TryGetValue(data.F_CreatorUserId, out creator))
             {
-                data.F_CreatorUserId = creator.F_RealName;
+                data.F_CreatorUserId = creator.Name;
             }
             if (data.F_LastModifyUserId != null && dic.TryGetValue(data.F_LastModifyUserId, out modifier))
             {
-                data.F_LastModifyUserId = modifier.F_RealName;
+                data.F_LastModifyUserId = modifier.Name;
             }
             return Content(data.ToJson());
         }
