@@ -173,6 +173,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\BaseApiController.cs" />
     <Compile Include="Controllers\BaseBpController.cs" />
+    <Compile Include="Controllers\DataViewController.cs" />
     <Compile Include="Controllers\DHController.cs" />
     <Compile Include="Controllers\PushImgDHController.cs" />
     <Compile Include="Global.asax.cs">

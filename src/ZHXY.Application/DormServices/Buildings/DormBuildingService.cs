@@ -113,6 +113,20 @@ namespace ZHXY.Application
             var list = Read<User>(p => !usersIds.Contains(p.Id) && p.OrganId == "27e1854fd963d24b8c5d88506a775c2a").ToList();
             return list;
         }
+
+        /// <summary>
+        /// 根据闸机设备号获取绑定的楼栋列表
+        /// </summary>
+        /// <param name="deviceNumber"></param>
+        /// <returns></returns>
+        public List<Building> GetBindGate(string deviceNumber)
+        {
+            var relevances = Read<Relevance>(p => p.FirstKey == deviceNumber && p.Name == "Gate_Building").Select(p => p.SecondKey).ToList();
+
+            var list = Read<Building>(p => relevances.Contains(p.Id)).ToList();
+
+            return list;
+        }
        
 
     }
