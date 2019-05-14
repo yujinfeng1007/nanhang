@@ -22,6 +22,10 @@
         /// 宿舍号
         /// </summary>
         public string F_Dorm { get; set; }
+        /// <summary>
+        /// 学生
+        /// </summary>
+        public string F_StudentId { get; set; }
 
     }
 }

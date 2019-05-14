@@ -10,7 +10,7 @@ namespace ZHXY.Domain
         /// <summary>
         /// 未出时长
         /// </summary>
-        public int F_Time { get; set; }
+        public decimal F_Time { get; set; }
 
         /// <summary>
         /// 进宿舍时间
