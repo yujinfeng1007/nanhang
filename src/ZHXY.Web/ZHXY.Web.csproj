@@ -769,8 +769,6 @@
     <Content Include="Content\img\login-bg.png" />
     <Content Include="Content\img\logo.jpg" />
     <Content Include="Content\img\up_02.png" />
-    <Content Include="indexFrame.html" />
-    <Content Include="iPadFrame.html" />
     <Content Include="Scripts\bootstrap-editable\js\bootstrap-editable.js" />
     <Content Include="Scripts\bootstrap-editable\js\bootstrap-editable.min.js" />
     <Content Include="Scripts\bootstrap.js" />
