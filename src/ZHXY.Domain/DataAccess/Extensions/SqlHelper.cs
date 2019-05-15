@@ -13,7 +13,7 @@ namespace ZHXY.Domain
         /// <returns>连接字符串</returns>
         public static string GetSqlConnection()
         {
-            return "Data Source = 210.35.32.29; Initial Catalog = hw_WisCampus_test_Dorm; User ID = sa; Password = hw123!@#";
+            return "Data Source = 210.35.32.29; Initial Catalog = hw_WisCampus_test_Dorm; User ID = sa; Password = hw123!@#; connect timeout=0;";
         }
 
         /// <summary>
@@ -92,6 +92,7 @@ namespace ZHXY.Domain
             {
                 var dt = new DataTable();
                 adapter.SelectCommand.Parameters.AddRange(parameters);
+                adapter.SelectCommand.CommandTimeout = 9999999;
                 adapter.Fill(dt);
                 return dt;
             }

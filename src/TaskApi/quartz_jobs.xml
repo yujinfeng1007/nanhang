@@ -209,16 +209,16 @@
       </cron>
     </trigger>-->
 
-    <trigger>
+    <!--<trigger>
       <cron>
         <name>DHMigrateJobTrigger</name>
         <group>DHMigrate</group>
         <job-name>DHMigrateJob</job-name>
         <job-group>DHMigrate</job-group>
-         <!--每3秒启动一次定时任务--> 
+         --><!--每3秒启动一次定时任务--><!-- 
         <cron-expression>0/8 * * * * ?</cron-expression>
       </cron>
-    </trigger>
+    </trigger>-->
     
     <trigger>
       <cron>
@@ -273,16 +273,16 @@
     </trigger>-->
  
 
-    <trigger>
+    <!--<trigger>
       <cron>
         <name>UpdateTokenJobTrigger</name>
         <group>UpdateToken</group>
         <job-name>UpdateTokenJob</job-name>
         <job-group>UpdateToken</job-group>
-         <!--每10秒启动一次定时任务--> 
+         --><!--每10秒启动一次定时任务--><!-- 
         <cron-expression>0/10 * * * * ?</cron-expression>
       </cron>
-    </trigger>
+    </trigger>-->
     
     <!--<trigger>
       <cron>

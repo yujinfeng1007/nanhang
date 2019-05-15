@@ -16,16 +16,15 @@ namespace TaskApi.NHExceptionReport
     public class NHExceptionJob : IJob
     {
         private ILog Logger { get; } = LogManager.GetLogger(typeof(NHExceptionJob));
-        public static int WorkDayLateReturnTime = 14; //23 工作日晚归时间点 （周日到周四） 当晚23:00
+        public static int WorkDayLateReturnTime = 23; //23 工作日晚归时间点 （周日到周四） 当晚23:00
         public static int WeekendLateReturnTime = 24; //休息日晚归时间点 （周五、周六） 当晚24:00
         public static int NotReturnTime = 2; //未归时间点 次日凌晨2点
         public static string NotOutTime = "24"; //长时间未出  最近的一次打卡记录为进入宿舍且24小时内没有外出打卡记录
         public void Execute(IJobExecutionContext context)
         {
             ExceptionMoudle moudle = new ExceptionMoudle();
-            // 测试用时间点  
-            DateTime QuartzTime = Convert.ToDateTime("2019-05-15 02:00:00");
-            //DateTime QuartzTime = DateTime.Now;
+            // 测试用时间点   DateTime QuartzTime = Convert.ToDateTime("2019-05-15 02:00:00");
+            DateTime QuartzTime = DateTime.Now;
             string TableName = "DHFLOW_" + QuartzTime.Year + QuartzTime.Month.ToString().PadLeft(2, '0');
             var sw = new Stopwatch();
             sw.Start();
