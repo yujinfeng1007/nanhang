@@ -64,28 +64,29 @@ namespace ZHXY.Application
             return data.OrderBy(t => t.SortCode).ToList();
         }
 
-        //public List<SysButton> GetButtonList(string roleId)
-        //{
-        //    var data = new List<SysButton>();
-        //    if (OperatorProvider.Current.IsSystem)
-        //    {
-        //        data = ModuleButtonApp.GetList();
-        //    }
-        //    else
-        //    {
-        //        var buttondata = ModuleButtonApp.GetList();
-        //        var authorizedata = Repository.QueryAsNoTracking(t => t.F_ObjectId == roleId && t.F_ItemType == 2).ToList();
-        //        foreach (var item in authorizedata)
-        //        {
-        //            var moduleButtonEntity = buttondata.Find(t => t.F_Id == item.F_ItemId);
-        //            if (moduleButtonEntity != null)
-        //            {
-        //                data.Add(moduleButtonEntity);
-        //            }
-        //        }
-        //    }
-        //    return data.OrderBy(t => t.F_SortCode).ToList();
-        //}
+        public List<Button> GetButtonList(string roleId)
+        {
+            var data = new List<Button>();
+            var buttons=Read<Button>() .OrderBy(t => t.SortCode).ToList();
+            if (Operator.Current.IsSystem)
+            {
+                data = buttons;
+            }
+            else
+            {
+                var buttondata = buttons;
+                var authorizedata =Read<RoleAuthorize>().Where(t => t.F_ObjectId == roleId && t.F_ItemType == 2).ToList();
+                foreach (var item in authorizedata)
+                {
+                    var moduleButtonEntity = buttondata.Find(t => t.Id == item.F_ItemId);
+                    if (moduleButtonEntity != null)
+                    {
+                        data.Add(moduleButtonEntity);
+                    }
+                }
+            }
+            return data.OrderBy(t => t.SortCode).ToList();
+        }
 
         //public bool ActionValidate(string roleId, string moduleId, string action)
         //{

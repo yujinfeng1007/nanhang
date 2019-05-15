@@ -158,22 +158,21 @@ namespace ZHXY.Application
 
         public static object GetMenuButtonList()
         {
-            //var roleId = OperatorProvider.Current.RoleId;
-            //var roles =Operator.Current.Roles;
-            //var app = new  SysRoleAuthorizeAppService();
-            //var data = new List< Button>();
-            //foreach (var e in roles)
-            //{
-            //    data = data.Union(app.GetButtonList(e.Key), new ModuleButtonComparer()).ToList();
-            //}
+            var roles = Operator.Current.Roles;
+            var app = new RoleAuthorizeService(new ZhxyRepository());
+            var data = new List<Button>();
+            foreach (var e in roles)
+            {
+                data = data.Union(app.GetButtonList(e), new ModuleButtonComparer()).ToList();
+            }
 
-            //var dataModuleId = data.Distinct(new ExtList<SysButton>("F_ModuleId"));
+            var dataModuleId = data.Distinct(new ExtList<Button>("F_ModuleId"));
             var dictionary = new Dictionary<string, object>();
-            //foreach (var item in dataModuleId)
-            //{
-            //    var buttonList = data.Where(t => t.F_ModuleId.Equals(item.F_ModuleId)).ToList();
-            //    dictionary.Add(item.F_ModuleId, buttonList);
-            //}
+            foreach (var item in dataModuleId)
+            {
+                var buttonList = data.Where(t => t.MenuId.Equals(item.MenuId)).ToList();
+                dictionary.Add(item.MenuId, buttonList);
+            }
             return dictionary;
         }
 
