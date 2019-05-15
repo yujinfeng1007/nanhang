@@ -22,7 +22,7 @@ namespace ZHXY.Application
         public List<VisitApply> GetList(Pagination pagination, string F_Building, int Time_Type, string startTime, string endTime)
         {
             ////获取记录数
-            var CountSql = new StringBuilder("select COUNT(1) from Dorm_VisitLog visit left join Dorm_DormInfo dorm on dorm.F_Id=visit.F_Building_ID where visit.F_CreatorTime > '" + startTime + "' and visit.F_CreatorTime < '" + endTime + "'");
+            var CountSql = new StringBuilder("select COUNT(1) from Dorm_VisitLog visit left join Dorm_Dorm dorm on dorm.F_Id=visit.F_Building_ID where visit.F_CreatorTime > '" + startTime + "' and visit.F_CreatorTime < '" + endTime + "'");
             if (F_Building != null && F_Building.Trim().Length != 0)
             {
                 CountSql.Append(" and visit.F_Building_Id = '" + F_Building + "'");
@@ -33,7 +33,7 @@ namespace ZHXY.Application
                 pagination.Rows = pagination.Records % pagination.Rows;
             }
             var sqlStr = new StringBuilder("select top " + pagination.Rows + " * from (select top " + pagination.Page * pagination.Rows);
-            sqlStr.Append(" visit.* from Dorm_VisitLog visit left join Dorm_DormInfo dorm on dorm.F_Id=visit.F_Building_ID where visit.F_CreatorTime > '" + startTime + "' and visit.F_CreatorTime < '" + endTime + "'");
+            sqlStr.Append(" visit.* from Dorm_VisitLog visit left join Dorm_Dorm dorm on dorm.F_Id=visit.F_Building_ID where visit.F_CreatorTime > '" + startTime + "' and visit.F_CreatorTime < '" + endTime + "'");
             if (F_Building != null && F_Building.Trim().Length != 0)
             {
                 sqlStr.Append(" and visit.F_Building_Id = '" + F_Building + "'");
@@ -50,7 +50,7 @@ namespace ZHXY.Application
 
         public object GetBuilding(string KeyWords)
         {
-            var SqlStr = new StringBuilder("SELECT  DISTINCT F_Building_No FROM [dbo].[Dorm_DormInfo]  ");
+            var SqlStr = new StringBuilder("SELECT  DISTINCT F_Building_No FROM [dbo].[Dorm_Dorm]  ");
             if(KeyWords != null && KeyWords.Length != 0)
             {
                 SqlStr.Append(" WHERE F_Building_No LIKE '%" + KeyWords + "%'");
