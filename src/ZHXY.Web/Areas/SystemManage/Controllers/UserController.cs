@@ -3,6 +3,8 @@ using System.Web.Mvc;
 using ZHXY.Application;
 using ZHXY.Common;
 using ZHXY.Application.DormServices.Gates;
+using System;
+using System.IO;
 
 namespace ZHXY.Web.SystemManage.Controllers
 {
