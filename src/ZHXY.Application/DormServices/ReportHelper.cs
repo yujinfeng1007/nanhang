@@ -12,7 +12,7 @@ namespace ZHXY.Application
             var sql = new StringBuilder();
             sql.Append(" select a.F_Account as '学号',a.F_Name as '姓名',b.F_Name as '班级',a.F_College as '院校',d.F_Title as '宿舍号',a.F_InTime as '进宿舍时间',a.F_OutTime as '出宿舍时间'");
             sql.Append(" from " + table + " as a");
-            sql.Append(",School_Class_Info as b,Dorm_DormInfo as d");
+            sql.Append(",School_Class_Info as b,Dorm_Dorm as d");
             sql.Append(" where");
             sql.Append(" a.F_Class = b.F_Id and a.F_Dorm = d.F_Id");
 

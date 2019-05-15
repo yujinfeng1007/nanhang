@@ -24,7 +24,7 @@ namespace ZHXY.Application
             var CountSql = new StringBuilder("select count(1) "
                                                         +" from Dorm_Visit_Limit limit "
                                                         +" left join Dorm_DormStudent dormStudent on limit.Student_Id=dormStudent.F_Student_ID "
-                                                        +" left join Dorm_DormInfo dorm on dormStudent.F_DormID = dorm.F_ID " 
+                                                        +" left join Dorm_Dorm dorm on dormStudent.F_DormID = dorm.F_ID " 
                                                         +" left join School_Students student on student.F_Id = dormStudent.F_Student_ID "
                                                         +" left join Sys_Organize organ on organ.F_Id = student.F_Grade_ID "
                                                         +" where limit.F_EnabledMark=1 ");
@@ -48,7 +48,7 @@ namespace ZHXY.Application
                                                     +" left"
                                                     +" join Dorm_DormStudent dormStudent on limit.Student_Id = dormStudent.F_Student_ID"
                                                     + " left"
-                                                    + " join Dorm_DormInfo dorm on dormStudent.F_DormID = dorm.F_ID"
+                                                    + " join Dorm_Dorm dorm on dormStudent.F_DormID = dorm.F_ID"
                                                     + " left"
                                                     + " join School_Students student on student.F_Id = dormStudent.F_Student_ID"
                                                     + " left"

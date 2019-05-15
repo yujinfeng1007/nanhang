@@ -109,7 +109,7 @@ namespace TaskApi.Job
         }
         /// <summary>
         /// 处理同步学生信息 学生信息同步6张表
-        /// 分别为： School_Students，Sys_User，Sys_User_Role，Sys_UserLogOn，Dorm_DormStudent，Dorm_DormInfo
+        /// 分别为： School_Students，Sys_User，Sys_User_Role，Sys_UserLogOn，Dorm_DormStudent，Dorm_Dorm
         /// </summary>
         public void ProcessStudent()
         {
@@ -132,9 +132,9 @@ namespace TaskApi.Job
             ///---------      Step4: 更新 Sys_UserLogOn 表数据      ---------///
             ProcessSchoolStudentSysUserLogOn(oldDb, newDb);
             Console.WriteLine(" *** 同步 Sys_UserLogOn 结束 。");
-            ///---------      Step5: 更新 Dorm_DormInfo 表数据      ---------///
+            ///---------      Step5: 更新 Dorm_Dorm 表数据      ---------///
             ProcessSchoolStudentDormInfo(oldDb, newDb);
-            Console.WriteLine(" *** 同步 Dorm_DormInfo 结束 。");
+            Console.WriteLine(" *** 同步 Dorm_Dorm 结束 。");
             ///---------      Step6: 更新 Dorm_DormStudent 表数据      ---------///
             ProcessSchoolStudentSysUserDormStudent(oldDb, newDb);
             Console.WriteLine(" *** 同步 Dorm_DormStudent 结束 。");
@@ -686,7 +686,7 @@ namespace TaskApi.Job
         }
 
         /// <summary>
-        /// 简化程序（把学生数据分为六张表，分为六个方法进行） Dorm_DormInfo
+        /// 简化程序（把学生数据分为六张表，分为六个方法进行） Dorm_Dorm
         /// </summary>
         /// <param name="oldDb"></param>
         /// <param name="newDb"></param>
@@ -829,7 +829,7 @@ namespace TaskApi.Job
                 "FROM\n" +
                 "\t[dbo].[School_Students] a\n" +
                 "\tLEFT JOIN Dorm_DormStudent b ON a.F_Id = b.F_Student_ID\n" +
-                "\tLEFT JOIN Dorm_DormInfo c ON b.F_DormId = c.F_Id\n" +
+                "\tLEFT JOIN Dorm_Dorm c ON b.F_DormId = c.F_Id\n" +
                 "\tLEFT JOIN School_Students d ON c.F_Leader_ID = d.F_Id \n" +
                 "WHERE\n" +
                 "\ta.F_DeleteMark IS NULL \n" +
