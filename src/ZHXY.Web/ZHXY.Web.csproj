@@ -245,6 +245,7 @@
     <Compile Include="Areas\SystemSecurity\Controllers\FilterIPController.cs" />
     <Compile Include="Areas\SystemSecurity\Controllers\LogController.cs" />
     <Compile Include="Areas\SystemSecurity\SystemSecurityAreaRegistration.cs" />
+    <Compile Include="Controllers\ClientDataController.cs" />
     <Compile Include="Controllers\SelectController.cs" />
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
