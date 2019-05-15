@@ -35,7 +35,28 @@ namespace ZHXY.Application
 
        
         public dynamic GetById(string id) => Get<Teacher>(id);
+        
+        //班级绑定班主任
+        public void BindTeacherOrg(string classId, string teacherId)
+        {                      
 
-       
+            var rel = new Relevance
+            {
+                Name = Relation.ClassLeader,
+                FirstKey = classId,
+                SecondKey = teacherId
+            };
+            AddAndSave(rel);
+           
+        }
+
+        //获取班主任所绑定的班级
+        public List<Organ> GetBindClass(string teacherId) {
+            var classIds = Read<Relevance>(p => p.Name.Equals(Relation.ClassLeader) && p.SecondKey.Equals(teacherId)).Select(p => p.FirstKey).ToArray();
+            var lists = Read<Organ>(p => classIds.Contains(p.Id)).ToList(); 
+            return lists;
+
+        }
+
     }
 }

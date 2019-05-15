@@ -39,5 +39,24 @@ namespace ZHXY.Web.Dorm.Controllers
             return Resultaat.Success(data);
         }
 
+        [HttpPost]
+        //机构绑定负责人
+        public ActionResult TeacherBindClass(string classId, string teacherId) {
+
+
+            App.BindTeacherOrg(classId, teacherId);
+            return Resultaat.Success();
+        }
+
+        [HttpGet]
+        //获取负责人所绑定的班级
+        public ActionResult GetBindClass(string teacherId)
+        {
+
+
+            var data =  App.GetBindClass(teacherId);
+            return Resultaat.Success(data);
+        }
+
     }
 }
