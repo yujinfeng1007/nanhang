@@ -151,7 +151,7 @@ namespace ZHXY.Application.DormServices.Gates
             var result = new NPOIExcel().ToExcel(dt, "导入用户" + DateTime.Now.ToString("yyyyMMddHHmmss"), "用户", filepath + "user.xls");
             if (!result)
                 throw new Exception("上传Excel出错！");
-            DHAccount.PUSH_DH_PERSON_EXCEL(filepath + "user.xls");
+            DHAccount.PUSH_DH_STUDENT_EXCEL(filepath + "user.xls");
         }
 
         #region 压缩  
