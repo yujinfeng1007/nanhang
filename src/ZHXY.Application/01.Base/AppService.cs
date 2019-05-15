@@ -54,12 +54,6 @@ namespace ZHXY.Application
             R.RemoveRange(ts);
         }
 
-        public void Del<T>(string[] ids) where T : BaseEntity, IEntity
-        {
-            var list = R.Query<T>(p => ids.Contains(p.Id)).ToList();
-            R.RemoveRange(list);
-        }
-
         public void Del<T>(string id) where T : class, IEntity
         {
             var entity = R.Find<T>(id);

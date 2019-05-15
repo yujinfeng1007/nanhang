@@ -46,15 +46,11 @@ namespace ZHXY.Web.SystemManage.Controllers
         }
 
         [HttpPost]
-        
-        [ValidateAntiForgeryToken]
         public ActionResult SubmitForm(SysDicItem itemsDetailEntity, string keyValue)
         {
             var str = App.SubmitForm(itemsDetailEntity, keyValue);
             if (str.IsEmpty())
             {
-                CacheFactory.Cache().RemoveCache(SYS_CONSTS.DATAITEMS);
-                CacheFactory.Cache().WriteCache(SysCacheAppService.GetDataItemList(), SYS_CONSTS.DATAITEMS);
                 return Message("操作成功。");
             }
             else
@@ -65,21 +61,18 @@ namespace ZHXY.Web.SystemManage.Controllers
 
         [HttpPost]
         
-        [HandlerAuthorize]
-        [ValidateAntiForgeryToken]
         public ActionResult DeleteForm(string keyValue)
         {
             var F_Id = keyValue.Split('|');
             for (var i = 0; i < F_Id.Length - 1; i++)
             {
-                //逻辑删除
-                //ItemsDetailEntity itemsDetailEntity = itemsDetailApp.GetForm(F_Id[i]);
-                //itemsDetailEntity.Remove();
                 App.DeleteForm(F_Id[i]);
             }
-            CacheFactory.Cache().RemoveCache(SYS_CONSTS.DATAITEMS);
-            CacheFactory.Cache().WriteCache(SysCacheAppService.GetDataItemList(), SYS_CONSTS.DATAITEMS);
             return Message("删除成功。");
         }
+
+
+
+       
     }
 }

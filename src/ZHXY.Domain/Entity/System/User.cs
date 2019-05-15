@@ -11,7 +11,7 @@ namespace ZHXY.Domain
         /// <summary>
         /// 用户主键
         /// </summary>
-        public string Id { get; set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString("N").ToUpper();
 
         /// <summary>
         /// 账户
@@ -63,32 +63,14 @@ namespace ZHXY.Domain
         /// 所属机构
         /// </summary>
         public string OrganId { get; set; }
-
-        /// <summary>
-        /// 角色主键
-        /// </summary>
-        public string RoleId { get; set; }
-
         /// <summary>
         /// 岗位主键
         /// </summary>
         public string DutyId { get; set; }
 
-        public bool? DeleteMark { get; set; }
-        public bool? EnabledMark { get; set; }
-        public DateTime? CreatorTime { get; set; }
-
-        public string DataType { get; set; }
-
-        public string DataDeps { get; set; }
-
+      
 
         public string UserSetUp { get; set; }
 
-        public string Class { get; set; }
-
-        public DateTime? UpdateTime { get; set; }
-
-        public string File { get; set; }
     }
 }

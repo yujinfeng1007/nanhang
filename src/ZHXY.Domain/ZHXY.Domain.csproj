@@ -75,8 +75,8 @@
     <Compile Include="EntityConfig\System\ItemsDetailMap.cs" />
     <Compile Include="EntityConfig\System\ItemsMap.cs" />
     <Compile Include="EntityConfig\System\LogMap.cs" />
-    <Compile Include="EntityConfig\System\ModuleButtonMap.cs" />
-    <Compile Include="EntityConfig\System\ModuleMap.cs" />
+    <Compile Include="EntityConfig\System\ButtonMap.cs" />
+    <Compile Include="EntityConfig\System\MenuMap.cs" />
     <Compile Include="EntityConfig\System\PlaceAreaMap.cs" />
     <Compile Include="EntityConfig\System\RelevanceMap.cs" />
     <Compile Include="EntityConfig\System\RoleAuthorizeMap.cs" />
@@ -85,7 +85,6 @@
     <Compile Include="EntityConfig\System\OrgMap.cs" />
     <Compile Include="EntityConfig\System\UserLogOnMap.cs" />
     <Compile Include="EntityConfig\System\UserMap.cs" />
-    <Compile Include="EntityConfig\System\UserRoleMap.cs" />
     <Compile Include="EntityExtensions\ReportEntity.cs" />
     <Compile Include="Entity\Dorm\DormTimeRule.cs" />
     <Compile Include="Entity\Dorm\DormRoom.cs" />
@@ -119,15 +118,14 @@
     <Compile Include="Entity\System\SysDicItem.cs" />
     <Compile Include="Entity\System\SysDic.cs" />
     <Compile Include="EntityExtensions\ModuleButtonComparer.cs" />
-    <Compile Include="Entity\System\SysButton.cs" />
+    <Compile Include="Entity\System\Button.cs" />
     <Compile Include="EntityExtensions\ModuleComparer.cs" />
-    <Compile Include="Entity\System\SysModule.cs" />
+    <Compile Include="Entity\System\Menu.cs" />
     <Compile Include="Entity\System\Organ.cs" />
     <Compile Include="Entity\System\OrganizeGrade.cs" />
     <Compile Include="Entity\System\RoleAuthorize.cs" />
     <Compile Include="Entity\System\Role.cs" />
     <Compile Include="Entity\System\User.cs" />
-    <Compile Include="Entity\System\UserRole.cs" />
     <Compile Include="Entity\System\DbBackup.cs" />
     <Compile Include="Entity\System\FilterIp.cs" />
     <Compile Include="Entity\System\SysLog.cs" />

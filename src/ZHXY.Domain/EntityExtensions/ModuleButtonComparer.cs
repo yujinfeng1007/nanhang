@@ -2,20 +2,20 @@
 
 namespace ZHXY.Domain
 {
-    public class ModuleButtonComparer : IEqualityComparer<SysButton>
+    public class ModuleButtonComparer : IEqualityComparer<Button>
     {
-        public bool Equals(SysButton x, SysButton y)
+        public bool Equals(Button x, Button y)
         {
             if (ReferenceEquals(x, y)) return true;
             if (x == null || y == null)
                 return false;
-            return x.F_Id == y.F_Id;
+            return x.Id == y.Id;
         }
 
-        public int GetHashCode(SysButton module)
+        public int GetHashCode(Button module)
         {
-            var hashModuleName = module.F_FullName == null ? 0 : module.F_FullName.GetHashCode();
-            var hashModuleCode = module.F_Id.GetHashCode();
+            var hashModuleName = module.Name == null ? 0 : module.Name.GetHashCode();
+            var hashModuleCode = module.Id.GetHashCode();
             return hashModuleName ^ hashModuleCode;
         }
     }

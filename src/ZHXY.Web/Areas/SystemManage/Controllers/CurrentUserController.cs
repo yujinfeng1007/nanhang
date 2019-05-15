@@ -8,7 +8,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         [HttpGet]
         public ActionResult GetCurrentUser()
         {
-            var user = OperatorProvider.Current;
+            var user = Operator.Current;
             if (user.IsEmpty())
                 return null;
             if (user != null && user.IsSystem)

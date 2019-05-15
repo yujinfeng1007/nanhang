@@ -1,8 +1,11 @@
 ﻿@{
-    
+
     Layout = "~/Views/Shared/_Index.cshtml";
 }
 <script>
+    
+    let dic = JSON.parse(localStorage.getItem("OrganizeCategory"));
+
     $(function () {
         gridList();
     })
@@ -15,13 +18,13 @@
             ExpandColClick: true,
             url: "GetTreeGridJson",
             colModel: [
-                { label: '名称', name: 'Name',  align: 'left' },
-                { label: '编号', name: 'EnCode',  align: 'left', hidden: true },
+                { label: '名称', name: 'Name', align: 'left' },
+                { label: '编号', name: 'EnCode', align: 'left', hidden: true },
                 { label: "主键", name: "Id", align: 'left', key: true, hidden: true },
                 {
                     label: '分类', name: 'CategoryId', width: 80, align: 'left',
-                    formatter: function (cellvalue) {
-                        return top.clients.dataItems["OrganizeCategory"][cellvalue] == null ? "" : top.clients.dataItems["OrganizeCategory"][cellvalue];
+                    formatter: function (cv) {
+                        return dic[cv] == null ? "" : dic[cv];
                     }
                 },
             ]
@@ -46,7 +49,7 @@
         });
     }
     function btn_edit() {
-         let rowId= $("#gridList").jqGrid('getGridParam','selrow')
+        let rowId = $("#gridList").jqGrid('getGridParam', 'selrow')
         $.modalOpen({
             id: "Form",
             title: "修改机构",
@@ -61,12 +64,12 @@
     function btn_delete() {
         $.deleteForm({
             url: "Delete",
-            param: { id: $("#gridList").jqGrid('getGridParam','selrow')},
+            param: { id: $("#gridList").jqGrid('getGridParam', 'selrow') },
             success: function (r) {
                 if (r.state === 'success') {
                     $.currentWindow().$("#gridList").resetSelection();
                     $.currentWindow().$("#gridList").trigger("reloadGrid");
-                     $.modalMsg('success', 'error');
+                    $.modalMsg('success', 'error');
                 } else {
                     $.modalMsg(r.message, 'error');
                 }

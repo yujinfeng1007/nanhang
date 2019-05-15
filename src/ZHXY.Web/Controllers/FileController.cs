@@ -31,20 +31,15 @@ namespace ZHXY.Web.Controllers
             object state = null;
             try
             {
-                var schoolName = Configs.GetValue("SchoolName");
                 var privateCloud = Configs.GetValue("PrivateCloud");
                 var mapFormat = Configs.GetValue("MapFormat");
                 var mapPath = Configs.GetValue("MapPath") + DateTime.Now.ToString("yyyyMMdd") + "/";
                 if (privateCloud == "Yes")
                 {
-                    var schoolCode = "";
-                    if (OperatorProvider.Current != null)
-                    {
-                        schoolCode = OperatorProvider.Current.SchoolCode;
-                    }
+                   
                     var UrlPath = System.Web.HttpContext.Current.Request.UrlReferrer.LocalPath.Split('/');
                     var localPath = UrlPath[UrlPath.Length - 2];
-                    mapPath = Configs.GetValue("MapPath") + schoolName + schoolCode + "/" + localPath + "/" + DateTime.Now.ToString("yyyyMMdd") + "/";
+                    mapPath = Configs.GetValue("MapPath") +  "/" + localPath + "/" + DateTime.Now.ToString("yyyyMMdd") + "/";
                 }
                 var basePath = Server.MapPath(mapPath);
                 var files = System.Web.HttpContext.Current.Request.Files;

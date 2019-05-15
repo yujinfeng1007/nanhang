@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.IO;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web.Mvc;
 using ZHXY.Application;
-using ZHXY.Domain;
 using ZHXY.Common;
 
 namespace ZHXY.Web.SystemManage.Controllers
@@ -29,7 +24,6 @@ namespace ZHXY.Web.SystemManage.Controllers
         #endregion view
 
         [HttpGet]
-        
         public ActionResult Load(Pagination pag,string orgId, string keyword)
         {
             var rows = App.GetList(pag, orgId,keyword);
@@ -37,61 +31,58 @@ namespace ZHXY.Web.SystemManage.Controllers
         }
 
         [HttpGet]
-        
         public ActionResult Get(string id)
         {
-            var data = App.Get(id);
+            var data = App.GetById(id);
             return Resultaat.Success(data);
         }
-      
-      
+
 
         [HttpPost]
-        
-        public ActionResult SubmitRevisePassword(string userPassword, string keyValue)
+        public ActionResult Add(AddUserDto dto)
         {
-            new SysUserLogOnAppService().RevisePassword(userPassword, keyValue);
-            return Message("重置密码成功。");
+            App.Add(dto);
+            return Resultaat.Success();
+        }
+
+
+        [HttpPost]
+        public ActionResult Update(UpdateUserDto dto)
+        {
+            App.Update(dto);
+            return Resultaat.Success();
         }
 
         [HttpPost]
-        
-        [HandlerAuthorize]
-        [ValidateAntiForgeryToken]
-        public ActionResult DisabledAccount(string keyValue)
+        public ActionResult Delete(string id)
         {
-            var F_Id = keyValue.Split('|');
-            for (var i = 0; i < F_Id.Length - 1; i++)
+            if (!string.IsNullOrWhiteSpace(id))
             {
-                var userEntity = new User { Id = F_Id[i], EnabledMark = false };
-                App.Update(userEntity);
+                App.Delete(id.Split(','));
             }
-            return Message("账户禁用成功。");
+            return Resultaat.Success();
         }
 
         [HttpPost]
-        
-        [HandlerAuthorize]
-        [ValidateAntiForgeryToken]
-        public ActionResult EnabledAccount(string keyValue)
+        public ActionResult RevisePassword(string userPassword, string keyValue)
         {
-            var F_Id = keyValue.Split('|');
-            for (var i = 0; i < F_Id.Length - 1; i++)
-            {
-                var userEntity = new User { Id = F_Id[i], EnabledMark = true };
-                App.Update(userEntity);
-            }
-            return Message("账户启用成功。");
+            App.RevisePassword(userPassword, keyValue);
+            return Resultaat.Success(); 
         }
 
-     
-     
-        public JsonResult GetUserPassword(string userid, string password)
+        [HttpPost]
+        public ActionResult Disable(string id)
         {
-            var IsOk = App.VerifyPwd(userid, password);
-            return Json(IsOk);
+            App.Disable(id);
+            return Resultaat.Success();
         }
 
+        [HttpPost]
+        public ActionResult Enable(string id)
+        {
+            App.Enable(id);
+            return Resultaat.Success();
+        }
 
         /// <summary>
         /// 获取机构下的用户
@@ -99,5 +90,22 @@ namespace ZHXY.Web.SystemManage.Controllers
         [HttpGet]
         public async Task<ActionResult> GetOrgUsers(string orgId, string keyword) => await Task.Run(() => Resultaat.Success(App.GetByOrg(orgId, keyword)));
 
+
+        [HttpPost]
+        public ActionResult SetRole(string userId,string[] roleId)
+        {
+            App.SetRole(userId, roleId);
+            return Resultaat.Success();
+        }
+
+
+        [HttpGet]
+        public ActionResult GetUserData()
+        {
+            return Resultaat.Success(App.GetUserData(Operator.Current));
+        }
+
+
+       
     }
 }

@@ -73,7 +73,7 @@ namespace ZHXY.Application.DormServices.Gates
                 string ss = "";
                 string lc = "";
                 string ld = "";
-                if (d.RoleId.Contains("student"))
+                if (d.DutyId.Contains("student"))
                 {
                     var stu = Read<Student>(p => p.UserId == d.Id).FirstOrDefault();
                     studentNo = stu?.StudentNumber;
@@ -88,7 +88,7 @@ namespace ZHXY.Application.DormServices.Gates
                     var lddata = Read<Building>(p => p.Id == ldid).FirstOrDefault();
                     ld = lddata?.BuildingNo;
                 }
-                if (d.RoleId.Contains("teacher"))
+                if (d.DutyId.Contains("teacher"))
                 {
                     var tea = Read<Teacher>(p => p.UserId == d.Id).FirstOrDefault();
                     studentNo = tea?.JobNumber;

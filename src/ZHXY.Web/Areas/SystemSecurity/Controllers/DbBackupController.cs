@@ -6,8 +6,8 @@ namespace ZHXY.Web.SystemSecurity.Controllers
 {
     public class DbBackupController : ZhxyWebControllerBase
     {
-        private SysDbBackupAppService App { get; }
-        public DbBackupController(SysDbBackupAppService app) => App = app;
+        private DbBackupService App { get; }
+        public DbBackupController(DbBackupService app) => App = app;
 
         [HttpGet]
         

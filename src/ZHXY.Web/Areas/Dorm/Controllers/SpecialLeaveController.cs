@@ -21,7 +21,7 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpPost]
         public ActionResult Apply(BulkLeaveDto input) 
         {
-            App.SpecialApply(input, OperatorProvider.Current.UserId);
+            App.SpecialApply(input, Operator.Current.Id);
             return Resultaat.Success();
         }
 
@@ -31,7 +31,7 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpGet]
         public ActionResult Load(GetSpecialLeaveDto input)
         {
-            input.CurrentUserId = OperatorProvider.Current.UserId;
+            input.CurrentUserId = Operator.Current.Id;
             var (list, recordCount, pageCount) = App.GetSpecialList(input);
             return Resultaat.PagingRst(list,recordCount,pageCount);
         }

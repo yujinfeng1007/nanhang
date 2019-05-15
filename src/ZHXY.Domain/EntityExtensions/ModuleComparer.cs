@@ -2,22 +2,22 @@
 
 namespace ZHXY.Domain
 {
-    public class ModuleComparer : IEqualityComparer<SysModule>
+    public class ModuleComparer : IEqualityComparer<Menu>
     {
-        public bool Equals(SysModule x, SysModule y)
+        public bool Equals(Menu x, Menu y)
         {
             if (ReferenceEquals(x, y)) return true;
 
             if (x is null || y is null)
                 return false;
-            return x.F_Id == y.F_Id;
+            return x.Id == y.Id;
         }
 
-        public int GetHashCode(SysModule module)
+        public int GetHashCode(Menu module)
         {
-            var hashModuleName = module.F_FullName == null ? 0 : module.F_FullName.GetHashCode();
+            var hashModuleName = module.Name == null ? 0 : module.Name.GetHashCode();
 
-            var hashModuleCode = module.F_Id.GetHashCode();
+            var hashModuleCode = module.Id.GetHashCode();
 
             return hashModuleName ^ hashModuleCode;
         }

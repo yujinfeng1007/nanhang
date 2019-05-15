@@ -18,14 +18,15 @@ namespace ZHXY.Web.Controllers
 
     public class LoginController : Controller
     {
-
         private DutyService DutyApp { get; }
+        private RoleService RoleApp { get; }
         private UserService UserApp { get; }
 
-        public LoginController(DutyService app, UserService userApp)
+        public LoginController(DutyService app, UserService userApp, RoleService roleApp)
         {
             DutyApp = app;
             UserApp = userApp;
+            RoleApp = roleApp;
         }
 
         #region view
@@ -34,7 +35,7 @@ namespace ZHXY.Web.Controllers
         public virtual ActionResult Index2()
         {
             Licence.IsLicence();
-            if (OperatorProvider.Current.IsEmpty())
+            if (Operator.Current.IsEmpty())
             {
                 return View("index");
             }
@@ -46,7 +47,7 @@ namespace ZHXY.Web.Controllers
         {
             Licence.IsLicence();
 
-            if (OperatorProvider.Current.IsEmpty())
+            if (Operator.Current.IsEmpty())
             {
                 return View();
             }
@@ -55,23 +56,6 @@ namespace ZHXY.Web.Controllers
                 return Redirect("/iPadFrame.html");
             }
         }
-
-        //家校通
-        [HttpGet]
-        public virtual ActionResult MobileIndex()
-        {
-            if ("on".Equals(Configs.GetValue("ifSso")))
-            {
-                if (OperatorProvider.Current.IsEmpty())
-                {
-                    return View();
-                }
-            }
-
-            return View();
-        }
-
-
 
         #endregion view
 
@@ -93,7 +77,7 @@ namespace ZHXY.Web.Controllers
         [HttpGet]
         public ActionResult OutLogin()
         {
-            if (OperatorProvider.Current != null)
+            if (Operator.Current != null)
             {
                 WriteLog(new AddLogDto
                 {
@@ -101,16 +85,16 @@ namespace ZHXY.Web.Controllers
                     IPAddressName = Net.GetLocation(Net.Ip),
                     ModuleName = "系统登录",
                     Type = DbLogType.Exit.ToString(),
-                    Account = OperatorProvider.Current.UserCode,
-                    UserId = OperatorProvider.Current.UserId,
-                    NickName = OperatorProvider.Current.UserName,
+                    Account = Operator.Current.UserCode,
+                    UserId = Operator.Current.Id,
+                    NickName = Operator.Current.UserName,
                     Result = true,
                     Description = "安全退出系统",
                 });
             }
             Session.Abandon();
             Session.Clear();
-            OperatorProvider.Remove();
+            Operator.Remove();
             return View("Index");
             //return Redirect(ConfigurationManager.AppSettings["LogoutURL"]);
         }
@@ -123,7 +107,7 @@ namespace ZHXY.Web.Controllers
         {
             Session.Abandon();
             Session.Clear();
-            OperatorProvider.Remove();
+            Operator.Remove();
             if ("on".Equals(Configs.GetValue("ifSso")))
             {
                 Session.Remove("authorizationState");
@@ -138,7 +122,6 @@ namespace ZHXY.Web.Controllers
         [HttpPost]
         public ActionResult CheckLogin(string username, string password, string code, string schoolCode)
         {
-            OperatorProvider.Set(new OperatorModel { SchoolCode = schoolCode });
             var logEntity = new AddLogDto
             {
                 ModuleName = "系统登录",
@@ -153,18 +136,12 @@ namespace ZHXY.Web.Controllers
                 var duty = string.Empty;
                 if (userEntity != null)
                 {
-                    var operatorModel = new OperatorModel();
-                    operatorModel.UserId = userEntity.Id;
+                    var operatorModel = new CurrentUser();
+                    operatorModel.Id = userEntity.Id;
                     operatorModel.UserCode = userEntity.Account;
                     operatorModel.UserName = userEntity.Name;
-                    operatorModel.F_User_SetUp = userEntity.UserSetUp;
-                    operatorModel.CompanyId = userEntity.OrganId; //学校ID
-                   
-
-                  
-
-                    operatorModel.DepartmentId = userEntity.OrganId;
-                    operatorModel.RoleId = userEntity.RoleId;
+                    operatorModel.SetUp = userEntity.UserSetUp;
+                    operatorModel.Organ = userEntity.OrganId;
                     operatorModel.HeadIcon = userEntity.HeadIcon;
                     operatorModel.LoginIPAddress = Net.Ip;
                     operatorModel.LoginIPAddressName = Net.GetLocation(operatorModel.LoginIPAddress);
@@ -179,18 +156,17 @@ namespace ZHXY.Web.Controllers
                     }
                     else
                     {
-                        duty=DutyApp.GetEnCode(userEntity.DutyId);
+                        duty = DutyApp.GetEnCode(userEntity.DutyId);
                         operatorModel.IsSystem = false;
                     }
 
                     //duty = userEntity.F_DutyId;
                     //权限判断，先看个人有没有设置数据权限，再看角色是否有数据权限
-                    operatorModel.Roles = GetRoles(userEntity);
+                    operatorModel.Roles = RoleApp.GetUserRolesId(userEntity.Id);
                     //}
                     //用户岗位 类型
                     operatorModel.Duty = userEntity.DutyId;
-                    operatorModel.SchoolCode = schoolCode;
-                    OperatorProvider.Set(operatorModel);
+                    Operator.Set(operatorModel);
                     logEntity.Account = userEntity.Account;
                     logEntity.NickName = userEntity.Name;
                     logEntity.Result = true;
@@ -216,207 +192,32 @@ namespace ZHXY.Web.Controllers
         /// 登录
         /// </summary>
         [HttpPost]
-        public ActionResult CheckLoginType(string username, string password, string code, string schoolCode)
+        public ActionResult CheckLoginType(string username, string password, string code)
         {
-            OperatorProvider.Set(new OperatorModel { SchoolCode = schoolCode });
-            var log = new AddLogDto
+            CheckVerifyCode(code);
+            var user = UserApp.CheckLogin(username, password);
+            var duty = string.Empty;
+            if (user != null)
             {
-                ModuleName = "后台登录",
-                Type = DbLogType.Login.ToString(),
-                IPAddress = Net.Ip,
-                IPAddressName = Net.GetLocation(Net.Ip),
-            };
-            try
-            {
-                CheckVerifyCode(code);
-                var userEntity = UserApp.CheckLogin(username, password);
-                var roleList = new SysUserRoleAppService().GetListByUserId(userEntity.Id);
-                var F_Type = true;
-                foreach (var item in roleList)
+                var op = new CurrentUser
                 {
-                    if (new RoleService().Get(item.F_Role).Type.Equals("1"))
-                    {
-                        F_Type = true;
-                        break;
-                    }
-                    else
-                    {
-                        F_Type = false;
-                    }
-
-                    //F_Type += new RoleApp().GetForm(item.F_Role).F_Type + ",";
-                }
-
-                if (F_Type != true)
-                {
-                    throw new Exception("无权限登录后台系统！");
-                }
-
-                var duty = string.Empty;
-                if (userEntity != null)
-                {
-                    var op = new OperatorModel
-                    {
-                        UserId = userEntity.Id,
-                        UserCode = userEntity.Account,
-                        UserName = userEntity.Name,
-                        F_User_SetUp = userEntity.UserSetUp,
-                        CompanyId = userEntity.OrganId //学校ID
-                    };
-
-                    //学校老师
-               
-                    op.DepartmentId = userEntity.OrganId;
-                    op.RoleId = userEntity.RoleId;
-                    op.HeadIcon = userEntity.HeadIcon;
-                    op.LoginIPAddress = Net.Ip;
-                    op.LoginIPAddressName = Net.GetLocation(op.LoginIPAddress);
-                    op.LoginTime = DateTime.Now;
-                    op.LoginToken = DESEncryptHelper.Encrypt(Guid.NewGuid().ToString());
-                    op.MobilePhone = userEntity.MobilePhone;
-
-                    if (userEntity.Account == "admin")
-                    {
-                        duty = "admin";
-                        op.IsSystem = true;
-                    }
-                    else
-                    {
-                        duty = DutyApp.GetEnCode(userEntity.DutyId);
-                        op.IsSystem = false;
-                    }
-
-                    //duty = userEntity.F_DutyId;
-                    //权限判断，先看个人有没有设置数据权限，再看角色是否有数据权限
-                    var roles = new Dictionary<string, Dictionary<string, string>>();
-
-                    var sysUserRoleApp = new SysUserRoleAppService();
-                    var roleApp = new RoleService();
-                    var list = sysUserRoleApp.GetListByUserId(op.UserId);
-                    //获得数据权限,支持多角色
-                    foreach (var e in list)
-                    {
-                        var role = roleApp.Get(e.F_Role);
-                        var dic = new Dictionary<string, string>();
-
-                        if (userEntity.DataType.IsEmpty())
-                        {
-                            if (role.DataType != null)
-                                dic.Add(role.DataType, role.DataDeps);
-                        }
-                        else
-                        {
-                            dic.Add(userEntity.DataType, userEntity.DataDeps);
-                        }
-
-                        roles.Add(e.F_Role, dic);
-                    }
-
-                    op.Roles = roles;
-                    //}
-                    //用户岗位 类型
-                    op.Duty = userEntity.DutyId;
-                    //添加学校编码
-                    op.SchoolCode = schoolCode;
-                    OperatorProvider.Set(op);
-                    log.Account = userEntity.Account;
-                    log.UserId = userEntity.Id;
-                    log.NickName = userEntity.Name;
-                    log.Result = true;
-                    log.Description = "登录成功";
-
-
-                }
-                WriteLog(log);
-                return Content(new
-                {
-                    state = ResultState.Success,
-                    message = "登录成功。",
-                    data = new
-                    {
-                        duty,
-                        userEntity.UserSetUp,
-                        userEntity.Name,
-                        userEntity.Class
-                    }
-                }.ToJson());
+                    Id = user.Id,
+                    UserCode = user.Account,
+                    UserName = user.Name,
+                    SetUp = user.UserSetUp,
+                    Organ = user.OrganId,
+                    HeadIcon = user.HeadIcon,
+                    LoginIPAddress = Net.Ip,
+                    LoginTime = DateTime.Now,
+                    LoginToken = DESEncryptHelper.Encrypt(Guid.NewGuid().ToString()),
+                    MobilePhone = user.MobilePhone,
+                };
+                op.LoginIPAddressName = Net.GetLocation(op.LoginIPAddress);
+                op.Roles = RoleApp.GetUserRolesId(user.Id);
+                op.Duty = user.DutyId;
+                Operator.Set(op);
             }
-            catch (Exception ex)
-            {
-                log.Account = username;
-                log.NickName = username;
-                log.Result = false;
-                log.Description = "登录失败，" + ex.Message;
-                WriteLog(log);
-                return Content(new { state = ResultState.Error, message = log.Description }.ToJson());
-            }
-        }
-
-        /// <summary>
-        /// 管理员登录
-        /// </summary>
-        [HttpPost]
-        public ActionResult AdminLogin(string uname, string pass, string schoolCode)
-        {
-            OperatorProvider.Set(new OperatorModel { SchoolCode = schoolCode });
-            var userEntity = UserApp.CheckLogin(uname, pass);
-            var operatorModel = new OperatorModel
-            {
-                UserId = userEntity.Id,
-                UserCode = userEntity.Account,
-                UserName = userEntity.Name,
-                F_User_SetUp = userEntity.UserSetUp,
-                CompanyId = userEntity.OrganId, //学校ID
-                DepartmentId = userEntity.OrganId,
-                RoleId = userEntity.RoleId,
-                HeadIcon = userEntity.HeadIcon,
-                LoginIPAddress = Net.Ip
-            };
-            operatorModel.LoginIPAddressName = Net.GetLocation(operatorModel.LoginIPAddress);
-            operatorModel.LoginTime = DateTime.Now;
-            operatorModel.LoginToken = DESEncryptHelper.Encrypt(Guid.NewGuid().ToString());
-            operatorModel.MobilePhone = userEntity.MobilePhone;
-
-            operatorModel.IsSystem = true;
-
-            var roles = new Dictionary<string, Dictionary<string, string>>();
-
-            var sysUserRoleApp = new SysUserRoleAppService();
-            var roleApp = new RoleService();
-            var list = sysUserRoleApp.GetListByUserId(operatorModel.UserId);
-            //获得数据权限,支持多角色
-            foreach (var e in list)
-            {
-                var role = roleApp.Get(e.F_Role);
-                var dic = new Dictionary<string, string>();
-
-                if (userEntity.DataType.IsEmpty())
-                {
-                    if (role.DataType != null)
-                        dic.Add(role.DataType, role.DataDeps);
-                }
-                else
-                {
-                    dic.Add(userEntity.DataType, userEntity.DataDeps);
-                }
-
-                roles.Add(e.F_Role, dic);
-            }
-
-            operatorModel.Roles = roles;
-
-            return Content(new
-            {
-                state = ResultState.Success,
-                message = "登录成功。",
-                data = new
-                {
-                    duty = "admin",
-                    userEntity.UserSetUp,
-                    userEntity.Name,
-                    userEntity.Class
-                }
-            }.ToJson());
+            return Resultaat.Success(new { duty, user.UserSetUp, user.Name });
         }
 
 
@@ -435,39 +236,6 @@ namespace ZHXY.Web.Controllers
             //    throw new Exception("验证码错误，请重新输入");
         }
 
-        /// <summary>
-        /// 获取角色
-        /// </summary>
-        /// <param name="user">用户</param>
-        /// <returns></returns>
-        private Dictionary<string, Dictionary<string, string>> GetRoles(User user)
-        {
-            //权限判断，先看个人有没有设置数据权限，再看角色是否有数据权限
-            var roles = new Dictionary<string, Dictionary<string, string>>();
-            var sysUserRoleApp = new SysUserRoleAppService();
-            var roleApp = new RoleService();
-            var list = sysUserRoleApp.GetListByUserId(user.Id);
-            //获得数据权限,支持多角色
-            foreach (var e in list)
-            {
-                var role = roleApp.Get(e.F_Role);
-                var dic = new Dictionary<string, string>();
-
-                if (user.DataType.IsEmpty())
-                {
-                    if (role.DataType != null)
-                        dic.Add(role.DataType, role.DataDeps);
-                }
-                else
-                {
-                    dic.Add(user.DataType, user.DataDeps);
-                }
-
-                roles.Add(e.F_Role, dic);
-            }
-
-            return roles;
-        }
 
         /// <summary>
         /// 记录日志
@@ -480,7 +248,7 @@ namespace ZHXY.Web.Controllers
         #region 南航单点登录
         public void Index3()
         {
-            if (OperatorProvider.Current == null)
+            if (Operator.Current == null)
             {
                 Certification();
             }
@@ -506,28 +274,24 @@ namespace ZHXY.Web.Controllers
                 var exist = UserApp.Read<User>(p => p.Account.Equals(uid)).AnyAsync().Result;
                 if (!exist) throw new Exception("无权进入本系统!");
                 var user = BuildCurrent(uid);
-                OperatorProvider.Set(user);
+                Operator.Set(user);
                 Response.Redirect(returnURL);
                 return;
             }
             Response.Redirect(client.LoginURL(passportLoginURL));
         }
 
-        private OperatorModel BuildCurrent(string account)
+        private CurrentUser BuildCurrent(string account)
         {
             var user = UserApp.Read<User>(p => p.Account.Equals(account)).FirstOrDefaultAsync().Result;
             if (user == null) throw new Exception("用户不存在!");
-            var roleIds = UserApp.Read<UserRole>(p => p.F_User.Equals(user.Id)).Select(p => p.F_Role).ToListAsync()
-                .Result;
-            var current = new OperatorModel
+            var current = new CurrentUser
             {
-                UserId = user.Id,
+                Id = user.Id,
                 UserCode = user.Account,
                 UserName = user.Name,
-                F_User_SetUp = user.UserSetUp,
-                CompanyId = user.OrganId,
-                DepartmentId = user.OrganId,
-                RoleId = user.RoleId,
+                SetUp = user.UserSetUp,
+                Organ = user.OrganId,
                 HeadIcon = user.HeadIcon,
                 LoginIPAddress = Net.Ip,
                 MobilePhone = user.MobilePhone,

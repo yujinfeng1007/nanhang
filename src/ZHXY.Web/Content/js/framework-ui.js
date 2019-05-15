@@ -1244,20 +1244,21 @@ $.fn.bindCheckBox = function(options) {
         $element.find('.ckbox:first-child input').attr('required', 'required')
     }
 }
-$.fn.authorizeButton = function() {
-    var moduleId = top.$(".NFine_iframe:visible").attr("id").substr(6);
-    var dataJson = top.clients.authorizeButton[moduleId];
-    var $element = $(this);
-    $element.find('a[authorize=yes]').attr('authorize', 'no');
-    if (dataJson != undefined) {
-        $.each(dataJson, function(i) {
-            $element.find("#" + dataJson[i].F_EnCode).attr('authorize', 'yes');
-        });
-    }
-    $element.find("[authorize=no]").parents('li').prev('.split').remove();
-    $element.find("[authorize=no]").parents('li').remove();
-    $element.find('[authorize=no]').remove();
-}
+//$.fn.authorizeButton = function() {
+//    let menuId = top.$(".NFine_iframe:visible").attr("id").substr(6);
+//    let buttons = JSON.parse(localStorage.getItem("buttons"));
+//    var dataJson = buttons.filter((item) => item.menuId == menuId);
+//    var $element = $(this);
+//    $element.find('a[authorize=yes]').attr('authorize', 'no');
+//    if (dataJson != undefined) {
+//        $.each(dataJson, function(i) {
+//            $element.find("#" + dataJson[i].F_EnCode).attr('authorize', 'yes');
+//        });
+//    }
+//    $element.find("[authorize=no]").parents('li').prev('.split').remove();
+//    $element.find("[authorize=no]").parents('li').remove();
+//    $element.find('[authorize=no]').remove();
+//}
 $.fn.initTabs = function(data) {
     var $this = $(this)
     var template = []
@@ -1277,6 +1278,8 @@ $.fn.initTabs = function(data) {
     template.push('</div>')
     $this.html(template.join(''))
 }
+
+
 $.fn.dataGrid = function(options) {
     var defaults = {
         datatype: "json",

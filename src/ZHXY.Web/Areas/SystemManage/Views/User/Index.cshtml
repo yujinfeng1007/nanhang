@@ -8,6 +8,9 @@
     let TREE_GRID_WIDTH = window.innerWidth * 0.24;
     let TREE_GRID_HEIGHT = window.innerHeight * 0.94;
     let GRID_STYLE = "Bootstrap";
+    let dutyList = JSON.parse(localStorage.getItem("dutyList"));
+    let roleList = JSON.parse(localStorage.getItem("roleList"));
+    let orgList = JSON.parse(localStorage.getItem("orgList"));
 
     $(function () {
         $('#layout').layout({
@@ -20,7 +23,6 @@
             let rowId = $("#treeGrid").jqGrid("getGridParam", "selrow");
             reloadGrid(rowId)
         });
-
     })
 
     function gridList() {
@@ -38,33 +40,80 @@
             rowNum: 30,
             rowList: [30, 50, 100, 500, 1000],
             colModel: [
-                { label: "主键", name: "userId", hidden: true, key: true },
+                { label: "主键", name: "id", hidden: true, key: true },
                 { label: '姓名', name: 'name', "editable": true },
                 { label: '账户', name: 'account' },
                 { label: '昵称', name: 'nickName', "editable": true },
-                { label: '岗位', name: 'dutyId', "editable": true },
                 {
-                    label: '性别', name: 'gender',
-                    formatter: function (cellvalue) {
-                        switch (cellvalue) {
-                            case '1': {
-                                return '男';
-                                break;
+                    label: '岗位', name: 'dutyId', "editable": true,
+                    formatter: function (cv) {
+                        return dutyList[cv] == null ? "" : dutyList[cv];
+                    },
+                    edittype: "select",
+                    editoptions: { value: dutyList },
+                },
+                {
+                    label: '隶属机构', name: 'organId', "editable": true,
+                    formatter: function (cv) {
+                        return orgList[cv] == null ? "" : orgList[cv];
+                    },
+                    //edittype: "select",
+                    //editoptions: { value: orgList },
+                    edittype: 'custom', editoptions: {
+                        custom_element: function (value, options) {
+                            let el = document.createElement("select");
+                            el.className = "FormElement form-control";
+                            for (let k in orgList) {
+                                let op = document.createElement("option");
+                                op.value = k;
+                                op.text = orgList[k];
+                                el.appendChild(op);
                             }
-                            case '0': {
-                                return '女';
-                                break;
+                            el.onclick = function () { el.focus();};
+                            return el;
+                        },
+                        custom_value: function (elem, operation, value) {
+                            if (operation === 'get') {
+                                return $(elem).val();
+                            } else if (operation === 'set') {
+                                $(elem).val(value);
                             }
-                            default:
-                                {
-                                    return "";
-                                    break;
-                                }
+                        }
+                    }
+
+                },
+                { label: '头像', name: 'headIcon', "editable": true },
+                {
+                    label: '生日', name: 'birthday', "editable": true,
+
+                },
+                { label: '手机号码', name: 'mobilePhone', "editable": true },
+                {
+                    label: '角色', name: 'roles', "editable": true,
+                    //edittype: "select",
+                    //editoptions: { value: orgList },
+                    edittype: 'custom', editoptions: {
+                        custom_element: function (value, options) {
+                            let el = document.createElement("select");
+                            el.className = "FormElement form-control";
+                            for (let k in roleList) {
+                                let op = document.createElement("option");
+                                op.value = k;
+                                op.text = roleList[k];
+                                el.appendChild(op);
+                            }
+                            el.onclick = function () { el.focus();};
+                            return el;
+                        },
+                        custom_value: function (elem, operation, value) {
+                            if (operation === 'get') {
+                                return $(elem).val();
+                            } else if (operation === 'set') {
+                                $(elem).val(value);
+                            }
                         }
                     }
                 },
-                { label: '隶属机构', name: 'organId', "editable": true },
-                { label: '手机号码', name: 'mobilePhone', "editable": true },
 
             ],
         });
@@ -81,19 +130,19 @@
             {
                 url: "update",
                 top: 200,
-                left:200,
+                left: 200,
                 drag: true,
                 resize: false,
                 closeOnEscape: true,
             },
             {
-                url:"add",
+                url: "add",
                 drag: true,
                 resize: false,
                 closeOnEscape: true,
             },
             {
-                url:"delete",
+                url: "delete",
                 drag: true,
                 resize: false,
                 closeOnEscape: true,
@@ -145,7 +194,6 @@
 </script>
 
 <div class="ui-layout" id="layout" style="height: 100%; width: 100%;">
-
     <div class="ui-layout-west">
         <table id="treeGrid"></table>
     </div>
@@ -162,5 +210,6 @@
             <div id="gridPager"></div>
         </div>
     </div>
-
 </div>
+
+

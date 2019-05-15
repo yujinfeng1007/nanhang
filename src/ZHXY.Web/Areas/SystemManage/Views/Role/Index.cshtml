@@ -3,6 +3,8 @@
     Layout = "~/Views/Shared/_Index.cshtml";
 }
 <script>
+    let roleTypeDic = JSON.parse(localStorage.getItem("RoleType"));
+
     $(function () {
         gridList();
     })
@@ -21,7 +23,7 @@
                 {
                     label: '角色类型', name: 'type', sortable: false,
                     formatter: function (cellvalue) {
-                        return top.clients.dataItems["RoleType"][cellvalue] == undefined ? "" : top.clients.dataItems["RoleType"][cellvalue]
+                        return roleTypeDic[cellvalue] == undefined ? "" : roleTypeDic[cellvalue]
                     }
                 },
                 { label: '排序', name: 'sortCode', width: 30, sortable: false },

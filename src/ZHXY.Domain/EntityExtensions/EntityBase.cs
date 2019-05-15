@@ -12,12 +12,12 @@ namespace ZHXY.Domain
             entity.F_Id = Guid.NewGuid().ToString("N").ToUpper();
             if (flag)
             {
-                var LoginInfo = OperatorProvider.Current;
+                var LoginInfo = Operator.Current;
                 if (LoginInfo != null)
                 {
-                    entity.F_CreatorUserId = LoginInfo.UserId;
+                    entity.F_CreatorUserId = LoginInfo.Id;
                     if (entity.F_DepartmentId.IsEmpty())
-                        entity.F_DepartmentId = LoginInfo.DepartmentId;
+                        entity.F_DepartmentId = LoginInfo.Organ;
                 }
             }
 
@@ -31,10 +31,10 @@ namespace ZHXY.Domain
             entity.F_Id = keyValue;
             if (flag)
             {
-                var LoginInfo = OperatorProvider.Current;
+                var LoginInfo = Operator.Current;
                 if (LoginInfo != null)
                 {
-                    entity.F_LastModifyUserId = LoginInfo.UserId;
+                    entity.F_LastModifyUserId = LoginInfo.Id;
                 }
             }
             entity.F_LastModifyTime = DateTime.Now;
@@ -45,10 +45,10 @@ namespace ZHXY.Domain
             var entity = this as IDeleteAudited;
             if (flag)
             {
-                var LoginInfo = OperatorProvider.Current;
+                var LoginInfo = Operator.Current;
                 if (LoginInfo != null)
                 {
-                    entity.F_DeleteUserId = LoginInfo.UserId;
+                    entity.F_DeleteUserId = LoginInfo.Id;
                 }
             }
             entity.F_DeleteTime = DateTime.Now;

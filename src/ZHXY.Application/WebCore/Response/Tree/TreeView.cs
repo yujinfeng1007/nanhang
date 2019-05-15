@@ -16,7 +16,7 @@
         /// <summary>
         ///     父节点ID
         /// </summary>
-        public string Parent { get; set; }
+        public string ParentId { get; set; }
 
         /// <summary>
         ///     层级

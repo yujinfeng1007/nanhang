@@ -29,7 +29,7 @@ namespace ZHXY.Web.SystemManage.Controllers
 
         public ActionResult Get(string id)
         {
-            var data = App.Get(id);
+            var data = App.GetById(id);
             return Resultaat.Success(data);
         }
 

@@ -3,6 +3,7 @@
     Layout = "~/Views/Shared/_Index.cshtml";
 }
 <script>
+     let dutyTypeDic = JSON.parse(localStorage.getItem("F_Duty_Type"));
     $(function () {
         gridList();
     })
@@ -20,7 +21,7 @@
                 {
                     label: '岗位类型', name: 'type', sortable: false,
                     formatter: function (cellvalue) {
-                        return top.clients.dataItems["F_Duty_Type"][cellvalue] == undefined ? "" : top.clients.dataItems["F_Duty_Type"][cellvalue];
+                        return dutyTypeDic[cellvalue] == undefined ? "" : dutyTypeDic[cellvalue];
                     }
                 },
                 { label: '排序', name: 'sortCode',width:30, sortable: false },

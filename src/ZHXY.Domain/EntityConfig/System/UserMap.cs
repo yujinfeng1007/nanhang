@@ -20,17 +20,8 @@ namespace ZHXY.Domain
             Property(p => p.Email).HasColumnName("F_Email");
             Property(p => p.WeChat).HasColumnName("F_WeChat");
             Property(p => p.OrganId).HasColumnName("F_DepartmentId");
-            Property(p => p.RoleId).HasColumnName("F_RoleId");
             Property(p => p.DutyId).HasColumnName("F_DutyId");
-            Property(p => p.DeleteMark).HasColumnName("F_DeleteMark");
-            Property(p => p.EnabledMark).HasColumnName("F_EnabledMark");
-            Property(p => p.CreatorTime).HasColumnName("F_CreatorTime");
-            Property(p => p.DataType).HasColumnName("F_Data_Type");
-            Property(p => p.DataDeps).HasColumnName("F_Data_Deps");
             Property(p => p.UserSetUp).HasColumnName("F_User_SetUp");
-            Property(p => p.Class).HasColumnName("F_Class");
-            Property(p => p.UpdateTime).HasColumnName("F_UpdateTime");
-            Property(p => p.File).HasColumnName("F_File");
         }
     }
 }

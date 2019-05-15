@@ -1,0 +1,204 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+    let GRID_WIDTH = window.innerWidth * 0.30;
+    let GRID_HEIGHT = window.innerHeight * 0.84;
+    let TREE_GRID_WIDTH = window.innerWidth * 0.68;
+    let TREE_GRID_HEIGHT = window.innerHeight * 0.84;
+    let GRID_STYLE = "Bootstrap";
+
+    $(function () {
+        $('#layout').layout({
+            west__resizable: true
+        }).sizePane("west", "70%");
+        gridRight();
+        gridLeft();
+    })
+
+    function gridRight() {
+        $("#rightGrid").jqGrid({
+            styleUI: GRID_STYLE,
+            height: GRID_HEIGHT,
+            width: GRID_WIDTH,
+            datatype: 'json',
+            url: `/SystemManage/Menu/GetMenuBth`,
+            multiselect: true,
+            loadonce: false,
+            viewrecords: true,
+            pager: "#rightPager",
+            toppager: true,
+            rowNum: -1,
+            jsonReader: {
+                root: function (r) { return r.data; }
+            },
+            colModel: [
+                { name: "id", hidden: true, key: true },
+                { label: '名称', name: 'name', editable: true, editable: true },
+                { label: '编号', name: 'enCode', editable: true, editable: true },
+                { label: '图标', name: 'icon', editable: true, editable: true },
+                { label: '菜单', name: 'menuId', editable: true, editable: true },
+                { label: '排序', name: 'sortCode', editable: true, editable: true }
+            ],
+        });
+        $("#rightGrid").jqGrid('navGrid', '#gridPager',
+            {
+                edit: true,
+                add: true,
+                del: true,
+                search: false,
+                refresh: true,
+                view: true,
+                cloneToTop: true,
+            },
+            {
+                url: "updateBtn",
+                top: 200,
+                left: 200,
+                drag: true,
+                resize: false,
+                closeOnEscape: true,
+            },
+            {
+                url: "addBtn",
+                drag: true,
+                resize: false,
+                closeOnEscape: true,
+            },
+            {
+                url: "deleteBtn",
+                drag: true,
+                resize: false,
+                closeOnEscape: true,
+            },
+        );
+        $("#rightGrid").jqGrid('bindKeys');
+    }
+
+    function reloadGrid(rowId) {
+        $("#rightGrid").jqGrid('setGridParam', {
+            postData: {
+                menuId: rowId
+            },
+        }).trigger('reloadGrid');
+    }
+
+    function gridLeft() {
+        $("#leftGrid").jqGrid({
+            styleUI: GRID_STYLE,
+            treeGrid: true,
+            url: "/SystemManage/Menu/GetMenu",
+            treeGridModel: "adjacency",
+            datatype: "json",
+            gridview: true,
+            viewrecords: true,
+            autoGridWidth: true,
+            rowNum: -1,
+            shrinkToFit: true,
+            autoGridHeight: true,
+            multiselect: true,
+            height: TREE_GRID_HEIGHT,
+            width: TREE_GRID_WIDTH,
+            ExpandColumn: 'name',
+            onSelectRow: reloadGrid,
+            pager: "#leftPager",
+            toppager: true,
+            jsonReader: {
+                root: function (r) { return r.data; }
+            },
+            colModel: [
+
+                { label: '名称', name: 'name', width: 200, align: 'left', editable: true },
+                { label: '编号', name: "enCode", editable: true },
+                { label: '目标', name: "target", editable: true },
+                { label: 'URL', name: "url", editable: true },
+                {
+                    label: '所属系统', name: "belongSys", editable: true,
+                    edittype: "select",
+                    editoptions: {
+                        value: "1:后台管理系统;2:家校通;3:其他"
+                    },
+                    formatter: function (cellvalue, options, rowobj) {
+                        switch (cellvalue) {
+                            case "1":
+                                {
+                                    return "后台管理系统";
+                                    break;
+                                }
+                            case "2":
+                                {
+                                    return "家校通";
+                                    break;
+                                }
+                            case "3":
+                                {
+                                    return "其他";
+                                    break;
+                                }
+                        }
+                    }
+                },
+                { label: '图标', name: "icon", editable: true },
+                { label: 'WEB图标', name: "iconForWeb", editable: true },
+                { label: '公共', name: "isPublic", editable: true },
+                { label: '目录', name: "isMenu", editable: true },
+                { label: '排序', name: "sortCode", editable: true },
+                { label: '上级', name: "parentId", editable: true ,hidedlg:true},
+                { name: "id", key: true, hidden: true },
+            ],
+
+        });
+
+        $("#leftGrid").jqGrid('navGrid', '#leftPager',
+            {
+                edit: true,
+                add: true,
+                del: true,
+                search: false,
+                refresh: true,
+                view: true,
+                cloneToTop: true,
+            },
+            {
+                url: "update",
+                top: 200,
+                left: 200,
+                drag: true,
+                resize: false,
+                closeOnEscape: true,
+            },
+            {
+                url: "add",
+                drag: true,
+                resize: false,
+                closeOnEscape: true,
+            },
+            {
+                url: "delete",
+                drag: true,
+                resize: false,
+                closeOnEscape: true,
+            },
+        );
+        $("#leftGrid").jqGrid('bindKeys');
+    }
+
+      
+      
+</script>
+
+<div class="ui-layout" id="layout" style="height: 100%; width: 100%;">
+
+    <div class="ui-layout-west">
+        <table id="leftGrid"></table>
+        <div id="leftPager"></div>
+    </div>
+
+    <div class="ui-layout-center">
+        <div class="gridPanel">
+            <table id="rightGrid"></table>
+            <div id="rightPager"></div>
+        </div>
+    </div>
+
+</div>

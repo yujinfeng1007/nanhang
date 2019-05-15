@@ -13,12 +13,12 @@ namespace ZHXY.Web.SystemManage.Controllers
     /// </summary>
     public class ItemsTypeController : ZhxyWebControllerBase
     {
-        private SysDicAppService App { get; }
+        private DicService App { get; }
 
-        public ItemsTypeController(SysDicAppService app) => App = app;
+        public ItemsTypeController(DicService app) => App = app;
 
         [HttpGet]
-        
+
         public ActionResult GetTreeSelectJson()
         {
             var data = App.GetAll();
@@ -37,7 +37,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         }
 
         [HttpGet]
-        
+
         public ActionResult GetTreeJson()
         {
             var data = App.GetAll();
@@ -59,7 +59,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         }
 
         [HttpGet]
-        
+
         public ActionResult GetTreeGridJson()
         {
             var data = App.GetAll();
@@ -79,7 +79,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         }
 
         [HttpGet]
-        
+
         public ActionResult GetFormJson(string keyValue)
         {
             var data = App.GetById(keyValue);
@@ -87,25 +87,22 @@ namespace ZHXY.Web.SystemManage.Controllers
         }
 
         [HttpPost]
-        
+
         [ValidateAntiForgeryToken]
         public ActionResult SubmitForm(SysDic itemsEntity, string keyValue)
         {
             App.Submit(itemsEntity, keyValue);
-            CacheFactory.Cache().RemoveCache(SYS_CONSTS.DATAITEMS);
-            CacheFactory.Cache().WriteCache(SysCacheAppService.GetDataItemList(), SYS_CONSTS.DATAITEMS);
             return Message("操作成功。");
         }
 
         [HttpPost]
-        
+
         [ValidateAntiForgeryToken]
         public ActionResult DeleteForm(string keyValue)
         {
             App.Delete(keyValue);
-            CacheFactory.Cache().RemoveCache(SYS_CONSTS.DATAITEMS);
-            CacheFactory.Cache().WriteCache(SysCacheAppService.GetDataItemList(), SYS_CONSTS.DATAITEMS);
             return Message("删除成功。");
         }
     }
+
 }

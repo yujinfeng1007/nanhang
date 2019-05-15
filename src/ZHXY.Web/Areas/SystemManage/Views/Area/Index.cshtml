@@ -15,7 +15,6 @@
             gridview:true,
             url: "/SystemManage/Area/GetLazyTreeGridJson",
             height: $(window).height() - 96,
-            //fitColumns: true,
             colModel: [
                 { label: "主键", name: "F_Id", hidden: true, key: true },
                 { label: "Code", name: "F_Id", width: 200, align: 'left' },
@@ -24,13 +23,7 @@
                     label: '创建时间', name: 'F_CreatorTime', width: 80, align: 'left',
                     formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' }
                 }
-                //{
-                //    label: "有效", name: "F_EnabledMark", width: 60, align: "center",
-                //    formatter: function (cellvalue) {
-                //        return cellvalue == true ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
-                //    }
-                //},
-                //{ label: '备注', name: 'F_Description', width: 300, align: 'left' }
+               
             ]
         });
         $("#btn_search").click(function () {

@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using ZHXY.Application;
-using ZHXY.Domain;
 using ZHXY.Common;
 
 namespace ZHXY.Web.SystemManage.Controllers
@@ -17,11 +15,13 @@ namespace ZHXY.Web.SystemManage.Controllers
     {
         private OrgService App { get; }
         private UserService UserApp { get; }
+        private RoleService RoleApp { get; }
 
-        public OrganizeController(OrgService app, UserService userApp)
+        public OrganizeController(OrgService app, UserService userApp, RoleService roleApp)
         {
             App = app;
             UserApp = UserApp;
+            RoleApp = roleApp;
         }
 
         [HttpGet]
@@ -89,14 +89,14 @@ namespace ZHXY.Web.SystemManage.Controllers
         {
             var data = App.GetList();
             var data_deeps = "";
-            var role = new RoleService().Get(keyword);
+            var role = RoleApp.GetById(keyword);
             if (!role.IsEmpty())
             {
                 data_deeps = role.DataDeps;
             }
             else
             {
-                var user = UserApp.Get(keyword);
+                var user = UserApp.GetById(keyword);
                 if (!user.IsEmpty())
                     data_deeps = user.DataDeps;
             }
@@ -324,7 +324,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         [HttpGet]
         public async Task<ActionResult> GetSubOrg(string nodeId = null, int n_level = 0) => await Task.Run(() =>
         {
-            var result = App.GetSubOrg(nodeId, n_level);
+            var result = App.GetChildOrg(nodeId, n_level);
             return Resultaat.Success(result);
         });
 

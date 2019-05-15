@@ -145,7 +145,6 @@ namespace TaskApi
         private User AddOrUpdUser(IUnitWork db, string loginId, string mobilePhone, string orgId, string passWord, string telephone, string userId, string userName, string userStatus, string userType, string catetoryId, string gw, string sex, string ico, string isAdmin, string isDelete)
         {
             var entity = new User();
-            entity.EnabledMark = true;
             entity.Id = userId;
             entity.Account = loginId;
             entity.MobilePhone = mobilePhone;
@@ -154,7 +153,6 @@ namespace TaskApi
             entity.OrganId = orgId;
             entity.Gender = sex == "1" ? true : false;
             entity.HeadIcon = ico;
-            entity.DeleteMark = isDelete == "1" ? true : false;
             if (catetoryId == "Class")
             {
                 var org = db.FindEntity<Organ>(p => p.Id == orgId);
@@ -170,26 +168,21 @@ namespace TaskApi
             if (userType == "6")
             {
                 entity.DutyId = null;
-                entity.RoleId = "student";
             }
             if (userType == "1")
             {
                 entity.DutyId = "teacherDuty";
-                entity.RoleId = "teacher";
                 if ((gw == "班主任" || gw == "副班主任"))//catetoryId == "Class" &&
                 {
-                    entity.RoleId = "6D8BC58FF1F24924A73F6B86A718BD6C";
                 }
             }
             if (userType == "5")
             {
                 entity.DutyId = "parentDuty";
-                entity.RoleId = "parent";
                 entity.OrganId = "parent";
             }
             if (isAdmin == "1")
             {
-                entity.RoleId = "7A6C0ECA17B9433DBD3A0C127E35A696";
             }
             var data = db.FindEntity<User>(t => t.Id == userId);
             if (data != null)
@@ -204,43 +197,27 @@ namespace TaskApi
                 setUserInfo(db, entity);
             }
             // 插入角色
-            if (entity.RoleId != null)
-            {
-                var role = db.FindEntity<UserRole>(t => t.F_User == entity.Id);
-                if (role != null)
-                {
-                    role.F_Role = entity.RoleId;
-                    db.Update(role);
-                }
-                else
-                {
-                    var e = new UserRole();
-                    e.F_Id = Guid.NewGuid().ToString();
-                    e.F_Role = entity.RoleId;
-                    e.F_User = entity.Id;
-                    db.Insert(e);
-                }
-            }
+          
             return entity;
         }
 
         private void setUserInfo(IUnitWork db, User entity)
         {
-            if (db.FindEntity<UserLogin>(t => t.F_Id == entity.Id) != null)
+            if (db.FindEntity<UserLogin>(t => t.Id == entity.Id) != null)
                 return;
             var userLogOnEntity = new UserLogin
             {
-                F_Id = entity.Id,
-                F_UserId = entity.Id,
-                F_UserSecretkey = Md5EncryptHelper.Encrypt("0000", 16).ToLower()
+                Id = entity.Id,
+                UserId = entity.Id,
+                UserSecretkey = Md5EncryptHelper.Encrypt("0000", 16).ToLower()
             };
-            userLogOnEntity.F_UserPassword = Md5EncryptHelper.Encrypt(DESEncryptHelper.Encrypt(Md5EncryptHelper.Encrypt("0000", 32).ToLower(), userLogOnEntity.F_UserSecretkey).ToLower(), 32).ToLower();
+            userLogOnEntity.UserPassword = Md5EncryptHelper.Encrypt(DESEncryptHelper.Encrypt(Md5EncryptHelper.Encrypt("0000", 32).ToLower(), userLogOnEntity.UserSecretkey).ToLower(), 32).ToLower();
             db.Insert(userLogOnEntity);
 
             var isPost = true;
             var parameters = "sysid=" + entity.Id + "&amp;appid=" + AppId + "&amp;nickname=" +
                              entity.Name + "&amp;username=" + entity.Account +
-                             "&amp;password=" + userLogOnEntity.F_UserPassword +
+                             "&amp;password=" + userLogOnEntity.UserPassword +
                              "&amp;sysgroupid=" + entity.OrganId + "&amp;headicon=" +
                              entity.HeadIcon + "&amp;birthday=" + entity.Birthday + "";
             WebHelper.SendRequest(CallUrlAdd, parameters, isPost, "application/json");

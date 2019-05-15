@@ -54,7 +54,7 @@ namespace ZHXY.Web.Dorm.Controllers
         /// 获取详情
         /// </summary>
         [HttpGet]
-        public ActionResult Get([Required(ErrorMessage = "请假Id不能为空!")]string id) => Resultaat.Success(App.GetApprovalDetail(id, OperatorProvider.Current.UserId));
+        public ActionResult Get([Required(ErrorMessage = "请假Id不能为空!")]string id) => Resultaat.Success(App.GetApprovalDetail(id, Operator.Current.Id));
 
         /// <summary>
         /// 请假审批
@@ -62,7 +62,7 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpPost]
         public ActionResult Approval(LeaveApprovalDto input)
         {
-            input.CurrentUserId = OperatorProvider.Current.UserId;
+            input.CurrentUserId = Operator.Current.Id;
             App.Approval(input);
             return Resultaat.Success();
         }
@@ -73,7 +73,7 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpPost]
         public ActionResult OneKeyApproval(OneKeyApprovalDto input)  
         {
-            input.CurrentUserId = OperatorProvider.Current.UserId;
+            input.CurrentUserId = Operator.Current.Id;
             App.OneKeyApproval(input);
             return Resultaat.Success();
         }
@@ -96,7 +96,7 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpGet]
         public ActionResult Load(GetApprovalListDto input)
         {
-            input.CurrentUserId = OperatorProvider.Current.UserId;
+            input.CurrentUserId = Operator.Current.Id;
             var data= App.GetApprovalList(input);
             return  Resultaat.PagingRst(data,input.Records,input.Total);
         }
@@ -138,7 +138,7 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpGet]
         public ActionResult CancelList(GetCancelListDto input)
         {
-            input.CurrentUserId = OperatorProvider.Current.UserId;
+            input.CurrentUserId = Operator.Current.Id;
             var data = App.GetCanceList(input);
             return Resultaat.PagingRst(data, input.Records, input.Total);
         }
@@ -149,7 +149,7 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpPost]
         public ActionResult CancelHoliday(CancelHolidayDto input)
         {
-            input.OperatorId = OperatorProvider.Current.UserId;
+            input.OperatorId = Operator.Current.Id;
             App.CancelHoliday(input);
             return Resultaat.Success();
         }

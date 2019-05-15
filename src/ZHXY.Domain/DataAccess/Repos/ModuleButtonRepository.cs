@@ -2,9 +2,9 @@
 
 namespace ZHXY.Domain
 {
-    public class ModuleButtonRepository : Repository<SysButton>, IModuleButtonRepository
+    public class ModuleButtonRepository : Repository<Button>, IModuleButtonRepository
     {
-        public void SubmitCloneButton(List<SysButton> entitys)
+        public void SubmitCloneButton(List<Button> entitys)
         {
             using (var db = new UnitWork().BeginTrans())
             {

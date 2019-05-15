@@ -43,7 +43,7 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpGet]
         public ActionResult VisivorByStudent( Pagination pag, int status)
         {
-            var data = App.VisivorByStudent(pag,OperatorProvider.Current.UserId, status);
+            var data = App.VisivorByStudent(pag,Operator.Current.Id, status);
             return Resultaat.Success(data);
         }
 

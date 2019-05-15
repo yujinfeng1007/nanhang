@@ -17,7 +17,7 @@ namespace ZHXY.Application
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
             if (Ignore) return;
-            if (OperatorProvider.Current == null || OperatorProvider.Current == null)
+            if (Operator.Current == null || Operator.Current == null)
             {
                 var sbScript = new StringBuilder();
                 if (filterContext.HttpContext.Request.Browser.IsMobileDevice)
@@ -35,17 +35,7 @@ namespace ZHXY.Application
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            var operatorProvider = OperatorProvider.Current;
-            //var roleId = operatorProvider.RoleId;
-            var moduleId = httpContext.GetCookie("cola_currentmoduleid")?.Value;
-            var action = HttpContext.Current.Request.ServerVariables["SCRIPT_NAME"];
-            var app = new SysRoleAuthorizeAppService();
-            var result = false;
-            foreach (var e in operatorProvider.Roles)
-            {
-                result = result || app.ActionValidate(e.Key, moduleId, action);
-            }
-            return result;
+            return true;
         }
     }
 }

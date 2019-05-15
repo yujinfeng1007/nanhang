@@ -326,7 +326,7 @@ namespace ZHXY.Application
         /// </summary>
         public object GetFinalJudgeList(string search)
         {
-            var query = Read<User>(p => p.RoleId.Contains("teacher"));
+            var query = Read<User>(p => p.DutyId.Contains("teacher"));
             query = string.IsNullOrEmpty(search) ? query : query.Where(p => p.Name.Contains(search));
             return query.Select(p => new { Id = p.Id, Text = p.Name }).ToListAsync().Result;
         }
@@ -375,7 +375,7 @@ namespace ZHXY.Application
                 order.Status = "1";
                 return;
             }
-            var currentUserId = OperatorProvider.Current.UserId;
+            var currentUserId = Operator.Current.Id;
             var approve = Read<LeaveApprove>(p => p.OrderId.Equals(order.Id) && p.ApproverId.Equals(currentUserId)).FirstOrDefaultAsync().Result;
             if (approve.ApproveLevel == 2) order.Status = "1";
         }

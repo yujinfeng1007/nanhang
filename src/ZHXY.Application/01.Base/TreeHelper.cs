@@ -55,7 +55,7 @@ namespace ZHXY.Application
         /// <summary>
         /// 获取子机构
         /// </summary>
-        public static List<TreeView> GetSubOrg(this AppService app,  string nodeId=null ,int nodeLevel=0)
+        public static List<TreeView> GetChildOrg(this AppService app,  string nodeId=null ,int nodeLevel=0)
         {
             nodeLevel = string.IsNullOrWhiteSpace(nodeId) ? 0 : nodeLevel + 1;
             nodeId = string.IsNullOrWhiteSpace(nodeId) ? "0" : nodeId;
@@ -63,7 +63,7 @@ namespace ZHXY.Application
                 new TreeView
                 {
                     Id = p.Id,
-                    Parent = p.ParentId,
+                    ParentId = p.ParentId,
                     Level = nodeLevel,
                     Loaded = false,
                     IsLeaf = !p.Children.Any(),
@@ -84,7 +84,7 @@ namespace ZHXY.Application
                new TreeView
                {
                    Id = p.Id,
-                   Parent = p.ParentId,
+                   ParentId = p.ParentId,
                    Level = nodeLevel,
                    Loaded = false,
                    IsLeaf = !p.Children.Any(),
@@ -105,7 +105,7 @@ namespace ZHXY.Application
                new TreeView
                {
                    Id = p.Id,
-                   Parent = p.ParentId,
+                   ParentId = p.ParentId,
                    Level = nodeLevel,
                    Loaded = false,
                    IsLeaf = !p.Children.Any(),

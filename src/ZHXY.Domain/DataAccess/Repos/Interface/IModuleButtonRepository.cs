@@ -2,8 +2,8 @@
 
 namespace ZHXY.Domain
 {
-    public interface IModuleButtonRepository : IRepositoryBase<SysButton>
+    public interface IModuleButtonRepository : IRepositoryBase<Button>
     {
-        void SubmitCloneButton(List<SysButton> entitys);
+        void SubmitCloneButton(List<Button> entitys);
     }
 }
