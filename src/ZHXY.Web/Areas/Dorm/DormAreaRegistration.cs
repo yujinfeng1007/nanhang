@@ -8,7 +8,8 @@ namespace ZHXY.Web.Dorm
 
         public override void RegisterArea(AreaRegistrationContext context) => context.MapRoute(
                 "Dorm_default",
-                "Dorm/{controller}/{action}"
+                "Dorm/{controller}/{action}",
+                 new { action = "Index" }
             );
     }
 }
