@@ -63,7 +63,7 @@ namespace ZHXY.Common
         /// <summary>
         /// 用户角色信息
         /// </summary>
-        public string[] Roles { get; set; } 
+        public string[] Roles { get; set; }
 
     }
 }
