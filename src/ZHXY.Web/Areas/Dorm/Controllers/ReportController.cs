@@ -12,11 +12,18 @@ namespace ZHXY.Web.Dorm.Controllers
     public class ReportController : ZhxyWebControllerBase
     {
         private LateReturnReportService LateReturnReportApp { get; }
+
+        private NoReturnReportService NoReturnReportApp { get; }
+
+        private NoOutReportService NoOutReportApp { get; }
         private OriginalReportService OriginalReportApp { get; }
-        public ReportController(LateReturnReportService app_1,OriginalReportService app_2 )
+        public ReportController(LateReturnReportService app_1,OriginalReportService app_2, NoReturnReportService app_3, NoOutReportService app_4)
         {
             LateReturnReportApp = app_1;
             OriginalReportApp = app_2;
+            NoReturnReportApp = app_3;
+            NoOutReportApp = app_4;
+
         }
 
         #region View
@@ -38,13 +45,14 @@ namespace ZHXY.Web.Dorm.Controllers
                  Dorm = p.Dorm?.Title,
                  College = p.F_College,
                  InTime = p.F_InTime,
+                 Ftime = p.F_Time
              });
             return PagingResult(list, pagination);
         }
         [HttpGet]
         public ActionResult GetNoReturnList(Pagination pagination, string startTime, string endTime, string classId)
         {
-            var list = LateReturnReportApp.GetList(pagination, startTime, endTime, classId).Select(p =>
+            var list = NoReturnReportApp.GetList(pagination, startTime, endTime, classId).Select(p =>
             new
             {
                 Account = p.F_Account,
@@ -52,14 +60,15 @@ namespace ZHXY.Web.Dorm.Controllers
                 Class = p.Class?.Name,
                 Dorm = p.Dorm?.Title,
                 College = p.F_College,
-                Time = p.F_CreatorTime
+                Time = p.F_OutTime,
+                DayCount   = p.F_DayCount
             });
             return PagingResult(list, pagination);
         }
         [HttpGet]
         public ActionResult GetNoOutList(Pagination pagination, string startTime, string endTime, string classId)
         {
-            var list = LateReturnReportApp.GetList(pagination, startTime, endTime, classId).Select(p =>
+            var list = NoOutReportApp.GetList(pagination, startTime, endTime, classId).Select(p =>
             new
             {
                 Account = p.F_Account,
