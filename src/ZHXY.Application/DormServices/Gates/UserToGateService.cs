@@ -41,7 +41,7 @@ namespace ZHXY.Application.DormServices.Gates
                     var stu = Read<Student>(p => p.UserId == d.Id).FirstOrDefault();
                     studentNo = stu?.StudentNumber;
                     gender = stu?.Gender == "0" ? 2 : 1;
-                    certificateNo = stu?.CardNumber;
+                    certificateNo = stu?.CredNumber;
                     userType = "student001";// "学生";
                     
                     var ssdata = Query<DormStudent>(p => p.StudentId == stu.Id).FirstOrDefault();
@@ -80,6 +80,15 @@ namespace ZHXY.Application.DormServices.Gates
             {
                 try
                 {
+                    DHAccount.PUSH_DH_DELETE_PERSON(new string[] { person.code });
+                }
+                catch
+                {
+
+                }
+                try
+                {
+                   
                     var d = DHAccount.PUSH_DH_ADD_PERSON(person);
                 }
                 catch (Exception e)

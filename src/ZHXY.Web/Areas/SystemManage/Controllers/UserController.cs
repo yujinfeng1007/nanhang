@@ -121,16 +121,15 @@ namespace ZHXY.Web.SystemManage.Controllers
                   
                     var fullPath = $"{basePath}{uploadName}.{existen}";
                     files[i].SaveAs(fullPath);
-                    filepath = $"{Request.Url.Host}{mapPath}{uploadName}.{existen}";
+                    filepath = $"http://{Request.Url.Host}:{Request.Url.Port}{mapPath}{uploadName}.{existen}";
                 }
             }
-            if(string.IsNullOrEmpty( filepath))
+            if(!string.IsNullOrEmpty( filepath))
             {
-                var userEntity = new User { Id =userId,HeadIcon=filepath };
-                App.Update(userEntity);
+                App.UpdIco(userId,filepath);
                 new UserToGateService().SendUserHeadIco(new string[] { userId });
             }
-            return Json(new { state=ResultState.Success, message= "上传成功！", url = filepath});
+            return Json(new { state=ResultState.Success, userId, message = "上传成功！", url = filepath});
 
         }
     }
