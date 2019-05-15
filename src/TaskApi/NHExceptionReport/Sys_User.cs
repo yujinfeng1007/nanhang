@@ -1,4 +1,4 @@
-namespace TaskApi.NanHang
+namespace TaskApi.NHExceptionReport
 {
     using System;
     using System.Collections.Generic;

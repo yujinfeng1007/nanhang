@@ -1,8 +1,10 @@
 namespace TaskApi.NanHang
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Spatial;
 
     public partial class Dorm_DormStudent
     {
@@ -50,8 +52,5 @@ namespace TaskApi.NanHang
         public string F_DeleteUserId { get; set; }
 
         public bool? F_EnabledMark { get; set; }
-
-        [ForeignKey("F_Student_ID")]
-        public School_Students Student { get; set; }
     }
 }

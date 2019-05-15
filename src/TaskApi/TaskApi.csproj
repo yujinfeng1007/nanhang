@@ -88,7 +88,8 @@
     <Compile Include="NanHangReport\InOutType.cs" />
     <Compile Include="NanHangReport\ReportJob.cs" />
     <Compile Include="NanHangReport\ReportMessageJob.cs" />
-    <Compile Include="NanHang\Dorm_DormInfo.cs" />
+    <Compile Include="NanHang\dorm_building.cs" />
+    <Compile Include="NanHang\dorm_dorm.cs" />
     <Compile Include="NanHang\Dorm_DormStudent.cs" />
     <Compile Include="NanHang\NanHangAccept.cs" />
     <Compile Include="NanHang\NanHangJob.cs" />
@@ -103,6 +104,17 @@
     <Compile Include="NanHang\Sys_UserLogOn.cs" />
     <Compile Include="NanHang\Sys_User_Role.cs" />
     <Compile Include="NanHang\TeacherInfo.cs" />
+    <Compile Include="NHExceptionReport\Dorm_DormStudent.cs" />
+    <Compile Include="NHExceptionReport\Dorm_LateReturnReport.cs" />
+    <Compile Include="NHExceptionReport\Dorm_NoOutReport.cs" />
+    <Compile Include="NHExceptionReport\Dorm_NoReturnReport.cs" />
+    <Compile Include="NHExceptionReport\ExceptionMoudle.cs" />
+    <Compile Include="NHExceptionReport\NHExceptionJob.cs" />
+    <Compile Include="NHExceptionReport\NHExceptionPushJob.cs" />
+    <Compile Include="NHExceptionReport\School_Students.cs" />
+    <Compile Include="NHExceptionReport\Sys_Organize.cs" />
+    <Compile Include="NHExceptionReport\sys_org_leader.cs" />
+    <Compile Include="NHExceptionReport\Sys_User.cs" />
     <Compile Include="Organize\OrgModel.cs" />
     <Compile Include="Organize\ResultModel.cs" />
     <Compile Include="Organize\SynOrgJob.cs" />
