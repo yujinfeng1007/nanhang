@@ -138,9 +138,9 @@ namespace ZHXY.Application
             foreach (var item in data)
             {
                 var fieldItem = new FieldItem();
-                fieldItem.encode = item.F_EnCode;
-                fieldItem.fullname = item.F_FullName;
-                dictionary.Add(item.F_Id, fieldItem);
+                fieldItem.encode = item.EnCode;
+                fieldItem.fullname = item.Name;
+                dictionary.Add(item.Id, fieldItem);
             }
             return dictionary;
         }
