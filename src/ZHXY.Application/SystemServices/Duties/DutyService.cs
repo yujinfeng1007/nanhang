@@ -5,6 +5,7 @@ using System.Linq;
 
 using ZHXY.Common;
 using System;
+using System.Collections.Generic;
 
 namespace ZHXY.Application
 {
@@ -16,7 +17,7 @@ namespace ZHXY.Application
 
         public DutyService(IZhxyRepository r) : base(r) { }
 
-        public dynamic GetList(string keyword = "")
+        public List<Role> GetList(string keyword = "")
         {
             var query = Read<Role>(t => t.Category == 2);
             if (!string.IsNullOrEmpty(keyword))
