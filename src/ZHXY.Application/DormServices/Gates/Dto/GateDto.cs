@@ -15,5 +15,9 @@ namespace ZHXY.Application.DormServices.Gates.Dto
         public string F_SysVersion { get; set; }
 
         public string F_GateId { get; set; }
+
+        public string F_BuildingId { get; set; }
+
+        public string F_BuildingIds { get; set; }
     }
 }

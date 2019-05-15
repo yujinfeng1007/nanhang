@@ -15,7 +15,8 @@
         public static string CREATE_STUDENTS_INFO = REQUEST_URL_PORT + "/pims/person"; //创建人员信息
         public static string SELECT_STUDENTS_INFO = REQUEST_URL_PORT + "/pims/persons"; //查询人员信息
         public static string UPLOAD_PHOTO_ZIP_URI = REQUEST_URL_PORT + "/pims/batchPhoto"; // 导入人员照片 （.ZIP文件）
-        public static string UPLOAD_PERSON_EXCEL_URI = REQUEST_URL_PORT + "/pims/uploadPerson?cid=1"; // 导入人员信息excel
+        public static string UPLOAD_TEACHER_EXCEL_URI = REQUEST_URL_PORT + "/pims/defaultUploadPerson?cid=1"; // 导入教师人员信息excel
+        public static string UPLOAD_STUDENT_EXCEL_URI = REQUEST_URL_PORT + "/pims/uploadPerson?cid=1"; // 导入学生人员信息excel
         public static string GET_MACHINE_INFO_URI = REQUEST_URL_PORT + "/fas/dormitory/getDeviceTree"; //获取设备信息
         public static string GET_MQ_CONFIG_URI = REQUEST_URL_PORT + "/admin/API/BRM/Config/GetMqConfig"; //获取MQ配置
         public static string CREATE_DORMITORY_INFO_URI = REQUEST_URL_PORT + "/pims/dormitory/info"; //创建宿舍信息

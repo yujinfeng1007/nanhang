@@ -21,7 +21,7 @@ namespace ZHXY.Application
         public StudentService()
         {
             R = new ZhxyRepository();
-        }
+        }   
         public dynamic GetByStudentNumber(string num)
         {
             return Read<Student>(p => p.StudentNumber.Equals(num)).FirstOrDefaultAsync().Result;
@@ -40,6 +40,7 @@ namespace ZHXY.Application
             return query.Paging(pagination).ToListAsync().Result;
         }
 
+       
 
         public dynamic GetById(string id) => Get<Student>(id);
     }

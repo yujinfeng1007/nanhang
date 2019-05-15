@@ -22,6 +22,8 @@ namespace ZHXY.Application.DormServices.Gates
     {
         public UserToGateService(IZhxyRepository r) : base(r) { }
 
+        public UserToGateService() => R = new ZhxyRepository();
+
         public void SendUserHeadIco(string[] userId)
         {
             var stuList = Read<User>().Where(t => userId.Contains(t.Id)).ToList().Select(d =>
@@ -30,7 +32,7 @@ namespace ZHXY.Application.DormServices.Gates
                 string imgUri = d.HeadIcon;
                 int gender = 0;
                 string certificateNo = "";
-                string userType = "访客";
+                string userType = "teacher001";
                 string ss = "";
                 string lc = "";
                 string ld = "";
@@ -39,8 +41,9 @@ namespace ZHXY.Application.DormServices.Gates
                     var stu = Read<Student>(p => p.UserId == d.Id).FirstOrDefault();
                     studentNo = stu?.StudentNumber;
                     gender = stu?.Gender == "0" ? 2 : 1;
-                    certificateNo = stu?.CardNumber;
-                    userType = "学生";
+                    certificateNo = stu?.CredNumber;
+                    userType = "student001";// "学生";
+                    
                     var ssdata = Query<DormStudent>(p => p.StudentId == stu.Id).FirstOrDefault();
                     ss = ssdata?.DormInfo?.Title;
                     lc = ssdata?.DormInfo?.FloorNumber;
@@ -55,7 +58,7 @@ namespace ZHXY.Application.DormServices.Gates
                     //imgUri = tea?.FacePhoto;
                     gender = tea?.Gender == "0" ? 2 : 1;
                     certificateNo = tea?.CredNum;
-                    userType = "教职工";
+                    userType = "teacher001";// "教职工";
                 }
                 return new PersonMoudle
                 {
@@ -77,6 +80,15 @@ namespace ZHXY.Application.DormServices.Gates
             {
                 try
                 {
+                    DHAccount.PUSH_DH_DELETE_PERSON(new string[] { person.code });
+                }
+                catch
+                {
+
+                }
+                try
+                {
+                   
                     var d = DHAccount.PUSH_DH_ADD_PERSON(person);
                 }
                 catch (Exception e)

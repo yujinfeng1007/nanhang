@@ -54,10 +54,12 @@ namespace ZHXY.Api.Controllers
 
             //导入人员照片（.zip压缩包）
             //DHAccount.PUSH_DH_BATCHPHOTO_ZIP("C:\\imgFile\\imgFile");
+            //DHAccount.PUSH_DH_BATCHPHOTO_ZIP("C:\\imgFile\\" + name);
 
             //导入人员信息（excel文件）
-            //DHAccount.PUSH_DH_PERSON_EXCEL("C:\\人员信息.xlsx");
-            DHAccount.PUSH_DH_PERSON_EXCEL("C:\\" + name);
+            //DHAccount.PUSH_DH_STUDENT_EXCEL("C:\\人员信息.xlsx");
+            DHAccount.PUSH_DH_TEACHER_EXCEL("C:\\人员信息.xlsx");
+            //DHAccount.PUSH_DH_PERSON_EXCEL("C:\\" + name);
             return null;
             //获取大华设备信息
             //return DHAccount.GetMachineInfo("001", "01;01,02,05,07_4,08_3,08_5,34,38;01@9,07,12", "0", "");

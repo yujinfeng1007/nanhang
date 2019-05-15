@@ -239,5 +239,62 @@ namespace ZHXY.Common
             }
             return true;
         }
+
+        public static bool TeacherWriteExcel(string MoudleFilePath, string DataFilePath, List<DHTeacherMoudle> StudentMoudleList)
+        {
+            FileStream fs = null;
+            if (!File.Exists(MoudleFilePath)) { File.Create(MoudleFilePath); }
+            if (File.Exists(DataFilePath)) { File.Delete(DataFilePath); }
+            try
+            {
+                using (fs = File.OpenRead(MoudleFilePath))
+                {
+                    IWorkbook workbook = null;
+                    // 2007版本
+                    if (MoudleFilePath.IndexOf(".xlsx", StringComparison.Ordinal) > 0)
+                    {
+                        workbook = new XSSFWorkbook(fs);
+                    }
+                    // 2003版本
+                    else if (MoudleFilePath.IndexOf(".xls", StringComparison.Ordinal) > 0)
+                    {
+                        workbook = new HSSFWorkbook(fs);
+                    }
+                    if (workbook != null)
+                    {
+                        var sheet = workbook.GetSheetAt(0);
+                        //开始写入数据
+                        for (int i = 0; i < StudentMoudleList.Count; i++)
+                        {
+                            var rows = sheet.CreateRow(i + 1);
+                            var student = StudentMoudleList[i];
+                            rows.CreateCell(0).SetCellValue(student.name);
+                            rows.CreateCell(1).SetCellValue(student.sex);
+                            rows.CreateCell(2).SetCellValue(student.TeacherNo);
+                            rows.CreateCell(3).SetCellValue(student.OrgName);
+                            rows.CreateCell(4).SetCellValue(student.CredNum);
+                            rows.CreateCell(5).SetCellValue(student.type);
+                            rows.CreateCell(10).SetCellValue(student.ColleageCode);
+                            rows.CreateCell(11).SetCellValue(student.BuildName);
+                            rows.CreateCell(12).SetCellValue(student.FloorName);
+                            rows.CreateCell(13).SetCellValue(student.DormName);
+                        }
+                        using (fs = File.OpenWrite(DataFilePath))
+                        {
+                            workbook.Write(fs);
+                        }
+                        fs.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string ErrorMess = ex.Message;
+                Console.WriteLine(ErrorMess);
+                fs?.Close();
+                return false;
+            }
+            return true;
+        }
     }
 }

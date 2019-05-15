@@ -76,5 +76,7 @@ namespace TaskApi.DH
 
         [StringLength(50)]
         public string code { get; set; } = null;
+
+        public string roleId { get; set; } = null;
     }
 }

@@ -4,6 +4,8 @@ using Quartz;
 using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Dynamic;
 using System.Text;
 using ZHXY.Common;
 using ZHXY.Domain;
@@ -43,23 +45,39 @@ namespace TaskApi.DH
             //有可能一次性获取的流水记录有当前月份和上个月的（月份交替，凌晨时分的数据）
             var LastMonthList = new List<LineRecordMoudle>();  //上个月数据入库集合
             var CurrentMonthList = new List<LineRecordMoudle>(); //当前月份数据入库集合
-
+            var TempLastMonthList = new List<LineRecordMoudle>();  //上个月数据入库集合 (访客)
+            var TempCurrentMonthList = new List<LineRecordMoudle>(); //当前月份数据入库集合（访客）
             var dateTitle = GetDateTime(Int32.Parse(lineRecordMoudles[0].swipDate));
             int TableIntTitle = Int32.Parse(dateTitle.Year + "" + dateTitle.Month);
             string tableNameTitle = "DHFLOW_" + dateTitle.Year + dateTitle.Month.ToString().PadLeft(2, '0');
-            string tableNameOther = null;
+            string tableNameTemp = "DHFLOW_TEMP_" + dateTitle.Year + dateTitle.Month.ToString().PadLeft(2, '0');//访客流水表
+            string tableNameOther = null, tableNameTempOther = null;
             foreach (var lineRecord in lineRecordMoudles)
             {
                 var date = GetDateTime(Int32.Parse(lineRecord.swipDate));
                 int TableInt = Int32.Parse(date.Year + "" + date.Month);
                 if(TableInt == TableIntTitle)
                 {
-                    LastMonthList.Add(lineRecord);
+                    if (lineRecord.roleId.Equals("temp"))
+                    {
+                        TempLastMonthList.Add(lineRecord); //上月访客流水数据集合
+                    }
+                    else
+                    {
+                        LastMonthList.Add(lineRecord); // 上月师生流水数据集合
+                    }
                 }
                 else
                 {
                     tableNameOther = "DHFLOW_" + date.Year + date.Month.ToString().PadLeft(2, '0');
-                    CurrentMonthList.Add(lineRecord);
+                    tableNameTempOther = "DHFLOW_TEMP_" + date.Year + date.Month.ToString().PadLeft(2, '0');//访客流水表
+                    if (lineRecord.roleId.Equals("temp")){
+                        TempCurrentMonthList.Add(lineRecord); //当前月份访客的流水数据集合
+                    }
+                    else
+                    {
+                        CurrentMonthList.Add(lineRecord); //当前月份师生的流水数据集合
+                    }
                 }
             }
 
@@ -68,11 +86,19 @@ namespace TaskApi.DH
             {
                 InsertSql(LastMonthList, tableNameTitle);
             }
-
             if(CurrentMonthList.Count != 0)
             {
                 InsertSql(CurrentMonthList, tableNameOther);
             }
+            if (TempLastMonthList.Count != 0)
+            {
+                InsertSql(TempLastMonthList, tableNameTemp);
+            }
+            if (TempCurrentMonthList.Count != 0)
+            {
+                InsertSql(TempCurrentMonthList, tableNameTempOther);
+            }
+
         }
 
        public void  InsertSql(List<LineRecordMoudle> RecordList , string tableName)
@@ -80,7 +106,7 @@ namespace TaskApi.DH
             SqlHelper.CheckExistsTable(tableName, CreateSqlStr(tableName));
             var InsertSql = new StringBuilder("INSERT INTO [dbo].["+ tableName + "]([code],[id], [date], [channelCode], [channelName], " +
                 "[departmentCode], [departmentName], [cardNum], [firstName], [lastName], [tel], [gender], [idNum], [personId], [cardType], " +
-                "[inOut], [eventType], [deviceType], [swipDate], [picture1], [picture2], [picture3], [picture4], [memo], [alarmCode], [pictureUrl]) VALUES ");
+                "[inOut], [eventType], [deviceType], [swipDate], [picture1], [picture2], [picture3], [picture4], [memo], [alarmCode], [pictureUrl], [roleId]) VALUES ");
             foreach(var record in RecordList)
             {
                 InsertSql.Append("('"+ record .code+ "', '" + record.id + "', '" + record.date + "', '" + record.channelCode
@@ -88,7 +114,7 @@ namespace TaskApi.DH
                     + "', '"+record.cardNum + "', '"+record.firstName + "', '"+record.lastName+"', '"+record.tel 
                     + "', '"+record.gender + "', '"+record.idNum + "', '"+record.personId + "', '"+record.cardType 
                     + "', '"+record.inOut + "', '"+record.eventType + "', '"+record.deviceType + "', '"+record.swipDate 
-                    + "', '"+record.picture1 + "', '"+record.picture2 + "', '"+record.picture3 + "', '"+record.picture4 + "', '"+record.memo + "', '"+record.alarmCode + "', '"+record.pictureUrl + "'),");
+                    + "', '"+record.picture1 + "', '"+record.picture2 + "', '"+record.picture3 + "', '"+record.picture4 + "', '"+record.memo + "', '"+record.alarmCode + "', '"+record.pictureUrl + "', '"+record.roleId+"'),");
             }
             SqlHelper.ExecuteNonQuery(InsertSql.ToString().Substring(0, InsertSql.Length-1));
         }
@@ -150,7 +176,8 @@ namespace TaskApi.DH
                 "  [memo] varchar(max) COLLATE Chinese_PRC_CI_AS  NULL,\n" +
                 "  [alarmCode] varchar(max) COLLATE Chinese_PRC_CI_AS  NULL,\n" +
                 "  [pictureUrl] varchar(max) COLLATE Chinese_PRC_CI_AS  NULL,\n" +
-                "  CONSTRAINT ["+"PK_"+tableName+"] PRIMARY KEY CLUSTERED ([id])\n" +
+                "  [roleId] varchar(max) COLLATE Chinese_PRC_CI_AS  NULL,\n" +
+                "  CONSTRAINT [" +"PK_"+tableName+"] PRIMARY KEY CLUSTERED ([id])\n" +
                 "WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)  \n" +
                 "ON [PRIMARY]\n" +
                 ") ";

@@ -17,6 +17,12 @@
 
 
         /// <summary>
+        /// 班级和班主任的关系
+        /// </summary>
+        public static string ClassLeader { get; } = $"{nameof(Organ)}{Separator}{nameof(Teacher)}";
+
+
+        /// <summary>
         /// 用户和角色
         /// </summary>
         public static string UserRole { get; } = $"{nameof(User)}{Separator}{nameof(Role)}";

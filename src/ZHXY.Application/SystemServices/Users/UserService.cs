@@ -45,6 +45,13 @@ namespace ZHXY.Application
             DelAndSave<User>(users);
         }
 
+        public void UpdIco(string userId,string filepath)
+        {
+            var user = Get<User>(userId);
+            user.HeadIcon = filepath;
+            SaveChanges();
+        }
+
         public User CheckLogin(string username, string password)
         {
             var user = Read<User>(p => p.Account.Equals(username)).FirstOrDefaultAsync().Result;

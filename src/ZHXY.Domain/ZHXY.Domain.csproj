@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EntityConfig\Dorm\Dorm_FlowInAndOutOfBuildingMap.cs" />
+    <Compile Include="Entity\Dorm\Dorm_FlowInAndOutOfBuilding.cs" />
     <Compile Include="Relation.cs" />
     <Compile Include="SYS_CONSTS.cs" />
     <Compile Include="DataAccess\Extensions\DbHelper.cs" />
