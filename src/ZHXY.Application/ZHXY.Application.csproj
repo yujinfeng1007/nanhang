@@ -102,6 +102,9 @@
     <Compile Include="DormServices\Performances\PerformanceAppService.cs" />
     <Compile Include="DormServices\Reports\ReportAppService.cs" />
     <Compile Include="DormServices\Visitors\Dto\AddVisitApplyDto.cs" />
+    <Compile Include="SystemServices\Caches\SmartCampusConsts.cs" />
+    <Compile Include="SystemServices\Caches\FieldItem.cs" />
+    <Compile Include="SystemServices\Caches\SysCacheAppService.cs" />
     <Compile Include="SystemServices\Filters\AddFilterIpDto.cs" />
     <Compile Include="SystemServices\Filters\UpdateFilterIpDto.cs" />
     <Compile Include="SystemServices\Logs\Dto\AddLogDto.cs" />
@@ -117,6 +120,7 @@
     <Compile Include="RequestDto\Api\StudentLeaveInput.cs" />
     <Compile Include="RequestDto\BaseApiInput.cs" />
     <Compile Include="SystemServices\Roles\Dto\UpdateRoleDto.cs" />
+    <Compile Include="SystemServices\Roles\RoleAuthorizeService.cs" />
     <Compile Include="SystemServices\Users\Dto\AddUserDto.cs" />
     <Compile Include="SystemServices\Users\Dto\Login\LoginInput.cs" />
     <Compile Include="SystemServices\Users\Dto\Login\ResultModel.cs" />
