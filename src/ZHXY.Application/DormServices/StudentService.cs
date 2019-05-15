@@ -38,10 +38,10 @@ namespace ZHXY.Application
             var query = Read<Student>();
             query = string.IsNullOrWhiteSpace(keyword) ? query : query.Where(p => p.Name.Contains(keyword));
             return query.Paging(pagination).ToListAsync().Result;
-        }
-
-       
+        }       
 
         public dynamic GetById(string id) => Get<Student>(id);
+
+        public List<Student> GetListByClassId(string classId) => Read<Student>(t => t.ClassId.Equals(classId)).ToListAsync().Result;
     }
 }

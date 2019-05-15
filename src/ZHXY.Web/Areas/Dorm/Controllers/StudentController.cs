@@ -36,6 +36,19 @@ namespace ZHXY.Web.Dorm.Controllers
             var data = App.GetByStudentNumber(number);
             return Resultaat.Success(data);
         }
+        /// <summary>
+        /// 根据班级ID查学生
+        /// </summary>
+        /// <returns>  </returns>
+        [HttpGet]
+
+        public ActionResult GetGridSelectByClassId(string F_ClassID)
+        {
+            var list = App.GetListByClassId(F_ClassID);
+            return Content(list.ToJson());
+        }
+
+
 
 
     }
