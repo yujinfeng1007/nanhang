@@ -1,4 +1,4 @@
-namespace TaskApi.NanHang
+namespace TaskApi.NHExceptionReport
 {
     using System;
     using System.Collections.Generic;
@@ -430,6 +430,7 @@ namespace TaskApi.NanHang
         [StringLength(50)]
         public string F_OnlyNo { get; set; }
 
-        public int F_InOut { get; set; }
+        [StringLength(50)]
+        public string F_InOut { get; set; }
     }
 }

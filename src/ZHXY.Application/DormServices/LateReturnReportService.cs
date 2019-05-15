@@ -31,6 +31,26 @@ namespace ZHXY.Application
             }
             return Read(expression).Paging(pagination).ToList();
         }
+
+        //根据学生ID获取晚归记录
+        public List<LateReturnReport> GetLateListByStuId(string studentId, string startTime, string endTime)
+        {
+            var expression = ExtLinq.True<LateReturnReport>();
+            if (!string.IsNullOrEmpty(studentId))
+                expression = expression.And(p => p.F_StudentId.Equals(studentId));
+            if (!string.IsNullOrEmpty(startTime))
+            {
+                var start = Convert.ToDateTime(startTime + " 00:00:00");
+                expression = expression.And(p => p.F_CreatorTime >= start);
+            }
+            if (!string.IsNullOrEmpty(endTime))
+            {
+                var end = Convert.ToDateTime(endTime + " 23:59:59");
+                expression = expression.And(p => p.F_CreatorTime <= end);
+            }
+            return Read(expression).ToList();
+        }
+
         public List<LateReturnReport> GetListByClass(string classId, string startTime, string endTime)
         {
             var expression = ExtLinq.True<LateReturnReport>();

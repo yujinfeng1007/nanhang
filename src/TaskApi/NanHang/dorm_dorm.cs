@@ -1,9 +1,12 @@
 namespace TaskApi.NanHang
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Spatial;
 
-    public partial class Dorm_DormInfo
+    public partial class dorm_dorm
     {
         [Key]
         [StringLength(50)]

@@ -1,26 +1,25 @@
-namespace TaskApi.NanHang
+namespace TaskApi.NHExceptionReport
 {
     using System;
     using System.Data.Entity;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
 
-    public partial class NanHangAccept : DbContext
+    public partial class ExceptionMoudle : DbContext
     {
-        public NanHangAccept()
-            : base("name=NanHangAccept")
+        public ExceptionMoudle()
+            : base("name=ExceptionMoudle")
         {
         }
 
         public virtual DbSet<Dorm_DormStudent> Dorm_DormStudent { get; set; }
+        public virtual DbSet<Dorm_NoOutReport> Dorm_NoOutReport { get; set; }
         public virtual DbSet<School_Students> School_Students { get; set; }
-        public virtual DbSet<School_Teachers> School_Teachers { get; set; }
         public virtual DbSet<Sys_Organize> Sys_Organize { get; set; }
         public virtual DbSet<Sys_User> Sys_User { get; set; }
-        public virtual DbSet<Sys_User_Role> Sys_User_Role { get; set; }
-        public virtual DbSet<Sys_UserLogOn> Sys_UserLogOn { get; set; }
-        public virtual DbSet<dorm_building> dorm_building { get; set; }
-        public virtual DbSet<dorm_dorm> dorm_dorm { get; set; }
+        public virtual DbSet<Dorm_LateReturnReport> Dorm_LateReturnReport { get; set; }
+        public virtual DbSet<Dorm_NoReturnReport> Dorm_NoReturnReport { get; set; }
+        public virtual DbSet<sys_org_leader> sys_org_leader { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -62,6 +61,58 @@ namespace TaskApi.NanHang
 
             modelBuilder.Entity<Dorm_DormStudent>()
                 .Property(e => e.F_DeleteUserId)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Dorm_NoOutReport>()
+                .Property(e => e.F_Id)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Dorm_NoOutReport>()
+                .Property(e => e.F_CreatorUserId)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Dorm_NoOutReport>()
+                .Property(e => e.F_DepartmentId)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Dorm_NoOutReport>()
+                .Property(e => e.F_LastModifyUserId)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Dorm_NoOutReport>()
+                .Property(e => e.F_DeleteUserId)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Dorm_NoOutReport>()
+                .Property(e => e.F_Memo)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Dorm_NoOutReport>()
+                .Property(e => e.F_Account)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Dorm_NoOutReport>()
+                .Property(e => e.F_Name)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Dorm_NoOutReport>()
+                .Property(e => e.F_College)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Dorm_NoOutReport>()
+                .Property(e => e.F_Profession)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Dorm_NoOutReport>()
+                .Property(e => e.F_Class)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Dorm_NoOutReport>()
+                .Property(e => e.F_Dorm)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Dorm_NoOutReport>()
+                .Property(e => e.F_StudentId)
                 .IsUnicode(false);
 
             modelBuilder.Entity<School_Students>()
@@ -592,320 +643,8 @@ namespace TaskApi.NanHang
                 .Property(e => e.F_OnlyNo)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_Id)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_User_ID)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_Divis_ID)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_Name)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_Name_Old)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_Gender)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_Num)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_Nation)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_FacePhoto)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_CredType)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_CredNum)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_CredPhoto_Obve)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_CredPhoto_Rever)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_Native)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_RegAddr)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_Volk)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_PolitStatu)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_Marrige)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_Health)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_InWork_Date)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_Source_Teacher)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_Type_Teacher)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_Payroll)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_YRXS)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_If_Contract)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_Profession)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_Academy)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_Education)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_Duties)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_Titles)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_TSJYCYZS)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_XXJSYY)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_GFSFS)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_JCFW)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_JCFW_Start)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_JCFW_End)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_If_Sp)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_If_Gg)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_Status)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_DepartmentId)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_CreatorUserId)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_LastModifyUserId)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_DeleteUserId)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_Duty)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_RoleId)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_MobilePhone)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_Introduction)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_Email)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_GL)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_XL)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_DYXL)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_DYXLXW)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_DYBYYX)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_DYZY)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_ZGXW)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_ZGSJ)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_XNDJ)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_SFZGZ)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_ZGZBH)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_ZGZMC)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_XJ)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_HTN)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_SFZZ)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_SBQK)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_GSQK)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_GJJQK)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_JJUser)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_JJPhone)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_LZSJ)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_School)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_NL)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_ZGZY)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_Ktype)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_Kstatu)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_Identity)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_Type_Tea)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_YPNo)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_YPPwd)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<School_Teachers>()
-                .Property(e => e.F_Mac_No)
+            modelBuilder.Entity<School_Students>()
+                .Property(e => e.F_InOut)
                 .IsUnicode(false);
 
             modelBuilder.Entity<Sys_Organize>()
@@ -1092,180 +831,116 @@ namespace TaskApi.NanHang
                 .Property(e => e.EmailPassword)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<Sys_User_Role>()
-                .Property(e => e.F_User)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Sys_User_Role>()
-                .Property(e => e.F_Role)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Sys_User_Role>()
+            modelBuilder.Entity<Dorm_LateReturnReport>()
                 .Property(e => e.F_Id)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<Sys_User_Role>()
-                .Property(e => e.F_DepartmentId)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Sys_User_Role>()
+            modelBuilder.Entity<Dorm_LateReturnReport>()
                 .Property(e => e.F_CreatorUserId)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<Sys_User_Role>()
+            modelBuilder.Entity<Dorm_LateReturnReport>()
+                .Property(e => e.F_DepartmentId)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Dorm_LateReturnReport>()
                 .Property(e => e.F_LastModifyUserId)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<Sys_User_Role>()
+            modelBuilder.Entity<Dorm_LateReturnReport>()
                 .Property(e => e.F_DeleteUserId)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<Sys_UserLogOn>()
-                .Property(e => e.F_Id)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Sys_UserLogOn>()
-                .Property(e => e.F_UserId)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Sys_UserLogOn>()
-                .Property(e => e.F_UserPassword)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Sys_UserLogOn>()
-                .Property(e => e.F_UserSecretkey)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Sys_UserLogOn>()
-                .Property(e => e.F_Question)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Sys_UserLogOn>()
-                .Property(e => e.F_AnswerQuestion)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Sys_UserLogOn>()
-                .Property(e => e.F_Language)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Sys_UserLogOn>()
-                .Property(e => e.F_Theme)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Sys_UserLogOn>()
-                .Property(e => e.F_DepartmentId)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<dorm_building>()
-                .Property(e => e.id)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<dorm_building>()
-                .Property(e => e.title)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<dorm_building>()
-                .Property(e => e.area)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<dorm_building>()
-                .Property(e => e.building_no)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<dorm_building>()
-                .Property(e => e.floor_num)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<dorm_building>()
-                .Property(e => e.unit_num)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<dorm_building>()
-                .Property(e => e.address)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<dorm_building>()
-                .Property(e => e.classroom_type)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<dorm_building>()
-                .Property(e => e.classroom_status)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<dorm_dorm>()
-                .Property(e => e.F_Id)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<dorm_dorm>()
-                .Property(e => e.F_DepartmentId)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<dorm_dorm>()
-                .Property(e => e.F_CreatorUserId)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<dorm_dorm>()
-                .Property(e => e.F_LastModifyUserId)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<dorm_dorm>()
+            modelBuilder.Entity<Dorm_LateReturnReport>()
                 .Property(e => e.F_Memo)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<dorm_dorm>()
-                .Property(e => e.F_Area)
+            modelBuilder.Entity<Dorm_LateReturnReport>()
+                .Property(e => e.F_Account)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<dorm_dorm>()
-                .Property(e => e.F_Building_No)
+            modelBuilder.Entity<Dorm_LateReturnReport>()
+                .Property(e => e.F_Name)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<dorm_dorm>()
-                .Property(e => e.F_Floor_No)
+            modelBuilder.Entity<Dorm_LateReturnReport>()
+                .Property(e => e.F_College)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<dorm_dorm>()
-                .Property(e => e.F_Unit_No)
+            modelBuilder.Entity<Dorm_LateReturnReport>()
+                .Property(e => e.F_Profession)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<dorm_dorm>()
-                .Property(e => e.F_Classroom_Type)
+            modelBuilder.Entity<Dorm_LateReturnReport>()
+                .Property(e => e.F_Class)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<dorm_dorm>()
-                .Property(e => e.F_Classroom_No)
+            modelBuilder.Entity<Dorm_LateReturnReport>()
+                .Property(e => e.F_Dorm)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<dorm_dorm>()
-                .Property(e => e.F_Sex)
+            modelBuilder.Entity<Dorm_LateReturnReport>()
+                .Property(e => e.F_StudentId)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<dorm_dorm>()
-                .Property(e => e.F_Classroom_Status)
+            modelBuilder.Entity<Dorm_NoReturnReport>()
+                .Property(e => e.F_Id)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<dorm_dorm>()
+            modelBuilder.Entity<Dorm_NoReturnReport>()
+                .Property(e => e.F_CreatorUserId)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Dorm_NoReturnReport>()
+                .Property(e => e.F_DepartmentId)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Dorm_NoReturnReport>()
+                .Property(e => e.F_LastModifyUserId)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Dorm_NoReturnReport>()
                 .Property(e => e.F_DeleteUserId)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<dorm_dorm>()
-                .Property(e => e.F_Title)
+            modelBuilder.Entity<Dorm_NoReturnReport>()
+                .Property(e => e.F_Memo)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<dorm_dorm>()
-                .Property(e => e.F_Leader_ID)
+            modelBuilder.Entity<Dorm_NoReturnReport>()
+                .Property(e => e.F_Account)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<dorm_dorm>()
-                .Property(e => e.F_Leader_Name)
+            modelBuilder.Entity<Dorm_NoReturnReport>()
+                .Property(e => e.F_Name)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<dorm_dorm>()
-                .Property(e => e.F_Manager_ID)
+            modelBuilder.Entity<Dorm_NoReturnReport>()
+                .Property(e => e.F_College)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<dorm_dorm>()
-                .Property(e => e.F_Manager_Name)
+            modelBuilder.Entity<Dorm_NoReturnReport>()
+                .Property(e => e.F_Profession)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Dorm_NoReturnReport>()
+                .Property(e => e.F_Class)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Dorm_NoReturnReport>()
+                .Property(e => e.F_Dorm)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Dorm_NoReturnReport>()
+                .Property(e => e.F_StudentId)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<sys_org_leader>()
+                .Property(e => e.org_id)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<sys_org_leader>()
+                .Property(e => e.user_id)
                 .IsUnicode(false);
         }
     }
