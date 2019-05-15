@@ -166,12 +166,12 @@ namespace ZHXY.Application
                 data = data.Union(app.GetButtonList(e), new ModuleButtonComparer()).ToList();
             }
 
-            var dataModuleId = data.Distinct(new ExtList<Button>("F_ModuleId"));
+            var dataModuleId = data.Select(t=>t.MenuId).Distinct();
             var dictionary = new Dictionary<string, object>();
             foreach (var item in dataModuleId)
             {
-                var buttonList = data.Where(t => t.MenuId.Equals(item.MenuId)).ToList();
-                dictionary.Add(item.MenuId, buttonList);
+                var buttonList = data.Where(t => t.MenuId.Equals(item)).ToList();
+                dictionary.Add(item, buttonList);
             }
             return dictionary;
         }
@@ -232,8 +232,8 @@ namespace ZHXY.Application
             var dictionary = new Dictionary<string, object>();
             foreach (var item in data)
             {
-                var fieldItem = new FieldItem { encode = item.F_EnCode, fullname = item.F_FullName };
-                dictionary.Add(item.F_Id, fieldItem);
+                var fieldItem = new FieldItem { encode = item.EnCode, fullname = item.Name };
+                dictionary.Add(item.Id, fieldItem);
             }
             return dictionary;
         }
@@ -357,13 +357,30 @@ namespace ZHXY.Application
         {
             var sbJson = new StringBuilder();
             sbJson.Append("[");
-            var entitys = data.FindAll(t => t.ParentId == parentId);
-            if (entitys.Count > 0)
+            var entitys = data.FindAll(t => t.ParentId == parentId).Select(p=>new
+            {
+                F_Id = p.Id,
+                F_ParentId = p.ParentId,
+                //F_Layers =p.lay
+                F_EnCode = p.EnCode,
+                F_FullName = p.Name,
+                F_Icon = p.Icon,
+                F_Ico = p.IconForWeb,
+                F_UrlAddress = p.Url,
+                F_Target = p.Target,
+                F_IsMenu = p.IsMenu,
+                F_IsExpand = p.IsExpand,
+                F_IsPublic = p.IsPublic,
+                F_SortCode = p.SortCode,
+                F_BelongSys=p.BelongSys
+            });
+
+            if (entitys.Count() > 0)
             {
                 foreach (var item in entitys)
                 {
                     var strJson = item.ToJson();
-                    strJson = strJson.Insert(strJson.Length - 1, ",\"ChildNodes\":" + ToMenuJson(data, item.Id) + string.Empty);
+                    strJson = strJson.Insert(strJson.Length - 1, ",\"ChildNodes\":" + ToMenuJson(data, item.F_Id) + string.Empty);
                     sbJson.Append(strJson + ",");
                 }
                 sbJson = sbJson.Remove(sbJson.Length - 1, 1);

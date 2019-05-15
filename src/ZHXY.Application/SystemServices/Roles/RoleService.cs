@@ -18,7 +18,7 @@ namespace ZHXY.Application
         {
         }
        
-        public dynamic GetList(string keyword = null)
+        public List<Role> GetList(string keyword = null)
         {
             var query = Read<Role>(p => p.Category == 1);
             query = string.IsNullOrWhiteSpace(keyword) ? query : query.Where(p => p.Name.Contains(keyword) || p.EnCode.Contains(keyword));

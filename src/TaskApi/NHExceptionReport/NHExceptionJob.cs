@@ -102,6 +102,11 @@ namespace TaskApi.NHExceptionReport
         {
             //查看所有人员23:00到凌晨2点的最后一条记录
             DateTime StartTime = QuartzTime.AddDays(-1).Date.AddHours(WorkDayLateReturnTime);
+            var DayOfWeek = QuartzTime.AddDays(-1).DayOfWeek.ToString();
+            if (DayOfWeek.Equals("Saturday") || DayOfWeek.Equals("Friday"))
+            {
+                StartTime = QuartzTime.Date;
+            }
             DateTime EndTime = QuartzTime.Date.AddHours(NotReturnTime);
             long StartTimestamp = DateHelper.ConvertDateTimeInt(StartTime);
             long EndTimestamp = DateHelper.ConvertDateTimeInt(EndTime);
