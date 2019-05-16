@@ -8,103 +8,103 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ZHXY.Dorm.Device.NHMessage {
+namespace ZHXY.Dorm.Device.PushService {
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(Namespace="http://passport.nchu.edu.cn/", ConfigurationName="NHMessage.数据中心接口服务Soap")]
+    [System.ServiceModel.ServiceContractAttribute(Namespace="http://passport.nchu.edu.cn/", ConfigurationName="PushService.数据中心接口服务Soap")]
     public interface 数据中心接口服务Soap {
         
         // CODEGEN: 命名空间 http://passport.nchu.edu.cn/ 的元素名称 SiteID 以后生成的消息协定未标记为 nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://passport.nchu.edu.cn/GetAllOULists", ReplyAction="*")]
-        ZHXY.Dorm.Device.NHMessage.GetAllOUListsResponse GetAllOULists(ZHXY.Dorm.Device.NHMessage.GetAllOUListsRequest request);
+        ZHXY.Dorm.Device.PushService.GetAllOUListsResponse GetAllOULists(ZHXY.Dorm.Device.PushService.GetAllOUListsRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://passport.nchu.edu.cn/GetAllOULists", ReplyAction="*")]
-        System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.GetAllOUListsResponse> GetAllOUListsAsync(ZHXY.Dorm.Device.NHMessage.GetAllOUListsRequest request);
+        System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.GetAllOUListsResponse> GetAllOUListsAsync(ZHXY.Dorm.Device.PushService.GetAllOUListsRequest request);
         
         // CODEGEN: 命名空间 http://passport.nchu.edu.cn/ 的元素名称 SiteID 以后生成的消息协定未标记为 nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://passport.nchu.edu.cn/GetOUList", ReplyAction="*")]
-        ZHXY.Dorm.Device.NHMessage.GetOUListResponse GetOUList(ZHXY.Dorm.Device.NHMessage.GetOUListRequest request);
+        ZHXY.Dorm.Device.PushService.GetOUListResponse GetOUList(ZHXY.Dorm.Device.PushService.GetOUListRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://passport.nchu.edu.cn/GetOUList", ReplyAction="*")]
-        System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.GetOUListResponse> GetOUListAsync(ZHXY.Dorm.Device.NHMessage.GetOUListRequest request);
+        System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.GetOUListResponse> GetOUListAsync(ZHXY.Dorm.Device.PushService.GetOUListRequest request);
         
         // CODEGEN: 命名空间 http://passport.nchu.edu.cn/ 的元素名称 SiteID 以后生成的消息协定未标记为 nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://passport.nchu.edu.cn/UpdateStudentClassNo", ReplyAction="*")]
-        ZHXY.Dorm.Device.NHMessage.UpdateStudentClassNoResponse UpdateStudentClassNo(ZHXY.Dorm.Device.NHMessage.UpdateStudentClassNoRequest request);
+        ZHXY.Dorm.Device.PushService.UpdateStudentClassNoResponse UpdateStudentClassNo(ZHXY.Dorm.Device.PushService.UpdateStudentClassNoRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://passport.nchu.edu.cn/UpdateStudentClassNo", ReplyAction="*")]
-        System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.UpdateStudentClassNoResponse> UpdateStudentClassNoAsync(ZHXY.Dorm.Device.NHMessage.UpdateStudentClassNoRequest request);
+        System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.UpdateStudentClassNoResponse> UpdateStudentClassNoAsync(ZHXY.Dorm.Device.PushService.UpdateStudentClassNoRequest request);
         
         // CODEGEN: 命名空间 http://passport.nchu.edu.cn/ 的元素名称 SiteID 以后生成的消息协定未标记为 nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://passport.nchu.edu.cn/UpdateStudentStatus", ReplyAction="*")]
-        ZHXY.Dorm.Device.NHMessage.UpdateStudentStatusResponse UpdateStudentStatus(ZHXY.Dorm.Device.NHMessage.UpdateStudentStatusRequest request);
+        ZHXY.Dorm.Device.PushService.UpdateStudentStatusResponse UpdateStudentStatus(ZHXY.Dorm.Device.PushService.UpdateStudentStatusRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://passport.nchu.edu.cn/UpdateStudentStatus", ReplyAction="*")]
-        System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.UpdateStudentStatusResponse> UpdateStudentStatusAsync(ZHXY.Dorm.Device.NHMessage.UpdateStudentStatusRequest request);
+        System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.UpdateStudentStatusResponse> UpdateStudentStatusAsync(ZHXY.Dorm.Device.PushService.UpdateStudentStatusRequest request);
         
         // CODEGEN: 命名空间 http://passport.nchu.edu.cn/ 的元素名称 ClassID 以后生成的消息协定未标记为 nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://passport.nchu.edu.cn/News_GetNewsList", ReplyAction="*")]
-        ZHXY.Dorm.Device.NHMessage.News_GetNewsListResponse News_GetNewsList(ZHXY.Dorm.Device.NHMessage.News_GetNewsListRequest request);
+        ZHXY.Dorm.Device.PushService.News_GetNewsListResponse News_GetNewsList(ZHXY.Dorm.Device.PushService.News_GetNewsListRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://passport.nchu.edu.cn/News_GetNewsList", ReplyAction="*")]
-        System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.News_GetNewsListResponse> News_GetNewsListAsync(ZHXY.Dorm.Device.NHMessage.News_GetNewsListRequest request);
+        System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.News_GetNewsListResponse> News_GetNewsListAsync(ZHXY.Dorm.Device.PushService.News_GetNewsListRequest request);
         
         // CODEGEN: 命名空间 http://passport.nchu.edu.cn/ 的元素名称 News_GetTopNewsListResult 以后生成的消息协定未标记为 nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://passport.nchu.edu.cn/News_GetTopNewsList", ReplyAction="*")]
-        ZHXY.Dorm.Device.NHMessage.News_GetTopNewsListResponse News_GetTopNewsList(ZHXY.Dorm.Device.NHMessage.News_GetTopNewsListRequest request);
+        ZHXY.Dorm.Device.PushService.News_GetTopNewsListResponse News_GetTopNewsList(ZHXY.Dorm.Device.PushService.News_GetTopNewsListRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://passport.nchu.edu.cn/News_GetTopNewsList", ReplyAction="*")]
-        System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.News_GetTopNewsListResponse> News_GetTopNewsListAsync(ZHXY.Dorm.Device.NHMessage.News_GetTopNewsListRequest request);
+        System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.News_GetTopNewsListResponse> News_GetTopNewsListAsync(ZHXY.Dorm.Device.PushService.News_GetTopNewsListRequest request);
         
         // CODEGEN: 命名空间 http://passport.nchu.edu.cn/ 的元素名称 SiteID 以后生成的消息协定未标记为 nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://passport.nchu.edu.cn/Portal_GetNoticeList", ReplyAction="*")]
-        ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeListResponse Portal_GetNoticeList(ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeListRequest request);
+        ZHXY.Dorm.Device.PushService.Portal_GetNoticeListResponse Portal_GetNoticeList(ZHXY.Dorm.Device.PushService.Portal_GetNoticeListRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://passport.nchu.edu.cn/Portal_GetNoticeList", ReplyAction="*")]
-        System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeListResponse> Portal_GetNoticeListAsync(ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeListRequest request);
+        System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.Portal_GetNoticeListResponse> Portal_GetNoticeListAsync(ZHXY.Dorm.Device.PushService.Portal_GetNoticeListRequest request);
         
         // CODEGEN: 命名空间 http://passport.nchu.edu.cn/ 的元素名称 SiteID 以后生成的消息协定未标记为 nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://passport.nchu.edu.cn/Portal_GetNoticeContent", ReplyAction="*")]
-        ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeContentResponse Portal_GetNoticeContent(ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeContentRequest request);
+        ZHXY.Dorm.Device.PushService.Portal_GetNoticeContentResponse Portal_GetNoticeContent(ZHXY.Dorm.Device.PushService.Portal_GetNoticeContentRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://passport.nchu.edu.cn/Portal_GetNoticeContent", ReplyAction="*")]
-        System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeContentResponse> Portal_GetNoticeContentAsync(ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeContentRequest request);
+        System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.Portal_GetNoticeContentResponse> Portal_GetNoticeContentAsync(ZHXY.Dorm.Device.PushService.Portal_GetNoticeContentRequest request);
         
         // CODEGEN: 命名空间 http://passport.nchu.edu.cn/ 的元素名称 SiteID 以后生成的消息协定未标记为 nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://passport.nchu.edu.cn/Portal_SetNoticeReadStatus", ReplyAction="*")]
-        ZHXY.Dorm.Device.NHMessage.Portal_SetNoticeReadStatusResponse Portal_SetNoticeReadStatus(ZHXY.Dorm.Device.NHMessage.Portal_SetNoticeReadStatusRequest request);
+        ZHXY.Dorm.Device.PushService.Portal_SetNoticeReadStatusResponse Portal_SetNoticeReadStatus(ZHXY.Dorm.Device.PushService.Portal_SetNoticeReadStatusRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://passport.nchu.edu.cn/Portal_SetNoticeReadStatus", ReplyAction="*")]
-        System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.Portal_SetNoticeReadStatusResponse> Portal_SetNoticeReadStatusAsync(ZHXY.Dorm.Device.NHMessage.Portal_SetNoticeReadStatusRequest request);
+        System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.Portal_SetNoticeReadStatusResponse> Portal_SetNoticeReadStatusAsync(ZHXY.Dorm.Device.PushService.Portal_SetNoticeReadStatusRequest request);
         
         // CODEGEN: 命名空间 http://passport.nchu.edu.cn/ 的元素名称 SiteID 以后生成的消息协定未标记为 nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://passport.nchu.edu.cn/Portal_GetAffairList", ReplyAction="*")]
-        ZHXY.Dorm.Device.NHMessage.Portal_GetAffairListResponse Portal_GetAffairList(ZHXY.Dorm.Device.NHMessage.Portal_GetAffairListRequest request);
+        ZHXY.Dorm.Device.PushService.Portal_GetAffairListResponse Portal_GetAffairList(ZHXY.Dorm.Device.PushService.Portal_GetAffairListRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://passport.nchu.edu.cn/Portal_GetAffairList", ReplyAction="*")]
-        System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.Portal_GetAffairListResponse> Portal_GetAffairListAsync(ZHXY.Dorm.Device.NHMessage.Portal_GetAffairListRequest request);
+        System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.Portal_GetAffairListResponse> Portal_GetAffairListAsync(ZHXY.Dorm.Device.PushService.Portal_GetAffairListRequest request);
         
         // CODEGEN: 命名空间 http://passport.nchu.edu.cn/ 的元素名称 SiteID 以后生成的消息协定未标记为 nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://passport.nchu.edu.cn/Portal_SendInstantMessage", ReplyAction="*")]
-        ZHXY.Dorm.Device.NHMessage.Portal_SendInstantMessageResponse Portal_SendInstantMessage(ZHXY.Dorm.Device.NHMessage.Portal_SendInstantMessageRequest request);
+        ZHXY.Dorm.Device.PushService.Portal_SendInstantMessageResponse Portal_SendInstantMessage(ZHXY.Dorm.Device.PushService.Portal_SendInstantMessageRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://passport.nchu.edu.cn/Portal_SendInstantMessage", ReplyAction="*")]
-        System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.Portal_SendInstantMessageResponse> Portal_SendInstantMessageAsync(ZHXY.Dorm.Device.NHMessage.Portal_SendInstantMessageRequest request);
+        System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.Portal_SendInstantMessageResponse> Portal_SendInstantMessageAsync(ZHXY.Dorm.Device.PushService.Portal_SendInstantMessageRequest request);
         
         // CODEGEN: 命名空间 http://passport.nchu.edu.cn/ 的元素名称 SiteID 以后生成的消息协定未标记为 nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://passport.nchu.edu.cn/GetMiddleLeaderList", ReplyAction="*")]
-        ZHXY.Dorm.Device.NHMessage.GetMiddleLeaderListResponse GetMiddleLeaderList(ZHXY.Dorm.Device.NHMessage.GetMiddleLeaderListRequest request);
+        ZHXY.Dorm.Device.PushService.GetMiddleLeaderListResponse GetMiddleLeaderList(ZHXY.Dorm.Device.PushService.GetMiddleLeaderListRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://passport.nchu.edu.cn/GetMiddleLeaderList", ReplyAction="*")]
-        System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.GetMiddleLeaderListResponse> GetMiddleLeaderListAsync(ZHXY.Dorm.Device.NHMessage.GetMiddleLeaderListRequest request);
+        System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.GetMiddleLeaderListResponse> GetMiddleLeaderListAsync(ZHXY.Dorm.Device.PushService.GetMiddleLeaderListRequest request);
         
         // CODEGEN: 命名空间 http://passport.nchu.edu.cn/ 的元素名称 SiteID 以后生成的消息协定未标记为 nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://passport.nchu.edu.cn/Portal_GetNotices", ReplyAction="*")]
-        ZHXY.Dorm.Device.NHMessage.Portal_GetNoticesResponse Portal_GetNotices(ZHXY.Dorm.Device.NHMessage.Portal_GetNoticesRequest request);
+        ZHXY.Dorm.Device.PushService.Portal_GetNoticesResponse Portal_GetNotices(ZHXY.Dorm.Device.PushService.Portal_GetNoticesRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://passport.nchu.edu.cn/Portal_GetNotices", ReplyAction="*")]
-        System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.Portal_GetNoticesResponse> Portal_GetNoticesAsync(ZHXY.Dorm.Device.NHMessage.Portal_GetNoticesRequest request);
+        System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.Portal_GetNoticesResponse> Portal_GetNoticesAsync(ZHXY.Dorm.Device.PushService.Portal_GetNoticesRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -114,12 +114,12 @@ namespace ZHXY.Dorm.Device.NHMessage {
     public partial class GetAllOUListsRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetAllOULists", Namespace="http://passport.nchu.edu.cn/", Order=0)]
-        public ZHXY.Dorm.Device.NHMessage.GetAllOUListsRequestBody Body;
+        public ZHXY.Dorm.Device.PushService.GetAllOUListsRequestBody Body;
         
         public GetAllOUListsRequest() {
         }
         
-        public GetAllOUListsRequest(ZHXY.Dorm.Device.NHMessage.GetAllOUListsRequestBody Body) {
+        public GetAllOUListsRequest(ZHXY.Dorm.Device.PushService.GetAllOUListsRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -152,12 +152,12 @@ namespace ZHXY.Dorm.Device.NHMessage {
     public partial class GetAllOUListsResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetAllOUListsResponse", Namespace="http://passport.nchu.edu.cn/", Order=0)]
-        public ZHXY.Dorm.Device.NHMessage.GetAllOUListsResponseBody Body;
+        public ZHXY.Dorm.Device.PushService.GetAllOUListsResponseBody Body;
         
         public GetAllOUListsResponse() {
         }
         
-        public GetAllOUListsResponse(ZHXY.Dorm.Device.NHMessage.GetAllOUListsResponseBody Body) {
+        public GetAllOUListsResponse(ZHXY.Dorm.Device.PushService.GetAllOUListsResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -186,12 +186,12 @@ namespace ZHXY.Dorm.Device.NHMessage {
     public partial class GetOUListRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetOUList", Namespace="http://passport.nchu.edu.cn/", Order=0)]
-        public ZHXY.Dorm.Device.NHMessage.GetOUListRequestBody Body;
+        public ZHXY.Dorm.Device.PushService.GetOUListRequestBody Body;
         
         public GetOUListRequest() {
         }
         
-        public GetOUListRequest(ZHXY.Dorm.Device.NHMessage.GetOUListRequestBody Body) {
+        public GetOUListRequest(ZHXY.Dorm.Device.PushService.GetOUListRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -224,12 +224,12 @@ namespace ZHXY.Dorm.Device.NHMessage {
     public partial class GetOUListResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetOUListResponse", Namespace="http://passport.nchu.edu.cn/", Order=0)]
-        public ZHXY.Dorm.Device.NHMessage.GetOUListResponseBody Body;
+        public ZHXY.Dorm.Device.PushService.GetOUListResponseBody Body;
         
         public GetOUListResponse() {
         }
         
-        public GetOUListResponse(ZHXY.Dorm.Device.NHMessage.GetOUListResponseBody Body) {
+        public GetOUListResponse(ZHXY.Dorm.Device.PushService.GetOUListResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -258,12 +258,12 @@ namespace ZHXY.Dorm.Device.NHMessage {
     public partial class UpdateStudentClassNoRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="UpdateStudentClassNo", Namespace="http://passport.nchu.edu.cn/", Order=0)]
-        public ZHXY.Dorm.Device.NHMessage.UpdateStudentClassNoRequestBody Body;
+        public ZHXY.Dorm.Device.PushService.UpdateStudentClassNoRequestBody Body;
         
         public UpdateStudentClassNoRequest() {
         }
         
-        public UpdateStudentClassNoRequest(ZHXY.Dorm.Device.NHMessage.UpdateStudentClassNoRequestBody Body) {
+        public UpdateStudentClassNoRequest(ZHXY.Dorm.Device.PushService.UpdateStudentClassNoRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -300,12 +300,12 @@ namespace ZHXY.Dorm.Device.NHMessage {
     public partial class UpdateStudentClassNoResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="UpdateStudentClassNoResponse", Namespace="http://passport.nchu.edu.cn/", Order=0)]
-        public ZHXY.Dorm.Device.NHMessage.UpdateStudentClassNoResponseBody Body;
+        public ZHXY.Dorm.Device.PushService.UpdateStudentClassNoResponseBody Body;
         
         public UpdateStudentClassNoResponse() {
         }
         
-        public UpdateStudentClassNoResponse(ZHXY.Dorm.Device.NHMessage.UpdateStudentClassNoResponseBody Body) {
+        public UpdateStudentClassNoResponse(ZHXY.Dorm.Device.PushService.UpdateStudentClassNoResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -334,12 +334,12 @@ namespace ZHXY.Dorm.Device.NHMessage {
     public partial class UpdateStudentStatusRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="UpdateStudentStatus", Namespace="http://passport.nchu.edu.cn/", Order=0)]
-        public ZHXY.Dorm.Device.NHMessage.UpdateStudentStatusRequestBody Body;
+        public ZHXY.Dorm.Device.PushService.UpdateStudentStatusRequestBody Body;
         
         public UpdateStudentStatusRequest() {
         }
         
-        public UpdateStudentStatusRequest(ZHXY.Dorm.Device.NHMessage.UpdateStudentStatusRequestBody Body) {
+        public UpdateStudentStatusRequest(ZHXY.Dorm.Device.PushService.UpdateStudentStatusRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -376,12 +376,12 @@ namespace ZHXY.Dorm.Device.NHMessage {
     public partial class UpdateStudentStatusResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="UpdateStudentStatusResponse", Namespace="http://passport.nchu.edu.cn/", Order=0)]
-        public ZHXY.Dorm.Device.NHMessage.UpdateStudentStatusResponseBody Body;
+        public ZHXY.Dorm.Device.PushService.UpdateStudentStatusResponseBody Body;
         
         public UpdateStudentStatusResponse() {
         }
         
-        public UpdateStudentStatusResponse(ZHXY.Dorm.Device.NHMessage.UpdateStudentStatusResponseBody Body) {
+        public UpdateStudentStatusResponse(ZHXY.Dorm.Device.PushService.UpdateStudentStatusResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -410,12 +410,12 @@ namespace ZHXY.Dorm.Device.NHMessage {
     public partial class News_GetNewsListRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="News_GetNewsList", Namespace="http://passport.nchu.edu.cn/", Order=0)]
-        public ZHXY.Dorm.Device.NHMessage.News_GetNewsListRequestBody Body;
+        public ZHXY.Dorm.Device.PushService.News_GetNewsListRequestBody Body;
         
         public News_GetNewsListRequest() {
         }
         
-        public News_GetNewsListRequest(ZHXY.Dorm.Device.NHMessage.News_GetNewsListRequestBody Body) {
+        public News_GetNewsListRequest(ZHXY.Dorm.Device.PushService.News_GetNewsListRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -452,12 +452,12 @@ namespace ZHXY.Dorm.Device.NHMessage {
     public partial class News_GetNewsListResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="News_GetNewsListResponse", Namespace="http://passport.nchu.edu.cn/", Order=0)]
-        public ZHXY.Dorm.Device.NHMessage.News_GetNewsListResponseBody Body;
+        public ZHXY.Dorm.Device.PushService.News_GetNewsListResponseBody Body;
         
         public News_GetNewsListResponse() {
         }
         
-        public News_GetNewsListResponse(ZHXY.Dorm.Device.NHMessage.News_GetNewsListResponseBody Body) {
+        public News_GetNewsListResponse(ZHXY.Dorm.Device.PushService.News_GetNewsListResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -486,12 +486,12 @@ namespace ZHXY.Dorm.Device.NHMessage {
     public partial class News_GetTopNewsListRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="News_GetTopNewsList", Namespace="http://passport.nchu.edu.cn/", Order=0)]
-        public ZHXY.Dorm.Device.NHMessage.News_GetTopNewsListRequestBody Body;
+        public ZHXY.Dorm.Device.PushService.News_GetTopNewsListRequestBody Body;
         
         public News_GetTopNewsListRequest() {
         }
         
-        public News_GetTopNewsListRequest(ZHXY.Dorm.Device.NHMessage.News_GetTopNewsListRequestBody Body) {
+        public News_GetTopNewsListRequest(ZHXY.Dorm.Device.PushService.News_GetTopNewsListRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -520,12 +520,12 @@ namespace ZHXY.Dorm.Device.NHMessage {
     public partial class News_GetTopNewsListResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="News_GetTopNewsListResponse", Namespace="http://passport.nchu.edu.cn/", Order=0)]
-        public ZHXY.Dorm.Device.NHMessage.News_GetTopNewsListResponseBody Body;
+        public ZHXY.Dorm.Device.PushService.News_GetTopNewsListResponseBody Body;
         
         public News_GetTopNewsListResponse() {
         }
         
-        public News_GetTopNewsListResponse(ZHXY.Dorm.Device.NHMessage.News_GetTopNewsListResponseBody Body) {
+        public News_GetTopNewsListResponse(ZHXY.Dorm.Device.PushService.News_GetTopNewsListResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -554,12 +554,12 @@ namespace ZHXY.Dorm.Device.NHMessage {
     public partial class Portal_GetNoticeListRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="Portal_GetNoticeList", Namespace="http://passport.nchu.edu.cn/", Order=0)]
-        public ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeListRequestBody Body;
+        public ZHXY.Dorm.Device.PushService.Portal_GetNoticeListRequestBody Body;
         
         public Portal_GetNoticeListRequest() {
         }
         
-        public Portal_GetNoticeListRequest(ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeListRequestBody Body) {
+        public Portal_GetNoticeListRequest(ZHXY.Dorm.Device.PushService.Portal_GetNoticeListRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -608,12 +608,12 @@ namespace ZHXY.Dorm.Device.NHMessage {
     public partial class Portal_GetNoticeListResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="Portal_GetNoticeListResponse", Namespace="http://passport.nchu.edu.cn/", Order=0)]
-        public ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeListResponseBody Body;
+        public ZHXY.Dorm.Device.PushService.Portal_GetNoticeListResponseBody Body;
         
         public Portal_GetNoticeListResponse() {
         }
         
-        public Portal_GetNoticeListResponse(ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeListResponseBody Body) {
+        public Portal_GetNoticeListResponse(ZHXY.Dorm.Device.PushService.Portal_GetNoticeListResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -642,12 +642,12 @@ namespace ZHXY.Dorm.Device.NHMessage {
     public partial class Portal_GetNoticeContentRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="Portal_GetNoticeContent", Namespace="http://passport.nchu.edu.cn/", Order=0)]
-        public ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeContentRequestBody Body;
+        public ZHXY.Dorm.Device.PushService.Portal_GetNoticeContentRequestBody Body;
         
         public Portal_GetNoticeContentRequest() {
         }
         
-        public Portal_GetNoticeContentRequest(ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeContentRequestBody Body) {
+        public Portal_GetNoticeContentRequest(ZHXY.Dorm.Device.PushService.Portal_GetNoticeContentRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -680,12 +680,12 @@ namespace ZHXY.Dorm.Device.NHMessage {
     public partial class Portal_GetNoticeContentResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="Portal_GetNoticeContentResponse", Namespace="http://passport.nchu.edu.cn/", Order=0)]
-        public ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeContentResponseBody Body;
+        public ZHXY.Dorm.Device.PushService.Portal_GetNoticeContentResponseBody Body;
         
         public Portal_GetNoticeContentResponse() {
         }
         
-        public Portal_GetNoticeContentResponse(ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeContentResponseBody Body) {
+        public Portal_GetNoticeContentResponse(ZHXY.Dorm.Device.PushService.Portal_GetNoticeContentResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -714,12 +714,12 @@ namespace ZHXY.Dorm.Device.NHMessage {
     public partial class Portal_SetNoticeReadStatusRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="Portal_SetNoticeReadStatus", Namespace="http://passport.nchu.edu.cn/", Order=0)]
-        public ZHXY.Dorm.Device.NHMessage.Portal_SetNoticeReadStatusRequestBody Body;
+        public ZHXY.Dorm.Device.PushService.Portal_SetNoticeReadStatusRequestBody Body;
         
         public Portal_SetNoticeReadStatusRequest() {
         }
         
-        public Portal_SetNoticeReadStatusRequest(ZHXY.Dorm.Device.NHMessage.Portal_SetNoticeReadStatusRequestBody Body) {
+        public Portal_SetNoticeReadStatusRequest(ZHXY.Dorm.Device.PushService.Portal_SetNoticeReadStatusRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -756,12 +756,12 @@ namespace ZHXY.Dorm.Device.NHMessage {
     public partial class Portal_SetNoticeReadStatusResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="Portal_SetNoticeReadStatusResponse", Namespace="http://passport.nchu.edu.cn/", Order=0)]
-        public ZHXY.Dorm.Device.NHMessage.Portal_SetNoticeReadStatusResponseBody Body;
+        public ZHXY.Dorm.Device.PushService.Portal_SetNoticeReadStatusResponseBody Body;
         
         public Portal_SetNoticeReadStatusResponse() {
         }
         
-        public Portal_SetNoticeReadStatusResponse(ZHXY.Dorm.Device.NHMessage.Portal_SetNoticeReadStatusResponseBody Body) {
+        public Portal_SetNoticeReadStatusResponse(ZHXY.Dorm.Device.PushService.Portal_SetNoticeReadStatusResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -790,12 +790,12 @@ namespace ZHXY.Dorm.Device.NHMessage {
     public partial class Portal_GetAffairListRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="Portal_GetAffairList", Namespace="http://passport.nchu.edu.cn/", Order=0)]
-        public ZHXY.Dorm.Device.NHMessage.Portal_GetAffairListRequestBody Body;
+        public ZHXY.Dorm.Device.PushService.Portal_GetAffairListRequestBody Body;
         
         public Portal_GetAffairListRequest() {
         }
         
-        public Portal_GetAffairListRequest(ZHXY.Dorm.Device.NHMessage.Portal_GetAffairListRequestBody Body) {
+        public Portal_GetAffairListRequest(ZHXY.Dorm.Device.PushService.Portal_GetAffairListRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -828,12 +828,12 @@ namespace ZHXY.Dorm.Device.NHMessage {
     public partial class Portal_GetAffairListResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="Portal_GetAffairListResponse", Namespace="http://passport.nchu.edu.cn/", Order=0)]
-        public ZHXY.Dorm.Device.NHMessage.Portal_GetAffairListResponseBody Body;
+        public ZHXY.Dorm.Device.PushService.Portal_GetAffairListResponseBody Body;
         
         public Portal_GetAffairListResponse() {
         }
         
-        public Portal_GetAffairListResponse(ZHXY.Dorm.Device.NHMessage.Portal_GetAffairListResponseBody Body) {
+        public Portal_GetAffairListResponse(ZHXY.Dorm.Device.PushService.Portal_GetAffairListResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -862,12 +862,12 @@ namespace ZHXY.Dorm.Device.NHMessage {
     public partial class Portal_SendInstantMessageRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="Portal_SendInstantMessage", Namespace="http://passport.nchu.edu.cn/", Order=0)]
-        public ZHXY.Dorm.Device.NHMessage.Portal_SendInstantMessageRequestBody Body;
+        public ZHXY.Dorm.Device.PushService.Portal_SendInstantMessageRequestBody Body;
         
         public Portal_SendInstantMessageRequest() {
         }
         
-        public Portal_SendInstantMessageRequest(ZHXY.Dorm.Device.NHMessage.Portal_SendInstantMessageRequestBody Body) {
+        public Portal_SendInstantMessageRequest(ZHXY.Dorm.Device.PushService.Portal_SendInstantMessageRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -908,12 +908,12 @@ namespace ZHXY.Dorm.Device.NHMessage {
     public partial class Portal_SendInstantMessageResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="Portal_SendInstantMessageResponse", Namespace="http://passport.nchu.edu.cn/", Order=0)]
-        public ZHXY.Dorm.Device.NHMessage.Portal_SendInstantMessageResponseBody Body;
+        public ZHXY.Dorm.Device.PushService.Portal_SendInstantMessageResponseBody Body;
         
         public Portal_SendInstantMessageResponse() {
         }
         
-        public Portal_SendInstantMessageResponse(ZHXY.Dorm.Device.NHMessage.Portal_SendInstantMessageResponseBody Body) {
+        public Portal_SendInstantMessageResponse(ZHXY.Dorm.Device.PushService.Portal_SendInstantMessageResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -942,12 +942,12 @@ namespace ZHXY.Dorm.Device.NHMessage {
     public partial class GetMiddleLeaderListRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetMiddleLeaderList", Namespace="http://passport.nchu.edu.cn/", Order=0)]
-        public ZHXY.Dorm.Device.NHMessage.GetMiddleLeaderListRequestBody Body;
+        public ZHXY.Dorm.Device.PushService.GetMiddleLeaderListRequestBody Body;
         
         public GetMiddleLeaderListRequest() {
         }
         
-        public GetMiddleLeaderListRequest(ZHXY.Dorm.Device.NHMessage.GetMiddleLeaderListRequestBody Body) {
+        public GetMiddleLeaderListRequest(ZHXY.Dorm.Device.PushService.GetMiddleLeaderListRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -976,12 +976,12 @@ namespace ZHXY.Dorm.Device.NHMessage {
     public partial class GetMiddleLeaderListResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetMiddleLeaderListResponse", Namespace="http://passport.nchu.edu.cn/", Order=0)]
-        public ZHXY.Dorm.Device.NHMessage.GetMiddleLeaderListResponseBody Body;
+        public ZHXY.Dorm.Device.PushService.GetMiddleLeaderListResponseBody Body;
         
         public GetMiddleLeaderListResponse() {
         }
         
-        public GetMiddleLeaderListResponse(ZHXY.Dorm.Device.NHMessage.GetMiddleLeaderListResponseBody Body) {
+        public GetMiddleLeaderListResponse(ZHXY.Dorm.Device.PushService.GetMiddleLeaderListResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -1010,12 +1010,12 @@ namespace ZHXY.Dorm.Device.NHMessage {
     public partial class Portal_GetNoticesRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="Portal_GetNotices", Namespace="http://passport.nchu.edu.cn/", Order=0)]
-        public ZHXY.Dorm.Device.NHMessage.Portal_GetNoticesRequestBody Body;
+        public ZHXY.Dorm.Device.PushService.Portal_GetNoticesRequestBody Body;
         
         public Portal_GetNoticesRequest() {
         }
         
-        public Portal_GetNoticesRequest(ZHXY.Dorm.Device.NHMessage.Portal_GetNoticesRequestBody Body) {
+        public Portal_GetNoticesRequest(ZHXY.Dorm.Device.PushService.Portal_GetNoticesRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -1048,12 +1048,12 @@ namespace ZHXY.Dorm.Device.NHMessage {
     public partial class Portal_GetNoticesResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="Portal_GetNoticesResponse", Namespace="http://passport.nchu.edu.cn/", Order=0)]
-        public ZHXY.Dorm.Device.NHMessage.Portal_GetNoticesResponseBody Body;
+        public ZHXY.Dorm.Device.PushService.Portal_GetNoticesResponseBody Body;
         
         public Portal_GetNoticesResponse() {
         }
         
-        public Portal_GetNoticesResponse(ZHXY.Dorm.Device.NHMessage.Portal_GetNoticesResponseBody Body) {
+        public Portal_GetNoticesResponse(ZHXY.Dorm.Device.PushService.Portal_GetNoticesResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -1076,12 +1076,12 @@ namespace ZHXY.Dorm.Device.NHMessage {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface 数据中心接口服务SoapChannel : ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap, System.ServiceModel.IClientChannel {
+    public interface 数据中心接口服务SoapChannel : ZHXY.Dorm.Device.PushService.数据中心接口服务Soap, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class 数据中心接口服务SoapClient : System.ServiceModel.ClientBase<ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap>, ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap {
+    public partial class 数据中心接口服务SoapClient : System.ServiceModel.ClientBase<ZHXY.Dorm.Device.PushService.数据中心接口服务Soap>, ZHXY.Dorm.Device.PushService.数据中心接口服务Soap {
         
         public 数据中心接口服务SoapClient() {
         }
@@ -1103,370 +1103,370 @@ namespace ZHXY.Dorm.Device.NHMessage {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        ZHXY.Dorm.Device.NHMessage.GetAllOUListsResponse ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap.GetAllOULists(ZHXY.Dorm.Device.NHMessage.GetAllOUListsRequest request) {
+        ZHXY.Dorm.Device.PushService.GetAllOUListsResponse ZHXY.Dorm.Device.PushService.数据中心接口服务Soap.GetAllOULists(ZHXY.Dorm.Device.PushService.GetAllOUListsRequest request) {
             return base.Channel.GetAllOULists(request);
         }
         
         public string GetAllOULists(string SiteID, bool IsTeacher) {
-            ZHXY.Dorm.Device.NHMessage.GetAllOUListsRequest inValue = new ZHXY.Dorm.Device.NHMessage.GetAllOUListsRequest();
-            inValue.Body = new ZHXY.Dorm.Device.NHMessage.GetAllOUListsRequestBody();
+            ZHXY.Dorm.Device.PushService.GetAllOUListsRequest inValue = new ZHXY.Dorm.Device.PushService.GetAllOUListsRequest();
+            inValue.Body = new ZHXY.Dorm.Device.PushService.GetAllOUListsRequestBody();
             inValue.Body.SiteID = SiteID;
             inValue.Body.IsTeacher = IsTeacher;
-            ZHXY.Dorm.Device.NHMessage.GetAllOUListsResponse retVal = ((ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap)(this)).GetAllOULists(inValue);
+            ZHXY.Dorm.Device.PushService.GetAllOUListsResponse retVal = ((ZHXY.Dorm.Device.PushService.数据中心接口服务Soap)(this)).GetAllOULists(inValue);
             return retVal.Body.GetAllOUListsResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.GetAllOUListsResponse> ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap.GetAllOUListsAsync(ZHXY.Dorm.Device.NHMessage.GetAllOUListsRequest request) {
+        System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.GetAllOUListsResponse> ZHXY.Dorm.Device.PushService.数据中心接口服务Soap.GetAllOUListsAsync(ZHXY.Dorm.Device.PushService.GetAllOUListsRequest request) {
             return base.Channel.GetAllOUListsAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.GetAllOUListsResponse> GetAllOUListsAsync(string SiteID, bool IsTeacher) {
-            ZHXY.Dorm.Device.NHMessage.GetAllOUListsRequest inValue = new ZHXY.Dorm.Device.NHMessage.GetAllOUListsRequest();
-            inValue.Body = new ZHXY.Dorm.Device.NHMessage.GetAllOUListsRequestBody();
+        public System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.GetAllOUListsResponse> GetAllOUListsAsync(string SiteID, bool IsTeacher) {
+            ZHXY.Dorm.Device.PushService.GetAllOUListsRequest inValue = new ZHXY.Dorm.Device.PushService.GetAllOUListsRequest();
+            inValue.Body = new ZHXY.Dorm.Device.PushService.GetAllOUListsRequestBody();
             inValue.Body.SiteID = SiteID;
             inValue.Body.IsTeacher = IsTeacher;
-            return ((ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap)(this)).GetAllOUListsAsync(inValue);
+            return ((ZHXY.Dorm.Device.PushService.数据中心接口服务Soap)(this)).GetAllOUListsAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        ZHXY.Dorm.Device.NHMessage.GetOUListResponse ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap.GetOUList(ZHXY.Dorm.Device.NHMessage.GetOUListRequest request) {
+        ZHXY.Dorm.Device.PushService.GetOUListResponse ZHXY.Dorm.Device.PushService.数据中心接口服务Soap.GetOUList(ZHXY.Dorm.Device.PushService.GetOUListRequest request) {
             return base.Channel.GetOUList(request);
         }
         
         public string GetOUList(string SiteID, string ouname) {
-            ZHXY.Dorm.Device.NHMessage.GetOUListRequest inValue = new ZHXY.Dorm.Device.NHMessage.GetOUListRequest();
-            inValue.Body = new ZHXY.Dorm.Device.NHMessage.GetOUListRequestBody();
+            ZHXY.Dorm.Device.PushService.GetOUListRequest inValue = new ZHXY.Dorm.Device.PushService.GetOUListRequest();
+            inValue.Body = new ZHXY.Dorm.Device.PushService.GetOUListRequestBody();
             inValue.Body.SiteID = SiteID;
             inValue.Body.ouname = ouname;
-            ZHXY.Dorm.Device.NHMessage.GetOUListResponse retVal = ((ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap)(this)).GetOUList(inValue);
+            ZHXY.Dorm.Device.PushService.GetOUListResponse retVal = ((ZHXY.Dorm.Device.PushService.数据中心接口服务Soap)(this)).GetOUList(inValue);
             return retVal.Body.GetOUListResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.GetOUListResponse> ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap.GetOUListAsync(ZHXY.Dorm.Device.NHMessage.GetOUListRequest request) {
+        System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.GetOUListResponse> ZHXY.Dorm.Device.PushService.数据中心接口服务Soap.GetOUListAsync(ZHXY.Dorm.Device.PushService.GetOUListRequest request) {
             return base.Channel.GetOUListAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.GetOUListResponse> GetOUListAsync(string SiteID, string ouname) {
-            ZHXY.Dorm.Device.NHMessage.GetOUListRequest inValue = new ZHXY.Dorm.Device.NHMessage.GetOUListRequest();
-            inValue.Body = new ZHXY.Dorm.Device.NHMessage.GetOUListRequestBody();
+        public System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.GetOUListResponse> GetOUListAsync(string SiteID, string ouname) {
+            ZHXY.Dorm.Device.PushService.GetOUListRequest inValue = new ZHXY.Dorm.Device.PushService.GetOUListRequest();
+            inValue.Body = new ZHXY.Dorm.Device.PushService.GetOUListRequestBody();
             inValue.Body.SiteID = SiteID;
             inValue.Body.ouname = ouname;
-            return ((ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap)(this)).GetOUListAsync(inValue);
+            return ((ZHXY.Dorm.Device.PushService.数据中心接口服务Soap)(this)).GetOUListAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        ZHXY.Dorm.Device.NHMessage.UpdateStudentClassNoResponse ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap.UpdateStudentClassNo(ZHXY.Dorm.Device.NHMessage.UpdateStudentClassNoRequest request) {
+        ZHXY.Dorm.Device.PushService.UpdateStudentClassNoResponse ZHXY.Dorm.Device.PushService.数据中心接口服务Soap.UpdateStudentClassNo(ZHXY.Dorm.Device.PushService.UpdateStudentClassNoRequest request) {
             return base.Channel.UpdateStudentClassNo(request);
         }
         
         public string UpdateStudentClassNo(string SiteID, string StuNo, string NewClassNo) {
-            ZHXY.Dorm.Device.NHMessage.UpdateStudentClassNoRequest inValue = new ZHXY.Dorm.Device.NHMessage.UpdateStudentClassNoRequest();
-            inValue.Body = new ZHXY.Dorm.Device.NHMessage.UpdateStudentClassNoRequestBody();
+            ZHXY.Dorm.Device.PushService.UpdateStudentClassNoRequest inValue = new ZHXY.Dorm.Device.PushService.UpdateStudentClassNoRequest();
+            inValue.Body = new ZHXY.Dorm.Device.PushService.UpdateStudentClassNoRequestBody();
             inValue.Body.SiteID = SiteID;
             inValue.Body.StuNo = StuNo;
             inValue.Body.NewClassNo = NewClassNo;
-            ZHXY.Dorm.Device.NHMessage.UpdateStudentClassNoResponse retVal = ((ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap)(this)).UpdateStudentClassNo(inValue);
+            ZHXY.Dorm.Device.PushService.UpdateStudentClassNoResponse retVal = ((ZHXY.Dorm.Device.PushService.数据中心接口服务Soap)(this)).UpdateStudentClassNo(inValue);
             return retVal.Body.UpdateStudentClassNoResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.UpdateStudentClassNoResponse> ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap.UpdateStudentClassNoAsync(ZHXY.Dorm.Device.NHMessage.UpdateStudentClassNoRequest request) {
+        System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.UpdateStudentClassNoResponse> ZHXY.Dorm.Device.PushService.数据中心接口服务Soap.UpdateStudentClassNoAsync(ZHXY.Dorm.Device.PushService.UpdateStudentClassNoRequest request) {
             return base.Channel.UpdateStudentClassNoAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.UpdateStudentClassNoResponse> UpdateStudentClassNoAsync(string SiteID, string StuNo, string NewClassNo) {
-            ZHXY.Dorm.Device.NHMessage.UpdateStudentClassNoRequest inValue = new ZHXY.Dorm.Device.NHMessage.UpdateStudentClassNoRequest();
-            inValue.Body = new ZHXY.Dorm.Device.NHMessage.UpdateStudentClassNoRequestBody();
+        public System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.UpdateStudentClassNoResponse> UpdateStudentClassNoAsync(string SiteID, string StuNo, string NewClassNo) {
+            ZHXY.Dorm.Device.PushService.UpdateStudentClassNoRequest inValue = new ZHXY.Dorm.Device.PushService.UpdateStudentClassNoRequest();
+            inValue.Body = new ZHXY.Dorm.Device.PushService.UpdateStudentClassNoRequestBody();
             inValue.Body.SiteID = SiteID;
             inValue.Body.StuNo = StuNo;
             inValue.Body.NewClassNo = NewClassNo;
-            return ((ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap)(this)).UpdateStudentClassNoAsync(inValue);
+            return ((ZHXY.Dorm.Device.PushService.数据中心接口服务Soap)(this)).UpdateStudentClassNoAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        ZHXY.Dorm.Device.NHMessage.UpdateStudentStatusResponse ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap.UpdateStudentStatus(ZHXY.Dorm.Device.NHMessage.UpdateStudentStatusRequest request) {
+        ZHXY.Dorm.Device.PushService.UpdateStudentStatusResponse ZHXY.Dorm.Device.PushService.数据中心接口服务Soap.UpdateStudentStatus(ZHXY.Dorm.Device.PushService.UpdateStudentStatusRequest request) {
             return base.Channel.UpdateStudentStatus(request);
         }
         
         public string UpdateStudentStatus(string SiteID, string StuNo, string Status) {
-            ZHXY.Dorm.Device.NHMessage.UpdateStudentStatusRequest inValue = new ZHXY.Dorm.Device.NHMessage.UpdateStudentStatusRequest();
-            inValue.Body = new ZHXY.Dorm.Device.NHMessage.UpdateStudentStatusRequestBody();
+            ZHXY.Dorm.Device.PushService.UpdateStudentStatusRequest inValue = new ZHXY.Dorm.Device.PushService.UpdateStudentStatusRequest();
+            inValue.Body = new ZHXY.Dorm.Device.PushService.UpdateStudentStatusRequestBody();
             inValue.Body.SiteID = SiteID;
             inValue.Body.StuNo = StuNo;
             inValue.Body.Status = Status;
-            ZHXY.Dorm.Device.NHMessage.UpdateStudentStatusResponse retVal = ((ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap)(this)).UpdateStudentStatus(inValue);
+            ZHXY.Dorm.Device.PushService.UpdateStudentStatusResponse retVal = ((ZHXY.Dorm.Device.PushService.数据中心接口服务Soap)(this)).UpdateStudentStatus(inValue);
             return retVal.Body.UpdateStudentStatusResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.UpdateStudentStatusResponse> ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap.UpdateStudentStatusAsync(ZHXY.Dorm.Device.NHMessage.UpdateStudentStatusRequest request) {
+        System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.UpdateStudentStatusResponse> ZHXY.Dorm.Device.PushService.数据中心接口服务Soap.UpdateStudentStatusAsync(ZHXY.Dorm.Device.PushService.UpdateStudentStatusRequest request) {
             return base.Channel.UpdateStudentStatusAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.UpdateStudentStatusResponse> UpdateStudentStatusAsync(string SiteID, string StuNo, string Status) {
-            ZHXY.Dorm.Device.NHMessage.UpdateStudentStatusRequest inValue = new ZHXY.Dorm.Device.NHMessage.UpdateStudentStatusRequest();
-            inValue.Body = new ZHXY.Dorm.Device.NHMessage.UpdateStudentStatusRequestBody();
+        public System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.UpdateStudentStatusResponse> UpdateStudentStatusAsync(string SiteID, string StuNo, string Status) {
+            ZHXY.Dorm.Device.PushService.UpdateStudentStatusRequest inValue = new ZHXY.Dorm.Device.PushService.UpdateStudentStatusRequest();
+            inValue.Body = new ZHXY.Dorm.Device.PushService.UpdateStudentStatusRequestBody();
             inValue.Body.SiteID = SiteID;
             inValue.Body.StuNo = StuNo;
             inValue.Body.Status = Status;
-            return ((ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap)(this)).UpdateStudentStatusAsync(inValue);
+            return ((ZHXY.Dorm.Device.PushService.数据中心接口服务Soap)(this)).UpdateStudentStatusAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        ZHXY.Dorm.Device.NHMessage.News_GetNewsListResponse ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap.News_GetNewsList(ZHXY.Dorm.Device.NHMessage.News_GetNewsListRequest request) {
+        ZHXY.Dorm.Device.PushService.News_GetNewsListResponse ZHXY.Dorm.Device.PushService.数据中心接口服务Soap.News_GetNewsList(ZHXY.Dorm.Device.PushService.News_GetNewsListRequest request) {
             return base.Channel.News_GetNewsList(request);
         }
         
         public string News_GetNewsList(string ClassID, string PageSize, string PageIndex) {
-            ZHXY.Dorm.Device.NHMessage.News_GetNewsListRequest inValue = new ZHXY.Dorm.Device.NHMessage.News_GetNewsListRequest();
-            inValue.Body = new ZHXY.Dorm.Device.NHMessage.News_GetNewsListRequestBody();
+            ZHXY.Dorm.Device.PushService.News_GetNewsListRequest inValue = new ZHXY.Dorm.Device.PushService.News_GetNewsListRequest();
+            inValue.Body = new ZHXY.Dorm.Device.PushService.News_GetNewsListRequestBody();
             inValue.Body.ClassID = ClassID;
             inValue.Body.PageSize = PageSize;
             inValue.Body.PageIndex = PageIndex;
-            ZHXY.Dorm.Device.NHMessage.News_GetNewsListResponse retVal = ((ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap)(this)).News_GetNewsList(inValue);
+            ZHXY.Dorm.Device.PushService.News_GetNewsListResponse retVal = ((ZHXY.Dorm.Device.PushService.数据中心接口服务Soap)(this)).News_GetNewsList(inValue);
             return retVal.Body.News_GetNewsListResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.News_GetNewsListResponse> ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap.News_GetNewsListAsync(ZHXY.Dorm.Device.NHMessage.News_GetNewsListRequest request) {
+        System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.News_GetNewsListResponse> ZHXY.Dorm.Device.PushService.数据中心接口服务Soap.News_GetNewsListAsync(ZHXY.Dorm.Device.PushService.News_GetNewsListRequest request) {
             return base.Channel.News_GetNewsListAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.News_GetNewsListResponse> News_GetNewsListAsync(string ClassID, string PageSize, string PageIndex) {
-            ZHXY.Dorm.Device.NHMessage.News_GetNewsListRequest inValue = new ZHXY.Dorm.Device.NHMessage.News_GetNewsListRequest();
-            inValue.Body = new ZHXY.Dorm.Device.NHMessage.News_GetNewsListRequestBody();
+        public System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.News_GetNewsListResponse> News_GetNewsListAsync(string ClassID, string PageSize, string PageIndex) {
+            ZHXY.Dorm.Device.PushService.News_GetNewsListRequest inValue = new ZHXY.Dorm.Device.PushService.News_GetNewsListRequest();
+            inValue.Body = new ZHXY.Dorm.Device.PushService.News_GetNewsListRequestBody();
             inValue.Body.ClassID = ClassID;
             inValue.Body.PageSize = PageSize;
             inValue.Body.PageIndex = PageIndex;
-            return ((ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap)(this)).News_GetNewsListAsync(inValue);
+            return ((ZHXY.Dorm.Device.PushService.数据中心接口服务Soap)(this)).News_GetNewsListAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        ZHXY.Dorm.Device.NHMessage.News_GetTopNewsListResponse ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap.News_GetTopNewsList(ZHXY.Dorm.Device.NHMessage.News_GetTopNewsListRequest request) {
+        ZHXY.Dorm.Device.PushService.News_GetTopNewsListResponse ZHXY.Dorm.Device.PushService.数据中心接口服务Soap.News_GetTopNewsList(ZHXY.Dorm.Device.PushService.News_GetTopNewsListRequest request) {
             return base.Channel.News_GetTopNewsList(request);
         }
         
         public string News_GetTopNewsList(int TopNum) {
-            ZHXY.Dorm.Device.NHMessage.News_GetTopNewsListRequest inValue = new ZHXY.Dorm.Device.NHMessage.News_GetTopNewsListRequest();
-            inValue.Body = new ZHXY.Dorm.Device.NHMessage.News_GetTopNewsListRequestBody();
+            ZHXY.Dorm.Device.PushService.News_GetTopNewsListRequest inValue = new ZHXY.Dorm.Device.PushService.News_GetTopNewsListRequest();
+            inValue.Body = new ZHXY.Dorm.Device.PushService.News_GetTopNewsListRequestBody();
             inValue.Body.TopNum = TopNum;
-            ZHXY.Dorm.Device.NHMessage.News_GetTopNewsListResponse retVal = ((ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap)(this)).News_GetTopNewsList(inValue);
+            ZHXY.Dorm.Device.PushService.News_GetTopNewsListResponse retVal = ((ZHXY.Dorm.Device.PushService.数据中心接口服务Soap)(this)).News_GetTopNewsList(inValue);
             return retVal.Body.News_GetTopNewsListResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.News_GetTopNewsListResponse> ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap.News_GetTopNewsListAsync(ZHXY.Dorm.Device.NHMessage.News_GetTopNewsListRequest request) {
+        System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.News_GetTopNewsListResponse> ZHXY.Dorm.Device.PushService.数据中心接口服务Soap.News_GetTopNewsListAsync(ZHXY.Dorm.Device.PushService.News_GetTopNewsListRequest request) {
             return base.Channel.News_GetTopNewsListAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.News_GetTopNewsListResponse> News_GetTopNewsListAsync(int TopNum) {
-            ZHXY.Dorm.Device.NHMessage.News_GetTopNewsListRequest inValue = new ZHXY.Dorm.Device.NHMessage.News_GetTopNewsListRequest();
-            inValue.Body = new ZHXY.Dorm.Device.NHMessage.News_GetTopNewsListRequestBody();
+        public System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.News_GetTopNewsListResponse> News_GetTopNewsListAsync(int TopNum) {
+            ZHXY.Dorm.Device.PushService.News_GetTopNewsListRequest inValue = new ZHXY.Dorm.Device.PushService.News_GetTopNewsListRequest();
+            inValue.Body = new ZHXY.Dorm.Device.PushService.News_GetTopNewsListRequestBody();
             inValue.Body.TopNum = TopNum;
-            return ((ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap)(this)).News_GetTopNewsListAsync(inValue);
+            return ((ZHXY.Dorm.Device.PushService.数据中心接口服务Soap)(this)).News_GetTopNewsListAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeListResponse ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap.Portal_GetNoticeList(ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeListRequest request) {
+        ZHXY.Dorm.Device.PushService.Portal_GetNoticeListResponse ZHXY.Dorm.Device.PushService.数据中心接口服务Soap.Portal_GetNoticeList(ZHXY.Dorm.Device.PushService.Portal_GetNoticeListRequest request) {
             return base.Channel.Portal_GetNoticeList(request);
         }
         
         public string Portal_GetNoticeList(string SiteID, string TypeID, string SearchType, string SearchText, int PageIndex, int PageSize) {
-            ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeListRequest inValue = new ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeListRequest();
-            inValue.Body = new ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeListRequestBody();
+            ZHXY.Dorm.Device.PushService.Portal_GetNoticeListRequest inValue = new ZHXY.Dorm.Device.PushService.Portal_GetNoticeListRequest();
+            inValue.Body = new ZHXY.Dorm.Device.PushService.Portal_GetNoticeListRequestBody();
             inValue.Body.SiteID = SiteID;
             inValue.Body.TypeID = TypeID;
             inValue.Body.SearchType = SearchType;
             inValue.Body.SearchText = SearchText;
             inValue.Body.PageIndex = PageIndex;
             inValue.Body.PageSize = PageSize;
-            ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeListResponse retVal = ((ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap)(this)).Portal_GetNoticeList(inValue);
+            ZHXY.Dorm.Device.PushService.Portal_GetNoticeListResponse retVal = ((ZHXY.Dorm.Device.PushService.数据中心接口服务Soap)(this)).Portal_GetNoticeList(inValue);
             return retVal.Body.Portal_GetNoticeListResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeListResponse> ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap.Portal_GetNoticeListAsync(ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeListRequest request) {
+        System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.Portal_GetNoticeListResponse> ZHXY.Dorm.Device.PushService.数据中心接口服务Soap.Portal_GetNoticeListAsync(ZHXY.Dorm.Device.PushService.Portal_GetNoticeListRequest request) {
             return base.Channel.Portal_GetNoticeListAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeListResponse> Portal_GetNoticeListAsync(string SiteID, string TypeID, string SearchType, string SearchText, int PageIndex, int PageSize) {
-            ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeListRequest inValue = new ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeListRequest();
-            inValue.Body = new ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeListRequestBody();
+        public System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.Portal_GetNoticeListResponse> Portal_GetNoticeListAsync(string SiteID, string TypeID, string SearchType, string SearchText, int PageIndex, int PageSize) {
+            ZHXY.Dorm.Device.PushService.Portal_GetNoticeListRequest inValue = new ZHXY.Dorm.Device.PushService.Portal_GetNoticeListRequest();
+            inValue.Body = new ZHXY.Dorm.Device.PushService.Portal_GetNoticeListRequestBody();
             inValue.Body.SiteID = SiteID;
             inValue.Body.TypeID = TypeID;
             inValue.Body.SearchType = SearchType;
             inValue.Body.SearchText = SearchText;
             inValue.Body.PageIndex = PageIndex;
             inValue.Body.PageSize = PageSize;
-            return ((ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap)(this)).Portal_GetNoticeListAsync(inValue);
+            return ((ZHXY.Dorm.Device.PushService.数据中心接口服务Soap)(this)).Portal_GetNoticeListAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeContentResponse ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap.Portal_GetNoticeContent(ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeContentRequest request) {
+        ZHXY.Dorm.Device.PushService.Portal_GetNoticeContentResponse ZHXY.Dorm.Device.PushService.数据中心接口服务Soap.Portal_GetNoticeContent(ZHXY.Dorm.Device.PushService.Portal_GetNoticeContentRequest request) {
             return base.Channel.Portal_GetNoticeContent(request);
         }
         
         public object Portal_GetNoticeContent(string SiteID, string Guid) {
-            ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeContentRequest inValue = new ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeContentRequest();
-            inValue.Body = new ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeContentRequestBody();
+            ZHXY.Dorm.Device.PushService.Portal_GetNoticeContentRequest inValue = new ZHXY.Dorm.Device.PushService.Portal_GetNoticeContentRequest();
+            inValue.Body = new ZHXY.Dorm.Device.PushService.Portal_GetNoticeContentRequestBody();
             inValue.Body.SiteID = SiteID;
             inValue.Body.Guid = Guid;
-            ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeContentResponse retVal = ((ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap)(this)).Portal_GetNoticeContent(inValue);
+            ZHXY.Dorm.Device.PushService.Portal_GetNoticeContentResponse retVal = ((ZHXY.Dorm.Device.PushService.数据中心接口服务Soap)(this)).Portal_GetNoticeContent(inValue);
             return retVal.Body.Portal_GetNoticeContentResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeContentResponse> ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap.Portal_GetNoticeContentAsync(ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeContentRequest request) {
+        System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.Portal_GetNoticeContentResponse> ZHXY.Dorm.Device.PushService.数据中心接口服务Soap.Portal_GetNoticeContentAsync(ZHXY.Dorm.Device.PushService.Portal_GetNoticeContentRequest request) {
             return base.Channel.Portal_GetNoticeContentAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeContentResponse> Portal_GetNoticeContentAsync(string SiteID, string Guid) {
-            ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeContentRequest inValue = new ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeContentRequest();
-            inValue.Body = new ZHXY.Dorm.Device.NHMessage.Portal_GetNoticeContentRequestBody();
+        public System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.Portal_GetNoticeContentResponse> Portal_GetNoticeContentAsync(string SiteID, string Guid) {
+            ZHXY.Dorm.Device.PushService.Portal_GetNoticeContentRequest inValue = new ZHXY.Dorm.Device.PushService.Portal_GetNoticeContentRequest();
+            inValue.Body = new ZHXY.Dorm.Device.PushService.Portal_GetNoticeContentRequestBody();
             inValue.Body.SiteID = SiteID;
             inValue.Body.Guid = Guid;
-            return ((ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap)(this)).Portal_GetNoticeContentAsync(inValue);
+            return ((ZHXY.Dorm.Device.PushService.数据中心接口服务Soap)(this)).Portal_GetNoticeContentAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        ZHXY.Dorm.Device.NHMessage.Portal_SetNoticeReadStatusResponse ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap.Portal_SetNoticeReadStatus(ZHXY.Dorm.Device.NHMessage.Portal_SetNoticeReadStatusRequest request) {
+        ZHXY.Dorm.Device.PushService.Portal_SetNoticeReadStatusResponse ZHXY.Dorm.Device.PushService.数据中心接口服务Soap.Portal_SetNoticeReadStatus(ZHXY.Dorm.Device.PushService.Portal_SetNoticeReadStatusRequest request) {
             return base.Channel.Portal_SetNoticeReadStatus(request);
         }
         
         public string Portal_SetNoticeReadStatus(string SiteID, string Guid, string Name) {
-            ZHXY.Dorm.Device.NHMessage.Portal_SetNoticeReadStatusRequest inValue = new ZHXY.Dorm.Device.NHMessage.Portal_SetNoticeReadStatusRequest();
-            inValue.Body = new ZHXY.Dorm.Device.NHMessage.Portal_SetNoticeReadStatusRequestBody();
+            ZHXY.Dorm.Device.PushService.Portal_SetNoticeReadStatusRequest inValue = new ZHXY.Dorm.Device.PushService.Portal_SetNoticeReadStatusRequest();
+            inValue.Body = new ZHXY.Dorm.Device.PushService.Portal_SetNoticeReadStatusRequestBody();
             inValue.Body.SiteID = SiteID;
             inValue.Body.Guid = Guid;
             inValue.Body.Name = Name;
-            ZHXY.Dorm.Device.NHMessage.Portal_SetNoticeReadStatusResponse retVal = ((ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap)(this)).Portal_SetNoticeReadStatus(inValue);
+            ZHXY.Dorm.Device.PushService.Portal_SetNoticeReadStatusResponse retVal = ((ZHXY.Dorm.Device.PushService.数据中心接口服务Soap)(this)).Portal_SetNoticeReadStatus(inValue);
             return retVal.Body.Portal_SetNoticeReadStatusResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.Portal_SetNoticeReadStatusResponse> ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap.Portal_SetNoticeReadStatusAsync(ZHXY.Dorm.Device.NHMessage.Portal_SetNoticeReadStatusRequest request) {
+        System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.Portal_SetNoticeReadStatusResponse> ZHXY.Dorm.Device.PushService.数据中心接口服务Soap.Portal_SetNoticeReadStatusAsync(ZHXY.Dorm.Device.PushService.Portal_SetNoticeReadStatusRequest request) {
             return base.Channel.Portal_SetNoticeReadStatusAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.Portal_SetNoticeReadStatusResponse> Portal_SetNoticeReadStatusAsync(string SiteID, string Guid, string Name) {
-            ZHXY.Dorm.Device.NHMessage.Portal_SetNoticeReadStatusRequest inValue = new ZHXY.Dorm.Device.NHMessage.Portal_SetNoticeReadStatusRequest();
-            inValue.Body = new ZHXY.Dorm.Device.NHMessage.Portal_SetNoticeReadStatusRequestBody();
+        public System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.Portal_SetNoticeReadStatusResponse> Portal_SetNoticeReadStatusAsync(string SiteID, string Guid, string Name) {
+            ZHXY.Dorm.Device.PushService.Portal_SetNoticeReadStatusRequest inValue = new ZHXY.Dorm.Device.PushService.Portal_SetNoticeReadStatusRequest();
+            inValue.Body = new ZHXY.Dorm.Device.PushService.Portal_SetNoticeReadStatusRequestBody();
             inValue.Body.SiteID = SiteID;
             inValue.Body.Guid = Guid;
             inValue.Body.Name = Name;
-            return ((ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap)(this)).Portal_SetNoticeReadStatusAsync(inValue);
+            return ((ZHXY.Dorm.Device.PushService.数据中心接口服务Soap)(this)).Portal_SetNoticeReadStatusAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        ZHXY.Dorm.Device.NHMessage.Portal_GetAffairListResponse ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap.Portal_GetAffairList(ZHXY.Dorm.Device.NHMessage.Portal_GetAffairListRequest request) {
+        ZHXY.Dorm.Device.PushService.Portal_GetAffairListResponse ZHXY.Dorm.Device.PushService.数据中心接口服务Soap.Portal_GetAffairList(ZHXY.Dorm.Device.PushService.Portal_GetAffairListRequest request) {
             return base.Channel.Portal_GetAffairList(request);
         }
         
         public string Portal_GetAffairList(string SiteID, string UID) {
-            ZHXY.Dorm.Device.NHMessage.Portal_GetAffairListRequest inValue = new ZHXY.Dorm.Device.NHMessage.Portal_GetAffairListRequest();
-            inValue.Body = new ZHXY.Dorm.Device.NHMessage.Portal_GetAffairListRequestBody();
+            ZHXY.Dorm.Device.PushService.Portal_GetAffairListRequest inValue = new ZHXY.Dorm.Device.PushService.Portal_GetAffairListRequest();
+            inValue.Body = new ZHXY.Dorm.Device.PushService.Portal_GetAffairListRequestBody();
             inValue.Body.SiteID = SiteID;
             inValue.Body.UID = UID;
-            ZHXY.Dorm.Device.NHMessage.Portal_GetAffairListResponse retVal = ((ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap)(this)).Portal_GetAffairList(inValue);
+            ZHXY.Dorm.Device.PushService.Portal_GetAffairListResponse retVal = ((ZHXY.Dorm.Device.PushService.数据中心接口服务Soap)(this)).Portal_GetAffairList(inValue);
             return retVal.Body.Portal_GetAffairListResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.Portal_GetAffairListResponse> ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap.Portal_GetAffairListAsync(ZHXY.Dorm.Device.NHMessage.Portal_GetAffairListRequest request) {
+        System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.Portal_GetAffairListResponse> ZHXY.Dorm.Device.PushService.数据中心接口服务Soap.Portal_GetAffairListAsync(ZHXY.Dorm.Device.PushService.Portal_GetAffairListRequest request) {
             return base.Channel.Portal_GetAffairListAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.Portal_GetAffairListResponse> Portal_GetAffairListAsync(string SiteID, string UID) {
-            ZHXY.Dorm.Device.NHMessage.Portal_GetAffairListRequest inValue = new ZHXY.Dorm.Device.NHMessage.Portal_GetAffairListRequest();
-            inValue.Body = new ZHXY.Dorm.Device.NHMessage.Portal_GetAffairListRequestBody();
+        public System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.Portal_GetAffairListResponse> Portal_GetAffairListAsync(string SiteID, string UID) {
+            ZHXY.Dorm.Device.PushService.Portal_GetAffairListRequest inValue = new ZHXY.Dorm.Device.PushService.Portal_GetAffairListRequest();
+            inValue.Body = new ZHXY.Dorm.Device.PushService.Portal_GetAffairListRequestBody();
             inValue.Body.SiteID = SiteID;
             inValue.Body.UID = UID;
-            return ((ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap)(this)).Portal_GetAffairListAsync(inValue);
+            return ((ZHXY.Dorm.Device.PushService.数据中心接口服务Soap)(this)).Portal_GetAffairListAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        ZHXY.Dorm.Device.NHMessage.Portal_SendInstantMessageResponse ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap.Portal_SendInstantMessage(ZHXY.Dorm.Device.NHMessage.Portal_SendInstantMessageRequest request) {
+        ZHXY.Dorm.Device.PushService.Portal_SendInstantMessageResponse ZHXY.Dorm.Device.PushService.数据中心接口服务Soap.Portal_SendInstantMessage(ZHXY.Dorm.Device.PushService.Portal_SendInstantMessageRequest request) {
             return base.Channel.Portal_SendInstantMessage(request);
         }
         
         public string Portal_SendInstantMessage(string SiteID, string UID, string MsgType, string MsgContent) {
-            ZHXY.Dorm.Device.NHMessage.Portal_SendInstantMessageRequest inValue = new ZHXY.Dorm.Device.NHMessage.Portal_SendInstantMessageRequest();
-            inValue.Body = new ZHXY.Dorm.Device.NHMessage.Portal_SendInstantMessageRequestBody();
+            ZHXY.Dorm.Device.PushService.Portal_SendInstantMessageRequest inValue = new ZHXY.Dorm.Device.PushService.Portal_SendInstantMessageRequest();
+            inValue.Body = new ZHXY.Dorm.Device.PushService.Portal_SendInstantMessageRequestBody();
             inValue.Body.SiteID = SiteID;
             inValue.Body.UID = UID;
             inValue.Body.MsgType = MsgType;
             inValue.Body.MsgContent = MsgContent;
-            ZHXY.Dorm.Device.NHMessage.Portal_SendInstantMessageResponse retVal = ((ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap)(this)).Portal_SendInstantMessage(inValue);
+            ZHXY.Dorm.Device.PushService.Portal_SendInstantMessageResponse retVal = ((ZHXY.Dorm.Device.PushService.数据中心接口服务Soap)(this)).Portal_SendInstantMessage(inValue);
             return retVal.Body.Portal_SendInstantMessageResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.Portal_SendInstantMessageResponse> ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap.Portal_SendInstantMessageAsync(ZHXY.Dorm.Device.NHMessage.Portal_SendInstantMessageRequest request) {
+        System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.Portal_SendInstantMessageResponse> ZHXY.Dorm.Device.PushService.数据中心接口服务Soap.Portal_SendInstantMessageAsync(ZHXY.Dorm.Device.PushService.Portal_SendInstantMessageRequest request) {
             return base.Channel.Portal_SendInstantMessageAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.Portal_SendInstantMessageResponse> Portal_SendInstantMessageAsync(string SiteID, string UID, string MsgType, string MsgContent) {
-            ZHXY.Dorm.Device.NHMessage.Portal_SendInstantMessageRequest inValue = new ZHXY.Dorm.Device.NHMessage.Portal_SendInstantMessageRequest();
-            inValue.Body = new ZHXY.Dorm.Device.NHMessage.Portal_SendInstantMessageRequestBody();
+        public System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.Portal_SendInstantMessageResponse> Portal_SendInstantMessageAsync(string SiteID, string UID, string MsgType, string MsgContent) {
+            ZHXY.Dorm.Device.PushService.Portal_SendInstantMessageRequest inValue = new ZHXY.Dorm.Device.PushService.Portal_SendInstantMessageRequest();
+            inValue.Body = new ZHXY.Dorm.Device.PushService.Portal_SendInstantMessageRequestBody();
             inValue.Body.SiteID = SiteID;
             inValue.Body.UID = UID;
             inValue.Body.MsgType = MsgType;
             inValue.Body.MsgContent = MsgContent;
-            return ((ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap)(this)).Portal_SendInstantMessageAsync(inValue);
+            return ((ZHXY.Dorm.Device.PushService.数据中心接口服务Soap)(this)).Portal_SendInstantMessageAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        ZHXY.Dorm.Device.NHMessage.GetMiddleLeaderListResponse ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap.GetMiddleLeaderList(ZHXY.Dorm.Device.NHMessage.GetMiddleLeaderListRequest request) {
+        ZHXY.Dorm.Device.PushService.GetMiddleLeaderListResponse ZHXY.Dorm.Device.PushService.数据中心接口服务Soap.GetMiddleLeaderList(ZHXY.Dorm.Device.PushService.GetMiddleLeaderListRequest request) {
             return base.Channel.GetMiddleLeaderList(request);
         }
         
         public string GetMiddleLeaderList(string SiteID) {
-            ZHXY.Dorm.Device.NHMessage.GetMiddleLeaderListRequest inValue = new ZHXY.Dorm.Device.NHMessage.GetMiddleLeaderListRequest();
-            inValue.Body = new ZHXY.Dorm.Device.NHMessage.GetMiddleLeaderListRequestBody();
+            ZHXY.Dorm.Device.PushService.GetMiddleLeaderListRequest inValue = new ZHXY.Dorm.Device.PushService.GetMiddleLeaderListRequest();
+            inValue.Body = new ZHXY.Dorm.Device.PushService.GetMiddleLeaderListRequestBody();
             inValue.Body.SiteID = SiteID;
-            ZHXY.Dorm.Device.NHMessage.GetMiddleLeaderListResponse retVal = ((ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap)(this)).GetMiddleLeaderList(inValue);
+            ZHXY.Dorm.Device.PushService.GetMiddleLeaderListResponse retVal = ((ZHXY.Dorm.Device.PushService.数据中心接口服务Soap)(this)).GetMiddleLeaderList(inValue);
             return retVal.Body.GetMiddleLeaderListResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.GetMiddleLeaderListResponse> ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap.GetMiddleLeaderListAsync(ZHXY.Dorm.Device.NHMessage.GetMiddleLeaderListRequest request) {
+        System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.GetMiddleLeaderListResponse> ZHXY.Dorm.Device.PushService.数据中心接口服务Soap.GetMiddleLeaderListAsync(ZHXY.Dorm.Device.PushService.GetMiddleLeaderListRequest request) {
             return base.Channel.GetMiddleLeaderListAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.GetMiddleLeaderListResponse> GetMiddleLeaderListAsync(string SiteID) {
-            ZHXY.Dorm.Device.NHMessage.GetMiddleLeaderListRequest inValue = new ZHXY.Dorm.Device.NHMessage.GetMiddleLeaderListRequest();
-            inValue.Body = new ZHXY.Dorm.Device.NHMessage.GetMiddleLeaderListRequestBody();
+        public System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.GetMiddleLeaderListResponse> GetMiddleLeaderListAsync(string SiteID) {
+            ZHXY.Dorm.Device.PushService.GetMiddleLeaderListRequest inValue = new ZHXY.Dorm.Device.PushService.GetMiddleLeaderListRequest();
+            inValue.Body = new ZHXY.Dorm.Device.PushService.GetMiddleLeaderListRequestBody();
             inValue.Body.SiteID = SiteID;
-            return ((ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap)(this)).GetMiddleLeaderListAsync(inValue);
+            return ((ZHXY.Dorm.Device.PushService.数据中心接口服务Soap)(this)).GetMiddleLeaderListAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        ZHXY.Dorm.Device.NHMessage.Portal_GetNoticesResponse ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap.Portal_GetNotices(ZHXY.Dorm.Device.NHMessage.Portal_GetNoticesRequest request) {
+        ZHXY.Dorm.Device.PushService.Portal_GetNoticesResponse ZHXY.Dorm.Device.PushService.数据中心接口服务Soap.Portal_GetNotices(ZHXY.Dorm.Device.PushService.Portal_GetNoticesRequest request) {
             return base.Channel.Portal_GetNotices(request);
         }
         
         public string Portal_GetNotices(string SiteID, string UID) {
-            ZHXY.Dorm.Device.NHMessage.Portal_GetNoticesRequest inValue = new ZHXY.Dorm.Device.NHMessage.Portal_GetNoticesRequest();
-            inValue.Body = new ZHXY.Dorm.Device.NHMessage.Portal_GetNoticesRequestBody();
+            ZHXY.Dorm.Device.PushService.Portal_GetNoticesRequest inValue = new ZHXY.Dorm.Device.PushService.Portal_GetNoticesRequest();
+            inValue.Body = new ZHXY.Dorm.Device.PushService.Portal_GetNoticesRequestBody();
             inValue.Body.SiteID = SiteID;
             inValue.Body.UID = UID;
-            ZHXY.Dorm.Device.NHMessage.Portal_GetNoticesResponse retVal = ((ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap)(this)).Portal_GetNotices(inValue);
+            ZHXY.Dorm.Device.PushService.Portal_GetNoticesResponse retVal = ((ZHXY.Dorm.Device.PushService.数据中心接口服务Soap)(this)).Portal_GetNotices(inValue);
             return retVal.Body.Portal_GetNoticesResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.Portal_GetNoticesResponse> ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap.Portal_GetNoticesAsync(ZHXY.Dorm.Device.NHMessage.Portal_GetNoticesRequest request) {
+        System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.Portal_GetNoticesResponse> ZHXY.Dorm.Device.PushService.数据中心接口服务Soap.Portal_GetNoticesAsync(ZHXY.Dorm.Device.PushService.Portal_GetNoticesRequest request) {
             return base.Channel.Portal_GetNoticesAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ZHXY.Dorm.Device.NHMessage.Portal_GetNoticesResponse> Portal_GetNoticesAsync(string SiteID, string UID) {
-            ZHXY.Dorm.Device.NHMessage.Portal_GetNoticesRequest inValue = new ZHXY.Dorm.Device.NHMessage.Portal_GetNoticesRequest();
-            inValue.Body = new ZHXY.Dorm.Device.NHMessage.Portal_GetNoticesRequestBody();
+        public System.Threading.Tasks.Task<ZHXY.Dorm.Device.PushService.Portal_GetNoticesResponse> Portal_GetNoticesAsync(string SiteID, string UID) {
+            ZHXY.Dorm.Device.PushService.Portal_GetNoticesRequest inValue = new ZHXY.Dorm.Device.PushService.Portal_GetNoticesRequest();
+            inValue.Body = new ZHXY.Dorm.Device.PushService.Portal_GetNoticesRequestBody();
             inValue.Body.SiteID = SiteID;
             inValue.Body.UID = UID;
-            return ((ZHXY.Dorm.Device.NHMessage.数据中心接口服务Soap)(this)).Portal_GetNoticesAsync(inValue);
+            return ((ZHXY.Dorm.Device.PushService.数据中心接口服务Soap)(this)).Portal_GetNoticesAsync(inValue);
         }
     }
 }
