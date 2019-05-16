@@ -17,7 +17,8 @@ namespace TaskApi.NHExceptionReport
         public void Execute(IJobExecutionContext context)
         {
             Console.WriteLine("进入方法！");
-            DateTime Time = Convert.ToDateTime("2019-05-15 08:00:00");
+            //DateTime Time = Convert.ToDateTime("2019-05-15 08:00:00");
+            DateTime Time = DateTime.Now;
             ExceptionMoudle moudle = new ExceptionMoudle();
             var leaderList = moudle.sys_org_leader.ToList();
             foreach(var leader in leaderList)
@@ -66,7 +67,7 @@ namespace TaskApi.NHExceptionReport
                 {
                     DateTime Yeatday = Time.Date.AddDays(-1).AddHours(2);
                     JObject jo = new JObject();
-                    string userName = moudle.Sys_User.Where(p => p.F_Id.Equals(leader.user_id)).Select(p => p.F_RealName).FirstOrDefault();
+                    string userName = moudle.Sys_User.Where(p => p.F_Id.Equals(leader.user_id)).Select(p => p.F_Account).FirstOrDefault();
                     var NoReturnList = moudle.Dorm_NoReturnReport.Where(p => Yeatday < p.F_CreatorTime && Ids.Contains(p.F_Class)).ToList();
                     var LateReturnList = moudle.Dorm_LateReturnReport.Where(p => Yeatday < p.F_CreatorTime && Ids.Contains(p.F_Class)).ToList();
                     var NoOutList = moudle.Dorm_NoOutReport.Where(p => Yeatday < p.F_CreatorTime && Ids.Contains(p.F_Class)).ToList();
@@ -74,6 +75,7 @@ namespace TaskApi.NHExceptionReport
                     jo.Add("LateReturnList", LateReturnList.ToJson());
                     jo.Add("NoOutList", NoOutList.ToJson());
                     new PushAppMessage().PushReportMessage(userName, jo.ToJson(), "");
+                    Console.WriteLine("NHExceptionPush 推送成功：" + userName);
                 }
             }
         }
