@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 
 namespace ZHXY.Common
 {
@@ -63,7 +65,13 @@ namespace ZHXY.Common
         /// <summary>
         /// 用户角色信息
         /// </summary>
-        public string[] Roles { get; set; } 
+        public string[] Roles { get; set; }
+
+
+        /// <summary>
+        /// 班级信息
+        /// </summary>
+        public string Classes { get; set; }
 
     }
 }

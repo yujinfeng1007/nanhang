@@ -12,7 +12,7 @@ namespace TaskApi.DH
             ////创建楼栋
             //Dictionary<string, string> BuildDic = new Dictionary<string, string>();
             ////List<JObject> FloorList = new List<JObject>();
-            //string SelectBuildSql = "SELECT F_Building_No FROM [dbo].[Dorm_DormInfo] GROUP BY F_Building_No;";
+            //string SelectBuildSql = "SELECT F_Building_No FROM [dbo].[Dorm_Dorm] GROUP BY F_Building_No;";
             //DataTable BuildDataTable = SqlHelper.ExecuteDataTable(SelectBuildSql);
             //string pid = "dormitory001"; //分院ID（南航大学）
             //foreach (DataRow row in BuildDataTable.Rows)
@@ -29,7 +29,7 @@ namespace TaskApi.DH
             //}
 
             ////通过楼栋创建楼层
-            ////string SelectFloorSql = "SELECT F_Building_No, F_Floor_No FROM [dbo].[Dorm_DormInfo] GROUP BY F_Building_No, F_Floor_No;";
+            ////string SelectFloorSql = "SELECT F_Building_No, F_Floor_No FROM [dbo].[Dorm_Dorm] GROUP BY F_Building_No, F_Floor_No;";
             ////DataTable FloorDataTable = SqlHelper.ExecuteDataTable(SelectFloorSql);
             ////foreach(DataRow row in FloorDataTable.Rows)
             ////{
@@ -51,7 +51,7 @@ namespace TaskApi.DH
             ////}
 
             ////通过楼栋和楼层，创建宿舍
-            //string SelectDormSql = "SELECT F_Building_No, F_Floor_No,F_Memo FROM [dbo].[Dorm_DormInfo] GROUP BY F_Building_No, F_Floor_No, F_Memo;";
+            //string SelectDormSql = "SELECT F_Building_No, F_Floor_No,F_Memo FROM [dbo].[Dorm_Dorm] GROUP BY F_Building_No, F_Floor_No, F_Memo;";
             //DataTable DormDataTable = SqlHelper.ExecuteDataTable(SelectDormSql);
             //foreach (DataRow row in DormDataTable.Rows)
             //{

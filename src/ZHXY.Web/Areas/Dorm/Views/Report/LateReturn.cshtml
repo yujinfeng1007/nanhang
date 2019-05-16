@@ -8,11 +8,12 @@
 
         $("#DivisId").bindSelect({
             url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Division",
-            displayBlank: false
+            displayBlank: true
         });
 
         $("#DivisId").change(function () {
             changeGrade();
+
         });
 
         $("#GradeId").change(function () {
@@ -46,7 +47,8 @@
                 //{ label: "院校", name: "College", width: 150, align: 'left' },
                 { label: "班级", name: "Class", width: 150, align: 'left' },
                 { label: "宿舍号", name: "Dorm", width: 150, align: 'left' },
-                { label: "进宿舍时间", name: "InTime", width: 150, align: 'left' }
+                { label: "进宿舍时间", name: "InTime", width: 150, align: 'left' },
+                { label: "晚归时长(时)", name: "Ftime", width: 150, align: 'left' }
             ],
             pager: '#gridPager',
             multiselect: false

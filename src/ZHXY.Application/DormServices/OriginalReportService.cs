@@ -73,6 +73,7 @@ namespace ZHXY.Application
                 ressb.Append(" from(" + sb.ToString() + ") as a) temp_row");
                 ressb.Append(" where rownumber>(("+pagination.Page+"-1)*"+pagination.Rows+ ") order by " + nameof(OriginalReport.Date) + " asc");
                 var data = GetDataTable(ressb.ToString(), null);
+                //var data = R.Db.                
                 list = data.TableToList<OriginalReport>();
                 var countsb = new StringBuilder();
                 countsb.Append("select COUNT(*) " + nameof(Pagination.Records));
