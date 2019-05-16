@@ -23,10 +23,12 @@
             callBack: function (id) {
                 top.frames[id].close();
                 let students = top.frames[id].submit();
+               
                 students.forEach(item => {
                     selectedStudent.names.add(item.name);
                     selectedStudent.ids.add(item.userId);
                 });
+                top.frames[id].$.modalClose();
                $("#leaveersName").val(Array.from(selectedStudent.names).join(","));
                $("#leaveers").val(Array.from(selectedStudent.ids));
             }
