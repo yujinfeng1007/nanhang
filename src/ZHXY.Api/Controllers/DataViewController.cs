@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using ZHXY.Application;
 using ZHXY.Application.DormServices.Gates.Dto;
@@ -15,25 +12,28 @@ namespace ZHXY.Api.Controllers
     /// </summary>
     public class DataViewController : BaseApiController
     {
-
-        private DormBuildingService app = new DormBuildingService(new ZhxyRepository());
+        private RelevanceService rApp = new RelevanceService(new ZhxyRepository());
+        private DeviceService app = new DeviceService(new ZhxyRepository());
+        //private DormBuildingService app = new DormBuildingService(new ZhxyRepository());
 
         /// <summary>
         /// 1.1.	查询可绑定的楼栋信息
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
+        [HttpPost]
         public IHttpActionResult GetUnBindGate(GateDto input)
         {
             try
             {
+                var relevance = rApp.Read<Relevance>(t=>t.Name== "Device_Building" && t.FirstKey==input.F_Sn).FirstOrDefault();
 
-                var buildings = app.GetBindGate(input.F_Sn);
+                var buildings = app.GetBindGate(relevance);
 
                 var json = new
                 {
-                    F_Is_Binded = true,
-                    F_Buildings = buildings,
+                    F_Is_Binded = relevance == null?false:true,
+                    F_Buildings = buildings.Select(t=>new { F_BuildingId= t.Id,F_BuildingName=t.BuildingNo}),
                 };
                 return Success(json);
 
@@ -50,11 +50,12 @@ namespace ZHXY.Api.Controllers
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
+        [HttpPost]
         public IHttpActionResult BindBuildings(GateDto input)
         {
             try
             {
-                app.BindBuildings(input.F_Sn, input.F_BuildingId);
+                app.BindBuildings(input.F_Sn, input.F_BuildingIds);
 
                 return Success("Ok");
 
@@ -70,6 +71,7 @@ namespace ZHXY.Api.Controllers
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
+        [HttpPost]
         public IHttpActionResult UnBindBuildings(GateDto input)
         {
             try
@@ -90,11 +92,12 @@ namespace ZHXY.Api.Controllers
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
+        [HttpPost]
         public IHttpActionResult GetBasicDormOutInInfoGroupByBuilld(GateDto input)
         {
             try
             {
-                return Success(app.GetDormOutInInfo(input.F_Sn));
+                return Success(app.GetDormOutInInfo(input.F_BuildingIds));
 
             }
             catch (Exception e)

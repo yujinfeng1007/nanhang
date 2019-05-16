@@ -128,5 +128,10 @@ namespace ZHXY.Domain
 
         public string OrganId { get; set; }
 
+        /// <summary>
+        /// 在寝情况 0=进 1=出
+        /// </summary>
+        public string InOut { get; set; }
+
     }
 }
