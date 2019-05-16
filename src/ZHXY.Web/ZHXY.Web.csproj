@@ -540,6 +540,9 @@
     <Content Include="Content\js\datepicker\开发包\skin\whyGreen\bg.jpg" />
     <Content Include="Content\js\datepicker\开发包\skin\whyGreen\datepicker.css" />
     <Content Include="Content\js\datepicker\开发包\skin\whyGreen\img.gif" />
+    <Content Include="App_Readme\Handlebarsjs_release-notes.md" />
+    <Content Include="App_Readme\Handlebarsjs_README.md" />
+    <Content Include="App_Readme\Handlebarsjs_LICENSE" />
     <None Include="Content\js\dialog\dialog.css.bak" />
     <Content Include="Content\js\dialog\dialog.css" />
     <Content Include="Content\js\dialog\dialog.js" />
@@ -584,6 +587,14 @@
     <Content Include="Content\pace\themes\pace-theme-loading-bar.css" />
     <Content Include="Content\pace\themes\pace-theme-mac-osx.css" />
     <Content Include="Content\pace\themes\pace-theme-minimal.css" />
+    <Content Include="Scripts\handlebars.amd.js" />
+    <Content Include="Scripts\handlebars.amd.min.js" />
+    <Content Include="Scripts\handlebars.js" />
+    <Content Include="Scripts\handlebars.min.js" />
+    <Content Include="Scripts\handlebars.runtime.amd.js" />
+    <Content Include="Scripts\handlebars.runtime.amd.min.js" />
+    <Content Include="Scripts\handlebars.runtime.js" />
+    <Content Include="Scripts\handlebars.runtime.min.js" />
     <Content Include="Scripts\jquery.md5.js" />
     <Content Include="Scripts\message_zh.js" />
     <Content Include="Scripts\pace.js" />
