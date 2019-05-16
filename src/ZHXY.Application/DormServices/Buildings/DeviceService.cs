@@ -97,5 +97,32 @@ namespace ZHXY.Application
 
             return list;
         }
+
+        /// <summary>
+        /// 获取访客清单
+        /// </summary>
+        /// <param name="buildingIds"></param>
+        /// <returns></returns>
+        public dynamic GetVisitorList(string buildingIds,int lastNum=10)
+        {
+            // 根据楼栋ID，查找所有宿舍信息
+            var ids = buildingIds.Split(',').ToList();
+
+            var dorms = Read<DormRoom>(t => ids.Contains(t.UnitNumber)).Select(t => t.Id).ToList();
+
+            // 根据宿舍查找学生宿舍对应表
+            var dormStudents = Read<DormStudent>(t => dorms.Contains(t.DormId)).Select(t => t.StudentId).ToList();
+
+            // 获取到访记录名单
+            var vistors = Read<VisitApply>(t => dormStudents.Contains(t.ApplicantId)).OrderByDescending(t => t.VisitStartTime).Select(t => new {
+                F_Name = t.Student.Name,
+                F_Dorm = t.DormRoom.Title,
+                F_Avatar = t.Student.FacePic,
+                F_VisitedName = t.VisitorName,
+                F_InTime = t.VisitStartTime
+            }).Take(lastNum).ToList();
+
+            return vistors;
+        }
     }
 }

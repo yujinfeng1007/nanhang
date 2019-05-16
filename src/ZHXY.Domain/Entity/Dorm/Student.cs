@@ -133,5 +133,10 @@ namespace ZHXY.Domain
         /// </summary>
         public string InOut { get; set; }
 
+        /// <summary>
+        /// 脸部图像
+        /// </summary>
+        public string FacePic { get; set; }
+
     }
 }

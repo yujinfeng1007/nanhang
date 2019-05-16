@@ -105,5 +105,24 @@ namespace ZHXY.Api.Controllers
                 return Error("0001", e.Message);
             }
         }
+
+        /// <summary>
+        /// 1.6.	获取访客清单
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult GetVisitorsList(GateDto input)
+        {
+            try
+            {
+                return Success(app.GetVisitorList(input.F_BuildingIds));
+
+            }
+            catch (Exception e)
+            {
+                return Error("0001", e.Message);
+            }
+        }
     }
 }
