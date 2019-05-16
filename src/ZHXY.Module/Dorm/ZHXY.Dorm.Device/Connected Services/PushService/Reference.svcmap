@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="63aa23f1-4ab1-4871-9c25-49d36081fd06" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="2c444db1-388d-4c34-82fb-8ae271e4e29f" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -19,11 +19,11 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="https://passport.nchu.edu.cn/api/DataCenter.asmx?op=Portal_SendInstantMessage" Protocol="http" SourceId="1" />
+    <MetadataSource Address="https://passport.nchu.edu.cn/api/DataCenter.asmx" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="DataCenter.wsdl" MetadataType="Wsdl" ID="cf1e48f2-bf72-45a0-8d4c-84c0315c8398" SourceId="1" SourceUrl="https://passport.nchu.edu.cn/api/DataCenter.asmx?wsdl" />
-    <MetadataFile FileName="DataCenter.disco" MetadataType="Disco" ID="c4ce8c08-bc09-453f-8070-0cc5d49cb714" SourceId="1" SourceUrl="https://passport.nchu.edu.cn/api/DataCenter.asmx?disco" />
+    <MetadataFile FileName="DataCenter.wsdl" MetadataType="Wsdl" ID="6fc8a434-6114-48f8-8be5-cd884753870f" SourceId="1" SourceUrl="https://passport.nchu.edu.cn/api/DataCenter.asmx?wsdl" />
+    <MetadataFile FileName="DataCenter.disco" MetadataType="Disco" ID="35dc733c-249b-486b-b333-5687bf884e3e" SourceId="1" SourceUrl="https://passport.nchu.edu.cn/api/DataCenter.asmx?disco" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
