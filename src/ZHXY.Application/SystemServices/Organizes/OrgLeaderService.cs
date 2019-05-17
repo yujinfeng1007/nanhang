@@ -8,9 +8,9 @@ namespace ZHXY.Application
     /// <summary>
     /// 机构负责人管理
     /// </summary>
-    public class OrgLeaderAppService : AppService
+    public class OrgLeaderService : AppService
     {
-        public OrgLeaderAppService(IZhxyRepository r) => R = r;
+        public OrgLeaderService(IZhxyRepository r) => R = r;
 
         public dynamic Get( string orgId)
         {

@@ -13,9 +13,9 @@ namespace ZHXY.Web.Controllers
         {
             var data = new data();
             var cache = CacheFactory.Cache();
-            data.area = SysCacheAppService.GetAreaListByCache();
-            data.duty = SysCacheAppService.GetDutyListByCache();
-            data.role = SysCacheAppService.GetRoleListByCache();
+            data.area = CacheService.GetAreaListByCache();
+            data.duty = CacheService.GetDutyListByCache();
+            data.role = CacheService.GetRoleListByCache();
 
             if (Operator.Current == null) return Json(data, JsonRequestBehavior.AllowGet);
             //菜单按钮权限

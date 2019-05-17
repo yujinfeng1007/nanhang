@@ -6,8 +6,8 @@ namespace ZHXY.Web.Controllers
 {
     public class LogController : ZhxyWebControllerBase
     {
-        private SysLogAppService App { get; }
-        public LogController(SysLogAppService app) => App = app;
+        private LogService App { get; }
+        public LogController(LogService app) => App = app;
         public async Task<ViewResult> LoginHis() => await Task.Run(() => View());
 
         [HttpGet]

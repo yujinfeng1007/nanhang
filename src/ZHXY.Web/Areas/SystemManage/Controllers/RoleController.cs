@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Web.Mvc;
-using ZHXY.Application;using ZHXY.Domain;
-using ZHXY.Common;
-
+﻿using System.Web.Mvc;
+using ZHXY.Application;
 namespace ZHXY.Web.SystemManage.Controllers
 {
     /// <summary>
@@ -54,6 +49,17 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult Delete(string[] id)
         {
             App.Delete(id);
+            return Resultaat.Success();
+        }
+
+        public ActionResult AddUser(string roleId, string[] userId)
+        {
+            App.AddUser(roleId, userId);
+            return Resultaat.Success();
+        }
+        public ActionResult RemoveUser(string roleId, string[] userId)
+        {
+            App.RemoveUser(roleId, userId);
             return Resultaat.Success();
         }
     }

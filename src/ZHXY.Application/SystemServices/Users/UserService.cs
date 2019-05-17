@@ -102,6 +102,32 @@ namespace ZHXY.Application
             SaveChanges();
         }
 
+        public void AddRole(string userId,string[] roleIds)
+        {
+            var existingRoles = GetUserRolesId(userId);
+            var addRoles = roleIds.Except(existingRoles);
+            foreach (var item in addRoles)
+            {
+                Add(new Relevance { Name = Relation.UserRole, FirstKey = userId, SecondKey = item });
+            }
+            SaveChanges();
+        }
+
+        public void RemoveRole(string userId,string[] roleIds)
+        {
+            var removeList = Query<Relevance>(p =>
+             p.Name.Equals(Relation.UserRole) &&
+             p.FirstKey.Equals(userId) &&
+             roleIds.Contains(p.SecondKey)
+             ).ToArrayAsync().Result;
+            DelAndSave<Relevance>(removeList);
+        }
+
+        public dynamic GetExcludeRoles(string userId)
+        {
+            var exclude=GetUserRolesId(userId);
+           return Read<Role>(p => !exclude.Contains(p.Id)).ToListAsync().Result;
+        }
 
         public void RevisePassword(string userPassword, string userId)
         {
@@ -110,7 +136,6 @@ namespace ZHXY.Application
             user.Password = Md5EncryptHelper.Encrypt(DESEncryptHelper.Encrypt(Md5EncryptHelper.Encrypt(userPassword, 32).ToLower(), user.Secretkey).ToLower(), 32).ToLower();
             SaveChanges();
         }
-
 
         public UserData GetUserData(CurrentUser user)
         {
@@ -129,6 +154,16 @@ namespace ZHXY.Application
             d.UserName = o.Name;
             d.HeadIcon = o.HeadIcon;
             return d;
+        }
+
+        public dynamic GetUserRoles(string userId)
+        {
+            var roles = Read<Relevance>(p => p.Name.Equals(Relation.UserRole) && p.FirstKey.Equals(userId)).Select(p => p.SecondKey).ToArrayAsync().Result;
+            return Read<Role>(p => roles.Contains(p.Id)).ToListAsync().Result;
+        }
+        public string[] GetUserRolesId(string userId)
+        {
+            return Read<Relevance>(p => p.Name.Equals(Relation.UserRole) && p.FirstKey.Equals(userId)).Select(p => p.SecondKey).ToArrayAsync().Result;
         }
     }
 }

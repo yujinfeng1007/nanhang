@@ -6,9 +6,9 @@ using ZHXY.Domain;
 
 namespace ZHXY.Application
 {
-    public class FilterIpAppService : AppService
+    public class FilterIpService : AppService
     {
-        public FilterIpAppService(IZhxyRepository r) => R = r;
+        public FilterIpService(IZhxyRepository r) => R = r;
 
         public List<FilterIp> GetList(string keyword)
         {

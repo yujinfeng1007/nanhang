@@ -24,6 +24,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult Info() => View();
         [HttpGet]
         public ActionResult RevisePassword() => View();
+        public ActionResult Role() => View();
         #endregion view
 
         [HttpGet]
@@ -139,6 +140,25 @@ namespace ZHXY.Web.SystemManage.Controllers
         }
 
 
-       
+        public ActionResult GetUserRoles(string userId)
+        {
+            return Resultaat.Success(App.GetUserRoles(userId));
+        }
+
+        public ActionResult GetExcludeRoles(string userId)
+        {
+            return Resultaat.Success(App.GetExcludeRoles(userId));
+        }
+
+        public ActionResult AddRole(string userId,string[] roleId)
+        {
+            App.AddRole(userId, roleId);
+            return Resultaat.Success();
+        }
+        public ActionResult RemoveRole(string userId, string roleId)
+        {
+            App.RemoveRole(userId, new[] { roleId });
+            return Resultaat.Success();
+        }
     }
 }

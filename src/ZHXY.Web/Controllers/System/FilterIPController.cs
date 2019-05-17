@@ -7,8 +7,8 @@ namespace ZHXY.Web.Controllers
 {
     public class FilterIPController : ZhxyWebControllerBase
     {
-        private FilterIpAppService App { get; }
-        public FilterIPController(FilterIpAppService app) => App = app;
+        private FilterIpService App { get; }
+        public FilterIPController(FilterIpService app) => App = app;
 
         [HttpGet]
         

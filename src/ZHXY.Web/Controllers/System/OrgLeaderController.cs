@@ -8,9 +8,9 @@ namespace ZHXY.Web.Controllers
     /// </summary>
     public class OrgLeaderController : ZhxyWebControllerBase
     {
-        private OrgLeaderAppService App { get; }
+        private OrgLeaderService App { get; }
 
-        public OrgLeaderController(OrgLeaderAppService app) => App = app;
+        public OrgLeaderController(OrgLeaderService app) => App = app;
 
         [HttpGet]
         public async Task<ViewResult> Select() => await Task.Run(() =>View());

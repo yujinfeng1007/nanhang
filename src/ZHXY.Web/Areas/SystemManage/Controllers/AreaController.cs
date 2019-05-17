@@ -14,9 +14,9 @@ namespace ZHXY.Web.SystemManage.Controllers
     /// </summary>
     public class AreaController : ZhxyWebControllerBase
     {
-        private SysPlaceAreaAppService App { get; }
+        private PlaceAreaService App { get; }
 
-        public AreaController(SysPlaceAreaAppService app) => App = app;
+        public AreaController(PlaceAreaService app) => App = app;
 
         [HttpGet]
         

@@ -10,11 +10,11 @@ namespace ZHXY.Application
     /// <summary>
     /// 日志管理
     /// </summary>
-    public class SysLogAppService : AppService
+    public class LogService : AppService
     {
-        public SysLogAppService(IZhxyRepository r) => R = r;
+        public LogService(IZhxyRepository r) => R = r;
 
-        public SysLogAppService()
+        public LogService()
         {
             R = new ZhxyRepository();
         }

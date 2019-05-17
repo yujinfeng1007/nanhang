@@ -10,11 +10,11 @@ namespace ZHXY.Application
     /// <summary>
     /// 地区管理
     /// </summary>
-    public class SysPlaceAreaAppService : AppService
+    public class PlaceAreaService : AppService
     {
         private IRepositoryBase<PlaceArea> Repository { get; }
 
-        public SysPlaceAreaAppService() => Repository = new Repository<PlaceArea>();
+        public PlaceAreaService() => Repository = new Repository<PlaceArea>();
 
         public List<PlaceArea> GetList() => Repository.QueryAsNoTracking().ToList();
 

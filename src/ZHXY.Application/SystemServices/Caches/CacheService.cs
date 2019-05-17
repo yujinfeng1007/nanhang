@@ -11,7 +11,7 @@ namespace ZHXY.Application
     /// <summary>
     /// 缓存管理
     /// </summary>
-    public class SysCacheAppService : AppService
+    public class CacheService : AppService
     {
         public static DbContext MyDb => new ZhxyDbContext();
 
@@ -21,7 +21,7 @@ namespace ZHXY.Application
         /// <returns></returns>
         public static object GetAreaList()
         {
-            var areaApp = new SysPlaceAreaAppService();
+            var areaApp = new PlaceAreaService();
             var data = areaApp.GetList();
             var dictionary = new Dictionary<string, object>();
             foreach (var item in data)
@@ -50,7 +50,7 @@ namespace ZHXY.Application
 
         public static object GetAreaListChild()
         {
-            var areaApp = new SysPlaceAreaAppService();
+            var areaApp = new PlaceAreaService();
             var data = areaApp.GetList();
             var list = new List<AreaChild>();
             foreach (var itemprovince in data.Where(a => a.ParentId == "0"))

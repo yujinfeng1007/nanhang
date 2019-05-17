@@ -557,6 +557,7 @@
     <Content Include="Areas\SystemManage\Views\FilterIP\Index.cshtml" />
     <Content Include="Areas\SystemManage\Views\DbBackup\Form.cshtml" />
     <Content Include="Areas\SystemManage\Views\DbBackup\Index.cshtml" />
+    <Content Include="Areas\SystemManage\Views\User\Role.cshtml" />
     <None Include="Content\js\dialog\dialog.css.bak" />
     <Content Include="Content\js\dialog\dialog.css" />
     <Content Include="Content\js\dialog\dialog.js" />
