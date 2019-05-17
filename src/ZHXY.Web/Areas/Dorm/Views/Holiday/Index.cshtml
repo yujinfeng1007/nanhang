@@ -1,0 +1,141 @@
+﻿@{Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<script>
+    const UPDATE_URL = `/Dorm/Holiday/Update`;
+    const GRID_URL = `/Dorm/Holiday/Load`;
+    const GET_URL = `/Dorm/Holiday/Get`;
+    let lastsel;
+
+    $(function () {
+        gridList();
+    })
+
+    function gridList() {
+        $("#gridList").jqGrid({
+            url: GRID_URL,
+            styleUI: 'Bootstrap',
+            datatype: 'json',
+            sortname: 'id',
+            sortorder: "desc",
+            rownumbers: true,
+            gridview: true,
+            altRows: true,
+            viewrecords: true,
+            multiselect: false,
+            //开启多选,
+            rowNum: 15,
+            autoGridWidthFix: 0,
+            autoGridHeightFix: 0,
+            shrinkToFit: true,
+            loadonce: false,
+            pager: "#gridPager",
+            toppager: true,
+            width: window.innerWidth,
+            height: window.innerHeight * 0.9,
+            //jsonReader: {
+            //    root: function (r) {
+            //        return r.data;
+            //    }
+            //},
+            colModel: [
+                { label: 'ID', name: 'id', key: true, hidden: true },
+                { label: '节日名称', name: 'name', editable: true, edittype: 'text' },
+                { label: '开始时间', name: 'startTime', editable: true, edittype: "date" },
+                { label: '结束时间', name: 'endTime', editable: true, edittype: "date" },
+            ],
+            //editurl: UPDATE_URL,
+            //onSelectRow: function (id) {
+            //    if (id && id !== lastsel) {
+            //        $("#save").removeClass("disabled");
+            //        jQuery('#gridList').jqGrid('restoreRow', lastsel);
+            //        jQuery('#gridList').jqGrid('editRow', id, true);
+            //        lastsel = id;
+            //    } else {
+            //        $("#save").addClass("disabled");
+            //    }
+            //},
+
+        });
+
+
+        $("#gridList").jqGrid('navGrid', '#gridPager',
+            {
+                edit: true,
+                add: true,
+                del: true,
+                search: false,
+                refresh: true,
+                view: true,
+                cloneToTop: true,
+            },
+            {
+                url: "update",
+                top: 200,
+                left: 200,
+                drag: true,
+                resize: false,
+                closeOnEscape: true,
+            },
+            {
+                url: "add",
+                drag: true,
+                resize: false,
+                closeOnEscape: true,
+            },
+            {
+                url: "delete",
+                drag: true,
+                resize: false,
+                closeOnEscape: true,
+            },
+        );
+        $("#gridList").jqGrid('bindKeys');
+
+        $("#save").click(function () {
+            $("#gridList").jqGrid("saveRow", lastsel, function (result) {
+                if (result.responseJSON.state === 'success') {
+                    $("#gridList").trigger("reloadGrid");
+                } else {
+                    $.modalMsg(result.responseJSON.message, "error");
+                }
+            });
+        })
+    }
+
+    function pickDate(cellvalue, options, cell) {
+        setTimeout(function () {
+            $(cell).find('input[type=text]')
+                .datepicker({ format: 'yyyy-mm-dd', autoclose: true });
+        }, 0);
+    }
+
+</script>
+
+<div class="topPanel">
+    <div class="search">
+        <table>
+            <tr>
+                <td>
+                    <div class="input-group">
+                        <input id="txt_keyword" type="text" class="form-control" placeholder="名称/编号" style="width: 200px;">
+                        <span class="input-group-btn">
+                            <button id="btn_search" type="button" class="btn  btn-default"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </td>
+                <td>
+                    <div class="toolbar">
+                        <div class="btn-group">
+                            <a class="btn btn-default" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
+                        </div>
+                        <div class="btn-group"> <a id="save" authorize="yes" class="btn btn-default dropdown-text disabled">保存</a> </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="gridPanel">
+    <table id="gridList"></table>
+    <div id="gridPager"></div>
+</div>
