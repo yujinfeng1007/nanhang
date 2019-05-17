@@ -211,6 +211,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Areas\Dorm\Controllers\FaceController.cs" />
+    <Compile Include="Areas\Dorm\Controllers\HolidayController.cs" />
     <Compile Include="Areas\Dorm\Controllers\XFTXController.cs" />
     <Compile Include="Areas\Dorm\Controllers\DormBuildingController.cs" />
     <Compile Include="Areas\Dorm\Controllers\DormRoomController.cs" />
@@ -541,6 +542,7 @@
     <Content Include="Content\js\datepicker\开发包\skin\whyGreen\bg.jpg" />
     <Content Include="Content\js\datepicker\开发包\skin\whyGreen\datepicker.css" />
     <Content Include="Content\js\datepicker\开发包\skin\whyGreen\img.gif" />
+    <Content Include="Areas\Dorm\Views\Holiday\Index.cshtml" />
     <None Include="Content\js\dialog\dialog.css.bak" />
     <Content Include="Content\js\dialog\dialog.css" />
     <Content Include="Content\js\dialog\dialog.js" />

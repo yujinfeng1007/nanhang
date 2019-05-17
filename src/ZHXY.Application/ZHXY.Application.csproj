@@ -70,6 +70,9 @@
     <Compile Include="DormServices\DormRooms\DormRoomAppService.cs" />
     <Compile Include="DormServices\DormStudentAppService.cs" />
     <Compile Include="DormServices\Gates\UserToGateService.cs" />
+    <Compile Include="DormServices\Holiday\Dto\AddHolidayDto.cs" />
+    <Compile Include="DormServices\Holiday\Dto\UpdateHolidayDto.cs" />
+    <Compile Include="DormServices\Holiday\HolidayAppService.cs" />
     <Compile Include="DormServices\InOutReceiveAppService.cs" />
     <Compile Include="DormServices\LateReturnReportService.cs" />
     <Compile Include="DormServices\NoOutReportService.cs" />

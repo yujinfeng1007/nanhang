@@ -185,7 +185,7 @@ namespace ZHXY.Web.SystemManage.Controllers
             var Divis = Gradedata.Parent;
             if (Divis != null)
             {
-                DivsGradeClass = Divis.F_FullName + Gradedata.F_FullName + Dataclass.F_FullName;
+                DivsGradeClass = Divis.Name + Gradedata.Name + Dataclass.Name;
             }
             return Json(DivsGradeClass, JsonRequestBehavior.AllowGet);
         }

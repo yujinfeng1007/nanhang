@@ -23,7 +23,8 @@ namespace TaskApi.NHExceptionReport
         public void Execute(IJobExecutionContext context)
         {
             ExceptionMoudle moudle = new ExceptionMoudle();
-            // 测试用时间点   DateTime QuartzTime = Convert.ToDateTime("2019-05-15 02:00:00");
+            // 测试用时间点   
+            //DateTime QuartzTime = Convert.ToDateTime("2019-05-17 02:00:00");
             DateTime QuartzTime = DateTime.Now;
             string TableName = "DHFLOW_" + QuartzTime.Year + QuartzTime.Month.ToString().PadLeft(2, '0');
             var sw = new Stopwatch();
