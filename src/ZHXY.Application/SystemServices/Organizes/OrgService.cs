@@ -63,7 +63,7 @@ namespace ZHXY.Application
             var divisIds = divisList.Select(p => p.Id).ToList();
             classList = sysOrganizeList.Where(p => divisIds.Contains(p.ParentId)).ToList();
         }
-        public dynamic GetById(string id) => Get<Organ>(id);
+        public Organ GetById(string id) => Get<Organ>(id);
 
         public void Add(AddOrgDto dto)
         {

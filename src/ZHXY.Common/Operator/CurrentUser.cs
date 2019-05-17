@@ -71,7 +71,7 @@ namespace ZHXY.Common
         /// <summary>
         /// 班级信息
         /// </summary>
-        public string Classes { get; set; }
+        public List<Object> Classes { get; set; }
 
     }
 }
