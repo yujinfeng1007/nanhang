@@ -35,7 +35,7 @@
     function addRole() {
         let roles = $("#gridList").jqGrid('getGridParam', 'selarrrow');
         $.post('/systemmanage/user/addrole', { userId: userId, roleId: roles }, function (r) {
-            $(`#${gridId}`).jqGrid().trigger('reloadGrid');
+            $(`#gridList`).jqGrid().trigger('reloadGrid');
         })
     }
 </script>
