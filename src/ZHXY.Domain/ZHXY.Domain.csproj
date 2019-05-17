@@ -86,7 +86,6 @@
     <Compile Include="EntityConfig\System\OrgMap.cs" />
     <Compile Include="EntityConfig\System\UserLogOnMap.cs" />
     <Compile Include="EntityConfig\System\UserMap.cs" />
-    <Compile Include="EntityExtensions\ReportEntity.cs" />
     <Compile Include="Entity\Dorm\DormTimeRule.cs" />
     <Compile Include="Entity\Dorm\DormRoom.cs" />
     <Compile Include="Entity\Dorm\DormStudent.cs" />

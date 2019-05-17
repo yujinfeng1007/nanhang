@@ -39,12 +39,12 @@ namespace ZHXY.Web.Dorm.Controllers
             var list = LateReturnReportApp.GetList(pagination, startTime, endTime, classId).Select(p =>
              new
              {
-                 Account = p.F_Account,
-                 Name = p.F_Name,
-                 Class = p.Class?.Name,
+                 Account = p.Account,
+                 Name = p.Name,
+                 Class = p.Organ?.Name,
                  Dorm = p.Dorm?.Title,
-                 College = p.F_College,
-                 InTime = p.F_InTime,
+                 College = p.College,
+                 InTime = p.InTime,
                  Ftime = p.F_Time
              });
             return PagingResult(list, pagination);
@@ -55,13 +55,13 @@ namespace ZHXY.Web.Dorm.Controllers
             var list = NoReturnReportApp.GetList(pagination, startTime, endTime, classId).Select(p =>
             new
             {
-                Account = p.F_Account,
-                Name = p.F_Name,
-                Class = p.Class?.Name,
+                Account = p.Account,
+                Name = p.Name,
+                Class = p.Organ?.Name,
                 Dorm = p.Dorm?.Title,
-                College = p.F_College,
-                Time = p.F_OutTime,
-                DayCount   = p.F_DayCount
+                College = p.College,
+                Time = p.OutTime,
+                DayCount   = p.DayCount
             });
             return PagingResult(list, pagination);
         }
@@ -71,13 +71,13 @@ namespace ZHXY.Web.Dorm.Controllers
             var list = NoOutReportApp.GetList(pagination, startTime, endTime, classId).Select(p =>
             new
             {
-                Account = p.F_Account,
-                Name = p.F_Name,
-                Class = p.Class?.Name,
+                Account = p.Account,
+                Name = p.Name,
+                Class = p.Organ?.Name,
                 Dorm = p.Dorm?.Title,
-                College = p.F_College,
-                InTime = p.F_InTime,
-                Time = p.F_Time
+                College = p.College,
+                InTime = p.InTime,
+                Time = p.Time
             });
             return PagingResult(list, pagination);
         }

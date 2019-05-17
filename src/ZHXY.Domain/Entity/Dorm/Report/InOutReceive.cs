@@ -1,19 +1,19 @@
 ﻿
 namespace ZHXY.Domain
 {
-    public class InOutReceive : Entity
+    public class InOutReceive : IEntity
     {
+
+        public string Id { get; set; }
+        /// <summary>
+        /// 类型
+        /// </summary>
+        public int? Type{ get; set; }
         
         /// <summary>
-        /// 
+        /// 接收用户
         /// </summary>
-        public int? F_Type{ get; set; }
-        
-              
-        /// <summary>
-        /// 
-        /// </summary>
-        public string F_ReceiveUser{ get; set; }
+        public string ReceiveUser{ get; set; }
         
                 
     }

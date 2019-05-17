@@ -15,13 +15,13 @@ namespace ZHXY.Application
             var list = Read<InOutReceive>().Paging(pagination).ToList();
             return list.Select(t =>
             {
-                var ids = t.F_ReceiveUser.Split(',');
+                var ids = t.ReceiveUser.Split(',');
                 var names = string.Join(",", Read<User>(x => ids.Contains(x.Id)).Select(x => x.Name).ToArray());
                 return new InOutReceive
                 {
-                    F_Id = t.F_Id,
-                    F_Type = t.F_Type,
-                    F_ReceiveUser = names
+                    Id = t.Id,
+                    Type = t.Type,
+                    ReceiveUser = names
                 };
             }).ToList();
         }

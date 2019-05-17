@@ -21,16 +21,16 @@ namespace ZHXY.Application
             pag.Sidx = "F_CreatorTime";
             var expression = ExtLinq.True<NoReturnReport>();
             if (!string.IsNullOrEmpty(classId))
-                expression = expression.And(p => p.F_Class.Equals(classId));
+                expression = expression.And(p => p.ClassId.Equals(classId));
             if (!string.IsNullOrEmpty(startTime))
             {
                 var start = Convert.ToDateTime(startTime + " 00:00:00");
-                expression = expression.And(p => p.F_CreatorTime >= start);
+                expression = expression.And(p => p.CreatedTime >= start);
             }
             if (!string.IsNullOrEmpty(endTime))
             {
                 var end = Convert.ToDateTime(endTime + " 23:59:59");
-                expression = expression.And(p => p.F_CreatorTime <= end);
+                expression = expression.And(p => p.CreatedTime <= end);
             }
             return Read(expression).OrderBy($"{pag.Sidx} {pag.Sord}").Skip(pag.Skip).Take(pag.Rows).ToListAsync().Result;
         }
@@ -40,12 +40,12 @@ namespace ZHXY.Application
             if (!string.IsNullOrEmpty(startTime))
             {
                 var start = Convert.ToDateTime(startTime + " 00:00:00");
-                expression = expression.And(p => p.F_CreatorTime >= start);
+                expression = expression.And(p => p.CreatedTime >= start);
             }
             if (!string.IsNullOrEmpty(endTime))
             {
                 var end = Convert.ToDateTime(endTime + " 23:59:59");
-                expression = expression.And(p => p.F_CreatorTime <= end);
+                expression = expression.And(p => p.CreatedTime <= end);
             }
             return Read(expression).ToList();
         }
@@ -53,20 +53,20 @@ namespace ZHXY.Application
         {
             var expression = ExtLinq.True<NoReturnReport>();
             if (!string.IsNullOrEmpty(classId))
-                expression = expression.And(p => p.F_Class.Equals(classId));
+                expression = expression.And(p => p.ClassId.Equals(classId));
             if (!string.IsNullOrEmpty(keyboard))
             {
-                expression = expression.And(p => p.F_Name.Contains(keyboard));
+                expression = expression.And(p => p.Name.Contains(keyboard));
             }
             if (!string.IsNullOrEmpty(startTime))
             {
                 var start = Convert.ToDateTime(startTime + " 00:00:00");
-                expression = expression.And(p => p.F_CreatorTime >= start);
+                expression = expression.And(p => p.CreatedTime >= start);
             }
             if (!string.IsNullOrEmpty(endTime))
             {
                 var end = Convert.ToDateTime(endTime + " 23:59:59");
-                expression = expression.And(p => p.F_CreatorTime <= end);
+                expression = expression.And(p => p.CreatedTime <= end);
             }
             return Read(expression).ToList();
         }
@@ -75,16 +75,16 @@ namespace ZHXY.Application
         {
             var expression = ExtLinq.True<NoReturnReport>();
             if (!string.IsNullOrEmpty(studentId))
-                expression = expression.And(p => p.F_StudentId.Equals(studentId));           
+                expression = expression.And(p => p.StudentId.Equals(studentId));           
             if (!string.IsNullOrEmpty(startTime))
             {
                 var start = Convert.ToDateTime(startTime + " 00:00:00");
-                expression = expression.And(p => p.F_CreatorTime >= start);
+                expression = expression.And(p => p.CreatedTime >= start);
             }
             if (!string.IsNullOrEmpty(endTime))
             {
                 var end = Convert.ToDateTime(endTime + " 23:59:59");
-                expression = expression.And(p => p.F_CreatorTime <= end);
+                expression = expression.And(p => p.CreatedTime <= end);
             }
             return Read(expression).ToList();
         }

@@ -26,10 +26,10 @@ namespace TaskApi.Job
             {
                 DateTime? time = DateTime.Now.AddHours(-1);
                 //晚归
-                var lateData = lateRepo.Query(t => t.F_CreatorTime >= time);
+                var lateData = lateRepo.Query(t => t.CreatedTime >= time);
                 var receiveUsers = inOutReceiveRepo.QueryAsNoTracking().ToList();
                
-                var ids = receiveUsers.Where(t => t.F_Type == 2).FirstOrDefault()?.F_ReceiveUser.Split(',');
+                var ids = receiveUsers.Where(t => t.Type == 2).FirstOrDefault()?.ReceiveUser.Split(',');
                 ids = ids ?? new string[0];
                 var userNames = sysUserRepo.QueryAsNoTracking(x => ids.Contains(x.Id)).ToList().Select(x => x.Account);
 
@@ -44,8 +44,8 @@ namespace TaskApi.Job
                 //}
 
                 //未归
-                var noInDatas = noReturnRepo.Query(t => t.F_CreatorTime >= time);
-                ids = receiveUsers.Where(t => t.F_Type == 1).FirstOrDefault()?.F_ReceiveUser.Split(',');
+                var noInDatas = noReturnRepo.Query(t => t.CreatedTime >= time);
+                ids = receiveUsers.Where(t => t.Type == 1).FirstOrDefault()?.ReceiveUser.Split(',');
                 ids = ids ?? new string[0];
                 userNames = sysUserRepo.QueryAsNoTracking(x => ids.Contains(x.Id)).Select(x => x.Account);
 
@@ -57,8 +57,8 @@ namespace TaskApi.Job
                 }
 
                 //未出
-                var noOutDatas = noOutRepo.Query(t => t.F_CreatorTime >= time);
-                ids = receiveUsers.Where(t => t.F_Type == 3).FirstOrDefault()?.F_ReceiveUser.Split(',');
+                var noOutDatas = noOutRepo.Query(t => t.CreatedTime >= time);
+                ids = receiveUsers.Where(t => t.Type == 3).FirstOrDefault()?.ReceiveUser.Split(',');
                 ids = ids ?? new string[0];
                 userNames = sysUserRepo.QueryAsNoTracking(x => ids.Contains(x.Id)).Select(x => x.Account);
                 var noOutData = noOutDatas.FirstOrDefault();
