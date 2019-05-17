@@ -40,14 +40,12 @@ namespace ZHXY.Web.SystemManage.Controllers
             return Resultaat.Success(data);
         }
 
-
         [HttpPost]
         public ActionResult Add(AddUserDto dto)
         {
             App.Add(dto);
             return Resultaat.Success();
         }
-
 
         [HttpPost]
         public ActionResult Update(UpdateUserDto dto)

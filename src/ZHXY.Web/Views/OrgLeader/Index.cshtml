@@ -1,0 +1,149 @@
+﻿@{Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<script>
+    const ROMEVE_URL = `/SystemManage/OrgLeader/Remove`;
+    const GRID_URL = `/SystemManage/OrgLeader/Get`;
+    const TREE_URL = `/SystemManage/Organize/GetStudentOrg`;
+    const SELECT_URL = `/SystemManage/OrgLeader/Select`;
+    $(function () {
+        $('#layout').layout({
+            west__resizable: false
+        }).sizePane("west", 300);
+        gridList();
+        gridTree();
+
+        setInterval(function () {
+            let orgId = $("#treeGrid").jqGrid('getGridParam', 'selrow');
+            let userIdArr = $("#gridList").jqGrid('getGridParam', 'selarrrow');
+            if (userIdArr == null || userIdArr.length == 0) {
+                $("#btn_remove").addClass("disabled");
+            } else {
+                $("#btn_remove").removeClass("disabled");
+            }
+
+            if (!orgId) {
+                $("#btn_add").addClass("disabled");
+            } else {
+                $("#btn_add").removeClass("disabled");
+            }
+           
+        }, 200)
+
+    })
+
+    function gridList() {
+        $("#gridList").dataGrid({
+            url: GRID_URL,
+            autoGridHeight: () => window.innerHeight * 0.80,
+            jsonReader: {
+                root: function (r) {
+                    return r.data;
+                }
+            },
+            colModel: [
+                { label: "主键", name: "orgId", hidden: true },
+                { label: "主键", name: "userId", hidden: true, key: true },
+                { label: '机构', name: 'orgName' },
+                { label: '负责人', name: 'userName' },
+            ],
+            autoGridWidth: true,
+            multiselect: true,
+            loadonce: false,
+            viewrecords: true,
+        });
+    }
+
+    function reloadGrid(rowId) {
+        $("#gridList").jqGrid('setGridParam', {
+            postData: {
+                orgId: rowId
+            },
+        }).trigger('reloadGrid');
+    }
+
+    function gridTree() {
+        $("#treeGrid").jqGrid({
+            styleUI: 'Bootstrap',
+            treeGrid: true,
+            url: TREE_URL,
+            treeGridModel: "adjacency",
+            datatype: "json",
+            gridview: true,
+            altRows: true,
+            viewrecords: true,
+            autoGridWidth: true,
+            rowNum: 15,
+            shrinkToFit: true,
+            autoGridHeight: true,
+            jsonReader: {
+                root: function (r) { return r.data; }
+            },
+            height: window.innerHeight * 0.9,
+            width: top.window.innerWidth * 0.2,
+            ExpandColumn: 'name',
+            ExpandColClick: false,
+            onSelectRow: reloadGrid,
+            colModel: [
+                { label: '机构名称', name: 'name', width: 100, align: 'left', sortable: false },
+                { label: '主键', name: "id", width: 150, align: 'left', key: true, hidden: true },
+                { label: 'level', name: "level", hidden: true },
+            ],
+            multiselect: false,
+            rowNum: "all",
+        });
+    }
+
+    function add() {
+        let rowId = $("#treeGrid").jqGrid('getGridParam', 'selrow');
+        $.modalOpen({
+            id: "Form",
+            title: "添加负责人",
+            url: `${SELECT_URL}?orgId=${rowId}`,
+            width: "1300px",
+            height: "600px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].add();
+                $("#gridList").jqGrid().trigger('reloadGrid');
+            },
+            btn: ['添加']
+        });
+    }
+
+    function remove() {
+        let orgId = $("#treeGrid").jqGrid('getGridParam', 'selrow');
+        let userIdArr = $("#gridList").jqGrid('getGridParam', 'selarrrow');
+        $.post(ROMEVE_URL, { orgId: orgId, users: userIdArr }, (result) => {
+            if (result.state === 'success') {
+                $.modalMsg('操作成功', 'success');
+                reloadGrid(orgId);
+                return;
+            }
+            $.modalMsg(result.message, 'error');
+        })
+    }
+</script>
+
+<div class="ui-layout" id="layout" style="height: 100%; width: 100%;">
+    <div class="ui-layout-west" style="height: 100%; width: 100%;">
+        <table id="treeGrid"></table>
+    </div>
+    <div class="ui-layout-center" style="height: 100%; width: 100%;">
+        <form class="form-inline topPanel" autocomplete="off">
+            <button type="button" class="btn btn-default" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></button>
+            <button type="button" id="btn_add" class="btn btn-primary" onclick="add()">添加</button>
+            <button type="button" id="btn_remove" class="btn btn-info" onclick="remove()">移除</button>
+        </form>
+
+        <div class="gridPanel">
+            <table id="gridList"></table>
+            <div id="gridPager"></div>
+        </div>
+    </div>
+</div>
+
+
+<style scoped>
+    .input-group > button {
+        margin-right: 10px;
+    }
+</style>

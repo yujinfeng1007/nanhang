@@ -6,7 +6,7 @@ namespace ZHXY.Domain
     {
         public DormTimeRuleMap()
         {
-            ToTable("dorm_rule");
+            ToTable("zhxy_dorm_rule");
             HasKey(p => p.DayOfWeek);
 
             Property(p => p.DayOfWeek).HasColumnName("day_of_week");

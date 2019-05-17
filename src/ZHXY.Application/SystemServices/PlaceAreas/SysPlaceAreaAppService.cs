@@ -18,19 +18,19 @@ namespace ZHXY.Application
 
         public List<PlaceArea> GetList() => Repository.QueryAsNoTracking().ToList();
 
-        public List<PlaceArea> GetListByParentId(string parentId) => Repository.QueryAsNoTracking().Where(t => t.F_ParentId == parentId).ToList();
+        public List<PlaceArea> GetListByParentId(string parentId) => Repository.QueryAsNoTracking().Where(t => t.ParentId == parentId).ToList();
 
         public PlaceArea GetForm(string keyValue) => Repository.Find(keyValue);
 
         public void DeleteForm(string keyValue)
         {
-            if (Repository.QueryAsNoTracking().Count(t => t.F_ParentId.Equals(keyValue)) > 0)
+            if (Repository.QueryAsNoTracking().Count(t => t.ParentId.Equals(keyValue)) > 0)
             {
                 throw new Exception("删除失败！操作的对象包含了下级数据。");
             }
             else
             {
-                Repository.BatchDelete(t => t.F_Id == keyValue);
+                Repository.BatchDelete(t => t.Id == keyValue);
             }
         }
 
@@ -38,12 +38,10 @@ namespace ZHXY.Application
         {
             if (!string.IsNullOrEmpty(keyValue))
             {
-                areaEntity.Modify(keyValue);
                 Repository.Update(areaEntity);
             }
             else
             {
-                areaEntity.Create();
                 Repository.Insert(areaEntity);
             }
         }

@@ -6,16 +6,15 @@ namespace ZHXY.Domain
     {
         public ButtonMap()
         {
-            ToTable("Sys_ModuleButton");
+            ToTable("zhxy_button");
             HasKey(t => t.Id);
 
-
-            Property(p => p.Id).HasColumnName("F_Id");
-            Property(p => p.MenuId).HasColumnName("F_ModuleId");
-            Property(p => p.EnCode).HasColumnName("F_EnCode");
-            Property(p => p.Name).HasColumnName("F_FullName");
-            Property(p => p.Icon).HasColumnName("F_Icon");
-            Property(p => p.SortCode).HasColumnName("F_SortCode");
+            Property(p => p.Id).HasColumnName("id");
+            Property(p => p.MenuId).HasColumnName("menu_id");
+            Property(p => p.EnCode).HasColumnName("code");
+            Property(p => p.Name).HasColumnName("name");
+            Property(p => p.Icon).HasColumnName("icon");
+            Property(p => p.SortCode).HasColumnName("sort_code");
         }
     }
 }

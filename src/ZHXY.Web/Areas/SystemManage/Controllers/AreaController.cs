@@ -28,9 +28,9 @@ namespace ZHXY.Web.SystemManage.Controllers
             {
                 var treeModel = new TreeSelectModel
                 {
-                    id = item.F_Id,
-                    text = item.F_FullName,
-                    parentId = item.F_ParentId
+                    id = item.Id,
+                    text = item.Name,
+                    parentId = item.ParentId
                 };
                 treeList.Add(treeModel);
             }
@@ -43,14 +43,14 @@ namespace ZHXY.Web.SystemManage.Controllers
         {
             var data = App.GetList();
             var list = new List<AreaChild>();
-            foreach (var province in data.Where(a => a.F_ParentId == "0"))
+            foreach (var province in data.Where(a => a.ParentId == "0"))
             {
-                var areaProvince = new AreaChild { value = province.F_Id, label = province.F_FullName };
+                var areaProvince = new AreaChild { value = province.Id, label = province.Name };
                 var listProvince = new List<AreaChild>();
-                foreach (var itemCity in data.Where(b => b.F_ParentId == province.F_Id))
+                foreach (var itemCity in data.Where(b => b.ParentId == province.Id))
                 {
-                    var areaCity = new AreaChild { value = itemCity.F_Id, label = itemCity.F_FullName };
-                    var listCity = data.Where(c => c.F_ParentId == itemCity.F_Id).Select(itemArea => new AreaChild { value = itemArea.F_Id, label = itemArea.F_FullName }).ToList();
+                    var areaCity = new AreaChild { value = itemCity.Id, label = itemCity.Name };
+                    var listCity = data.Where(c => c.ParentId == itemCity.Id).Select(itemArea => new AreaChild { value = itemArea.Id, label = itemArea.Name }).ToList();
                     areaCity.children = listCity;
                     listProvince.Add(areaCity);
                 }
@@ -64,11 +64,11 @@ namespace ZHXY.Web.SystemManage.Controllers
         
         public ActionResult GetSelectJsonByCategoryId(string F_ParentId)
         {
-            var data = App.GetList().Where(t => t.F_ParentId == F_ParentId);
+            var data = App.GetList().Where(t => t.ParentId == F_ParentId);
             var list = new List<object>();
             foreach (var item in data)
             {
-                list.Add(new { id = item.F_Id, text = item.F_FullName });
+                list.Add(new { id = item.Id, text = item.Name });
             }
             return Content(list.ToJson());
         }
@@ -83,10 +83,10 @@ namespace ZHXY.Web.SystemManage.Controllers
             {
                 var treeModel = new TreeGridModel
                 {
-                    id = item.F_Id,
-                    text = item.F_FullName,
+                    id = item.Id,
+                    text = item.Name,
                     isLeaf = false,
-                    parentId = item.F_ParentId,
+                    parentId = item.ParentId,
                     expanded = false,
                     entityJson = item.ToJson()
                 };
@@ -120,11 +120,11 @@ namespace ZHXY.Web.SystemManage.Controllers
             foreach (var item in data)
             {
                 var treeModel = new TreeGridModel();
-                var hasChildren = data.Count(t => t.F_ParentId == item.F_Id) != 0;
-                treeModel.id = item.F_Id;
-                treeModel.text = item.F_FullName;
+                var hasChildren = data.Count(t => t.ParentId == item.Id) != 0;
+                treeModel.id = item.Id;
+                treeModel.text = item.Name;
                 treeModel.isLeaf = hasChildren;
-                treeModel.parentId = item.F_ParentId;
+                treeModel.parentId = item.ParentId;
                 treeModel.expanded = false;
                 treeModel.entityJson = item.ToJson();
                 treeList.Add(treeModel);

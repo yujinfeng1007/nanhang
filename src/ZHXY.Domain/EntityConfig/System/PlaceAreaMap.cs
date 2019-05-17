@@ -6,8 +6,17 @@ namespace ZHXY.Domain
     {
         public PlaceAreaMap()
         {
-            ToTable("Sys_Area");
-            HasKey(t => t.F_Id);
+            ToTable("zhxy_area");
+            HasKey(t => t.Id);
+
+
+            Property(p => p.Id).HasColumnName("id");
+            Property(p => p.ParentId).HasColumnName("p_id");
+            Property(p => p.Level).HasColumnName("level");
+            Property(p => p.Code).HasColumnName("code");
+            Property(p => p.Name).HasColumnName("name");
+            Property(p => p.SimpleSpelling).HasColumnName("simple_spelling");
+            Property(p => p.SortCode).HasColumnName("sort_code");
         }
     }
 }

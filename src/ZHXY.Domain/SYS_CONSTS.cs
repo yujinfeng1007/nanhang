@@ -8,6 +8,7 @@
     /// </summary>
     public static class SYS_CONSTS
     {
+        public const string DbNull = "null";
         //缓存key
         public static string DATAITEMS { get; } = "dataItems";
         public static string ORGANIZE { get; } = "organize";

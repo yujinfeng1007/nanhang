@@ -41,6 +41,8 @@ namespace ZHXY.Domain
             return DbContext.SaveChanges();
         }
 
+        public void BatchDelete(Func<object, bool> p) => throw new NotImplementedException();
+
         public int BatchInsert(List<T> ts)
         {
             DbContext.Set<T>().AddRange(ts);

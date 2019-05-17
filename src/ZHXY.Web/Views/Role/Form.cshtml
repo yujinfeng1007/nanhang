@@ -1,0 +1,74 @@
+﻿@{
+
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script>
+    let id = $.request("id");
+    $(function () {
+        initControl();
+        $.addRequired('#form1');
+        if (!!id) {
+            $.ajax({
+                url: "/SystemManage/Role/Get",
+                data: { id: id },
+                dataType: "json",
+                async: false,
+                success: function (r) {
+                    $("#form1").formSerialize(r.data);
+                }
+            });
+        }
+    });
+    function initControl() {
+        $("#type").bindSelect({
+            dictionary: 'RoleType'
+        })
+    }
+    function submitForm() {
+        if (!$('#form1').formValid()) {
+            return false;
+        }
+        let op = (!!id) ? `update` : `add`;
+        $.submitForm({
+            url: `/SystemManage/Role/${op}`,
+            param: $("#form1").formSerialize(),
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+</script>
+
+<form id="form1" autocomplete="off">
+    <input id="id" name="id" type="hidden" />
+    <div style="padding-top: 20px; margin-right: 20px;">
+        <table class="form">
+            <tr>
+                <th class="formTitle">角色名称</th>
+                <td class="formValue">
+                    <input name="name" type="text" class="form-control required" placeholder="请输入角色名称" />
+                </td>
+            </tr>
+            <tr>
+                <th class="formTitle">角色类型</th>
+                <td class="formValue">
+                    <select id="type" name="type" type="text" class="form-control required" />
+                </td>
+            </tr>
+            <tr>
+                <th class="formTitle">显示顺序</th>
+                <td class="formValue">
+                    <input data-rule-isDigits="true" name="sortCode" type="number" class="form-control" placeholder="请输入显示顺序" />
+                </td>
+            </tr>
+            <tr>
+                <th class="formTitle" valign="top" style="padding-top: 5px;">
+                    备注
+                </th>
+                <td class="formValue">
+                    <textarea name="description" class="form-control" style="height: 60px;" maxlength="250"></textarea>
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>

@@ -169,19 +169,19 @@ namespace ZHXY.Application
 
             var buildingNos = Read<Gate>(p => buildingIds.Contains(p.Id)).Select(p=>p.DeviceNumber).ToList();
 
-            var outs = Read<Dorm_FlowInAndOutOfBuilding>(p => buildingNos.Contains(p.building_no) && p.direction == true)
-                .GroupBy(p => new { p.building_no }).Select(p => new {
+            var outs = Read<LDJCLS>(p => buildingNos.Contains(p.BuildingNo) && p.Direction == true)
+                .GroupBy(p => new { p.BuildingNo }).Select(p => new {
                     F_OutNum = p.Count(),
-                    p.Key.building_no,
+                    p.Key.BuildingNo,
                 });
 
-            var ins = Read<Dorm_FlowInAndOutOfBuilding>(p => buildingNos.Contains(p.building_no) && p.direction == false)
-                .GroupBy(p => new { p.building_no }).Select(p => new {
+            var ins = Read<LDJCLS>(p => buildingNos.Contains(p.BuildingNo) && p.Direction == false)
+                .GroupBy(p => new { p.BuildingNo }).Select(p => new {
                     F_InNum = p.Count(),
-                    p.Key.building_no,
+                    p.Key.BuildingNo,
                 });
 
-           return  outs.Join(ins, e => e.building_no, o => o.building_no, (e, o) => new { e.building_no,e.F_OutNum,o.F_InNum}).ToList();
+           return  outs.Join(ins, e => e.BuildingNo, o => o.BuildingNo, (e, o) => new { e.BuildingNo, e.F_OutNum,o.F_InNum}).ToList();
            // var data = outs.GroupJoin(ins, a => new { a.building_no, a.F_OutNum }, b => new { b.building_no, b.F_InNum }, (a, b) => new {  a.building_no, a.F_OutNum, b });
         }
 

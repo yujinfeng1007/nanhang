@@ -6,21 +6,21 @@ namespace ZHXY.Domain
     {
         public LogMap()
         {
-            ToTable("Sys_Log");
+            ToTable("zhxy_op_log");
             HasKey(t => t.Id);
 
-            Property(p => p.Id).HasColumnName("F_Id");
-            Property(p => p.CreateTime).HasColumnName("F_Date");
-            Property(p => p.Account).HasColumnName("F_Account");
-            Property(p => p.UserId).HasColumnName("F_CreatorUserId").IsRequired();
-            Property(p => p.NickName).HasColumnName("F_NickName");
-            Property(p => p.Type).HasColumnName("F_Type");
-            Property(p => p.IPAddress).HasColumnName("F_IPAddress");
-            Property(p => p.IPAddressName).HasColumnName("F_IPAddressName");
-            Property(p => p.ModuleId).HasColumnName("F_ModuleId");
-            Property(p => p.ModuleName).HasColumnName("F_ModuleName");
-            Property(p => p.Result).HasColumnName("F_Result");
-            Property(p => p.Description).HasColumnName("F_Description");
+            Property(p => p.Id).HasColumnName("id");
+            Property(p => p.CreateTime).HasColumnName("op_time");
+            Property(p => p.Account).HasColumnName("op_user_account");
+            Property(p => p.UserId).HasColumnName("op_user_id").IsRequired();
+            Property(p => p.NickName).HasColumnName("op_username");
+            Property(p => p.Type).HasColumnName("op_type");
+            Property(p => p.IPAddress).HasColumnName("from_ip");
+            Property(p => p.IPAddressName).HasColumnName("from_location");
+            Property(p => p.ModuleId).HasColumnName("module_id");
+            Property(p => p.ModuleName).HasColumnName("module_name");
+            Property(p => p.Result).HasColumnName("op_result");
+            Property(p => p.Description).HasColumnName("description");
         }
     }
 }

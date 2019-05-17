@@ -6,7 +6,7 @@ namespace ZHXY.Domain
     {
         public GateMap()
         {
-            ToTable("dorm_gate");
+            ToTable("zhxy_gate");
             HasKey(p => p.Id);
 
             Property(p => p.Id).HasColumnName("id");

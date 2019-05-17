@@ -20,7 +20,7 @@ using ZHXY.Common;
 namespace ZHXY.Application
 {
     [LoginAuthentication]
-    [ValidataParam]
+    [ValidateParam]
     public abstract class ZhxyWebControllerBase : Controller
     {
         #region property

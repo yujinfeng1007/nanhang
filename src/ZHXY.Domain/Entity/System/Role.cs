@@ -22,4 +22,5 @@ namespace ZHXY.Domain
         public int? SortCode { get; set; }
         public string Description { get; set; }
     }
+
 }

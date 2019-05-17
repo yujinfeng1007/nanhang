@@ -9,8 +9,8 @@ namespace ZHXY.Domain
     {
         public string Id { get; set; } = Guid.NewGuid().ToString("N").ToUpper();
         public bool? Type { get; set; }
-        public string StartWithIp { get; set; }
-        public string EndWithIp { get; set; }
+        public string StartIp { get; set; }
+        public string EndIp { get; set; }
         public string Description { get; set; }
     }
 }

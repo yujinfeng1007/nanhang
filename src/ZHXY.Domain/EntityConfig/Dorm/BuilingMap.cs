@@ -7,7 +7,7 @@ namespace ZHXY.Domain
         public BuildingMap()
 
         {
-            ToTable("dorm_building");
+            ToTable("zhxy_building");
 
             HasKey(p => p.Id); 
 

@@ -232,24 +232,33 @@
     <Compile Include="Areas\SystemManage\Controllers\DicController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\DutyController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\CurrentUserController.cs" />
-    <Compile Include="Areas\SystemManage\Controllers\ItemsDataController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\MenuController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\OrganizeController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\OrgLeaderController.cs" />
-    <Compile Include="Areas\SystemManage\Controllers\RoleAuthorizeController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\RoleController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\UserController.cs" />
-    <Compile Include="Areas\SystemManage\Controllers\ItemsTypeController.cs" />
     <Compile Include="Areas\SystemManage\SystemManageAreaRegistration.cs" />
     <Compile Include="Areas\SystemSecurity\Controllers\DbBackupController.cs" />
     <Compile Include="Areas\SystemSecurity\Controllers\FilterIPController.cs" />
     <Compile Include="Areas\SystemSecurity\Controllers\LogController.cs" />
     <Compile Include="Areas\SystemSecurity\SystemSecurityAreaRegistration.cs" />
     <Compile Include="Controllers\ClientDataController.cs" />
+    <Compile Include="Controllers\System\AreaController.cs" />
+    <Compile Include="Controllers\System\CurrentUserController.cs" />
+    <Compile Include="Controllers\System\DbBackupController.cs" />
+    <Compile Include="Controllers\System\DicController.cs" />
+    <Compile Include="Controllers\System\DutyController.cs" />
+    <Compile Include="Controllers\System\FilterIPController.cs" />
+    <Compile Include="Controllers\System\LogController.cs" />
     <Compile Include="Controllers\SelectController.cs" />
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\System\MenuController.cs" />
+    <Compile Include="Controllers\System\OrganizeController.cs" />
+    <Compile Include="Controllers\System\OrgLeaderController.cs" />
+    <Compile Include="Controllers\System\RoleController.cs" />
+    <Compile Include="Controllers\System\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1717,6 +1726,31 @@
     <Content Include="Scripts\jquery.qrcode.min.js.map" />
     <Content Include="Scripts\tinymce\skins\ui\oxide\fonts\tinymce-mobile.woff" />
     <Content Include="Scripts\tinymce\langs\readme.md" />
+    <Content Include="Views\Area\Form.cshtml" />
+    <Content Include="Views\Area\Index.cshtml" />
+    <Content Include="Views\Dic\Index.cshtml" />
+    <Content Include="Views\Duty\Form.cshtml" />
+    <Content Include="Views\Duty\Index.cshtml" />
+    <Content Include="Views\Menu\Index.cshtml" />
+    <Content Include="Views\Organize\Form.cshtml" />
+    <Content Include="Views\Organize\Index.cshtml" />
+    <Content Include="Views\OrgLeader\Index.cshtml" />
+    <Content Include="Views\OrgLeader\Select.cshtml" />
+    <Content Include="Views\Role\Form.cshtml" />
+    <Content Include="Views\Role\Index.cshtml" />
+    <Content Include="Views\StudentChange\Index.cshtml" />
+    <Content Include="Views\TableDef\FieldForm.cshtml" />
+    <Content Include="Views\TableDef\Form.cshtml" />
+    <Content Include="Views\TableDef\index.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\DbBackup\Form.cshtml" />
+    <Content Include="Views\DbBackup\Index.cshtml" />
+    <Content Include="Views\FilterIP\Details.cshtml" />
+    <Content Include="Views\FilterIP\Form.cshtml" />
+    <Content Include="Views\FilterIP\Index.cshtml" />
+    <Content Include="Views\Log\Index.cshtml" />
+    <Content Include="Views\Log\LoginHis.cshtml" />
+    <Content Include="Views\ServerMonitoring\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -1754,22 +1788,7 @@
     <Content Include="Areas\SystemManage\Views\Area\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\ItemsData\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\ItemsType\Form.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\ItemsType\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\ItemsData\Form.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\ItemsType\Details.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\ItemsData\Details.cshtml" />
+    <Content Include="Areas\SystemManage\Views\Dic\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\SystemManage\Views\Organize\Index.cshtml" />

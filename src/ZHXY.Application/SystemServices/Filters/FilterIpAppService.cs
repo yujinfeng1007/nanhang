@@ -15,7 +15,7 @@ namespace ZHXY.Application
             var expression = ExtLinq.True<FilterIp>();
             if (!string.IsNullOrEmpty(keyword))
             {
-                expression = expression.And(t => t.StartWithIp.Contains(keyword));
+                expression = expression.And(t => t.StartIp.Contains(keyword));
             }
             return Read(expression).ToList();
         }

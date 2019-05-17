@@ -57,11 +57,11 @@ namespace ZHXY.Application
             var user = Read<User>(p => p.Account.Equals(username)).FirstOrDefaultAsync().Result;
             if (user == null) throw new Exception("账户不存在，请重新输入");
             var userLogin = Get<UserLogin>(user.Id);
-            var dbPassword = Md5EncryptHelper.Encrypt(DESEncryptHelper.Encrypt(password.ToLower(), userLogin.UserSecretkey).ToLower(), 32).ToLower();
-            if (dbPassword != userLogin.UserPassword) throw new Exception("密码不正确，请重新输入");
-            userLogin.PreviousVisitTime = userLogin.LastVisitTime.HasValue ? userLogin.LastVisitTime : null;
+            var dbPassword = Md5EncryptHelper.Encrypt(DESEncryptHelper.Encrypt(password.ToLower(), userLogin.Secretkey).ToLower(), 32).ToLower();
+            if (dbPassword != userLogin.Password) throw new Exception("密码不正确，请重新输入");
+            userLogin.PreVisitTime = userLogin.LastVisitTime.HasValue ? userLogin.LastVisitTime : null;
             userLogin.LastVisitTime = DateTime.Now;
-            userLogin.LogOnCount = Convert.ToInt32(userLogin.LogOnCount) + 1;
+            userLogin.LoginCount = Convert.ToInt32(userLogin.LoginCount) + 1;
             SaveChanges();
             return user;
         }
@@ -73,7 +73,7 @@ namespace ZHXY.Application
 
         public bool VerifyPwd(string userid, string password)
         {
-            var userLogin = Read<UserLogin>(p => p.Id.Equals(userid)).Select(p => new { SecretKey = p.UserSecretkey, Password = p.UserPassword }).FirstOrDefaultAsync().Result;
+            var userLogin = Read<UserLogin>(p => p.UserId.Equals(userid)).Select(p => new { SecretKey = p.Secretkey, Password = p.Password }).FirstOrDefaultAsync().Result;
             var dbPassword = Md5EncryptHelper.Encrypt(DESEncryptHelper.Encrypt(password.ToLower(), userLogin.SecretKey).ToLower(), 32).ToLower();
             return dbPassword == userLogin.Password;
         }
@@ -105,9 +105,9 @@ namespace ZHXY.Application
 
         public void RevisePassword(string userPassword, string userId)
         {
-            var user = Query<UserLogin>(p => p.Id.Equals(userId)).FirstOrDefaultAsync().Result;
-            user.UserSecretkey = Md5EncryptHelper.Encrypt(NumberBuilder.Build_18bit(), 16).ToLower();
-            user.UserPassword = Md5EncryptHelper.Encrypt(DESEncryptHelper.Encrypt(Md5EncryptHelper.Encrypt(userPassword, 32).ToLower(), user.UserSecretkey).ToLower(), 32).ToLower();
+            var user = Query<UserLogin>(p => p.UserId.Equals(userId)).FirstOrDefaultAsync().Result;
+            user.Secretkey = Md5EncryptHelper.Encrypt(NumberBuilder.Build_18bit(), 16).ToLower();
+            user.Password = Md5EncryptHelper.Encrypt(DESEncryptHelper.Encrypt(Md5EncryptHelper.Encrypt(userPassword, 32).ToLower(), user.Secretkey).ToLower(), 32).ToLower();
             SaveChanges();
         }
 
@@ -123,7 +123,7 @@ namespace ZHXY.Application
             };
             //var menus=Read<Relevance>(p => p.Name.Equals(Relation.RoleMenu) && d.Roles.Contains(p.FirstKey)).Select(p => p.SecondKey).Distinct().ToArrayAsync().Result;
             //var buttons =Read<Relevance>(p => p.Name.Equals(Relation.RoleButton) && d.Roles.Contains(p.FirstKey)).Select(p => p.SecondKey).Distinct().ToArrayAsync().Result;
-            d.Menus = Query<Menu>(p=>p.ParentId.Equals("0")).ToListAsync().Result;
+            d.Menus = Read<Menu>(p=>p.ParentId.Equals(SYS_CONSTS.DbNull)).Include("ChildNodes").OrderBy(p=>p.SortCode).ToListAsync().Result;
             d.Buttons = Read<Button>().ToListAsync().Result;
             var o = Read<User>(p => p.Id.Equals(user.Id)).FirstOrDefaultAsync().Result;
             d.UserName = o.Name;
