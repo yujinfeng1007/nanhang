@@ -9,7 +9,7 @@
     function gridList() {
         var $gridList = $("#gridList");
         $gridList.dataGrid({
-            url: "/SystemSecurity/FilterIP/Load",
+            url: "/SystemManage/FilterIP/Load",
             height: $(window).height() - 96,
             jsonReader: {
                 root: function (r) {
@@ -43,7 +43,7 @@
         $.modalOpen({
             id: "Form",
             title: "新建策略",
-            url: "/SystemSecurity/FilterIP/Form",
+            url: "/SystemManage/FilterIP/Form",
             width: "450px",
             height: "400px",
             callBack: function (iframeId) {
@@ -55,7 +55,7 @@
     function btn_delete() {
         let rowId = $('#gridList').jqGrid('getGridParam','selrow');
         $.deleteForm({
-            url: "/SystemSecurity/FilterIP/Delete",
+            url: "/SystemManage/FilterIP/Delete",
             param: { id: rowId },
             success: function () {
                 $.currentWindow().$("#gridList").trigger("reloadGrid");
@@ -68,7 +68,7 @@
         $.modalOpen({
             id: "Details",
             title: "查看策略",
-            url: "/SystemSecurity/FilterIP/Details?id=" + rowId,
+            url: "/SystemManage/FilterIP/Details?id=" + rowId,
             width: "450px",
             height: "520px",
             btn: null,

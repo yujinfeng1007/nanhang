@@ -21,9 +21,8 @@ namespace ZHXY.Domain
             Property(p => p.InTime).HasColumnName("F_InTime");
             Property(p => p.F_Time).HasColumnName("F_Time");
 
-
-            HasOptional(p => p.Class).WithMany().HasForeignKey(p => p.Class);
-            HasOptional(p => p.DormId).WithMany().HasForeignKey(p => p.DormId);
+            HasOptional(p => p.Organ).WithMany().HasForeignKey(p => p.Class);
+            HasOptional(p => p.Dorm).WithMany().HasForeignKey(p => p.DormId);
 
         }
     }

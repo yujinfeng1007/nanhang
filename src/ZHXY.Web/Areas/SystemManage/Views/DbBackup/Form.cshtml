@@ -17,7 +17,7 @@
         }
         $.submitForm({
             loading: "正在备份数据...",
-            url: "/SystemSecurity/DbBackup/SubmitForm",
+            url: "/SystemManage/DbBackup/SubmitForm",
             param: $("#form1").formSerialize(),
             success: function () {
                 $.currentWindow().$("#gridList").trigger("reloadGrid");

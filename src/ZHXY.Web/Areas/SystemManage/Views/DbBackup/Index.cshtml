@@ -9,7 +9,7 @@
     function gridList() {
         var $gridList = $("#gridList");
         $gridList.dataGrid({
-            url: "/SystemSecurity/DbBackup/GetGridJson",
+            url: "/SystemManage/DbBackup/GetGridJson",
             height: $(window).height() - 96,
             colModel: [
                 { label: "主键", name: "F_Id", hidden: true, key: true },
@@ -53,7 +53,7 @@
         $.modalOpen({
             id: "Form",
             title: "新增备份",
-            url: "/SystemSecurity/DbBackup/Form",
+            url: "/SystemManage/DbBackup/Form",
             width: "450px",
             height: "360px",
             callBack: function (iframeId) {
@@ -68,7 +68,7 @@
             keyValue += deleteid[i] + "|";
         }
         $.deleteForm({
-            url: "/SystemSecurity/DbBackup/DeleteForm",
+            url: "/SystemManage/DbBackup/DeleteForm",
             param: { keyValue: keyValue },
             success: function () {
                 $.currentWindow().$("#gridList").trigger("reloadGrid");
@@ -77,7 +77,7 @@
     }
     function btn_download() {
         var keyValue = ($("#gridList").jqGridRowValue('F_Id'))[0];
-        $.download("/SystemSecurity/DbBackup/DownloadBackup", "keyValue=" + keyValue, 'post');
+        $.download("/SystemManage/DbBackup/DownloadBackup", "keyValue=" + keyValue, 'post');
     }
 </script>
 

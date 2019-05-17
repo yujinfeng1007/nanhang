@@ -45,7 +45,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EntityConfig\Dorm\LDJCLSMap.cs" />
+    <Compile Include="EntityConfig\System\DutyMap.cs" />
     <Compile Include="Entity\Dorm\Dorm_FlowInAndOutOfBuilding.cs" />
+    <Compile Include="Entity\System\Duty.cs" />
     <Compile Include="Relation.cs" />
     <Compile Include="SYS_CONSTS.cs" />
     <Compile Include="DataAccess\Extensions\DbHelper.cs" />

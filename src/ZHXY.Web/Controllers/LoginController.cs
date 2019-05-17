@@ -156,7 +156,7 @@ namespace ZHXY.Web.Controllers
                     }
                     else
                     {
-                        duty = DutyApp.GetEnCode(userEntity.DutyId);
+                        duty = DutyApp.GetCode(userEntity.DutyId);
                         operatorModel.IsSystem = false;
                     }
 

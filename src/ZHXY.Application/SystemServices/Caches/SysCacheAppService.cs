@@ -103,7 +103,7 @@ namespace ZHXY.Application
             foreach (var item in data)
             {
                 var fieldItem = new FieldItem();
-                fieldItem.encode = item.EnCode;
+                fieldItem.encode = item.Code;
                 fieldItem.fullname = item.Name;
                 dictionary.Add(item.Id, fieldItem);
             }
@@ -134,7 +134,7 @@ namespace ZHXY.Application
             var dictionary = new Dictionary<string, object>();
             foreach (var item in data)
             {
-                var fieldItem = new FieldItem { encode = item.EnCode, fullname = item.Name };
+                var fieldItem = new FieldItem { encode = item.Code, fullname = item.Name };
                 dictionary.Add(item.Id, fieldItem);
             }
             return dictionary;

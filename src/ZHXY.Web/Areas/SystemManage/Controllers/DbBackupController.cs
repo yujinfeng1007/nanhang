@@ -1,8 +1,7 @@
 ﻿using System.Web.Mvc;
 using ZHXY.Application;using ZHXY.Domain;
 using ZHXY.Common;
-
-namespace ZHXY.Web.SystemSecurity.Controllers
+namespace ZHXY.Web.SystemManage.Controllers
 {
     public class DbBackupController : ZhxyWebControllerBase
     {
@@ -20,11 +19,11 @@ namespace ZHXY.Web.SystemSecurity.Controllers
         [HttpPost]
         
         [ValidateAntiForgeryToken]
-        public ActionResult SubmitForm(DbBackup dbBackupEntity)
+        public ActionResult SubmitForm(DbBackup dto)
         {
-            dbBackupEntity.FilePath = Server.MapPath("~/Resource/DbBackup/" + dbBackupEntity.FileName + ".bak");
-            dbBackupEntity.FileName = dbBackupEntity.FileName + ".bak";
-            App.Add(dbBackupEntity);
+            dto.FilePath = Server.MapPath("~/Resource/DbBackup/" + dto.FileName + ".bak");
+            dto.FileName += ".bak";
+            App.Add(dto);
             return Message("操作成功。");
         }
 

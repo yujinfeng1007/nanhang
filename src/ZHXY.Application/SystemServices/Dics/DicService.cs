@@ -61,8 +61,8 @@ namespace ZHXY.Application
             });
 
             data.Add("orgList", Read<Organ>().Select(p => new { p.Id, p.Name }).ToDictionary(p => p.Id, e => e.Name));
-            data.Add("dutyList", Read<Role>(p=>p.Category==2).Select(p => new { p.Id, p.Name }).ToDictionary(p => p.Id, e => e.Name));
-            data.Add("roleList", Read<Role>(p=>p.Category==1).Select(p => new { p.Id, p.Name }).ToDictionary(p => p.Id, e => e.Name));
+            data.Add("dutyList", Read<Duty>().Select(p => new { p.Id, p.Name }).ToDictionary(p => p.Id, e => e.Name));
+            data.Add("roleList", Read<Role>().Select(p => new { p.Id, p.Name }).ToDictionary(p => p.Id, e => e.Name));
             return data;
         }
 

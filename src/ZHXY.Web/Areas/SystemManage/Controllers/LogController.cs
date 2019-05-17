@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using ZHXY.Application;
-namespace ZHXY.Web.SystemSecurity.Controllers
+namespace ZHXY.Web.SystemManage.Controllers
 {
     public class LogController : ZhxyWebControllerBase
     {

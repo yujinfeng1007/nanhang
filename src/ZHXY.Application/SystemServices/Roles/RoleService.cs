@@ -20,23 +20,22 @@ namespace ZHXY.Application
        
         public List<Role> GetList(string keyword = null)
         {
-            var query = Read<Role>(p => p.Category == 1);
-            query = string.IsNullOrWhiteSpace(keyword) ? query : query.Where(p => p.Name.Contains(keyword) || p.EnCode.Contains(keyword));
+            var query = Read<Role>();
+            query = string.IsNullOrWhiteSpace(keyword) ? query : query.Where(p => p.Name.Contains(keyword) || p.Code.Contains(keyword));
             return query.OrderBy(t => t.SortCode).ToListAsync().Result;
         }
 
         public dynamic GetById(string id) => Get<Role>(id);
         public void Add(AddRoleDto dto)
         {
-            var duty = dto.MapTo<Role>();
-            duty.Category = 1;
-            AddAndSave(duty);
+            var role = dto.MapTo<Role>();
+            AddAndSave(role);
         }
 
         public void Update(UpdateRoleDto dto)
         {
-            var duty = Get<Role>(dto.Id);
-            dto.MapTo(duty);
+            var role = Get<Role>(dto.Id);
+            dto.MapTo(role);
             SaveChanges();
         }
 
