@@ -49,8 +49,9 @@ namespace ZHXY.Web.SystemManage.Controllers
                 user.UserName,
                 user.Classes,
                 UserId = user.Id,
-                OrgName = orgName,
-                Num = getNum(user.Duty,user.Id),
+                OrgName = orgName,//机构名称
+                Num = getNum(user.Duty,user.Id)//学工号
+
             }.ToJson());
         }
         private string getNum(string dutyId, string userId)
