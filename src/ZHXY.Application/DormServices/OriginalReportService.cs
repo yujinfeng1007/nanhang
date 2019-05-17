@@ -16,12 +16,22 @@ namespace ZHXY.Application
     {
         public OriginalReportService(IZhxyRepository r) : base(r) { }
 
+
+
+        public dynamic GetOrganIdByStuNum(string stuNum) {
+            return Read<Student>(p => p.StudentNumber.Equals(stuNum)).FirstOrDefault();
+        }
+
+        public dynamic GetDormStuById(string studentId) {
+            return Read<DormStudent>(p => p.StudentId.Equals(studentId)).FirstOrDefault();
+        } 
+
         public List<OriginalReport> GetMonthOriginalList(Pagination pagination, string studentNum,string startTime,string endTime)
         {
             var now = DateTime.Now;
             string tablePart = now.ToString("yyyyMM");
             string sql = "select * from dhflow_" + tablePart;
-            var data = GetDataTable(sql, null);
+            var data = GetDataTable(sql, new DbParameter[] { });
             var list = data.TableToList<OriginalReport>();
             if (!string.IsNullOrEmpty(studentNum))
                 list = list.Where(p => p.Code.Equals(studentNum)).ToList();
@@ -72,13 +82,12 @@ namespace ZHXY.Application
                 ressb.Append(" from(select row_number() over(order by "+nameof(OriginalReport.Date)+" asc) as rownumber,*");
                 ressb.Append(" from(" + sb.ToString() + ") as a) temp_row");
                 ressb.Append(" where rownumber>(("+pagination.Page+"-1)*"+pagination.Rows+ ") order by " + nameof(OriginalReport.Date) + " asc");
-                var data = GetDataTable(ressb.ToString(), null);
-                //var data = R.Db.                
-                list = data.TableToList<OriginalReport>();
+                var data = GetDataTable(ressb.ToString(), new DbParameter[] { });                
+                list = data.TableToList<OriginalReport>();                 
                 var countsb = new StringBuilder();
                 countsb.Append("select COUNT(*) " + nameof(Pagination.Records));
                 countsb.Append(" from ("+sb.ToString()+") as a");
-                var countData = GetDataTable(countsb.ToString(), null);
+                var countData = GetDataTable(countsb.ToString(), new DbParameter[] { });
                 var count = countData.TableToList<Pagination>();
                 pagination.Records = count.FirstOrDefault().Records;
             }
@@ -100,9 +109,9 @@ namespace ZHXY.Application
                     sb.Append(" where code='" + studentNum + "'");
                 }
                 sb.Append(") temp_row where rownumber > ((" + pagination.Page + " - 1) * " + pagination.Rows + ") order by "+nameof(OriginalReport.Date)+" asc");
-                var data = GetDataTable(sb.ToString(), null);
+               var data = GetDataTable(sb.ToString(), new DbParameter[]{ });
                 list = data.TableToList<OriginalReport>();
-                var countData = GetDataTable(countsb.ToString(), null);
+                var countData = GetDataTable(countsb.ToString(), new DbParameter[] { });
                 var count = countData.TableToList<Pagination>();
                 pagination.Records = count.FirstOrDefault().Records;
             }

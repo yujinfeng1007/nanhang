@@ -52,6 +52,11 @@
     <Compile Include="DormServices\Buildings\Dto\UpdateDormBuildingDto.cs" />
     <Compile Include="DormServices\Buildings\DormBuildingService.cs" />
     <Compile Include="DormServices\DormRules\Dto\UpdateDormRuleDto.cs" />
+    <Compile Include="DormServices\Face\Dto\FaceListView.cs" />
+    <Compile Include="DormServices\Face\Dto\FaceApprovalDto.cs" />
+    <Compile Include="DormServices\Face\Dto\FaceApproveView.cs" />
+    <Compile Include="DormServices\Face\Dto\FaceRequestDto.cs" />
+    <Compile Include="DormServices\Face\FaceService.cs" />
     <Compile Include="DormServices\Gates\BatchUserToGateService.cs" />
     <Compile Include="DormServices\Gates\Dto\AddGateDto.cs" />
     <Compile Include="DormServices\Gates\Dto\GateDto.cs" />

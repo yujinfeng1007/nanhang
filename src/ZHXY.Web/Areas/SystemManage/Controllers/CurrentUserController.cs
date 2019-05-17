@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Linq;
+using System.Web.Mvc;
 using ZHXY.Application;
 using ZHXY.Common;
 
@@ -19,7 +20,7 @@ namespace ZHXY.Web.SystemManage.Controllers
                 user.Duty = "admin";
             //老师用户绑定班级
             var classes = App.GetBindClass(user.Id);
-            user.Classes = classes.ToJson();
+            user.Classes = classes.Select(p=>(object)p).ToList();
             return Content(new
             {
                 user.Duty,

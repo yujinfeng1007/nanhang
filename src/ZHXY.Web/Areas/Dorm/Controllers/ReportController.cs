@@ -37,71 +37,102 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult GetLateReturnList(Pagination pagination, string startTime, string endTime, string classId)
         {
             var list = LateReturnReportApp.GetList(pagination, startTime, endTime, classId).Select(p =>
-             new
-             {
-                 Account = p.F_Account,
-                 Name = p.F_Name,
-                 Class = p.Class?.Name,
-                 Dorm = p.Dorm?.Title,
-                 College = p.F_College,
-                 InTime = p.F_InTime,
-                 Ftime = p.F_Time
-             });
+            {
+                var student = OriginalReportApp.GetOrganIdByStuNum(p.F_Account);
+                return new {
+                    Account = p.F_Account,
+                    Name = p.F_Name,
+                    DepartmentId = student?.DivisId,
+                    GradeId = student?.GradeId,
+                    ClassId = student?.ClassId,
+                    //Class = p.Class?.Name,
+                    Dorm = p.Dorm?.Title,
+                    College = p.F_College,
+                    InTime = p.F_InTime,
+                    Ftime = p.F_Time
+                };
+            }); 
+                       
             return PagingResult(list, pagination);
         }
         [HttpGet]
         public ActionResult GetNoReturnList(Pagination pagination, string startTime, string endTime, string classId)
         {
-            var list = NoReturnReportApp.GetList(pagination, startTime, endTime, classId).Select(p =>
-            new
-            {
-                Account = p.F_Account,
-                Name = p.F_Name,
-                Class = p.Class?.Name,
-                Dorm = p.Dorm?.Title,
-                College = p.F_College,
-                Time = p.F_OutTime,
-                DayCount   = p.F_DayCount
+            
+            var list = NoReturnReportApp.GetList(pagination, startTime, endTime, classId).Select(p => {
+                var student = OriginalReportApp.GetOrganIdByStuNum(p.F_Account);
+
+                return new {
+                    Account = p.F_Account,
+                    Name = p.F_Name,
+                    DepartmentId = student?.DivisId,
+                    GradeId = student?.GradeId,
+                    ClassId = student?.ClassId,
+                    //Class = p.Class?.Name,
+                    Dorm = p.Dorm?.Title,
+                    College = p.F_College,
+                    Time = p.F_OutTime,
+                    DayCount = p.F_DayCount
+                };
             });
+           
             return PagingResult(list, pagination);
         }
         [HttpGet]
         public ActionResult GetNoOutList(Pagination pagination, string startTime, string endTime, string classId)
         {
+           
+
             var list = NoOutReportApp.GetList(pagination, startTime, endTime, classId).Select(p =>
-            new
-            {
-                Account = p.F_Account,
-                Name = p.F_Name,
-                Class = p.Class?.Name,
-                Dorm = p.Dorm?.Title,
-                College = p.F_College,
-                InTime = p.F_InTime,
-                Time = p.F_Time
-            });
+             {
+                 var student = OriginalReportApp.GetOrganIdByStuNum(p.F_Account);
+                 return new
+                 {
+                     Account = p.F_Account,
+                     Name = p.F_Name,
+                    // Class = p.Class?.Name,
+                     DepartmentId = student?.DivisId,
+                     GradeId = student?.GradeId,
+                     ClassId = student?.ClassId,
+                     Dorm = p.Dorm?.Title,
+                     College = p.F_College,
+                     InTime = p.F_InTime,
+                     Time = p.F_Time
+                 };
+              });
             return PagingResult(list, pagination);
         }
         [HttpGet]
         public ActionResult GetOriginalList(Pagination pagination, string studentNum,string startTime,string endTime)
         {
-            //StudentAppService stuApp = new StudentAppService();
+            //StudentService stuApp = new StudentService();
             //var stuList= stuApp.GetList();
             //var dormList= new DormStudentAppService().GetList();
-            var list = OriginalReportApp.GetOriginalList(pagination, studentNum,startTime,endTime).Select(p =>
+            
+          var list = OriginalReportApp.GetOriginalList(pagination, studentNum,startTime,endTime).Select(p =>
             {
+                var student = OriginalReportApp.GetOrganIdByStuNum(p.Code);
+                var dorm = OriginalReportApp.GetDormStuById(student?.Id);
                 //var student = stuList.FirstOrDefault(t => t.F_StudentNum.Equals(p.Code));
                 //var data = dormList.FirstOrDefault(t => t.F_Student_ID.Equals(student?.F_Id));
                 return new
                 {
-                    p.ChannelName,
-                    p.DepartmentName,
-                    Name = p.LastName+p.FirstName,
+                    p.Code,
+                    Name = p.LastName + p.FirstName,
+                    DepartmentId = student?.DivisId,
+                    GradeId = student?.GradeId,
+                    ClassId = student?.ClassId,
+                    DormNum = dorm?.F_Memo,
+                    InOut = p.InOut == "0" ? "进" : "出",
+                    Time = DateHelper.GetTime(p.SwipDate)
+                    //p.ChannelName,
+                    //p.DepartmentName,                    
                     //DormName = data?.F_Memo,
-                    p.CardNum,
-                    p.Tel,
-                    Gender = p.Gender == "1" ? "女" : "男",
-                    p.InOut,
-                    p.Date
+                    //p.CardNum,
+                    //p.Tel,
+                    //Gender = p.Gender == "1" ? "女" : "男",
+                    //p.InOut,
+                    //p.Date
                 };
             });
             return PagingResult(list, pagination);
