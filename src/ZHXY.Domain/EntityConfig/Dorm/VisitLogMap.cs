@@ -25,6 +25,9 @@ namespace ZHXY.Domain
             Property(p => p.ApplicationTime).HasColumnName("F_CreatorTime");
             Property(p => p.ProcessingTime).HasColumnName("F_LastModifyTime");
 
+            // 导航属性
+            HasOptional(p => p.Student).WithMany().HasForeignKey(p => p.ApplicantId);
+            HasOptional(p => p.DormRoom).WithMany().HasForeignKey(p => p.DormId);
         }
     }
 

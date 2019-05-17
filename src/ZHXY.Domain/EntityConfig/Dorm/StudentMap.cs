@@ -27,6 +27,8 @@ namespace ZHXY.Domain
             Property(p => p.PolitStatu).HasColumnName("F_PolitStatu");
             Property(p => p.MobilePhone).HasColumnName("F_Tel");
             Property(p => p.OrganId).HasColumnName("F_DepartmentId");
+            Property(p => p.InOut).HasColumnName("F_InOut");
+            Property(p => p.FacePic).HasColumnName("F_FacePic_File");
         }
     }
 }

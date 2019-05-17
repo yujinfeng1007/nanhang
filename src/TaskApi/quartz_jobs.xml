@@ -143,7 +143,7 @@
       <recover>false</recover>
     </job>-->
 
-    <job>
+    <!--<job>
       <name>DHMigrateJob</name>
       <group>DHMigrate</group>
       <description>南航项目同步闸机流水信息</description>
@@ -159,7 +159,7 @@
       <job-type>TaskApi.DH.UpdateTokenJob,TaskApi</job-type>
       <durable>true</durable>
       <recover>false</recover>
-    </job>
+    </job>-->
     <!--
     <job>
       <name>DHCreateDormJob</name>

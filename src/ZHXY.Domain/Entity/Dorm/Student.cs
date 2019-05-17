@@ -128,5 +128,15 @@ namespace ZHXY.Domain
 
         public string OrganId { get; set; }
 
+        /// <summary>
+        /// 在寝情况 0=进 1=出
+        /// </summary>
+        public string InOut { get; set; }
+
+        /// <summary>
+        /// 脸部图像
+        /// </summary>
+        public string FacePic { get; set; }
+
     }
 }

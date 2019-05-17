@@ -17,7 +17,7 @@ namespace TaskApi.NHExceptionReport
         public void Execute(IJobExecutionContext context)
         {
             Console.WriteLine("进入方法！");
-            //DateTime Time = Convert.ToDateTime("2019-05-15 08:00:00");
+            //DateTime Time = Convert.ToDateTime("2019-05-16 08:00:00");
             DateTime Time = DateTime.Now;
             ExceptionMoudle moudle = new ExceptionMoudle();
             var leaderList = moudle.sys_org_leader.ToList();
@@ -78,6 +78,7 @@ namespace TaskApi.NHExceptionReport
                     Console.WriteLine("NHExceptionPush 推送成功：" + userName);
                 }
             }
+            Console.WriteLine("  ********* NHExceptionPush 全部推送成功 ");
         }
     }
 }

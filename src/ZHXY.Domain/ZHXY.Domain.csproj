@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EntityConfig\Dorm\Dorm_BuildingDeviceMap.cs" />
     <Compile Include="EntityConfig\Dorm\Dorm_FlowInAndOutOfBuildingMap.cs" />
     <Compile Include="EntityConfig\Dorm\FaceApproveMap.cs" />
     <Compile Include="EntityConfig\Dorm\StuFaceOrderMap.cs" />
