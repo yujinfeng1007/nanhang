@@ -46,7 +46,9 @@
   <ItemGroup>
     <Compile Include="EntityConfig\Dorm\Dorm_BuildingDeviceMap.cs" />
     <Compile Include="EntityConfig\Dorm\Dorm_FlowInAndOutOfBuildingMap.cs" />
+    <Compile Include="EntityConfig\System\AppVersionMap.cs" />
     <Compile Include="Entity\Dorm\Dorm_FlowInAndOutOfBuilding.cs" />
+    <Compile Include="Entity\System\AppVersion.cs" />
     <Compile Include="Relation.cs" />
     <Compile Include="SYS_CONSTS.cs" />
     <Compile Include="DataAccess\Extensions\DbHelper.cs" />
