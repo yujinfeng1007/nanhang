@@ -57,6 +57,7 @@
     <Compile Include="DormServices\Face\Dto\FaceApprovalDto.cs" />
     <Compile Include="DormServices\Face\Dto\FaceApproveView.cs" />
     <Compile Include="DormServices\Face\Dto\FaceRequestDto.cs" />
+    <Compile Include="DormServices\Face\Dto\GetFaceApprovalListDto.cs" />
     <Compile Include="DormServices\Face\FaceService.cs" />
     <Compile Include="DormServices\Gates\BatchUserToGateService.cs" />
     <Compile Include="DormServices\Gates\Dto\AddGateDto.cs" />

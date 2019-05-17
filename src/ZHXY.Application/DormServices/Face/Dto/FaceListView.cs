@@ -8,7 +8,7 @@ namespace ZHXY.Application
     public class FaceListView
     {
         /// <summary>
-        /// 请假Id
+        /// 头像审批Id
         /// </summary>
         public string Id { get; set; }
 
@@ -30,7 +30,7 @@ namespace ZHXY.Application
         /// <summary>
         /// 提交时间
         /// </summary>
-        public DateTime CreatorTime { get; set; }
+        public DateTime CreatedTime { get; set; }
 
         /// <summary>
         /// 审批时间
