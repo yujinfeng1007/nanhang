@@ -43,13 +43,18 @@ namespace ZHXY.Application.DormServices.Gates
                     gender = stu?.Gender == "0" ? 2 : 1;
                     certificateNo = stu?.CredNumber;
                     userType = "student001";// "学生";
-                    
+
                     var ssdata = Query<DormStudent>(p => p.StudentId == stu.Id).FirstOrDefault();
                     ss = ssdata?.DormInfo?.Title;
                     lc = ssdata?.DormInfo?.FloorNumber;
                     var ldid = ssdata?.DormInfo?.BuildingId;
-                    var lddata = Read<Building>(p => p.Id == ldid).FirstOrDefault();
-                    ld = lddata?.BuildingNo;
+                    // 闸机Id列表
+                    var zjids = Read<Relevance>(p => p.SecondKey == ldid && p.Name == "Gate_Building").Select(p => p.FirstKey).ToList();
+                    // 楼栋Id列表
+                    var lds = Read<Relevance>(p => p.Name == "Gate_Building" && zjids.Contains(p.FirstKey)).Select(p => p.SecondKey).ToList();
+
+                    var lddatas = Read<Building>(p => lds.Contains(p.Id)).ToList();
+                    ld = string.Join("_", lddatas);
                 }
                 if (d.DutyId.Contains("teacher"))
                 {

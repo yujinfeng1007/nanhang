@@ -40,19 +40,27 @@ namespace ZHXY.Application
         public void BindTeacherOrg(string classId, string teacherId)
         {                      
 
-            var rel = new Relevance
+            //var rel = new Relevance
+            //{
+            //    Name = Relation.ClassLeader,
+            //    FirstKey = classId,
+            //    SecondKey = teacherId
+            //};
+            //AddAndSave(rel);
+
+            var orgUser= new OrgLeader
             {
-                Name = Relation.ClassLeader,
-                FirstKey = classId,
-                SecondKey = teacherId
+                OrgId = classId,
+                UserId = teacherId
             };
-            AddAndSave(rel);
-           
+            AddAndSave(orgUser);
+
         }
 
         //获取班主任所绑定的班级
         public List<Organ> GetBindClass(string teacherId) {
-            var classIds = Read<Relevance>(p => p.Name.Equals(Relation.ClassLeader) && p.SecondKey.Equals(teacherId)).Select(p => p.FirstKey).ToArray();
+            //var classIds = Read<Relevance>(p => p.Name.Equals(Relation.ClassLeader) && p.SecondKey.Equals(teacherId)).Select(p => p.FirstKey).ToArray();
+            var classIds = Read<OrgLeader>(p => p.UserId.Equals(teacherId)).Select(p => p.OrgId).ToArray();
             var lists = Read<Organ>(p => classIds.Contains(p.Id)).ToList(); 
             return lists;
 

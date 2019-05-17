@@ -3,6 +3,8 @@
     Layout = "~/Views/Shared/_Index.cshtml";
 }
 <script>
+    let orgList = JSON.parse(localStorage.getItem("orgList"));
+
     $(function () {
         gridList();
         $("#DivisId").bindSelect({
@@ -43,7 +45,28 @@
                 { label: '学号', name: 'Account', width: 200, align: 'left' },
                 { label: '姓名', name: 'Name', width: 150, align: 'left' },
                 //{ label: "院校", name: "College", width: 150, align: 'left' },
-                { label: "班级", name: "Class", width: 150, align: 'left' },
+                //{ label: "班级", name: "Class", width: 150, align: 'left' },
+                {
+                    label: '年级', name: 'DepartmentId', width: 200, align: 'left',
+                    formatter: function (cv) {
+                        return orgList[cv] == null ? "" : orgList[cv];
+                    },
+
+                },
+                {
+                    label: '院系', name: 'GradeId', width: 200, align: 'left',
+                    formatter: function (cv) {
+                        return orgList[cv] == null ? "" : orgList[cv];
+                    },
+
+                },
+                {
+                    label: '班级', name: 'ClassId', width: 200, align: 'left',
+                    formatter: function (cv) {
+                        return orgList[cv] == null ? "" : orgList[cv];
+                    },
+
+                },
                 { label: "宿舍号", name: "Dorm", width: 150, align: 'left' },
                 { label: "进宿舍时间", name: "InTime", width: 150, align: 'left' },
                 { label: "未出时长(时)", name: "Time", width: 150, align: 'left' }

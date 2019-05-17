@@ -17,7 +17,7 @@ namespace ZHXY.Domain
         /// <summary>
         /// 审批时间
         /// </summary>
-        public DateTime? ProcessingTime { get; set; } 
+        public DateTime? ProcessingTime { get; set; }
         /// <summary>
         /// 入住性别
         /// </summary>
@@ -25,17 +25,17 @@ namespace ZHXY.Domain
         /// <summary>
         /// 访客姓名
         /// </summary>
-        public string VisitorName{ get; set; }
+        public string VisitorName { get; set; }
         /// <summary>
         /// 访客证件号
         /// </summary>
-        public string VisitorIDCard{ get; set; }
-              
+        public string VisitorIDCard { get; set; }
+
         /// <summary>
         /// 探访事由
         /// </summary>
-        public string VisitReason{ get; set; }
-        
+        public string VisitReason { get; set; }
+
         /// <summary>
         /// 申请人Id
         /// </summary>
@@ -44,7 +44,7 @@ namespace ZHXY.Domain
         /// <summary>
         /// 宿舍ID
         /// </summary>
-        public string DormId{ get; set; }
+        public string DormId { get; set; }
 
 
         /// <summary>
@@ -67,7 +67,15 @@ namespace ZHXY.Domain
         public int Status { get; set; }
 
 
+        /// <summary>
+        /// 学生基础信息
+        /// </summary>
+        public virtual Student Student {get;set;}
 
+        /// <summary>
+        /// 宿舍信息
+        /// </summary>
+        public virtual DormRoom DormRoom { get; set; }
                 
         
     }

@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="01.Base\TreeHelper.cs" />
+    <Compile Include="DormServices\Buildings\DeviceService.cs" />
     <Compile Include="DormServices\Buildings\XFTXService.cs" />
     <Compile Include="DormServices\Buildings\Dto\CreateDormBuildingDto.cs" />
     <Compile Include="DormServices\Buildings\Dto\DormBuildingUserView.cs" />
@@ -52,6 +53,11 @@
     <Compile Include="DormServices\Buildings\Dto\UpdateDormBuildingDto.cs" />
     <Compile Include="DormServices\Buildings\DormBuildingService.cs" />
     <Compile Include="DormServices\DormRules\Dto\UpdateDormRuleDto.cs" />
+    <Compile Include="DormServices\Face\Dto\FaceListView.cs" />
+    <Compile Include="DormServices\Face\Dto\FaceApprovalDto.cs" />
+    <Compile Include="DormServices\Face\Dto\FaceApproveView.cs" />
+    <Compile Include="DormServices\Face\Dto\FaceRequestDto.cs" />
+    <Compile Include="DormServices\Face\FaceService.cs" />
     <Compile Include="DormServices\Gates\BatchUserToGateService.cs" />
     <Compile Include="DormServices\Gates\Dto\AddGateDto.cs" />
     <Compile Include="DormServices\Gates\Dto\GateDto.cs" />
@@ -63,12 +69,16 @@
     <Compile Include="DormServices\DormRooms\DormRoomAppService.cs" />
     <Compile Include="DormServices\DormStudentAppService.cs" />
     <Compile Include="DormServices\Gates\UserToGateService.cs" />
+    <Compile Include="DormServices\Holiday\Dto\AddHolidayDto.cs" />
+    <Compile Include="DormServices\Holiday\Dto\UpdateHolidayDto.cs" />
+    <Compile Include="DormServices\Holiday\HolidayAppService.cs" />
     <Compile Include="DormServices\InOutReceiveAppService.cs" />
     <Compile Include="DormServices\LateReturnReportService.cs" />
     <Compile Include="DormServices\NoOutReportService.cs" />
     <Compile Include="DormServices\NoReturnReportService.cs" />
     <Compile Include="DormServices\OriginalReportService.cs" />
     <Compile Include="DormServices\Performances\Dto\BuildingAccessStatisticsView.cs" />
+    <Compile Include="DormServices\RelevanceService.cs" />
     <Compile Include="DormServices\ReportHelper.cs" />
     <Compile Include="DormServices\VisitDormLimitService.cs" />
     <Compile Include="DormServices\Visitors\VisitorAppService.cs" />

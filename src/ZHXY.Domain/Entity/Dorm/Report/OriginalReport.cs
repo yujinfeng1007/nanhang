@@ -85,5 +85,9 @@ namespace ZHXY.Domain
         /// 工号
         /// </summary>
         public string Code { get; set; }
+        /// <summary>
+        /// 时间
+        /// </summary>
+        public string SwipDate { get; set; }
     }
 }

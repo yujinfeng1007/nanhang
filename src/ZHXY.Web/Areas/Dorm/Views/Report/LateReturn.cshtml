@@ -3,6 +3,8 @@
     Layout = "~/Views/Shared/_Index.cshtml";
 }
 <script>
+    let orgList = JSON.parse(localStorage.getItem("orgList"));
+
     $(function () {
         gridList();
 
@@ -10,6 +12,27 @@
             url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Division",
             displayBlank: true
         });
+
+        //$("#DivisId").select2({
+        //    ajax: {
+        //        url: "/SystemManage/Organize/GetSelectJsonByCategoryId",
+        //        dataType: "json",
+        //        delay: 250,
+        //        data: function (params) {
+        //            return {
+        //                keyword: "Division",
+        //            };
+        //        },
+        //        processResults: function (data) {
+        //            return {
+        //                results: data.name
+        //            };
+        //        },
+        //        cache: true
+        //    }
+        //});
+
+
 
         $("#DivisId").change(function () {
             changeGrade();
@@ -44,8 +67,29 @@
             colModel: [
                 { label: '学号', name: 'Account', width: 200, align: 'left' },
                 { label: '姓名', name: 'Name', width: 150, align: 'left' },
+                {
+                    label: '年级', name: 'DepartmentId', width: 200, align: 'left',
+                    formatter: function (cv) {
+                        return orgList[cv] == null ? "" : orgList[cv];
+                    },
+
+                },
+                {
+                    label: '院系', name: 'GradeId', width: 200, align: 'left',
+                    formatter: function (cv) {
+                        return orgList[cv] == null ? "" : orgList[cv];
+                    },
+
+                },
+                {
+                    label: '班级', name: 'ClassId', width: 200, align: 'left',
+                    formatter: function (cv) {
+                        return orgList[cv] == null ? "" : orgList[cv];
+                    },
+
+                },
                 //{ label: "院校", name: "College", width: 150, align: 'left' },
-                { label: "班级", name: "Class", width: 150, align: 'left' },
+                //{ label: "班级", name: "Class", width: 150, align: 'left' },
                 { label: "宿舍号", name: "Dorm", width: 150, align: 'left' },
                 { label: "进宿舍时间", name: "InTime", width: 150, align: 'left' },
                 { label: "晚归时长(时)", name: "Ftime", width: 150, align: 'left' }

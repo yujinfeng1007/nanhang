@@ -19,7 +19,7 @@
         $("#treeGrid").dataGrid({
             treeGrid: true,
             treeGridModel: "adjacency",// nested
-            ExpandColumn: "F_EnCode",
+            ExpandColumn: "EnCode",
             ExpandColClick: true,
             onCustomSelectRow: (rowId) => {
                 reloadGrid(rowId);
@@ -28,9 +28,9 @@
             multiselect: false,
             url: "/SystemManage/Organize/GetTreeGridJson",
             colModel: [
-                { label: '名称', name: 'F_FullName', width: 200, align: 'left' },
-                { label: '编号', name: 'F_EnCode', width: 150, align: 'left', hidden: true },
-                { label: "主键", name: "F_Id", width: 150, align: 'left', key: true, hidden: true }
+                { label: '名称', name: 'Name', width: 200, align: 'left' },
+                { label: '编号', name: 'EnCode', width: 150, align: 'left', hidden: true },
+                { label: "主键", name: "Id", width: 150, align: 'left', key: true, hidden: true }
             ],
             autoGridHeight: () => window.innerHeight * 0.86,
         });
@@ -62,7 +62,7 @@
 
     function setCurrentOrg(orgId) {
        
-        let orgName = $("#treeGrid").getRowData(orgId, true)["F_FullName"]||"";
+        let orgName = $("#treeGrid").getRowData(orgId, true)["Name"]||"";
         $("#currentOrg").html(orgName);
     }
 
