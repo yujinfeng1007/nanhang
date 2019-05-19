@@ -74,7 +74,7 @@ namespace ZHXY.Application
                 ApproveImg = p.ApproveImg,                
                 ApprovalStatus = p.Status,         
                 CreatedTime = p.CreatedTime
-            }).ToListAsync().Result;
+            }).OrderByDescending(p =>p.CreatedTime).ToListAsync().Result;
             //SetViewStatus(input.CurrentUserId, ref list);
             return list;
         }
@@ -82,18 +82,19 @@ namespace ZHXY.Application
         /// <summary>
         /// 获取头像审批详情
         /// </summary>
-        public FaceView GetFaceApprovalDetail(string id, string currentUserId)
+        public FaceView GetFaceApprovalDetail(string appId, string currentUserId)
         {
 
-            var face = Get<StuFaceOrder>(id);
-            var leaveApprove = Read<FaceApprove>(p => p.OrderId.Equals(id) && p.ApproverId.Equals(currentUserId)).FirstOrDefaultAsync().Result;
-            if (null == leaveApprove) throw new Exception("您不可以审批!");
+            var face = Get<StuFaceOrder>(appId);
+            //var leaveApprove = Read<FaceApprove>(p => p.OrderId.Equals(appId) && p.ApproverId.Equals(currentUserId)).FirstOrDefaultAsync().Result;
+            //if (null == leaveApprove) throw new Exception("您不可以审批!");
             var view = new FaceView
             {
                 Id = face.Id,
                 ApplierName = face.Applicant.Name,
                 SubmitImg = face.SubmitImg,
-                ApproveImg = face.ApproveImg
+                ApproveImg = face.ApproveImg,
+                CreatedTime = face.CreatedTime
             };
             //if (Convert.ToDecimal(view.LeaveDays) <= 3)
             //{
@@ -115,20 +116,22 @@ namespace ZHXY.Application
             var face = Get<StuFaceOrder>(input.OrderId);
             if (null == face) throw new Exception("未找到头像申请信息!");
             var faceApprove = Query<FaceApprove>(p => p.OrderId.Equals(face.Id) && p.ApproverId.Equals(input.CurrentUserId)).FirstOrDefaultAsync().Result;
-            if (null == faceApprove) throw new Exception("您不可以审批,头像申请单异常!");
-            if (faceApprove.Result != 0) throw new Exception("您已经审批过,不需要重复审批!");
+            //if (null == faceApprove) throw new Exception("您不可以审批,头像申请单异常!");
+            //if (faceApprove.Result != 0) throw new Exception("您已经审批过,不需要重复审批!");
             faceApprove.Result = input.IsAgreed ? 1 : -1;
             faceApprove.Opinion = input.Opinion;
             //SetOrderStatus(face);
             face.Status = "1";
             //if (!input.IsAgreed) MinusLimit(face.LeaveerId, Convert.ToDecimal(face.LeaveDays));
+            
+            SaveChanges();
             //审批同意则更新头像并下发
             if (input.IsAgreed) {
 
                 new UserService().UpdIco(face.ApplicantId, face.ApproveImg);
                 new UserToGateService().SendUserHeadIco(new string[] { face.ApplicantId });
             }
-            SaveChanges();
+           
 
 
         }
