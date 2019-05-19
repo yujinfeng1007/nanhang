@@ -123,7 +123,7 @@ namespace TaskApi
             teacher.JobNumber = num;
             //student.F_Users_ID = entity.F_Id;
             teacher.MobilePhone = entity.MobilePhone;
-            teacher.CredNum = credNum;
+            teacher.CredNumber = credNum;
             //teacher.F_PolitStatu = politstatu;
             teacher.CredType = credType;
             teacher.EntryTime = entryTime;
@@ -203,21 +203,20 @@ namespace TaskApi
 
         private void setUserInfo(IUnitWork db, User entity)
         {
-            if (db.FindEntity<UserLogin>(t => t.Id == entity.Id) != null)
+            if (db.FindEntity<UserLogin>(t => t.UserId == entity.Id) != null)
                 return;
             var userLogOnEntity = new UserLogin
             {
-                Id = entity.Id,
                 UserId = entity.Id,
-                UserSecretkey = Md5EncryptHelper.Encrypt("0000", 16).ToLower()
+                Secretkey = Md5EncryptHelper.Encrypt("0000", 16).ToLower()
             };
-            userLogOnEntity.UserPassword = Md5EncryptHelper.Encrypt(DESEncryptHelper.Encrypt(Md5EncryptHelper.Encrypt("0000", 32).ToLower(), userLogOnEntity.UserSecretkey).ToLower(), 32).ToLower();
+            userLogOnEntity.Password = Md5EncryptHelper.Encrypt(DESEncryptHelper.Encrypt(Md5EncryptHelper.Encrypt("0000", 32).ToLower(), userLogOnEntity.Secretkey).ToLower(), 32).ToLower();
             db.Insert(userLogOnEntity);
 
             var isPost = true;
             var parameters = "sysid=" + entity.Id + "&amp;appid=" + AppId + "&amp;nickname=" +
                              entity.Name + "&amp;username=" + entity.Account +
-                             "&amp;password=" + userLogOnEntity.UserPassword +
+                             "&amp;password=" + userLogOnEntity.Password +
                              "&amp;sysgroupid=" + entity.OrganId + "&amp;headicon=" +
                              entity.HeadIcon + "&amp;birthday=" + entity.Birthday + "";
             WebHelper.SendRequest(CallUrlAdd, parameters, isPost, "application/json");

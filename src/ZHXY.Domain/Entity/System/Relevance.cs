@@ -11,7 +11,7 @@
         public string Name { get; set; }
         public string FirstKey { get; set; }
         public string SecondKey { get; set; }
-        public string ThirdKey { get; set; }
+        public string ThirdKey { get; set; } = SYS_CONSTS.DbNull;
 
     }
 }

@@ -6,23 +6,22 @@ namespace ZHXY.Domain
     {
         public MenuMap()
         {
-            ToTable("Sys_Module");
+            ToTable("zhxy_menu");
             HasKey(t => t.Id);
 
-            Property(p => p.Id).HasColumnName("F_Id");
-            Property(p => p.ParentId).HasColumnName("F_ParentId");
+            Property(p => p.Id).HasColumnName("id");
+            Property(p => p.ParentId).HasColumnName("p_id");
             Property(p => p.Level).HasColumnName("level");
-            Property(p => p.EnCode).HasColumnName("F_EnCode");
-            Property(p => p.Name).HasColumnName("F_FullName");
-            Property(p => p.Icon).HasColumnName("F_Icon");
-            Property(p => p.IconForWeb).HasColumnName("F_Ico");
-            Property(p => p.Url).HasColumnName("F_UrlAddress");
-            Property(p => p.Target).HasColumnName("F_Target");
-            Property(p => p.IsMenu).HasColumnName("F_IsMenu");
-            Property(p => p.IsExpand).HasColumnName("F_IsExpand");
-            Property(p => p.IsPublic).HasColumnName("F_IsPublic");
-            Property(p => p.SortCode).HasColumnName("F_SortCode");
-            Property(p => p.BelongSys).HasColumnName("F_BelongSys");
+            Property(p => p.Name).HasColumnName("name");
+            Property(p => p.Icon).HasColumnName("icon");
+            Property(p => p.IconForWeb).HasColumnName("icon_web");
+            Property(p => p.Url).HasColumnName("url");
+            Property(p => p.Target).HasColumnName("target");
+            Property(p => p.IsMenu).HasColumnName("is_menu");
+            Property(p => p.IsExpand).HasColumnName("is_expand");
+            Property(p => p.IsPublic).HasColumnName("is_public");
+            Property(p => p.SortCode).HasColumnName("sort_code");
+            Property(p => p.BelongSys).HasColumnName("belong_sys");
 
             HasMany(p => p.ChildNodes).WithOptional(p => p.Parent).HasForeignKey(p => p.ParentId);
 

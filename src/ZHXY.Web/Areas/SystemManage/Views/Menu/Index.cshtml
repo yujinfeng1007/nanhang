@@ -24,11 +24,13 @@
             datatype: 'json',
             url: `/SystemManage/Menu/GetMenuBth`,
             multiselect: true,
-            loadonce: false,
-            viewrecords: true,
             pager: "#rightPager",
             toppager: true,
             rowNum: -1,
+            pgbuttons: false,
+            pgbuttons: false,
+            recordpos: "right",
+            viewrecords:false,
             jsonReader: {
                 root: function (r) { return r.data; }
             },
@@ -41,14 +43,14 @@
                 { label: '排序', name: 'sortCode', editable: true, editable: true }
             ],
         });
-        $("#rightGrid").jqGrid('navGrid', '#gridPager',
+        $("#rightGrid").jqGrid('navGrid', '#rightPager',
             {
                 edit: true,
                 add: true,
                 del: true,
                 search: false,
                 refresh: true,
-                view: true,
+                view: false,
                 cloneToTop: true,
             },
             {
@@ -83,6 +85,7 @@
         }).trigger('reloadGrid');
     }
 
+
     function gridLeft() {
         $("#leftGrid").jqGrid({
             styleUI: GRID_STYLE,
@@ -91,12 +94,9 @@
             treeGridModel: "adjacency",
             datatype: "json",
             gridview: true,
-            viewrecords: true,
-            autoGridWidth: true,
+            autoGridWidth: false,
             rowNum: -1,
-            shrinkToFit: true,
             autoGridHeight: true,
-            multiselect: true,
             height: TREE_GRID_HEIGHT,
             width: TREE_GRID_WIDTH,
             ExpandColumn: 'name',
@@ -143,7 +143,7 @@
                 { label: '公共', name: "isPublic", editable: true },
                 { label: '目录', name: "isMenu", editable: true },
                 { label: '排序', name: "sortCode", editable: true },
-                { label: '上级', name: "parentId", editable: true ,hidedlg:true},
+                { label: '上级', name: "parentId", editable: true, hidedlg: true },
                 { name: "id", key: true, hidden: true },
             ],
 
@@ -182,9 +182,6 @@
         );
         $("#leftGrid").jqGrid('bindKeys');
     }
-
-      
-      
 </script>
 
 <div class="ui-layout" id="layout" style="height: 100%; width: 100%;">

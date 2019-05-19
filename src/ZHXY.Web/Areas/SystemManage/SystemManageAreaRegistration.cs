@@ -9,7 +9,7 @@ namespace ZHXY.Web.SystemManage
         public override void RegisterArea(AreaRegistrationContext context) => context.MapRoute(
                "ZhxySystemManage",
               "SystemManage/{controller}/{action}",
-              new {action = "Index"}
+              new { action = "Index" }
             );
     }
 }

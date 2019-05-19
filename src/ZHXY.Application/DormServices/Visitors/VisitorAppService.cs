@@ -42,7 +42,7 @@ namespace ZHXY.Application
             var ListData = R.Db.Database.SqlQuery<VisitApply>(sqlStr.ToString()).ToList();
             foreach(var visit in ListData)
             {
-                visit.DormId = R.Db.Set<DormStudent>().Where(p => p.StudentId == visit.ApplicantId).Select(p => p.F_Memo).FirstOrDefault();
+                visit.DormId = R.Db.Set<DormStudent>().Where(p => p.StudentId == visit.ApplicantId).Select(p => p.Description).FirstOrDefault();
                 visit.ApplicantId = R.Db.Set<Student>().Where(p => p.Id == visit.ApplicantId).Select(p => p.Name).FirstOrDefault();
             }
             return ListData;
@@ -65,12 +65,12 @@ namespace ZHXY.Application
 
         public object SearchStudents(string KeyWords)
         {
-            var query = R.Db.Set<DormVisitLimit>().AsQueryable();
+            var query = Read<DormVisitLimit>().Join(Read<Student>(),a=>a.StudentId,b=>b.Id,(a, b)=>new{a,b});
             if (KeyWords != null && KeyWords.Length != 0)
             {
-                query = IsNumeric.isNumeric(KeyWords) ? query.Where(p => p.student.StudentNumber.Equals(KeyWords)) : query.Where(p => p.student.Name.Contains(KeyWords));
+                query = IsNumeric.isNumeric(KeyWords) ? query.Where(p => p.b.StudentNumber.Equals(KeyWords)) : query.Where(p => p.b.Name.Contains(KeyWords));
             }
-            return query.Select(p => new { id = p.student.Id, text = p.student.Name, limit = p.UsableLimit }).OrderBy(p => p.id).Take(20).ToList();
+            return query.Select(p => new { id = p.b.Id, text = p.b.Name, limit = p.a.UsableLimit }).OrderBy(p => p.id).Take(20).ToList();
         }
 
         public object GetForm(string keyValue) => throw new NotImplementedException();
@@ -101,7 +101,7 @@ namespace ZHXY.Application
 
         public object SearchStudentLimit(string StudentId)
         {
-            return R.Db.Set<DormVisitLimit>().Where(p => p.Student_Id == StudentId).Select(p => new { id = StudentId, text = p.UsableLimit}).FirstOrDefault();
+            return R.Db.Set<DormVisitLimit>().Where(p => p.StudentId == StudentId).Select(p => new { id = StudentId, text = p.UsableLimit}).FirstOrDefault();
         }
 
         /// <summary>

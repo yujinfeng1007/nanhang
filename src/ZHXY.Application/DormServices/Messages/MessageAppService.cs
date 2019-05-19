@@ -22,30 +22,54 @@ namespace ZHXY.Application
 
         }
 
-        public object GetLateReturnReport(string OrgId)
+        /// <summary>
+        /// 查询晚归报表接口
+        /// </summary>
+        /// <param name="OrgId"></param>
+        /// <param name="ReportDate"></param>
+        /// <returns></returns>
+        public object GetLateReturnReport(string OrgId, string ReportDate)
         {
-            DateTime StartTime = DateTime.Now.Date.AddHours(8);
+            DateTime Time = Convert.ToDateTime(ReportDate);
+            DateTime StartTime = Time.AddDays(1).AddHours(2);
+            DateTime EndTime = Time.AddDays(2).AddHours(2);
             List<string> OrgList = new List<string> { OrgId };
             this.GetChildOrg(OrgId, OrgList);
-            var LateReturnList = Read<LateReturnReport>(p => p.F_CreatorTime > StartTime && OrgList.Contains(p.F_Class)).ToList();
+            var LateReturnList = Read<LateReturnReport>(p => p.CreatedTime > StartTime && p.CreatedTime < EndTime && OrgList.Contains(p.Class)).ToList();
             return LateReturnList.ToJson();
         }
 
-        public object GetNotReturnReport(string OrgId)
+        /// <summary>
+        /// 查询未归报表接口
+        /// </summary>
+        /// <param name="OrgId"></param>
+        /// <param name="ReportDate"></param>
+        /// <returns></returns>
+        public object GetNotReturnReport(string OrgId, string ReportDate)
         {
-            DateTime StartTime = DateTime.Now.Date.AddHours(8);
+            DateTime Time = Convert.ToDateTime(ReportDate);
+            DateTime StartTime = Time.AddDays(1).AddHours(2);
+            DateTime EndTime = Time.AddDays(2).AddHours(2);
             List<string> OrgList = new List<string> { OrgId };
             this.GetChildOrg(OrgId, OrgList);
-            var NoReturnList = Read<NoReturnReport>(p => p.F_CreatorTime > StartTime && OrgList.Contains(p.F_Class)).ToList();
+            var NoReturnList = Read<NoReturnReport>(p => p.CreatedTime > StartTime && p.CreatedTime < EndTime && OrgList.Contains(p.ClassId)).ToList();
             return NoReturnList.ToJson();
         }
 
-        public object GetNotOutReport(string OrgId)
+        /// <summary>
+        /// 查询长时间未出的报表接口
+        /// </summary>
+        /// <param name="OrgId"></param>
+        /// <param name="ReportDate"></param>
+        /// <returns></returns>
+        public object GetNotOutReport(string OrgId, string ReportDate)
         {
-            DateTime StartTime = DateTime.Now.Date.AddHours(8);
+            DateTime Time = Convert.ToDateTime(ReportDate);
+            DateTime StartTime = Time.AddDays(1).AddHours(2);
+            DateTime EndTime = Time.AddDays(2).AddHours(2);
             List<string> OrgList = new List<string> { OrgId };
             this.GetChildOrg(OrgId, OrgList);
-            var NoOutList = Read<NoOutReport>(p => p.F_CreatorTime > StartTime && OrgList.Contains(p.F_Class)).ToList();
+            var NoOutList = Read<NoOutReport>(p => p.CreatedTime > StartTime && p.CreatedTime < EndTime && OrgList.Contains(p.ClassId)).ToList();
             return NoOutList.ToJson();
         }
     }

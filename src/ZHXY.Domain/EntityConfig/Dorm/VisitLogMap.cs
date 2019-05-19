@@ -7,23 +7,23 @@ namespace ZHXY.Domain
     {
         public VisitApplyMap()
         {
-            ToTable("Dorm_VisitLog");
+            ToTable("zhxy_visit_apply");
             HasKey(t => t.Id);
 
-            Property(p => p.Id).HasColumnName("F_Id");
-            Property(p => p.VisitorGender).HasColumnName("F_Sex");
-            Property(p => p.VisitorName).HasColumnName("F_Visitor_Name");
-            Property(p => p.VisitorIDCard).HasColumnName("F_Visitor_Card");
-            Property(p => p.VisitReason).HasColumnName("F_Visit_Reason");
-            Property(p => p.ApplicantId).HasColumnName("F_CreatorUserId");
-            Property(p => p.DormId).HasColumnName("F_Classroom_ID");
-            Property(p => p.BuildingId).HasColumnName("F_Building_ID");
-            Property(p => p.VisitStartTime).HasColumnName("F_Visit_startTime");
-            Property(p => p.VisitEndOfTime).HasColumnName("F_Visit_endTime");
-            Property(p => p.Relationship).HasColumnName("F_Rela");
+            Property(p => p.Id).HasColumnName("id");
+            Property(p => p.VisitorGender).HasColumnName("visitor_gender");
+            Property(p => p.VisitorName).HasColumnName("visitor_name");
+            Property(p => p.VisitorIDCard).HasColumnName("visitor_id_card");
+            Property(p => p.VisitReason).HasColumnName("reason");
+            Property(p => p.ApplicantId).HasColumnName("applicant_id");
+            Property(p => p.DormId).HasColumnName("dorm_id");
+            Property(p => p.BuildingId).HasColumnName("building_id");
+            Property(p => p.VisitStartTime).HasColumnName("start_time");
+            Property(p => p.VisitEndOfTime).HasColumnName("end_time");
+            Property(p => p.Relationship).HasColumnName("relation");
             Property(p => p.Status).HasColumnName("status");
-            Property(p => p.ApplicationTime).HasColumnName("F_CreatorTime");
-            Property(p => p.ProcessingTime).HasColumnName("F_LastModifyTime");
+            Property(p => p.ApplicationTime).HasColumnName("application_time");
+            Property(p => p.ProcessingTime).HasColumnName("processing_time");
 
             // 导航属性
             HasOptional(p => p.Student).WithMany().HasForeignKey(p => p.ApplicantId);

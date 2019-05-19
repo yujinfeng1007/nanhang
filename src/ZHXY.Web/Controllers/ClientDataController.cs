@@ -13,11 +13,11 @@ namespace ZHXY.Web.Controllers
         {
             var data = new data();
             var cache = CacheFactory.Cache();
-            data.area = SysCacheAppService.GetAreaListByCache();
-            data.dataItems = SysCacheAppService.GetDataItemListByCache();
-            data.duty = SysCacheAppService.GetDutyListByCache();
-            data.organize = SysCacheAppService.GetOrganizeListByCache();
-            data.role = SysCacheAppService.GetRoleListByCache();
+            data.area = CacheService.GetAreaListByCache();
+            data.dataItems = CacheService.GetDataItemListByCache();
+            data.duty = CacheService.GetDutyListByCache();
+            data.organize = CacheService.GetOrganizeListByCache();
+            data.role = CacheService.GetRoleListByCache();
 
             if (Operator.Current == null) return Json(data, JsonRequestBehavior.AllowGet);
             //菜单按钮权限
@@ -33,7 +33,7 @@ namespace ZHXY.Web.Controllers
                 }
                 else
                 {
-                    data.authorizeMenu = SysCacheAppService.GetMenuList().ToString();
+                    data.authorizeMenu =CacheService.GetMenuList().ToString();
                     cache.WriteCache(data.authorizeMenu, "menu_" + roleId);
                 }
                 if (!cache.GetCache<Dictionary<string, object>>("button_" + roleId).IsEmpty())
@@ -42,8 +42,8 @@ namespace ZHXY.Web.Controllers
                 }
                 else
                 {
-                    data.authorizeButton = (Dictionary<string, object>)SysCacheAppService.GetMenuButtonList();
-                    cache.WriteCache(data.authorizeButton, "button_" + roleId);
+                    //data.authorizeButton = (Dictionary<string, object>)CacheService.GetMenuButtonList();
+                    //cache.WriteCache(data.authorizeButton, "button_" + roleId);
                 }
             }
 

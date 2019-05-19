@@ -7,7 +7,7 @@
     // 加载列表
     function gridList() {
         $("#gridList").dataGrid({
-            url: "/schoolmanage/leave/CancelList",
+            url: "/Dorm/leave/CancelList",
             postData: { keyword: $("#txt_keyword").val(), searchPattern: $("#searchPattern").val() },
             height: $(window).height() - 128,
             colModel: [
@@ -52,7 +52,7 @@
         $.modalOpen({
             id: "cancel",
             title: "销假",
-            url: `/schoolmanage/leave/cancelform?id=${id}&days=${days}`,
+            url: `/Dorm/leave/cancelform?id=${id}&days=${days}`,
             width: "300px",
             height: "240px",
             callBack: function (iframeId) {

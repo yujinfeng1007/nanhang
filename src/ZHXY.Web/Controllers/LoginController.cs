@@ -156,13 +156,13 @@ namespace ZHXY.Web.Controllers
                     }
                     else
                     {
-                        duty = DutyApp.GetEnCode(userEntity.DutyId);
+                        duty = DutyApp.GetCode(userEntity.DutyId);
                         operatorModel.IsSystem = false;
                     }
 
                     //duty = userEntity.F_DutyId;
                     //权限判断，先看个人有没有设置数据权限，再看角色是否有数据权限
-                    operatorModel.Roles = RoleApp.GetUserRolesId(userEntity.Id);
+                    operatorModel.Roles = UserApp.GetUserRolesId(userEntity.Id);
                     //}
                     //用户岗位 类型
                     operatorModel.Duty = userEntity.DutyId;
@@ -213,7 +213,7 @@ namespace ZHXY.Web.Controllers
                     MobilePhone = user.MobilePhone,
                 };
                 op.LoginIPAddressName = Net.GetLocation(op.LoginIPAddress);
-                op.Roles = RoleApp.GetUserRolesId(user.Id);
+                op.Roles = UserApp.GetUserRolesId(user.Id);
                 op.Duty = user.DutyId;
                 Operator.Set(op);
             }
@@ -241,7 +241,7 @@ namespace ZHXY.Web.Controllers
         /// 记录日志
         /// </summary>
         /// <param name="input"></param>
-        private void WriteLog(AddLogDto input) => new SysLogAppService().AddLog(input);
+        private void WriteLog(AddLogDto input) => new LogService().AddLog(input);
 
         #endregion private
 

@@ -1,0 +1,46 @@
+﻿
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+    let userId = $.request("userId");
+    $(function () {
+        gridList();
+    })
+    function gridList() {
+        $("#gridList").jqGrid({
+            styleUI: "Bootstrap",
+            height: window.innerHeight * 0.8,
+            width: window.innerWidth * 0.9,
+            datatype: 'json',
+            url: `/Systemmanage/User/GetExcludeRoles?userId=${userId}`,
+            autoGridWidth: true,
+            multiselect: true,
+            loadonce: false,
+            viewrecords: true,
+            jsonReader: {
+                root: function (r) { return r.data; }
+            },
+            pager: "#gridPager",
+            rowNum: -1,
+            colModel: [
+                { label: "主键", name: "id", hidden: true, key: true },
+                { label: '名称', name: 'name' },
+            ],
+        });
+    }
+
+
+    function addRole() {
+        let roles = $("#gridList").jqGrid('getGridParam', 'selarrrow');
+        $.post('/systemmanage/user/addrole', { userId: userId, roleId: roles }, function (r) {
+            $(`#gridList`).jqGrid().trigger('reloadGrid');
+        })
+    }
+</script>
+
+<div class="gridPanel">
+    <table id="gridList"></table>
+    <div id="gridPager"></div>
+</div>

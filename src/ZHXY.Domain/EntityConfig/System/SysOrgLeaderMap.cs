@@ -6,7 +6,7 @@ namespace ZHXY.Domain
     {
         public SysOrgLeaderMap()
         {
-            ToTable("sys_org_leader");
+            ToTable("zhxy_org_leader");
             HasKey(t => new { t.OrgId, t.UserId });
 
             Property(p => p.OrgId).HasColumnName("org_id");

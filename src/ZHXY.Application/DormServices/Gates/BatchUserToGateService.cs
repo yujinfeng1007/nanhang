@@ -94,7 +94,7 @@ namespace ZHXY.Application.DormServices.Gates
                     studentNo = tea?.JobNumber;
                     imgUri = tea?.FacePhoto;
                     gender = tea?.Gender == "0" ? "女" : "男";
-                    certificateNo = tea?.CredNum;
+                    certificateNo = tea?.CredNumber;
                     userType = "教职工";
                 }
                 string filepath = imgPath;

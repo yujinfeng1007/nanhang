@@ -31,18 +31,17 @@ namespace ZHXY.Domain
         /// 入住时间
         /// </summary>
         public DateTime? InTime{ get; set; }
-        
-              
               
         /// <summary>
         /// 入住性别
         /// </summary>
         public string Gender{ get; set; }
-        public string F_Memo{ get; set; }
+
+        public string Description { get; set; }
 
         public virtual DormRoom DormInfo { get; set; }
 
         public virtual Student Student { get; set; }
-
+       
     }
 }

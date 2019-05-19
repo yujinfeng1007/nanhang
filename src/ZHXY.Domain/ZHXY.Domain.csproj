@@ -44,15 +44,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Consts.cs" />
     <Compile Include="EntityConfig\Dorm\DormTimeRuleMap.cs" />
     <Compile Include="EntityConfig\Dorm\Dorm_BuildingDeviceMap.cs" />
-    <Compile Include="EntityConfig\Dorm\Dorm_FlowInAndOutOfBuildingMap.cs" />
     <Compile Include="EntityConfig\Dorm\FaceApproveMap.cs" />
+    <Compile Include="EntityConfig\Dorm\LDJCLSMap.cs" />
+    <Compile Include="EntityConfig\Dorm\LeaveLimitMap.cs" />
+    <Compile Include="EntityConfig\Dorm\LeaveOrderMap.cs" />
     <Compile Include="EntityConfig\Dorm\StuFaceOrderMap.cs" />
+    <Compile Include="EntityConfig\System\AppVersionMap.cs" />
+    <Compile Include="EntityConfig\System\DicItemMap.cs" />
+    <Compile Include="EntityConfig\System\DicMap.cs" />
+    <Compile Include="EntityConfig\System\DutyMap.cs" />
     <Compile Include="Entity\Dorm\Dorm_FlowInAndOutOfBuilding.cs" />
     <Compile Include="Entity\Dorm\FaceApprove.cs" />
     <Compile Include="Entity\Dorm\Holiday.cs" />
+    <Compile Include="Entity\Dorm\LeaveLimit.cs" />
+    <Compile Include="Entity\Dorm\LeaveOrder.cs" />
     <Compile Include="Entity\Dorm\StuFaceOrder.cs" />
+    <Compile Include="Entity\System\AppVersion.cs" />
+    <Compile Include="Entity\System\Duty.cs" />
+    <Compile Include="Entity\System\SysViewUser.cs" />
     <Compile Include="Relation.cs" />
     <Compile Include="SYS_CONSTS.cs" />
     <Compile Include="DataAccess\Extensions\DbHelper.cs" />
@@ -73,28 +85,22 @@
     <Compile Include="EntityConfig\Dorm\Report\NoReturnReportMap.cs" />
     <Compile Include="EntityConfig\Dorm\VisitLogMap.cs" />
     <Compile Include="EntityConfig\Dorm\CancelHolidayMap.cs" />
-    <Compile Include="EntityConfig\Dorm\StuHolidayLimitMap.cs" />
     <Compile Include="EntityConfig\Dorm\LeaveApproveMap.cs" />
     <Compile Include="EntityConfig\Dorm\SemesterMap.cs" />
     <Compile Include="EntityConfig\Dorm\StudentMap.cs" />
-    <Compile Include="EntityConfig\Dorm\StuLeaveOrderMap.cs" />
     <Compile Include="EntityConfig\Dorm\TeacherMap.cs" />
     <Compile Include="EntityConfig\System\DbBackupMap.cs" />
     <Compile Include="EntityConfig\System\FilterIPMap.cs" />
-    <Compile Include="EntityConfig\System\ItemsDetailMap.cs" />
-    <Compile Include="EntityConfig\System\ItemsMap.cs" />
     <Compile Include="EntityConfig\System\LogMap.cs" />
-    <Compile Include="EntityConfig\System\ButtonMap.cs" />
+    <Compile Include="EntityConfig\System\FunctionMap.cs" />
     <Compile Include="EntityConfig\System\MenuMap.cs" />
     <Compile Include="EntityConfig\System\PlaceAreaMap.cs" />
     <Compile Include="EntityConfig\System\RelevanceMap.cs" />
-    <Compile Include="EntityConfig\System\RoleAuthorizeMap.cs" />
     <Compile Include="EntityConfig\System\RoleMap.cs" />
     <Compile Include="EntityConfig\System\SysOrgLeaderMap.cs" />
     <Compile Include="EntityConfig\System\OrgMap.cs" />
     <Compile Include="EntityConfig\System\UserLogOnMap.cs" />
     <Compile Include="EntityConfig\System\UserMap.cs" />
-    <Compile Include="EntityExtensions\ReportEntity.cs" />
     <Compile Include="Entity\Dorm\DormTimeRule.cs" />
     <Compile Include="Entity\Dorm\DormRoom.cs" />
     <Compile Include="Entity\Dorm\DormStudent.cs" />
@@ -113,9 +119,7 @@
     <Compile Include="EntityExtensions\IEntity.cs" />
     <Compile Include="EntityExtensions\ITreeable.cs" />
     <Compile Include="Entity\Dorm\CancelHoliday.cs" />
-    <Compile Include="Entity\Dorm\StuHolidayLimit.cs" />
     <Compile Include="Entity\Dorm\LeaveApprove.cs" />
-    <Compile Include="Entity\Dorm\StuLeaveOrder.cs" />
     <Compile Include="Entity\System\Relevance.cs" />
     <Compile Include="Entity\System\OrgLeader.cs" />
     <Compile Include="Entity\System\UserLogin.cs" />
@@ -127,12 +131,11 @@
     <Compile Include="Entity\System\SysDicItem.cs" />
     <Compile Include="Entity\System\SysDic.cs" />
     <Compile Include="EntityExtensions\ModuleButtonComparer.cs" />
-    <Compile Include="Entity\System\Button.cs" />
+    <Compile Include="Entity\System\Function.cs" />
     <Compile Include="EntityExtensions\ModuleComparer.cs" />
     <Compile Include="Entity\System\Menu.cs" />
     <Compile Include="Entity\System\Organ.cs" />
     <Compile Include="Entity\System\OrganizeGrade.cs" />
-    <Compile Include="Entity\System\RoleAuthorize.cs" />
     <Compile Include="Entity\System\Role.cs" />
     <Compile Include="Entity\System\User.cs" />
     <Compile Include="Entity\System\DbBackup.cs" />
@@ -145,17 +148,9 @@
     <Compile Include="DataAccess\IRepоsitory.cs" />
     <Compile Include="DataAccess\IUnitWork.cs" />
     <Compile Include="DataAccess\IZhxyRepository.cs" />
-    <Compile Include="DataAccess\Repos\Interface\IItemDetailRepository.cs" />
     <Compile Include="DataAccess\IRepositoryBase.T.cs" />
-    <Compile Include="DataAccess\Repos\Interface\IModuleButtonRepository.cs" />
-    <Compile Include="DataAccess\Repos\Interface\IRoleRepository.cs" />
-    <Compile Include="DataAccess\Repos\Interface\IUserRepository.cs" />
     <Compile Include="Entity\Dorm\Building.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DataAccess\Repos\ItemsDetailRepository.cs" />
-    <Compile Include="DataAccess\Repos\ModuleButtonRepository.cs" />
-    <Compile Include="DataAccess\Repos\RoleRepository.cs" />
-    <Compile Include="DataAccess\Repos\UserRepository.cs" />
     <Compile Include="DataAccess\ZhxyRepository.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -182,7 +177,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ZHXY.Common\ZHXY.Common.csproj">
-      <Project>{DB19CE03-C307-43FE-A209-08AA4AE10E21}</Project>
+      <Project>{db19ce03-c307-43fe-a209-08aa4ae10e21}</Project>
       <Name>ZHXY.Common</Name>
     </ProjectReference>
   </ItemGroup>

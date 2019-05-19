@@ -110,8 +110,80 @@ namespace ZHXY.Application
         public List<User> GetNotBindUsers(string id)
         {
             var usersIds = Read<Relevance>(p => p.Name.Equals(Relation.BuildingUser) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
-            var list = Read<User>(p => !usersIds.Contains(p.Id) && p.OrganId == "473059e8a7a0754ca8f05eb2cd346e1d").ToList();
+            var list = Read<User>(p => !usersIds.Contains(p.Id) && p.OrganId == "27e1854fd963d24b8c5d88506a775c2a").ToList();
             return list;
         }
+
+        /// <summary>
+        /// 根据闸机设备号获取绑定的楼栋列表
+        /// </summary>
+        /// <param name="deviceNumber"></param>
+        /// <returns></returns>
+        public List<Building> GetBindGate(string deviceNumber)
+        {
+            var relevances = Read<Relevance>(p => p.FirstKey == deviceNumber && p.Name == "Gate_Building").Select(p => p.SecondKey).ToList();
+
+            var list = Read<Building>(p => relevances.Contains(p.Id)).ToList();
+
+            return list;
+        }
+
+        /// <summary>
+        /// 闸机绑定楼栋信息
+        /// </summary>
+        /// <param name="deviceNumber"></param>
+        /// <param name="buildingId"></param>
+        public void BindBuildings(string deviceNumber,string buildingId)
+        {
+            var relevance = new Relevance();
+            relevance.Name = "Gate_Building";
+            relevance.FirstKey = deviceNumber;
+            relevance.SecondKey = buildingId;
+
+            AddAndSave(relevance);
+        }
+
+        /// <summary>
+        /// 闸机解绑楼栋信息
+        /// </summary>
+        /// <param name="deviceNumber"></param>
+        public void UnBindBuildings(string deviceNumber)
+        {
+            var relevance = Read<Relevance>(p => p.Name == "Gate_Building" && p.FirstKey == deviceNumber).FirstOrDefault();
+
+            if (relevance != null)
+            {
+                DelAndSave(relevance);
+            }
+        }
+
+
+        /// <summary>
+        /// 获取楼栋学生基本外出在寝信息
+        /// </summary>
+        /// <param name="deviceNumber"></param>
+        /// <returns></returns>
+        public dynamic GetDormOutInInfo(string deviceNumber)
+        {
+            var buildingIds = Read<Relevance>(p => p.Name == "Gate_Building" && p.FirstKey==deviceNumber).Select(p => p.FirstKey).ToList();
+
+            var buildingNos = Read<Gate>(p => buildingIds.Contains(p.Id)).Select(p=>p.DeviceNumber).ToList();
+
+            var outs = Read<LDJCLS>(p => buildingNos.Contains(p.BuildingNo) && p.Direction == true)
+                .GroupBy(p => new { p.BuildingNo }).Select(p => new {
+                    F_OutNum = p.Count(),
+                    p.Key.BuildingNo,
+                });
+
+            var ins = Read<LDJCLS>(p => buildingNos.Contains(p.BuildingNo) && p.Direction == false)
+                .GroupBy(p => new { p.BuildingNo }).Select(p => new {
+                    F_InNum = p.Count(),
+                    p.Key.BuildingNo,
+                });
+
+           return  outs.Join(ins, e => e.BuildingNo, o => o.BuildingNo, (e, o) => new { e.BuildingNo, e.F_OutNum,o.F_InNum}).ToList();
+           // var data = outs.GroupJoin(ins, a => new { a.building_no, a.F_OutNum }, b => new { b.building_no, b.F_InNum }, (a, b) => new {  a.building_no, a.F_OutNum, b });
+        }
+
     }
 }

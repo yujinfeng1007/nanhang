@@ -53,6 +53,7 @@ namespace ZHXY.Application
     public class LeaveView: LeaveListView
     {
         public bool IsFinal { get; set; }
+        public string AttachmentsPath { get;  set; }
     }
 
 }

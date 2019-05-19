@@ -58,9 +58,9 @@ namespace ZHXY.Application.RequestDto.Api
         /// </summary>
         /// <param name="dto"></param>
 
-        public static implicit operator StuLeaveOrder(StudentLeaveInput dto)
+        public static implicit operator LeaveOrder(StudentLeaveInput dto)
         {
-            return new StuLeaveOrder
+            return new LeaveOrder
             {
                 ApplicantId = dto.F_Applicant,
                 StartTime = dto.F_StartTime,
@@ -68,7 +68,7 @@ namespace ZHXY.Application.RequestDto.Api
                 LeaveerId = dto.F_StudentID,
                 LeaveDays = dto.F_LeaveDays,
                 LeaveType = dto.F_LeaveType,
-                ReasonForLeave = dto.F_ReasonForLeave,
+                Reason = dto.F_ReasonForLeave,
                 Status = dto.F_Status
             };
         }

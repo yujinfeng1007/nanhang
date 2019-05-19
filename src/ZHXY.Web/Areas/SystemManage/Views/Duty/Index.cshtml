@@ -3,109 +3,70 @@
     Layout = "~/Views/Shared/_Index.cshtml";
 }
 <script>
-     let dutyTypeDic = JSON.parse(localStorage.getItem("F_Duty_Type"));
+    let orgList = top.window.getItem("orgList");
     $(function () {
-        gridList();
+        centerGrid();
     })
-    function gridList() {
-        var $gridList = $("#gridList");
-        $gridList.dataGrid({
-            url: "/SystemManage/Duty/Load",
-            height: $(window).height() - 96,
+    function centerGrid() {
+        $("#centerGrid").jqGrid({
+            styleUI: "Bootstrap",
+            height: window.innerHeight * 0.8,
+            width: window.innerWidth * 0.98,
+            datatype: 'json',
+            url: `/SystemManage/Duty/Load`,
+            multiselect: false,
+            loadonce: false,
+            viewrecords: true,
+            pager: "#centerPager",
+            toppager: true,
+            rowNum: -1,
             jsonReader: {
-                root: function (r) { return r.data; }
+                root: function (r) { return r.data },
             },
             colModel: [
-                { label: "主键", name: "id", hidden: false, key: true, hidden: true },
-                { label: '岗位名称', name: 'name', sortable: false },
-                {
-                    label: '岗位类型', name: 'type', sortable: false,
-                    formatter: function (cellvalue) {
-                        return dutyTypeDic[cellvalue] == undefined ? "" : dutyTypeDic[cellvalue];
-                    }
-                },
-                { label: '排序', name: 'sortCode',width:30, sortable: false },
-                { label: '岗位编号', name: 'enCode', hidden: true },
-                { label: '备注', name: 'description', sortable: false }
+                { label: "主键", name: "id", hidden: true, key: true },
+                { label: '名称', name: 'name', editable: true },
+                { label: 'CODE', name: 'code', editable: true },
+                { label: '排序', name: 'sortCode', editable: true, edittype: "number", },
+                { label: '描述', name: 'description', editable: true },
             ]
         });
-        $("#btn_search").click(function () {
-            $gridList.jqGrid('setGridParam', {
-                postData: { keyword: $("#txt_keyword").val() },
-            }).trigger('reloadGrid');
-        });
+        $("#centerGrid").jqGrid('navGrid', '#centerPager',
+            {
+                edit: true,
+                add: true,
+                del: true,
+                search: false,
+                refresh: true,
+                view: true,
+                cloneToTop: true,
+            },
+            {
+                url: "update",
+                top: 200,
+                left: 200,
+                drag: true,
+                resize: false,
+                closeOnEscape: true,
+            },
+            {
+                url: "add",
+                drag: true,
+                resize: false,
+                closeOnEscape: true,
+            },
+            {
+                url: "delete",
+                drag: true,
+                resize: false,
+                closeOnEscape: true,
+            },
+        );
     }
-    function btn_add() {
-        $.modalOpen({
-            id: "Form",
-            title: "新增岗位",
-            url: "/SystemManage/Duty/Form",
-            width: "450px",
-            height: "380px",
-            callBack: function (iframeId) {
-                top.frames[iframeId].submitForm();
-            }
-        });
-    }
-    function btn_edit() {
-        let id = $("#gridList").jqGrid('getGridParam', 'selrow');
-        $.modalOpen({
-            id: "Form",
-            title: "修改岗位",
-            url: "/SystemManage/Duty/Form?id=" + id,
-            width: "450px",
-            height: "380px",
-            callBack: function (iframeId) {
-                top.frames[iframeId].submitForm();
-            }
-        });
-    }
-    function btn_delete() {
-        let rows = $('#gridList').jqGrid('getGridParam', 'selarrrow');
-        $.deleteForm({
-            url: "/SystemManage/Duty/Delete",
-            param: { id: rows },
-            success: function () {
-                $.currentWindow().$("#gridList").trigger("reloadGrid");
-            }
-        })
-    }
-
 </script>
 
-<div class="topPanel">
-    <div class="toolbar">
-        <div class="btn-group">
-            <a class="btn btn-default" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
-        </div>
-        <div class="btn-group">
-            <a id="NF-add" authorize="yes" class="btn btn-default dropdown-text" onclick="btn_add()"><i class="fa fa-plus"></i>新建岗位</a>
-        </div>
-        <div class="operate">
-            <ul class="nav nav-pills">
-                <li class="first">已选中<span>1</span>项</li>
-                <li><a id="NF-edit" authorize="yes" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>修改岗位</a></li>
-                <li><a id="NF-delete" authorize="yes" onclick="btn_delete()"><i class="fa fa-trash-o"></i>删除岗位</a></li>
-            </ul>
-            <a href="javascript:;" class="close"></a>
-        </div>
-        <script>$('.toolbar').authorizeButton()</script>
-    </div>
-    <div class="search">
-        <table>
-            <tr>
-                <td>
-                    <div class="input-group">
-                        <input id="txt_keyword" type="text" class="form-control" placeholder="岗位名称/岗位编号" style="width: 200px;">
-                        <span class="input-group-btn">
-                            <button id="btn_search" type="button" class="btn  btn-default"><i class="fa fa-search"></i></button>
-                        </span>
-                    </div>
-                </td>
-            </tr>
-        </table>
-    </div>
-</div>
+
 <div class="gridPanel">
-    <table id="gridList"></table>
+    <table id="centerGrid"></table>
+    <div id="centerPager"></div>
 </div>

@@ -1,10 +1,5 @@
-﻿
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
-using ZHXY.Application;using ZHXY.Domain;
-using ZHXY.Common;
-
+﻿using System.Web.Mvc;
+using ZHXY.Application;
 namespace ZHXY.Web.SystemManage.Controllers
 {
     /// <summary>
@@ -33,14 +28,14 @@ namespace ZHXY.Web.SystemManage.Controllers
             return Resultaat.Success();
         }
         [HttpGet]
-        public ActionResult GetMenu(string nodeId=null, int n_level = 0)
+        public ActionResult GetMenu(string nodeId, int n_level = 0)
         {
             var data=App.GetMenu(nodeId, n_level);
             return Resultaat.Success(data);
         }
 
         [HttpPost]
-        public ActionResult AddBth(AddBtnDto dto)
+        public ActionResult AddBtn(AddBtnDto dto)
         {
             App.AddBtn(dto);
             return Resultaat.Success();
@@ -67,15 +62,6 @@ namespace ZHXY.Web.SystemManage.Controllers
             var data = App.GetMenuBth(menuId);
             return Resultaat.Success(data);
         }
-
-
-        [HttpGet]
-        public ActionResult GetMenuTree()
-        {
-            var data = App.GetMenuTree();
-            return Resultaat.Success(data);
-        }
-
 
     }
 }

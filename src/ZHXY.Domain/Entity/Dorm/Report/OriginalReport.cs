@@ -2,8 +2,9 @@
 
 namespace ZHXY.Domain
 {
-    public class OriginalReport:Entity
+    public class OriginalReport:IEntity
     {
+        public string F_Id { get; set; }
         public DateTime? Date { get; set; }
         /// <summary>
         /// 通道ID
