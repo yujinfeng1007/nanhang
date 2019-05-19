@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -86,9 +87,48 @@ namespace ZHXY.Application
             return cache.GetCache<List<AreaChild>>(SmartCampusConsts.AREACHILD);
         }
 
-       
 
-      
+        /// <summary>
+        /// 字典缓存
+        /// </summary>
+        /// <returns>  </returns>
+        public static object GetDataItemList()
+        {
+            var service = new DicService(new ZhxyRepository());
+            var allitems = service. GetAllItems();
+            var dic = new Dictionary<string, object>();
+            foreach (var item in service.GetAll())
+            {
+                var tempDictionary = new Dictionary<string, string>();
+                var details = allitems.Where(t=>t.DicId==item.Id);
+                foreach (var i in details)
+                {
+                    try
+                    {
+                        tempDictionary.Add(i.Key, i.Value);
+                    }
+                    catch(Exception e)
+                    {
+                        // ignored
+                    }
+                }
+                dic.Add(item.Id, tempDictionary);
+            }
+            return dic;
+        }
+
+        public static Dictionary<string, object> GetDataItemListByCache()
+        {
+            var cache = CacheFactory.Cache();
+            if (CacheFactory.Cache().GetCache<Dictionary<string, object>>(SmartCampusConsts.DATAITEMS).IsEmpty())
+            {
+                cache.WriteCache((Dictionary<string, object>)GetDataItemList(), SmartCampusConsts.DATAITEMS);
+            }
+
+            return cache.GetCache<Dictionary<string, object>>(SmartCampusConsts.DATAITEMS);
+        }
+
+       
 
         /// <summary>
         /// 岗位缓存
@@ -121,8 +161,31 @@ namespace ZHXY.Application
             return cache.GetCache<Dictionary<string, object>>(SmartCampusConsts.DUTY);
         }
 
-    
-    
+        /// <summary>
+        /// 机构缓存
+        /// </summary>
+        /// <returns>  </returns>
+        public static object GetOrganizeList()
+        {
+            var organizeApp = new OrgService();
+            var data = organizeApp.GetList();
+            var dictionary = new Dictionary<string, object>();
+            foreach (var item in data)
+            {
+                var fieldItem = new FieldItem { encode = item.EnCode, fullname = item.Name };
+                dictionary.Add(item.Id, fieldItem);
+            }
+            return dictionary;
+        }
+
+        public static Dictionary<string, object> GetOrganizeListByCache()
+        {
+            var cache = CacheFactory.Cache();
+            CacheFactory.Cache().RemoveCache(SmartCampusConsts.ORGANIZE);
+            CacheFactory.Cache().WriteCache(GetOrganizeList(), SmartCampusConsts.ORGANIZE);
+            return cache.GetCache<Dictionary<string, object>>(SmartCampusConsts.ORGANIZE);
+        }
+
         /// <summary>
         /// 角色缓存
         /// </summary>
@@ -151,12 +214,52 @@ namespace ZHXY.Application
             return cache.GetCache<Dictionary<string, object>>(SmartCampusConsts.ROLE);
         }
 
-       
+
+        public static object GetMenuButtonList()
+        {
+            var roles = Operator.Current.Roles;
+            var app = new RoleAuthorizeService(new ZhxyRepository());
+            var data = new List<Button>();
+            foreach (var e in roles)
+            {
+                data = data.Union(app.GetButtonList(e), new ModuleButtonComparer()).ToList();
+            }
+
+            var dataModuleId = data.Select(t => t.MenuId).Distinct();
+            var dictionary = new Dictionary<string, object>();
+            foreach (var item in dataModuleId)
+            {
+                var buttonList = data.Where(t => t.MenuId.Equals(item)).ToList();
+                dictionary.Add(item, buttonList);
+            }
+            return dictionary;
+        }
+
+        /// <summary>
+        /// 菜单缓存
+        /// </summary>
+        /// <returns>  </returns>
+        public static object GetMenuList()
+        {
+            var app = new RoleAuthorizeService(new ZhxyRepository());
+            if (Operator.Current.IsSystem)
+            {
+                return ToMenuJson(app.GetEnableMenuList("0"), "0");
+            }
+            var roles = Operator.Current.Roles;
+            var data = new List<Menu>();
+            foreach (var e in roles)
+            {
+                data = data.Union(app.GetEnableMenuList(e), new ModuleComparer()).ToList();
+            }
+            return ToMenuJson(data, "0");
+        }
+
         public static string ToMenuJson(List<Menu> data, string parentId)
         {
             var sbJson = new StringBuilder();
             sbJson.Append("[");
-            var entitys = data.FindAll(t => t.ParentId == parentId).Select(p=>new
+            var entitys = data.FindAll(t => t.ParentId == parentId).Select(p => new
             {
                 F_Id = p.Id,
                 F_ParentId = p.ParentId,
@@ -169,7 +272,7 @@ namespace ZHXY.Application
                 F_IsExpand = p.IsExpand,
                 F_IsPublic = p.IsPublic,
                 F_SortCode = p.SortCode,
-                F_BelongSys=p.BelongSys
+                F_BelongSys = p.BelongSys
             });
 
             if (entitys.Count() > 0)

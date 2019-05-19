@@ -85,10 +85,14 @@ namespace ZHXY.Application
             DelAndSave<SysDicItem>(id);
         }
 
-        public dynamic GetItems(string dicId)
+        public List<SysDicItem> GetItems(string dicId)
         {
             return Read<SysDicItem>(p => p.DicId.Equals(dicId)).ToListAsync().Result;
         }
 
+        public List<SysDicItem> GetAllItems()
+        {
+            return Read<SysDicItem>().ToListAsync().Result;
+        }
     }
 }

@@ -17,7 +17,6 @@ namespace ZHXY.Application
         public string Status { get; set; }
         public string[] Approvers { get; set; }
         public List<LeaveApproveView> Approves { get; set; }
-
-
+        public string AttachmentsPath { get;  set; }
     }
 }

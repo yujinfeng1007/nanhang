@@ -38,7 +38,7 @@
         /// <summary>
         /// 附件地址
         /// </summary>
-        public string[] AttachmentsPath { get; set; }
+        public string AttachmentsPath { get; set; }
 
         /// <summary>
         /// 审批人

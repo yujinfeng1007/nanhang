@@ -20,9 +20,9 @@
         }
     });
     function initControl() {
-        $("#type").bindSelect({
-            dictionary: 'RoleType'
-        })
+        $("#type").append($.map(JSON.parse(localStorage.getItem("RoleType")), function (_item, _i) {
+            return '<option value=' + _i + '>' + _item + '</option>';
+        }).join(''));
     }
     function submitForm() {
         if (!$('#form1').formValid()) {

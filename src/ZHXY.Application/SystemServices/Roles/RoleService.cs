@@ -48,7 +48,7 @@ namespace ZHXY.Application
             SaveChanges();
         }
 
-        public dynamic GetRoleUsers(string roleId)
+        public List<User> GetRoleUsers(string roleId)
         {
             var users= Read<Relevance>(p => p.Name.Equals(Relation.UserRole) && p.SecondKey.Equals(roleId)).Select(p => p.FirstKey).ToArrayAsync().Result;
             return Read<User>(p => users.Contains(p.Id)).ToListAsync().Result;

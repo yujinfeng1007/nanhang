@@ -132,6 +132,7 @@
     <Compile Include="RequestDto\Api\StudentLeaveInput.cs" />
     <Compile Include="RequestDto\BaseApiInput.cs" />
     <Compile Include="SystemServices\Roles\Dto\UpdateRoleDto.cs" />
+    <Compile Include="SystemServices\Roles\RoleAuthorizeService.cs" />
     <Compile Include="SystemServices\Users\Dto\AddUserDto.cs" />
     <Compile Include="SystemServices\Users\Dto\Login\LoginInput.cs" />
     <Compile Include="SystemServices\Users\Dto\Login\ResultModel.cs" />

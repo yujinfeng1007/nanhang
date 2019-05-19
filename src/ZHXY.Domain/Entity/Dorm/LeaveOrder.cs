@@ -81,5 +81,6 @@ namespace ZHXY.Domain
         /// 申请人
         /// </summary>
         public virtual User Applicant { get; set; }
+        public string AttachmentsPath { get; set; }
     }
 }

@@ -14,7 +14,9 @@ namespace ZHXY.Web.Controllers
             var data = new data();
             var cache = CacheFactory.Cache();
             data.area = CacheService.GetAreaListByCache();
+            data.dataItems = CacheService.GetDataItemListByCache();
             data.duty = CacheService.GetDutyListByCache();
+            data.organize = CacheService.GetOrganizeListByCache();
             data.role = CacheService.GetRoleListByCache();
 
             if (Operator.Current == null) return Json(data, JsonRequestBehavior.AllowGet);
@@ -31,6 +33,7 @@ namespace ZHXY.Web.Controllers
                 }
                 else
                 {
+                    data.authorizeMenu =CacheService.GetMenuList().ToString();
                     cache.WriteCache(data.authorizeMenu, "menu_" + roleId);
                 }
                 if (!cache.GetCache<Dictionary<string, object>>("button_" + roleId).IsEmpty())
@@ -39,6 +42,7 @@ namespace ZHXY.Web.Controllers
                 }
                 else
                 {
+                    data.authorizeButton = (Dictionary<string, object>)CacheService.GetMenuButtonList();
                     cache.WriteCache(data.authorizeButton, "button_" + roleId);
                 }
             }

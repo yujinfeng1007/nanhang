@@ -27,7 +27,7 @@ namespace ZHXY.Application
             DateTime StartTime = DateTime.Now.Date.AddHours(8);
             List<string> OrgList = new List<string> { OrgId };
             this.GetChildOrg(OrgId, OrgList);
-            var LateReturnList = Read<LateReturnReport>(p => p.F_CreatorTime > StartTime && OrgList.Contains(p.F_Class)).ToList();
+            var LateReturnList = Read<LateReturnReport>(p => p.CreatedTime > StartTime && OrgList.Contains(p.Class)).ToList();
             return LateReturnList.ToJson();
         }
 
@@ -36,7 +36,7 @@ namespace ZHXY.Application
             DateTime StartTime = DateTime.Now.Date.AddHours(8);
             List<string> OrgList = new List<string> { OrgId };
             this.GetChildOrg(OrgId, OrgList);
-            var NoReturnList = Read<NoReturnReport>(p => p.F_CreatorTime > StartTime && OrgList.Contains(p.F_Class)).ToList();
+            var NoReturnList = Read<NoReturnReport>(p => p.CreatedTime > StartTime && OrgList.Contains(p.ClassId)).ToList();
             return NoReturnList.ToJson();
         }
 
@@ -45,7 +45,7 @@ namespace ZHXY.Application
             DateTime StartTime = DateTime.Now.Date.AddHours(8);
             List<string> OrgList = new List<string> { OrgId };
             this.GetChildOrg(OrgId, OrgList);
-            var NoOutList = Read<NoOutReport>(p => p.F_CreatorTime > StartTime && OrgList.Contains(p.F_Class)).ToList();
+            var NoOutList = Read<NoOutReport>(p => p.CreatedTime > StartTime && OrgList.Contains(p.ClassId)).ToList();
             return NoOutList.ToJson();
         }
     }

@@ -31,6 +31,7 @@ namespace ZHXY.Application
                 LeaveDays = input.LeaveDays,
                 LeaveType = input.LeaveType,
                 Reason = input.ReasonForLeave,
+                AttachmentsPath = input.AttachmentsPath,
                 Status = "0"
             };
             foreach (var item in input.Approvers)
@@ -113,7 +114,8 @@ namespace ZHXY.Application
                 EndOfTime = leave.EndOfTime,
                 LeaveDays = leave.LeaveDays,
                 LeaveType = leave.LeaveType,
-                ReasonForLeave = leave.Reason
+                ReasonForLeave = leave.Reason,
+                AttachmentsPath = leave.AttachmentsPath
             };
             if (Convert.ToDecimal(view.LeaveDays) <= 3)
             {
@@ -169,6 +171,7 @@ namespace ZHXY.Application
                 LeaveDays = leave.LeaveDays,
                 LeaveType = leave.LeaveType,
                 ReasonForLeave = leave.Reason,
+                AttachmentsPath = leave.AttachmentsPath,
                 Approvers = Read<LeaveApprove>(p => p.OrderId.Equals(id)).Select(p => p.Approver.Name).ToArrayAsync().Result,
                 Approves = leaveApproves
             };
