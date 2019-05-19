@@ -1,10 +1,5 @@
-﻿
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
-using ZHXY.Application;using ZHXY.Domain;
-using ZHXY.Common;
-
+﻿using System.Web.Mvc;
+using ZHXY.Application;
 namespace ZHXY.Web.SystemManage.Controllers
 {
     /// <summary>

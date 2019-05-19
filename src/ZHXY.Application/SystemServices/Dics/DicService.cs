@@ -63,6 +63,8 @@ namespace ZHXY.Application
             data.Add("orgList", Read<Organ>().Select(p => new { p.Id, p.Name }).ToDictionary(p => p.Id, e => e.Name));
             data.Add("dutyList", Read<Duty>().Select(p => new { p.Id, p.Name }).ToDictionary(p => p.Id, e => e.Name));
             data.Add("roleList", Read<Role>().Select(p => new { p.Id, p.Name }).ToDictionary(p => p.Id, e => e.Name));
+            data.Add("menuList", Read<Menu>().Select(p => new { p.Id, p.Name }).ToDictionary(p => p.Id, e => e.Name));
+            data.Add("funcList", Read<Function>().Select(p => new { p.Id, p.Name }).ToDictionary(p => p.Id, e => e.Name));
             return data;
         }
 

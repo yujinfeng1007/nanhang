@@ -13,7 +13,6 @@ namespace ZHXY.Web.SystemManage.Controllers
         public DutyController(DutyService app) => App = app;
 
         [HttpGet]
-
         public ActionResult Load(string keyword)
         {
             var data = App.GetList(keyword);
@@ -22,7 +21,6 @@ namespace ZHXY.Web.SystemManage.Controllers
 
 
         [HttpGet]
-
         public ActionResult Get(string id)
         {
             var data = App.Get(id);
@@ -30,7 +28,6 @@ namespace ZHXY.Web.SystemManage.Controllers
         }
 
         [HttpPost]
-
         public ActionResult Update(UpdateDutyDto dto)
         {
             App.Update(dto);
@@ -38,7 +35,6 @@ namespace ZHXY.Web.SystemManage.Controllers
         }
 
         [HttpPost]
-
         public ActionResult Add(AddDutyDto dto)
         {
             App.Add(dto);
@@ -46,8 +42,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         }
 
         [HttpPost]
-
-        public ActionResult Delete(string[]  id)
+        public ActionResult Delete(string  id)
         {
             App.Delete(id);
             return Resultaat.Success();

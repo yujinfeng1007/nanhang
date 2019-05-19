@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta lang="zh-cn">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <script src="~/Scripts/jquery-2.1.1.min.js"></script>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+    <link href="~/Content/ui.jqgrid.min.css" rel="stylesheet" />
+    <script src="~/Scripts/free-jqGrid/jquery.jqgrid.min.js"></script>
+    <script src="~/Scripts/free-jqGrid/i18n/grid.locale-cn.js"></script>
+
+    <link href="~/Content/jquery.layout-1.4.3.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery.layout-1.4.3.js"></script>
+</head>
+<body>
+    @RenderBody()
+    @Html.AntiForgeryToken()
+</body>
+</html>
