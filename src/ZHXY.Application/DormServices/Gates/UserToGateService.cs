@@ -62,7 +62,7 @@ namespace ZHXY.Application.DormServices.Gates
                     studentNo = tea?.JobNumber;
                     //imgUri = tea?.FacePhoto;
                     gender = tea?.Gender == "0" ? 2 : 1;
-                    certificateNo = tea?.CredNum;
+                    certificateNo = tea?.CredNumber;
                     userType = "teacher001";// "教职工";
                 }
                 return new PersonMoudle

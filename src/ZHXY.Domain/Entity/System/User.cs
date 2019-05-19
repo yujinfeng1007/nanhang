@@ -54,10 +54,6 @@ namespace ZHXY.Domain
         public string Email { get; set; }
 
 
-        /// <summary>
-        /// 微信
-        /// </summary>
-        public string WeChat { get; set; }
 
         /// <summary>
         /// 所属机构

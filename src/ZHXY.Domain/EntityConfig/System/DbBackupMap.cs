@@ -6,16 +6,16 @@ namespace ZHXY.Domain
     {
         public DbBackupMap()
         {
-            ToTable("Sys_DbBackup");
+            ToTable("zhxy_db_backup");
             HasKey(t => t.Id);
 
-            Property(p => p.Id).HasColumnName("F_Id");
-            Property(p => p.BackupType).HasColumnName("F_BackupType");
-            Property(p => p.DbName).HasColumnName("F_DbName");
-            Property(p => p.FileName).HasColumnName("F_FileName");
-            Property(p => p.FileSize).HasColumnName("F_FileSize");
-            Property(p => p.FilePath).HasColumnName("F_FilePath");
-            Property(p => p.BackupTime).HasColumnName("F_BackupTime");
+            Property(p => p.Id).HasColumnName("id");
+            Property(p => p.BackupType).HasColumnName("cackup_type");
+            Property(p => p.DbName).HasColumnName("db_name");
+            Property(p => p.FileName).HasColumnName("file_name");
+            Property(p => p.FileSize).HasColumnName("file_size");
+            Property(p => p.FilePath).HasColumnName("file_path");
+            Property(p => p.BackupTime).HasColumnName("backup_time");
 
 
 

@@ -6,14 +6,14 @@ namespace ZHXY.Domain
     {
         public FilterIPMap()
         {
-            ToTable("Sys_FilterIP");
+            ToTable("zhxy_filter_ip");
             HasKey(t => t.Id);
 
-            Property(p => p.Id).HasColumnName("F_Id");
-            Property(p => p.Type).HasColumnName("F_Type");
-            Property(p => p.StartWithIp).HasColumnName("F_StartIP");
-            Property(p => p.EndWithIp).HasColumnName("F_EndIP");
-            Property(p => p.Description).HasColumnName("F_Description");
+            Property(p => p.Id).HasColumnName("id");
+            Property(p => p.Type).HasColumnName("type");
+            Property(p => p.StartIp).HasColumnName("start_ip");
+            Property(p => p.EndIp).HasColumnName("end_ip");
+            Property(p => p.Description).HasColumnName("description");
         }
     }
 }

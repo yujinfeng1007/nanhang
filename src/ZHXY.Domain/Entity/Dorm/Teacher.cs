@@ -53,7 +53,7 @@ namespace ZHXY.Domain
         /// <summary>
         /// 证件号码
         /// </summary>
-        public string CredNum { get; set; }
+        public string CredNumber { get; set; }
 
         /// <summary>
         /// 进校时间

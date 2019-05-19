@@ -1,0 +1,117 @@
+﻿@{
+
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script>
+    let id = $.request("id");
+    $(function () {
+        initControl();
+        $.addRequired('#form1');
+        if (!!id) {
+            $.ajax({
+                url: "/SystemManage/Organize/Get",
+                data: { id: id },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    $("#form1").formSerialize(data.data);
+                }
+            });
+        } else {
+            $.ajax({
+                url: "/SystemManage/Organize/Get",
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    $("#form1").formSerialize(data);
+                }
+            });
+        }
+    });
+    function initControl() {
+        $("#categoryId").bindSelect({
+            dictionary: "OrganizeCategory"
+        });
+        $("#parentId").bindSelect({
+            url: "/SystemManage/Organize/GetTreeSelectJson",
+            displayBlank: false
+        });
+    }
+    function submitForm() {
+        if (!$('#form1').formValid()) {
+            return false;
+        }
+        let url = (!!id) ? 'update' : 'add';
+        $.submitForm({
+            url: url,
+            param: $("#form1").formSerialize(),
+            success: function (r) {
+                if (r.state === 'success') {
+                    $.currentWindow().$("#gridList").resetSelection();
+                    $.currentWindow().$("#gridList").trigger("reloadGrid");
+                     $.modalMsg('success', 'error');
+                } else {
+                    $.modalMsg(r.message, 'error');
+                }
+            }
+        })
+    }
+</script>
+<form id="form1" autocomplete="off">
+    <input type="hidden" name="id" />
+    <div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+        <div style="padding-top: 20px; margin-right: 30px;">
+            <table class="form">
+                <tr>
+                    <th class="formTitle">上级</th>
+                    <td class="formValue">
+                        <select id="parentId" name="parentId" class="form-control required">
+                            <option value="0">根节点</option>
+                        </select>
+                    </td>
+                    <th class="formTitle">类型</th>
+                    <td class="formValue">
+                        <select id="categoryId" name="categoryId" class="form-control required">
+                            <option value="">==请选择==</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">名称</th>
+                    <td class="formValue">
+                        <input id="name" name="name" type="text" class="form-control required" placeholder="请输入名称" />
+                    </td>
+                    <th class="formTitle">机构编号</th>
+                    <td class="formValue">
+                        <input data-rule-isNumOrLetter="true" id="enCode" name="enCode" type="text" class="form-control required" placeholder="请输入编号" />
+                    </td>
+                </tr>
+                <tr>
+                <tr>
+                    <th class="formTitle">负责人</th>
+                    <td class="formValue">
+                        <input id="head" name="head" type="text" class="form-control" />
+                    </td>
+                    <th class="formTitle">手机</th>
+                    <td class="formValue">
+                        <input data-rule-isTel="true" id="F_MobilePhone" name="F_MobilePhone" type="text" class="form-control" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">地址</th>
+                    <td class="formValue" colspan="3">
+                        <input data-rule-maxlength="150" id="address" name="address" type="text" class="form-control" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle" valign="top" style="padding-top: 5px;">
+                        备注
+                    </th>
+                    <td class="formValue" colspan="3">
+                        <textarea name="description" data-rule-maxlength="150" class="form-control" style="height: 60px;"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</form>

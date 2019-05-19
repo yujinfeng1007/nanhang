@@ -10,9 +10,8 @@ namespace ZHXY.Domain
     public class Menu : IEntity
     {
         public string Id { get; set; } = Guid.NewGuid().ToString("N").ToUpper();
-        public string ParentId { get; set; }
+        public string ParentId { get; set; } = "null";
         public int? Level { get; set; }
-        public string EnCode { get; set; }
         public string Name { get; set; }
         public string Icon { get; set; }
         public string IconForWeb { get; set; }

@@ -4,23 +4,16 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
-using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using log4net;
-using NPOI.HSSF.UserModel;
-using NPOI.SS.UserModel;
-using NPOI.XSSF.UserModel;
 using ZHXY.Common;
 
 namespace ZHXY.Application
 {
-    [LoginAuthentication]
-    [ValidataParam]
+    //[LoginAuthentication]
+    //[ValidateParam]
     public abstract class ZhxyWebControllerBase : Controller
     {
         #region property

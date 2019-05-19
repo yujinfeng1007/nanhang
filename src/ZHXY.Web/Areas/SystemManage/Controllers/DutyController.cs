@@ -1,7 +1,5 @@
 ﻿using System.Web.Mvc;
 using ZHXY.Application;
-using ZHXY.Domain;
-using ZHXY.Common;
 
 namespace ZHXY.Web.SystemManage.Controllers
 {

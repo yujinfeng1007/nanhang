@@ -18,7 +18,9 @@ namespace ZHXY.Application
         public void Add(AddMenuDto dto)
         {
             var menu = dto.MapTo<Menu>();
-            menu.ParentId = string.IsNullOrWhiteSpace(menu.ParentId) ? "0": menu.ParentId;
+            menu.ParentId = string.IsNullOrWhiteSpace(menu.ParentId) ? SYS_CONSTS.DbNull :
+                !Read<Menu>(p => p.ParentId.Equals(dto.ParentId)).Any() ? SYS_CONSTS.DbNull :
+                menu.ParentId;
             AddAndSave(menu);
         }
 
@@ -35,34 +37,33 @@ namespace ZHXY.Application
             SaveChanges();
         }
 
-        public dynamic GetMenu(string nodeId=null, int nodeLevel = 0)
+        public dynamic GetMenu(string parentId, int level = 0)
         {
-            nodeLevel = string.IsNullOrWhiteSpace(nodeId) ? 0 : nodeLevel + 1;
-            nodeId = string.IsNullOrWhiteSpace(nodeId) ? "0" : nodeId;
-            return Read<Menu>(p=>p.ParentId.Equals(nodeId)).Select(p=>
-                new MenuView
-                {
-                    Id=p.Id,
-                    ParentId = p.ParentId,
-                    Level = nodeLevel,
-                    EnCode = p.EnCode,
-                    Name = p.Name,
-                    Icon = p.Icon,
-                    IconForWeb = p.IconForWeb,
-                    Url = p.Url,
-                    Target = p.Target,
-                    IsMenu = p.IsMenu,
-                    IsExpand = p.IsExpand,
-                    IsPublic = p.IsPublic,
-                    SortCode = p.SortCode,
-                    BelongSys = p.BelongSys,
-                    IsLeaf = !p.ChildNodes.Any(),
-                } ).ToListAsync().Result;
+            level = string.IsNullOrWhiteSpace(parentId) ? 0 : level + 1;
+            parentId = string.IsNullOrWhiteSpace(parentId) ? SYS_CONSTS.DbNull : parentId;
+            return Read<Menu>(p => p.ParentId.Equals(parentId)).OrderBy(p => p.SortCode).Select(p =>
+                    new
+                    {
+                        p.Id,
+                        p.ParentId,
+                        p.Name,
+                        p.Icon,
+                        p.IconForWeb,
+                        p.Url,
+                        p.Target,
+                        p.IsMenu,
+                        p.IsExpand,
+                        p.IsPublic,
+                        p.SortCode,
+                        p.BelongSys,
+                        level,
+                        IsLeaf = !p.ChildNodes.Any(),
+                    }).ToListAsync().Result;
         }
 
         public void DeleteBtn(string[] id)
         {
-            var btns=Query<Button>(p => id.Contains(p.Id)).ToListAsync().Result;
+            var btns = Query<Button>(p => id.Contains(p.Id)).ToListAsync().Result;
             DelAndSave<Button>(btns);
         }
 
@@ -81,24 +82,17 @@ namespace ZHXY.Application
 
         public dynamic GetMenuBth(string menuId)
         {
-            return Read<Button>(p => p.MenuId.Equals(menuId)).ToListAsync().Result;
+            return Read<Button>(p => p.MenuId.Equals(menuId)).OrderBy(p=>p.SortCode).ToListAsync().Result;
         }
 
-        public List<MenuView> GetMenuTree()
+        /// <summary>
+        /// 获取所有子菜单(递归获取)
+        /// </summary>
+        /// <param name="pid">根节点id</param>
+        /// <returns></returns>
+        private IEnumerable<Menu> GetChildren(string pid = null)
         {
-            // with temp as
-            //(
-            //    select *, 0 as cur_level from sys_module where f_parentid = '0'
-            //    union all
-            //    select a.*, b.cur_level + 1 from sys_module a
-            //    inner join temp b on (a.f_parentid = b.f_id)
-            //)
-            //select* from temp; 
-            return GetChildren().MapToList<MenuView>();
-        }
-
-        private IEnumerable<Menu> GetChildren(string pid="0")
-        {
+            pid = string.IsNullOrWhiteSpace(pid) ? SYS_CONSTS.DbNull : pid;
             var query = Read<Menu>(p => p.ParentId.Equals(pid));
             return query.ToList().Concat(query.ToList().SelectMany(p => GetChildren(p.Id)));
         }

@@ -1,0 +1,60 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script>
+    let id = $.request("id");
+    $(function () {
+        $("#F_Type").bindSelect()
+        $.ajax({
+            url: "/SystemManage/FilterIP/Get",
+            data: { keyValue: keyValue },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                $("#form1").formSerialize(data);
+                $("#form1").find('.form-control,select,input').attr('readonly', 'readonly');
+                $("#form1").find('div.ckbox label').attr('for', '');
+            }
+        });
+    });
+</script>
+
+<form id="form1">
+    <div style="margin-bottom: 0px; border-radius: 0px;" class="alert alert-warning alert-dismissable">
+        <strong>注意：</strong>&nbsp;IP地址格式：192.168.0.1；192.168.0.*
+    </div>
+    <div style="padding-top: 20px; margin-right: 20px;">
+        <table class="form">
+            <tr>
+                <th class="formTitle">策略类型</th>
+                <td class="formValue">
+                    <select  name="type" class="form-control">
+                        <option value="">==请选择==</option>
+                        <option value="true">允许访问</option>
+                        <option value="false">拒绝访问</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th class="formTitle">起始IP</th>
+                <td class="formValue">
+                    <input  name="startWithIp" type="text" class="form-control" />
+                </td>
+            </tr>
+            <tr>
+                <th class="formTitle">结束IP</th>
+                <td class="formValue">
+                    <input name="endWithIp" type="text" class="form-control" />
+                </td>
+            </tr>
+           
+            <tr>
+                <th class="formTitle" valign="top" style="padding-top: 11px;">备注
+                </th>
+                <td class="formValue">
+                    <textarea id="description" name="description" class="form-control" style="height: 60px;"></textarea>
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>

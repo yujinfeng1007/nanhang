@@ -33,7 +33,7 @@ namespace ZHXY.Web.SystemManage.Controllers
             return Resultaat.Success();
         }
         [HttpGet]
-        public ActionResult GetMenu(string nodeId=null, int n_level = 0)
+        public ActionResult GetMenu(string nodeId, int n_level = 0)
         {
             var data=App.GetMenu(nodeId, n_level);
             return Resultaat.Success(data);
@@ -67,15 +67,6 @@ namespace ZHXY.Web.SystemManage.Controllers
             var data = App.GetMenuBth(menuId);
             return Resultaat.Success(data);
         }
-
-
-        [HttpGet]
-        public ActionResult GetMenuTree()
-        {
-            var data = App.GetMenuTree();
-            return Resultaat.Success(data);
-        }
-
 
     }
 }
