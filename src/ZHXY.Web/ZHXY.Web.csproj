@@ -228,7 +228,6 @@
     <Compile Include="Areas\Dorm\Controllers\VisitLimitController.cs" />
     <Compile Include="Areas\Dorm\Controllers\VisitLogController.cs" />
     <Compile Include="Areas\Dorm\DormAreaRegistration.cs" />
-    <Compile Include="Areas\SystemManage\Controllers\AreaController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\DbBackupController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\DicController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\DutyController.cs" />
@@ -1978,9 +1977,6 @@
     <Content Include="Areas\SystemManage\Views\Menu\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\Area\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Areas\SystemManage\Views\Dic\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -1991,9 +1987,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\SystemManage\Views\Role\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\Area\Form.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\SystemManage\Views\User\Index.cshtml" />

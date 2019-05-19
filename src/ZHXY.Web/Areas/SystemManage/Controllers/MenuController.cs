@@ -37,7 +37,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         [HttpPost]
         public ActionResult AddBth(AddBtnDto dto)
         {
-            App.AddBtn(dto);
+            App.AddFunc(dto);
             return Resultaat.Success();
         }
         [HttpPost]
@@ -45,21 +45,21 @@ namespace ZHXY.Web.SystemManage.Controllers
         {
             if (!string.IsNullOrEmpty(id))
             {
-                App.DeleteBtn(id.Split(','));
+                App.DeleteFunc(id.Split(','));
             }
             return Resultaat.Success();
         }
         [HttpPost]
         public ActionResult UpdateBtn(UpdateBtnDto dto)
         {
-            App.UpdateBtn(dto);
+            App.UpdateFunc(dto);
             return Resultaat.Success();
         }
 
         [HttpGet]
         public ActionResult GetMenuBth(string menuId = null)
         {
-            var data = App.GetMenuBth(menuId);
+            var data = App.GetMenuFunc(menuId);
             return Resultaat.Success(data);
         }
 

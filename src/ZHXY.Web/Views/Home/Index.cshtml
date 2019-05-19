@@ -214,10 +214,6 @@
          * */
         function menuTree() {
             let data = JSON.parse(localStorage.getItem("menus"));
-            console.log(data)
-            data = _.filter(data, function (n) {
-                return n.belongSys === '1'
-            });
             let _menu = getTree(data);
             $("#sidebar-nav ul").prepend(_menu);
 

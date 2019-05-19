@@ -65,6 +65,13 @@ namespace ZHXY.Web.SystemManage.Controllers
             return Resultaat.Success();
         }
 
+
+        [HttpPost]
+        public ActionResult RemoveRoleFunc(string roleId, string funcId)
+        {
+            App.RemoveRoleFunc(roleId, new[] { funcId});
+            return Resultaat.Success();
+        }
         [HttpGet]
         public ActionResult GetRoleFuncs(string roleId)
         {

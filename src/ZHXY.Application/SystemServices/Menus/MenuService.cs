@@ -17,9 +17,7 @@ namespace ZHXY.Application
         public void Add(AddMenuDto dto)
         {
             var menu = dto.MapTo<Menu>();
-            menu.ParentId = string.IsNullOrWhiteSpace(menu.ParentId) ? SYS_CONSTS.DbNull :
-                !Read<Menu>(p => p.ParentId.Equals(dto.ParentId)).Any() ? SYS_CONSTS.DbNull :
-                menu.ParentId;
+            SetParentAndFullName(menu);
             AddAndSave(menu);
         }
 
@@ -33,55 +31,64 @@ namespace ZHXY.Application
         {
             var menu = Get<Menu>(dto.Id);
             dto.MapTo(menu);
+            SetParentAndFullName(menu);
             SaveChanges();
         }
-
-        public dynamic GetMenu(string parentId, int level = 0)
+        private void SetParentAndFullName(Menu menu)
         {
-            level = string.IsNullOrWhiteSpace(parentId) ? 0 : level + 1;
-            parentId = string.IsNullOrWhiteSpace(parentId) ? SYS_CONSTS.DbNull : parentId;
-            return Read<Menu>(p => p.ParentId.Equals(parentId)).OrderBy(p => p.SortCode).Select(p =>
-                    new
-                    {
-                        p.Id,
-                        p.ParentId,
-                        p.Name,
-                        p.Icon,
-                        p.IconForWeb,
-                        p.Url,
-                        p.Target,
-                        p.IsMenu,
-                        p.IsExpand,
-                        p.IsPublic,
-                        p.SortCode,
-                        p.BelongSys,
-                        level,
-                        IsLeaf = !p.ChildNodes.Any(),
-                    }).ToListAsync().Result;
+            menu.ParentId = string.IsNullOrWhiteSpace(menu.ParentId) ? SYS_CONSTS.DbNull :
+                !Read<Menu>(p => p.ParentId.Equals(menu.ParentId)).Any() ? SYS_CONSTS.DbNull :
+                menu.ParentId;
+            if (menu.ParentId.Equals(SYS_CONSTS.DbNull))
+            {
+                menu.FullName = menu.Name;
+            }
+            else
+            {
+                var parent = Read<Menu>(p => p.Id.Equals(menu.ParentId)).FirstOrDefaultAsync().Result;
+                menu.FullName = $"{parent.FullName}/{menu.Name}";
+                menu.Level = parent.Level + 1;
+            }
         }
 
-        public void DeleteBtn(string[] id)
+
+        public List<MenuView> GetMenu(string parentId, int level = 0)
+        {
+            var list = new List<MenuView>();
+            level = string.IsNullOrWhiteSpace(parentId) ? 0 : level + 1;
+            parentId = string.IsNullOrWhiteSpace(parentId) ? SYS_CONSTS.DbNull : parentId;
+            Read<Menu>(p => p.ParentId.Equals(parentId)).OrderBy(p => p.SortCode).ToListAsync().Result.ForEach(p =>
+            {
+                var item = p.MapTo<MenuView>();
+                item.Level = level;
+                item.IsLeaf = !Read<Menu>(m => m.ParentId.Equals(p.Id)).Any();
+                list.Add(item);
+            });
+            return list;
+        }
+
+        public void DeleteFunc(string[] id)
         {
             var btns = Query<Function>(p => id.Contains(p.Id)).ToListAsync().Result;
             DelAndSave<Function>(btns);
         }
 
-        public void AddBtn(AddBtnDto dto)
+        public void AddFunc(AddBtnDto dto)
         {
             var button = dto.MapTo<Function>();
             AddAndSave(button);
         }
 
-        public void UpdateBtn(UpdateBtnDto dto)
+        public void UpdateFunc(UpdateBtnDto dto)
         {
             var button = Get<Function>(dto.Id);
             dto.MapTo(button);
             SaveChanges();
         }
 
-        public dynamic GetMenuBth(string menuId)
+        public dynamic GetMenuFunc(string menuId)
         {
-            return Read<Function>(p => p.MenuId.Equals(menuId)).OrderBy(p=>p.SortCode).ToListAsync().Result;
+            return Read<Function>(p => p.MenuId.Equals(menuId)).OrderBy(p => p.SortCode).ToListAsync().Result;
         }
 
         /// <summary>

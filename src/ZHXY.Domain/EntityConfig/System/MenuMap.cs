@@ -13,6 +13,7 @@ namespace ZHXY.Domain
             Property(p => p.ParentId).HasColumnName("p_id");
             Property(p => p.Level).HasColumnName("level");
             Property(p => p.Name).HasColumnName("name");
+            Property(p => p.FullName).HasColumnName("full_name");
             Property(p => p.Icon).HasColumnName("icon");
             Property(p => p.IconForWeb).HasColumnName("icon_web");
             Property(p => p.Url).HasColumnName("url");
@@ -23,7 +24,7 @@ namespace ZHXY.Domain
             Property(p => p.SortCode).HasColumnName("sort_code");
             Property(p => p.BelongSys).HasColumnName("belong_sys");
 
-            HasMany(p => p.ChildNodes).WithOptional(p => p.Parent).HasForeignKey(p => p.ParentId);
+            //HasMany(p => p.ChildNodes).WithOptional(p => p.Parent).HasForeignKey(p => p.ParentId);
 
         }
     }

@@ -82,6 +82,7 @@
             subGrid: true,
             subGridRowExpanded: showChildGrid
         });
+
         $("#centerGrid").jqGrid('navGrid', '#centerPager',
             {
                 edit: true,
@@ -120,6 +121,7 @@
         let childGrid = parentRow + "_table";
         $('#' + parentRow).append('<table class="table-striped" id=' + childGrid + '></table>');
         $("#" + childGrid).jqGrid({
+            styleUI: 'Bootstrap',
             url: `/systemmanage/role/GetRoleFuncs?roleId=${parentRowKey}`,
             mtype: "GET",
             datatype: "json",
@@ -129,7 +131,6 @@
             footerrow: true,
             userDataOnFooter: true,
             rownumbers: true,
-            styleUI: 'Bootstrap',
             rowNum: -1,
             sortname: 'createTime',
             sortorder: 'desc',
@@ -138,11 +139,11 @@
             },
             colModel: [
                 { name: "id", key: true, hidden: true },
-                { label: "功能名称", name: "name" },
                 {
                     label: "菜单", name: "menuId",
-                     formatter: function (cellValue) { return top.window.getDicValue("RoleType", cellValue); },
+                    formatter: function (cellValue) { return top.window.getItem("menuList")[cellValue]; },
                 },
+                { label: "功能名称", name: "name" },
                 {
                     label: '操作',
                     formatter: function (cell, options, rowObj) {
@@ -156,7 +157,7 @@
     }
 
     function removeRoleFunc(roleId, funcId, gridId) {
-        $.post('/systemmanage/user/removerolefunc', { roleId: roleId, funcId: funcId }, function (r) {
+        $.post('/systemmanage/role/removerolefunc', { roleId: roleId, funcId: funcId }, function (r) {
             $(`#${gridId}`).jqGrid().trigger('reloadGrid');
         })
     }
