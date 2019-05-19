@@ -117,14 +117,14 @@
       <recover>false</recover>
     </job>
 -->
-    <job>
+    <!--<job>
       <name>NanHangJob</name>
       <group>NanHang</group>
       <description>南航项目同步师生信息</description>
       <job-type>TaskApi.Job.NanHangJob,TaskApi</job-type>
       <durable>true</durable>
       <recover>false</recover>
-    </job>
+    </job>-->
     <!-- <job>
       <name>NanHangReportJob</name>
       <group>NanHangReport</group>
@@ -220,16 +220,16 @@
       </cron>
     </trigger>-->
     
-    <trigger>
+    <!--<trigger>
       <cron>
         <name>NanHangJobTrigger</name>
         <group>NanHang</group>
         <job-name>NanHangJob</job-name>
         <job-group>NanHang</job-group>
-         <!--每日凌晨2点启动定时任务--> 
+         --><!--每日凌晨2点启动定时任务--><!-- 
         <cron-expression>0 30 2 ? * *</cron-expression>
       </cron>
-    </trigger>
+    </trigger>-->
 
     
     <trigger>
