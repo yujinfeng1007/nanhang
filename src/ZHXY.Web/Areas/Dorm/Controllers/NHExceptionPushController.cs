@@ -19,21 +19,21 @@ namespace ZHXY.Web.Dorm.Controllers
         /// <param name="OrgId"></param>
         /// <returns></returns>
         [HttpGet]
-        public object GetLateReturnReport(string OrgId)
+        public object GetLateReturnReport(string OrgId, string ReportDate)
         {
-            return App.GetLateReturnReport(OrgId);
+            return App.GetLateReturnReport(OrgId, ReportDate);
         }
 
         [HttpGet]
-        public object GetNotReturnReport(string OrgId)
+        public object GetNotReturnReport(string OrgId, string ReportDate)
         {
-            return App.GetNotReturnReport(OrgId);
+            return App.GetNotReturnReport(OrgId, ReportDate);
         }
 
         [HttpGet]
-        public object GetNotOutReport(string OrgId)
+        public object GetNotOutReport(string OrgId, string ReportDate)
         {
-            return App.GetNotOutReport(OrgId);
+            return App.GetNotOutReport(OrgId, ReportDate);
         }
     }
 }
