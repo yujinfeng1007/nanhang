@@ -15,6 +15,8 @@ namespace ZHXY.Application
     {
         public UserService(IZhxyRepository r) : base(r) { }
 
+        public UserService() => R = new ZhxyRepository();
+
         public dynamic GetList(Pagination pag, string orgId, string keyword)
         {
             if (string.IsNullOrWhiteSpace(orgId)) return null;

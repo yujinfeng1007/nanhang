@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using ZHXY.Application;
 using ZHXY.Common;
+using ZHXY.Domain;
 
 namespace ZHXY.Web.Dorm.Controllers
 {
@@ -32,6 +33,11 @@ namespace ZHXY.Web.Dorm.Controllers
         {
             var rows = App.Load(pag,  keyword);
             return Resultaat.PagingRst(rows, pag.Records, pag.Total);
+        }
+
+        public ActionResult GetList()
+        {
+            return Resultaat.Success(App.Read<Holiday>().ToList().ToCamelJson());
         }
 
         [HttpPost]

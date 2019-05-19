@@ -110,7 +110,7 @@ namespace ZHXY.Application
         public List<User> GetNotBindUsers(string id)
         {
             var usersIds = Read<Relevance>(p => p.Name.Equals(Relation.BuildingUser) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
-            var list = Read<User>(p => !usersIds.Contains(p.Id) && p.OrganId == "27e1854fd963d24b8c5d88506a775c2a").ToList();
+            var list = Read<User>(p => !usersIds.Contains(p.Id) && p.OrganId == "473059e8a7a0754ca8f05eb2cd346e1d").ToList();
             return list;
         }
     }

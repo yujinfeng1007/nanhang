@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web.Http;
 using ZHXY.Application;
 using ZHXY.Application.DormServices.Gates.Dto;
+using ZHXY.Application.RequestDto.Api;
 using ZHXY.Domain;
 
 namespace ZHXY.Api.Controllers
@@ -88,6 +89,22 @@ namespace ZHXY.Api.Controllers
         }
 
         /// <summary>
+        /// 1.4.	检测是否有新的版本信息
+        /// </summary>
+        /// <returns></returns>
+        public IHttpActionResult CheckAppVersion(CheckVersionInput input)
+        {
+            try
+            {
+                return Success(app.GetLatestAppVersion(input.F_currentVersion));
+            }
+            catch(Exception e)
+            {
+                return Error("0001", e.Message);
+            }
+        }
+
+        /// <summary>
         /// 1.5.	获取楼栋学生基本外出在寝信息
         /// </summary>
         /// <param name="input"></param>
@@ -117,6 +134,64 @@ namespace ZHXY.Api.Controllers
             try
             {
                 return Success(app.GetVisitorList(input.F_BuildingIds));
+
+            }
+            catch (Exception e)
+            {
+                return Error("0001", e.Message);
+            }
+        }
+
+        /// <summary>
+        /// 1.7.	根据楼栋获取进出最近记录
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult GetLatestInOutRecordByBuilding(GateDto input)
+        {
+            try
+            {
+                return Success(app.GetLatestInOutRecord(input.F_BuildingIds));
+
+            }
+            catch (Exception e)
+            {
+                return Error("0001", e.Message);
+            }
+        }
+
+        /// <summary>
+        /// 1.8.	根据最近24小时进出最近记录
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult GetInOutNumInLatestHours(GateDto input)
+        {
+            try
+            {
+                return Success(app.GetInOutNumInLatestHours(input.F_BuildingIds));
+
+            }
+            catch (Exception e)
+            {
+                return Error("0001", e.Message);
+            }
+        }
+
+
+        /// <summary>
+        /// 1.9.	根据楼栋获取考勤统计
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult GetSignInfoByBuildings(GateDto input)
+        {
+            try
+            {
+                return Success(app.GetSignInfo(input.F_BuildingIds));
 
             }
             catch (Exception e)
