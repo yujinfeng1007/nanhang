@@ -29,15 +29,29 @@ namespace TaskApi.NHExceptionReport
             string TableName = "DHFLOW_" + QuartzTime.Year + QuartzTime.Month.ToString().PadLeft(2, '0');
             var sw = new Stopwatch();
             sw.Start();
+
+            Console.WriteLine("南航项目：开始统计请假学生列表 --> " + DateTime.Now.ToLocalTime());
+            //过滤：请假的人员
+            var EndTime = QuartzTime.Date.AddDays(-1).AddHours(12);
+            var ListLeave = moudle.School_Stu_Leave.Where(p => p.F_EndTime.Contains("AM")).Select(p => new School_Stu_Leave
+            {
+                F_Id = p.F_Id,
+                F_CreatorTime = p.F_CreatorTime,
+                F_StudentID = p.F_StudentID,
+                F_EndTime = p.F_EndTime,
+                F_LastModifyTime = Convert.ToDateTime(p.F_EndTime.Replace("AM", "")).AddHours(12)
+            }).ToList();
+            var LeaveListId = ListLeave.Where(p => p.F_LastModifyTime >= EndTime).Select(p => p.F_StudentID).ToList();
+
             Console.WriteLine("南航项目：开始统计未归报表 --> " + DateTime.Now.ToLocalTime());
             //Step1  统计未归报表
-            ProcessNoReturnException(QuartzTime, moudle, TableName);
+            ProcessNoReturnException(QuartzTime, moudle, TableName, LeaveListId);
             sw.Stop();
             Console.WriteLine("南航项目：统计未归报表 --> 合计耗时：" + sw.ElapsedMilliseconds / 1000 + "s");
             sw.Restart();
             Console.WriteLine("南航项目：开始统计晚归报表 --> " + DateTime.Now.ToLocalTime());
             //Step2 统计晚归报表
-            ProcessLateReturnException(QuartzTime, moudle, TableName);
+            ProcessLateReturnException(QuartzTime, moudle, TableName, LeaveListId);
             sw.Stop();
             Console.WriteLine("南航项目：统计晚归报表 --> 合计耗时：" + sw.ElapsedMilliseconds / 1000 + "s");
             sw.Restart();
@@ -54,13 +68,13 @@ namespace TaskApi.NHExceptionReport
         /// <param name="QuartzTime"></param>
         /// <param name="moudle"></param>
         /// <param name="TableName"></param>
-        public void ProcessNoReturnException(DateTime QuartzTime, ExceptionMoudle moudle, string TableName)
+        public void ProcessNoReturnException(DateTime QuartzTime, ExceptionMoudle moudle, string TableName, List<string> LeaveListId)
         {
             //查看所有人员当天的最后一条记录
             long StartTimestamp = DateHelper.ConvertDateTimeInt(QuartzTime.AddDays(-1));
             long EndTimestamp = DateHelper.ConvertDateTimeInt(QuartzTime);
             String UsersLastRecordSql = "select b.id,b.code,b.inout, b.swipDate, b.date,b.firstName name from (SELECT code, MAX(swipDate) swipDate FROM [dbo].[" + TableName + "] GROUP BY code HAVING MAX(swipDate) BETWEEN '" + StartTimestamp + "' and '" + EndTimestamp + "' ) a JOIN " + TableName + " b on a.code=b.code and a.swipDate = b.swipDate";
-            var List = SqlHelper.ExecuteDataTable(UsersLastRecordSql).ToJson().ToList<LastRecordMoudle>().Where(p => p.inout == 1).ToList();
+            var List = SqlHelper.ExecuteDataTable(UsersLastRecordSql).ToJson().ToList<LastRecordMoudle>().Where(p => p.inout == 1 && !LeaveListId.Contains(p.studentId)).ToList();
             List<Dorm_NoReturnReport> ReportList = new List<Dorm_NoReturnReport>();
             foreach (var noReturn in List)
             {
@@ -99,7 +113,7 @@ namespace TaskApi.NHExceptionReport
         /// <param name="QuartzTime"></param>
         /// <param name="moudle"></param>
         /// <param name="TableName"></param>
-        public void ProcessLateReturnException(DateTime QuartzTime, ExceptionMoudle moudle, string TableName)
+        public void ProcessLateReturnException(DateTime QuartzTime, ExceptionMoudle moudle, string TableName, List<string> LeaveListId)
         {
             //查看所有人员23:00到凌晨2点的最后一条记录
             DateTime StartTime = QuartzTime.AddDays(-1).Date.AddHours(WorkDayLateReturnTime);
@@ -112,7 +126,7 @@ namespace TaskApi.NHExceptionReport
             long StartTimestamp = DateHelper.ConvertDateTimeInt(StartTime);
             long EndTimestamp = DateHelper.ConvertDateTimeInt(EndTime);
             string UsersLastRecordSql = "select b.id,b.code,b.inout, b.swipDate, b.date,b.firstName name from (SELECT code, MAX(swipDate) swipDate FROM [dbo].[" + TableName + "] GROUP BY code HAVING MAX(swipDate) BETWEEN '" + StartTimestamp + "' and '" + EndTimestamp + "' ) a JOIN " + TableName + " b on a.code=b.code and a.swipDate = b.swipDate";
-            var List = SqlHelper.ExecuteDataTable(UsersLastRecordSql).ToJson().ToList<LastRecordMoudle>().Where(p => p.inout == 0);
+            var List = SqlHelper.ExecuteDataTable(UsersLastRecordSql).ToJson().ToList<LastRecordMoudle>().Where(p => p.inout == 0 && !LeaveListId.Contains(p.studentId));
             List<Dorm_LateReturnReport> reportList = new List<Dorm_LateReturnReport>();
             foreach(var p in List)
             {

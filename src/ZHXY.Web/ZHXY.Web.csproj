@@ -210,8 +210,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Areas\Dorm\Controllers\FaceController.cs" />
+   <Compile Include="Areas\Dorm\Controllers\FaceController.cs" />
     <Compile Include="Areas\Dorm\Controllers\HolidayController.cs" />
+	<Compile Include="Areas\Dorm\Controllers\NHExceptionPushController.cs" />
     <Compile Include="Areas\Dorm\Controllers\XFTXController.cs" />
     <Compile Include="Areas\Dorm\Controllers\DormBuildingController.cs" />
     <Compile Include="Areas\Dorm\Controllers\DormRoomController.cs" />
@@ -588,6 +589,7 @@
     <Content Include="Content\pace\themes\pace-theme-loading-bar.css" />
     <Content Include="Content\pace\themes\pace-theme-mac-osx.css" />
     <Content Include="Content\pace\themes\pace-theme-minimal.css" />
+    <Content Include="NotOutReport.html" />
     <Content Include="Scripts\jquery.md5.js" />
     <Content Include="Scripts\message_zh.js" />
     <Content Include="Scripts\pace.js" />

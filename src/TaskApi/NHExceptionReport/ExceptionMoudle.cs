@@ -14,6 +14,7 @@ namespace TaskApi.NHExceptionReport
 
         public virtual DbSet<Dorm_DormStudent> Dorm_DormStudent { get; set; }
         public virtual DbSet<Dorm_NoOutReport> Dorm_NoOutReport { get; set; }
+        public virtual DbSet<School_Stu_Leave> School_Stu_Leave { get; set; }
         public virtual DbSet<School_Students> School_Students { get; set; }
         public virtual DbSet<Sys_Organize> Sys_Organize { get; set; }
         public virtual DbSet<Sys_User> Sys_User { get; set; }
@@ -113,6 +114,70 @@ namespace TaskApi.NHExceptionReport
 
             modelBuilder.Entity<Dorm_NoOutReport>()
                 .Property(e => e.F_StudentId)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<School_Stu_Leave>()
+                .Property(e => e.F_Id)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<School_Stu_Leave>()
+                .Property(e => e.F_CreatorUserId)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<School_Stu_Leave>()
+                .Property(e => e.F_DeleteUserId)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<School_Stu_Leave>()
+                .Property(e => e.F_DepartmentId)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<School_Stu_Leave>()
+                .Property(e => e.F_LastModifyUserId)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<School_Stu_Leave>()
+                .Property(e => e.F_StartTime)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<School_Stu_Leave>()
+                .Property(e => e.F_EndTime)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<School_Stu_Leave>()
+                .Property(e => e.F_StudentID)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<School_Stu_Leave>()
+                .Property(e => e.F_TeacherID)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<School_Stu_Leave>()
+                .Property(e => e.F_LeaveDays)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<School_Stu_Leave>()
+                .Property(e => e.F_LeaveType)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<School_Stu_Leave>()
+                .Property(e => e.F_ReasonForLeave)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<School_Stu_Leave>()
+                .Property(e => e.F_Status)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<School_Stu_Leave>()
+                .Property(e => e.F_ApprovalOpinion)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<School_Stu_Leave>()
+                .Property(e => e.F_Applicant)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<School_Stu_Leave>()
+                .Property(e => e.F_Memo)
                 .IsUnicode(false);
 
             modelBuilder.Entity<School_Students>()
