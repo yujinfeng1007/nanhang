@@ -35,7 +35,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddBth(AddBtnDto dto)
+        public ActionResult AddBtn(AddBtnDto dto)
         {
             App.AddBtn(dto);
             return Resultaat.Success();

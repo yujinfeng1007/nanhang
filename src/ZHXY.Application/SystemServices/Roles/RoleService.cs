@@ -68,7 +68,7 @@ namespace ZHXY.Application
 
 
 
-        public void AddRoleFunc(string roleId, string[] funcs)
+        public void AddRoleFunc(string roleId, string menuId, string[] funcs)
         {
             var functions = Read<Function>(p => funcs.Contains(p.Id)).Select(p => new { p.Id, p.MenuId }).ToList();
             functions.ForEach(item =>

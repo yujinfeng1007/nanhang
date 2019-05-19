@@ -41,7 +41,8 @@
 
     function addPower() {
         let funcs = $("#rightGrid").jqGrid('getGridParam', 'selarrrow');
-        $.post('/systemmanage/role/AddRoleFunc', { roleId: roleId, funcs: funcs }, function (r) {
+        var menuId=($("#leftGrid").jqGrid('getGridParam', 'selrow'));
+        $.post('/systemmanage/role/AddRoleFunc', { roleId: roleId, menuId: menuId, funcs: funcs }, function (r) {
             $(`#rightGrid`).jqGrid().trigger('reloadGrid');
         })
     }

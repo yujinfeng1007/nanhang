@@ -42,8 +42,8 @@ namespace ZHXY.Web.Controllers
                 }
                 else
                 {
-                    data.authorizeButton = (Dictionary<string, object>)CacheService.GetMenuButtonList();
-                    cache.WriteCache(data.authorizeButton, "button_" + roleId);
+                    //data.authorizeButton = (Dictionary<string, object>)CacheService.GetMenuButtonList();
+                    //cache.WriteCache(data.authorizeButton, "button_" + roleId);
                 }
             }
 

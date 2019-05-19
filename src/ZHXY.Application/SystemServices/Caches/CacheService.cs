@@ -215,25 +215,25 @@ namespace ZHXY.Application
         }
 
 
-        public static object GetMenuButtonList()
-        {
-            var roles = Operator.Current.Roles;
-            var app = new RoleAuthorizeService(new ZhxyRepository());
-            var data = new List<Button>();
-            foreach (var e in roles)
-            {
-                data = data.Union(app.GetButtonList(e), new ModuleButtonComparer()).ToList();
-            }
+        //public static object GetMenuButtonList()
+        //{
+        //    var roles = Operator.Current.Roles;
+        //    var app = new RoleAuthorizeService(new ZhxyRepository());
+        //    var data = new List<Button>();
+        //    foreach (var e in roles)
+        //    {
+        //        data = data.Union(app.GetButtonList(e), new ModuleButtonComparer()).ToList();
+        //    }
 
-            var dataModuleId = data.Select(t => t.MenuId).Distinct();
-            var dictionary = new Dictionary<string, object>();
-            foreach (var item in dataModuleId)
-            {
-                var buttonList = data.Where(t => t.MenuId.Equals(item)).ToList();
-                dictionary.Add(item, buttonList);
-            }
-            return dictionary;
-        }
+        //    var dataModuleId = data.Select(t => t.MenuId).Distinct();
+        //    var dictionary = new Dictionary<string, object>();
+        //    foreach (var item in dataModuleId)
+        //    {
+        //        var buttonList = data.Where(t => t.MenuId.Equals(item)).ToList();
+        //        dictionary.Add(item, buttonList);
+        //    }
+        //    return dictionary;
+        //}
 
         /// <summary>
         /// 菜单缓存
@@ -244,7 +244,7 @@ namespace ZHXY.Application
             var app = new RoleAuthorizeService(new ZhxyRepository());
             if (Operator.Current.IsSystem)
             {
-                return ToMenuJson(app.GetEnableMenuList("0"), "0");
+                return ToMenuJson(app.GetEnableMenuList("0"), SYS_CONSTS.DbNull);
             }
             var roles = Operator.Current.Roles;
             var data = new List<Menu>();
@@ -252,14 +252,14 @@ namespace ZHXY.Application
             {
                 data = data.Union(app.GetEnableMenuList(e), new ModuleComparer()).ToList();
             }
-            return ToMenuJson(data, "0");
+            return ToMenuJson(data, SYS_CONSTS.DbNull);
         }
 
         public static string ToMenuJson(List<Menu> data, string parentId)
         {
             var sbJson = new StringBuilder();
             sbJson.Append("[");
-            var entitys = data.FindAll(t => t.ParentId == parentId).Select(p => new
+            var entitys = data.FindAll(t => t.ParentId.Equals( parentId)).ToList().Select(p => new
             {
                 F_Id = p.Id,
                 F_ParentId = p.ParentId,

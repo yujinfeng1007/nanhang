@@ -19,8 +19,9 @@ namespace ZHXY.Application
 
         public dynamic GetList(Pagination pag, string orgId, string keyword)
         {
-            if (string.IsNullOrWhiteSpace(orgId)) return null;
-            var query = Read<User>(p => p.OrganId.Equals(orgId));
+            var query = Read<User>();
+            if (!string.IsNullOrWhiteSpace(orgId))
+                query = query.Where(p => p.OrganId.Equals(orgId));
             query = string.IsNullOrWhiteSpace(keyword) ? query : query.Where(p => p.Name.Contains(keyword));
             return query.Paging(pag).ToListAsync().Result;
 

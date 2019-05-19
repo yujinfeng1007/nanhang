@@ -537,6 +537,7 @@
     <Content Include="Areas\SystemManage\Views\Log\Index.cshtml" />
     <Content Include="Areas\SystemManage\Views\Log\LoginHis.cshtml" />
     <Content Include="Areas\SystemManage\Views\Dic\Index.cshtml" />
+    <Content Include="Areas\SystemManage\Views\Role\Power.cshtml" />
     <None Include="Content\js\dialog\dialog.css.bak" />
     <Content Include="Content\js\dialog\dialog.css" />
     <Content Include="Content\js\dialog\dialog.js" />

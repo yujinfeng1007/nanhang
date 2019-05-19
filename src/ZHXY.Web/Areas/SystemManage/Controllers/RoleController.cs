@@ -72,9 +72,9 @@ namespace ZHXY.Web.SystemManage.Controllers
             return Resultaat.Success(data);
         }
         [HttpPost]
-        public ActionResult AddRoleFunc(string roleId,string[] funcs)
+        public ActionResult AddRoleFunc(string roleId,string menuId, string[] funcs)
         {
-            App.AddRoleFunc(roleId, funcs);
+            App.AddRoleFunc(roleId,menuId, funcs);
             return Resultaat.Success();
         }
 
