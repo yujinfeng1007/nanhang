@@ -28,13 +28,9 @@
         public static string UserRole { get; } = $"{nameof(User)}{Separator}{nameof(Role)}";
 
         /// <summary>
-        /// 角色和菜单
+        /// 角色权限
         /// </summary>
-        public static string RoleMenu { get; } = $"{nameof(Role)}{Separator}{nameof(Menu)}";
+        public static string RolePower { get; } = $"{nameof(Role)}{Separator}{nameof(Function)}";
 
-        /// <summary>
-        /// 角色和按钮
-        /// </summary>
-        public static string RoleButton { get; } = $"{nameof(Role)}{Separator}{nameof(Button)}";
     }
 }

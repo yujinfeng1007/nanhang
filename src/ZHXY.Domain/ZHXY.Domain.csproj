@@ -92,7 +92,7 @@
     <Compile Include="EntityConfig\System\DbBackupMap.cs" />
     <Compile Include="EntityConfig\System\FilterIPMap.cs" />
     <Compile Include="EntityConfig\System\LogMap.cs" />
-    <Compile Include="EntityConfig\System\ButtonMap.cs" />
+    <Compile Include="EntityConfig\System\FunctionMap.cs" />
     <Compile Include="EntityConfig\System\MenuMap.cs" />
     <Compile Include="EntityConfig\System\PlaceAreaMap.cs" />
     <Compile Include="EntityConfig\System\RelevanceMap.cs" />
@@ -131,7 +131,7 @@
     <Compile Include="Entity\System\SysDicItem.cs" />
     <Compile Include="Entity\System\SysDic.cs" />
     <Compile Include="EntityExtensions\ModuleButtonComparer.cs" />
-    <Compile Include="Entity\System\Button.cs" />
+    <Compile Include="Entity\System\Function.cs" />
     <Compile Include="EntityExtensions\ModuleComparer.cs" />
     <Compile Include="Entity\System\Menu.cs" />
     <Compile Include="Entity\System\Organ.cs" />

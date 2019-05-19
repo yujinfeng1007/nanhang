@@ -147,7 +147,7 @@ namespace ZHXY.Web.SystemManage.Controllers
 
         public ActionResult GetExcludeRoles(string userId)
         {
-            return Resultaat.Success(App.GetExcludeRoles(userId));
+            return Resultaat.Success(App.GetRolesExcludeUser(userId));
         }
 
         public ActionResult AddRole(string userId,string[] roleId)

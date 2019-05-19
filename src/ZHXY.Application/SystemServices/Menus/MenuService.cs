@@ -12,7 +12,6 @@ namespace ZHXY.Application
     /// </summary>
     public class MenuService : AppService
     {
-
         public MenuService(IZhxyRepository r) : base(r) { }
 
         public void Add(AddMenuDto dto)
@@ -63,26 +62,26 @@ namespace ZHXY.Application
 
         public void DeleteBtn(string[] id)
         {
-            var btns = Query<Button>(p => id.Contains(p.Id)).ToListAsync().Result;
-            DelAndSave<Button>(btns);
+            var btns = Query<Function>(p => id.Contains(p.Id)).ToListAsync().Result;
+            DelAndSave<Function>(btns);
         }
 
         public void AddBtn(AddBtnDto dto)
         {
-            var button = dto.MapTo<Button>();
+            var button = dto.MapTo<Function>();
             AddAndSave(button);
         }
 
         public void UpdateBtn(UpdateBtnDto dto)
         {
-            var button = Get<Button>(dto.Id);
+            var button = Get<Function>(dto.Id);
             dto.MapTo(button);
             SaveChanges();
         }
 
         public dynamic GetMenuBth(string menuId)
         {
-            return Read<Button>(p => p.MenuId.Equals(menuId)).OrderBy(p=>p.SortCode).ToListAsync().Result;
+            return Read<Function>(p => p.MenuId.Equals(menuId)).OrderBy(p=>p.SortCode).ToListAsync().Result;
         }
 
         /// <summary>

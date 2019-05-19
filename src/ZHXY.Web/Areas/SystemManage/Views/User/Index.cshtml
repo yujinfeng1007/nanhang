@@ -6,10 +6,6 @@
     let dutyList = JSON.parse(localStorage.getItem("dutyList"));
     let roleList = JSON.parse(localStorage.getItem("roleList"));
     let orgList = JSON.parse(localStorage.getItem("orgList"));
-
-
-
-
     $(function () {
         $('#layout').layout({
             west__resizable: true,
@@ -227,7 +223,7 @@
             <button type="button" class="btn btn-default" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></button>
             <input type="text" class="form-control" id="keyword" placeholder="关键字">
             <button type="button" id="btn_search" class="btn btn-default"><i class="fa fa-search"></i></button>
-            <button type="button" id="btnAddRole" class="btn btn-default">添加角色</button>
+            <button type="button" id="btnAddRole" class="btn btn-default">添加用户角色</button>
         </form>
         <table id="centerGrid"></table>
         <div id="centerPager"></div>

@@ -4,9 +4,9 @@ using System;
 namespace ZHXY.Domain
 {
     /// <summary>
-    /// 模块按钮
+    /// 模块功能
     /// </summary>
-    public class Button : IEntity
+    public class Function : IEntity
     {
         public string Id { get; set; } = Guid.NewGuid().ToString("N").ToUpper();
         public string MenuId { get; set; }

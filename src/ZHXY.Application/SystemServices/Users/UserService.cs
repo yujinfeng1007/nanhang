@@ -68,8 +68,6 @@ namespace ZHXY.Application
             return user;
         }
 
-
-
         public void Enable(string id) => throw new NotImplementedException();
         public void Disable(string id) => throw new NotImplementedException();
 
@@ -125,7 +123,7 @@ namespace ZHXY.Application
             DelAndSave<Relevance>(removeList);
         }
 
-        public dynamic GetExcludeRoles(string userId)
+        public dynamic GetRolesExcludeUser(string userId)
         {
             var exclude=GetUserRolesId(userId);
            return Read<Role>(p => !exclude.Contains(p.Id)).ToListAsync().Result;
@@ -151,7 +149,7 @@ namespace ZHXY.Application
             //var menus=Read<Relevance>(p => p.Name.Equals(Relation.RoleMenu) && d.Roles.Contains(p.FirstKey)).Select(p => p.SecondKey).Distinct().ToArrayAsync().Result;
             //var buttons =Read<Relevance>(p => p.Name.Equals(Relation.RoleButton) && d.Roles.Contains(p.FirstKey)).Select(p => p.SecondKey).Distinct().ToArrayAsync().Result;
             d.Menus = Read<Menu>(p=>p.ParentId.Equals(SYS_CONSTS.DbNull)).Include("ChildNodes").OrderBy(p=>p.SortCode).ToListAsync().Result;
-            d.Buttons = Read<Button>().ToListAsync().Result;
+            d.Buttons = Read<Function>().ToListAsync().Result;
             var o = Read<User>(p => p.Id.Equals(user.Id)).FirstOrDefaultAsync().Result;
             d.UserName = o.Name;
             d.HeadIcon = o.HeadIcon;

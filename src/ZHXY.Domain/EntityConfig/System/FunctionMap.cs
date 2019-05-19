@@ -2,11 +2,11 @@
 
 namespace ZHXY.Domain
 {
-    public class ButtonMap : EntityTypeConfiguration<Button>
+    public class FunctionMap : EntityTypeConfiguration<Function>
     {
-        public ButtonMap()
+        public FunctionMap()
         {
-            ToTable("zhxy_button");
+            ToTable("zhxy_func");
             HasKey(t => t.Id);
 
             Property(p => p.Id).HasColumnName("id");

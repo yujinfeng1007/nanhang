@@ -46,13 +46,9 @@ namespace ZHXY.Application
             return Read<Duty>(p => p.Id.Equals(dutyId)).Select(p => p.Code).FirstOrDefaultAsync().Result;
         }
 
-        public void Delete(string[] id)
+        public void Delete(string id)
         {
-            foreach (var item in id)
-            {
-                Del<Duty>(item);
-            }
-            SaveChanges();
+            DelAndSave<Duty>(id);
         }
     }
 }

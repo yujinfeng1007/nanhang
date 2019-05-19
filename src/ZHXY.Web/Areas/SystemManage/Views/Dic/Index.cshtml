@@ -8,9 +8,6 @@
     let TREE_GRID_HEIGHT = window.innerHeight * 0.84;
     let GRID_STYLE = "Bootstrap";
 
-    let dicGroupList = JSON.parse(localStorage.getItem("dicGroup"));
-
-
     $(function () {
         $('#layout').layout({
             west__resizable: true
@@ -110,14 +107,11 @@
                 { label: '名称', name: 'name',  editable: true },
                 {
                     label: '类型', name: "category", editable: true,
-                     formatter: function (cv) {
-                        return dicGroupList[cv] == null ? "" : dicGroupList[cv];
-                    },
+                    formatter: function (cellValue) { return top.window.getDicValue("dicGroup", cellValue); },
                     edittype: "select",
-                    editoptions: { value: dicGroupList },
-                    edittype: 'select',
+                    editoptions: { value: ()=>top.window.getDic("dicGroup") },
                 },
-                { label: '排序', name: "sortCode", editable: true},
+                { label: '排序', name: "sortCode", editable: true, edittype: "number"},
             ],
         });
 
