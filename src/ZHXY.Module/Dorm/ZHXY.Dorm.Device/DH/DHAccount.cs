@@ -63,11 +63,20 @@ namespace ZHXY.Dorm.Device.DH
                 var db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
                 X_SUBJECT_TOKEN = db.StringGet(REDIS_TOKEN_SET_KEY);
             }
-            if (personMoudle.photoUrl != null && personMoudle.photoUrl.Length != 0 && personMoudle.photoBase64 != null && personMoudle.photoBase64.Length != 0)
+            if (personMoudle.photoUrl != null && personMoudle.photoUrl.Length != 0)
             {
                 personMoudle.photoBase64 = GetImageBase64Str.ImageBase64Str(personMoudle.photoUrl);//通过头像地址，获取头像Base64位字符串
             }
-            return HttpHelper.ExecutePut(Constants.CREATE_STUDENTS_INFO + "/"+personMoudle.code + "?sessionId=" + X_SUBJECT_TOKEN, JsonConvert.SerializeObject(personMoudle), X_SUBJECT_TOKEN);
+            string PersonJson = HttpHelper.ExecuteGetPersons(Constants.SELECT_STUDENTS_INFO, new PersonMoudle() { code = personMoudle.code}, X_SUBJECT_TOKEN);
+            if(null != PersonJson)
+            {
+                var code = PersonJson.ToJObject().Value<int>("code");
+                if(code == 200)
+                {
+                    personMoudle.id = PersonJson.ToJObject()["data"]["list"][0].Value<int>("id");
+                }
+            }
+            return HttpHelper.ExecutePut(Constants.CREATE_STUDENTS_INFO + "/id" + "?sessionId=" + X_SUBJECT_TOKEN, JsonConvert.SerializeObject(personMoudle), X_SUBJECT_TOKEN);
         }
 
         /// <summary>
