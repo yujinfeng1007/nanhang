@@ -121,7 +121,7 @@ namespace ZHXY.Application
             foreach (var item in service.GetAll())
             {
                 var tempDictionary = new Dictionary<string, string>();
-                var details = allitems.Where(t => t.DicId == item.Id);
+                var details = allitems.Where(t => t.Code == item.Code);
                 foreach (var i in details)
                 {
                     try
@@ -133,7 +133,7 @@ namespace ZHXY.Application
                         // ignored
                     }
                 }
-                dic.Add(item.Id, tempDictionary);
+                dic.Add(item.Code, tempDictionary);
             }
             return dic;
         }

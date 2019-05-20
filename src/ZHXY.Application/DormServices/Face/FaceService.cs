@@ -59,9 +59,8 @@ namespace ZHXY.Application
             //获取当前用户所审批的审批单据
             var faceIds = Read<FaceApprove>(p => p.ApproverId.Equals(input.CurrentUserId)).Select(p => p.OrderId).ToListAsync().Result;            
             //根据审批单据获取头像详细信息
-            var query = Read <StuFaceOrder>(p => faceIds.Contains(p.Id));            
-            query = input.SearchPattern == 0 ? query : query.Where(p => p.Status.Equals(input.SearchPattern));
-
+            var query = Read <StuFaceOrder>(p => faceIds.Contains(p.Id));                        
+            query = string.IsNullOrEmpty(input.SearchPattern) ? query : query.Where(p =>p.Status.Equals(input.SearchPattern));
             query = string.IsNullOrEmpty(input.Keyword)
                 ? query
                 : query.Where(p => p.Applicant.Name.Contains(input.Keyword));
@@ -69,6 +68,7 @@ namespace ZHXY.Application
             var list = query.Select(p => new FaceListView
             {
                 Id = p.Id,
+                //tea?.JobNumber;
                 ApplierName = p.Applicant.Name,
                 SubmitImg = p.SubmitImg,
                 ApproveImg = p.ApproveImg,                

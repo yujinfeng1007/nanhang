@@ -25,7 +25,7 @@ namespace ZHXY.Application
         }
         public void Delete(string id)
         {
-            if (Read<SysDicItem>(p => p.DicId.Equals(id)).Any()) throw new Exception("删除失败！操作的对象包含了下级数据。");
+            if (Read<SysDicItem>(p => p.Code.Equals(id)).Any()) throw new Exception("删除失败！操作的对象包含了下级数据。");
             DelAndSave<SysDic>(id);
         }
 
@@ -35,8 +35,8 @@ namespace ZHXY.Application
             return Read<SysDic>().OrderBy(p => p.SortCode).Select(p =>
                     new
                     {
-                        p.Id,
-                        p.Category,
+                        p.Code,
+                        p.Type,
                         p.Name,
                         p.SortCode,
                     }).ToListAsync().Result;
@@ -56,8 +56,8 @@ namespace ZHXY.Application
             var dics = Read<SysDic>().ToList();
             dics.ForEach(item =>
             {
-                var items = Read((SysDicItem p) => p.DicId.Equals(item.Id)).ToDictionary(p=> p.Key,e=> e.Value);
-                data.Add(item.Id, items);
+                var items = Read((SysDicItem p) => p.Code.Equals(item.Code)).ToDictionary(p=> p.Key,e=> e.Value);
+                data.Add(item.Code, items);
             });
 
             data.Add("orgList", Read<Organ>().Select(p => new { p.Id, p.Name }).ToDictionary(p => p.Id, e => e.Name));
@@ -89,7 +89,7 @@ namespace ZHXY.Application
 
         public List<SysDicItem> GetItems(string dicId)
         {
-            return Read<SysDicItem>(p => p.DicId.Equals(dicId)).ToListAsync().Result;
+            return Read<SysDicItem>(p => p.Code.Equals(dicId)).ToListAsync().Result;
         }
 
         public List<SysDicItem> GetAllItems()
