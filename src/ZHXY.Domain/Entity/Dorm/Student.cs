@@ -68,8 +68,8 @@ namespace ZHXY.Domain
 
         public string CardNumber { get; set; }
 
-   
-      
+
+
         /// <summary>
         /// 在校状态
         /// </summary>
@@ -89,7 +89,7 @@ namespace ZHXY.Domain
 
         public string Gender { get; set; }
 
-     
+
 
         /// <summary>
         /// 证件类型
@@ -103,7 +103,7 @@ namespace ZHXY.Domain
 
         public string CredNumber { get; set; }
 
-      
+
 
 
         /// <summary>
@@ -112,9 +112,9 @@ namespace ZHXY.Domain
 
         public string PolitStatu { get; set; }
 
-       
 
-      
+
+
 
         /// <summary>
         /// 联系电话
@@ -128,15 +128,19 @@ namespace ZHXY.Domain
 
         public string OrganId { get; set; }
 
+
         /// <summary>
-        /// 在寝情况 0=进 1=出
+        /// 进出类型
         /// </summary>
+
         public string InOut { get; set; }
 
         /// <summary>
-        /// 脸部图像
+        /// 人脸图像
         /// </summary>
+
         public string FacePic { get; set; }
 
+
     }
-}
+    }

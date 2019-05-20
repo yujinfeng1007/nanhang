@@ -12,7 +12,7 @@ using ZHXY.Common;
 
 namespace ZHXY.Application
 {
-    [LoginAuthentication]
+    //[LoginAuthentication]
     [ValidateParam]
     public abstract class ZhxyController : Controller
     {

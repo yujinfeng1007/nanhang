@@ -57,13 +57,15 @@ namespace ZHXY.Application
         public dynamic GetFaceApprovalList(GetFaceApprovalListDto input)
         {
             //获取当前用户所审批的审批单据
-            var faceIds = Read<FaceApprove>(p => p.ApproverId.Equals(input.CurrentUserId)).Select(p => p.OrderId).ToListAsync().Result;            
+            var faceIds = Read<FaceApprove>(p => p.ApproverId.Equals(input.CurrentUserId)).Select(p => p.OrderId).ToListAsync().Result;
             //根据审批单据获取头像详细信息
-            var query = Read <StuFaceOrder>(p => faceIds.Contains(p.Id));                        
-            query = string.IsNullOrEmpty(input.SearchPattern) ? query : query.Where(p =>p.Status.Equals(input.SearchPattern));
-            query = string.IsNullOrEmpty(input.Keyword)
-                ? query
-                : query.Where(p => p.Applicant.Name.Contains(input.Keyword));
+            //var query1 = Read<StuFaceOrder>(p => faceIds.Contains(p.Id)).Select(p => p.Applicant).FirstOrDefault();
+            //var test = query1.Name;
+            var query = Read <StuFaceOrder>(p => faceIds.Contains(p.Id));
+            query = string.IsNullOrEmpty(input.SearchPattern) ? query : query.Where(p => p.Status.Equals(input.SearchPattern));
+            query = string.IsNullOrEmpty(input.Keyword) ? query : query.Where(p => p.Applicant.Name.Contains(input.Keyword));
+           
+                     
             query = query.Paging(input);
             var list = query.Select(p => new FaceListView
             {
@@ -77,7 +79,7 @@ namespace ZHXY.Application
             }).OrderByDescending(p =>p.CreatedTime).ToListAsync().Result;
             //SetViewStatus(input.CurrentUserId, ref list);
             return list;
-        }
+            }
 
         /// <summary>
         /// 获取头像审批详情

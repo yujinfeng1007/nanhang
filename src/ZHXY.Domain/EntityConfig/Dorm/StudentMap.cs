@@ -6,29 +6,29 @@ namespace ZHXY.Domain
     {
         public StudentMap()
         {
-            ToTable("School_Students");
+            ToTable("zhxy_student");
             HasKey(t => t.Id);
 
-            Property(p => p.Id).HasColumnName("F_Id");
-            Property(p => p.YearNumber).HasColumnName("F_Year");
-            Property(p => p.DivisId).HasColumnName("F_Divis_ID");
-            Property(p => p.GradeId).HasColumnName("F_Grade_ID");
-            Property(p => p.ClassId).HasColumnName("F_Class_ID");
-            Property(p => p.SubjectId).HasColumnName("F_Subjects_ID");
-            Property(p => p.StudentNumber).HasColumnName("F_StudentNum");
-            Property(p => p.InitDTM).HasColumnName("F_InitDTM");
-            Property(p => p.UserId).HasColumnName("F_Users_ID");
-            Property(p => p.CardNumber).HasColumnName("F_Mac_No");
-            Property(p => p.CurStatu).HasColumnName("F_CurStatu");
-            Property(p => p.Name).HasColumnName("F_Name");
-            Property(p => p.Gender).HasColumnName("F_Gender");
-            Property(p => p.CredType).HasColumnName("F_CredType");
-            Property(p => p.CredNumber).HasColumnName("F_CredNum");
-            Property(p => p.PolitStatu).HasColumnName("F_PolitStatu");
-            Property(p => p.MobilePhone).HasColumnName("F_Tel");
-            Property(p => p.OrganId).HasColumnName("F_DepartmentId");
-            Property(p => p.InOut).HasColumnName("F_InOut");
-            Property(p => p.FacePic).HasColumnName("F_FacePic_File");
+            Property(p => p.Id).HasColumnName("id");
+            Property(p => p.YearNumber).HasColumnName("year");
+            Property(p => p.DivisId).HasColumnName("divis_id");
+            Property(p => p.GradeId).HasColumnName("grade_id");
+            Property(p => p.ClassId).HasColumnName("class_id");
+            Property(p => p.SubjectId).HasColumnName("subject_id");
+            Property(p => p.StudentNumber).HasColumnName("student_number");
+            Property(p => p.InitDTM).HasColumnName("init_dtm");
+            Property(p => p.UserId).HasColumnName("user_id");
+            Property(p => p.CardNumber).HasColumnName("card_number");
+            Property(p => p.CurStatu).HasColumnName("cur_statu");
+            Property(p => p.Name).HasColumnName("name");
+            Property(p => p.Gender).HasColumnName("gender");
+            Property(p => p.CredType).HasColumnName("cred_type");
+            Property(p => p.CredNumber).HasColumnName("cred_number");
+            Property(p => p.PolitStatu).HasColumnName("PolitStatu");
+            Property(p => p.MobilePhone).HasColumnName("mobile_phone");
+            Property(p => p.OrganId).HasColumnName("organ_id");
+            Property(p => p.InOut).HasColumnName("in_out");
+            Property(p => p.FacePic).HasColumnName("face_pic");
         }
     }
 }
