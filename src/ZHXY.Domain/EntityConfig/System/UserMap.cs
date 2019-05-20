@@ -21,6 +21,11 @@ namespace ZHXY.Domain
             Property(p => p.OrganId).HasColumnName("organ_id");
             Property(p => p.DutyId).HasColumnName("duty_id");
             Property(p => p.SetUp).HasColumnName("user_setup");
+            Property(p => p.Password).HasColumnName("password");
+            Property(p => p.Secretkey).HasColumnName("secret_key");
+            Property(p => p.PreVisitTime).HasColumnName("pre_visit_time");
+            Property(p => p.LastVisitTime).HasColumnName("last_visit_time");
+            Property(p => p.LoginCount).HasColumnName("login_count");
         }
     }
 }

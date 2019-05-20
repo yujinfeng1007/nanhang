@@ -86,7 +86,6 @@
     <Compile Include="EntityConfig\System\RoleMap.cs" />
     <Compile Include="EntityConfig\System\SysOrgLeaderMap.cs" />
     <Compile Include="EntityConfig\System\OrgMap.cs" />
-    <Compile Include="EntityConfig\System\UserLoginMap.cs" />
     <Compile Include="EntityConfig\System\UserMap.cs" />
     <Compile Include="Entity\Dorm\DormTimeRule.cs" />
     <Compile Include="Entity\Dorm\DormRoom.cs" />
@@ -111,7 +110,6 @@
     <Compile Include="Entity\Dorm\LeaveOrder.cs" />
     <Compile Include="Entity\System\Relevance.cs" />
     <Compile Include="Entity\System\OrgLeader.cs" />
-    <Compile Include="Entity\System\UserLogin.cs" />
     <Compile Include="Entity\Dorm\Semester.cs" />
     <Compile Include="Entity\Dorm\Student.cs" />
     <Compile Include="Entity\Dorm\Teacher.cs" />

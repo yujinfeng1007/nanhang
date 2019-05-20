@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Linq.Dynamic;
 using ZHXY.Common;
+using System.Collections.Generic;
 
 namespace ZHXY.Application
 {
@@ -15,13 +16,12 @@ namespace ZHXY.Application
     {
         public UserService(IZhxyRepository r) : base(r) { }
 
-        public dynamic GetList(Pagination pag, string orgId, string keyword)
+        public List<UserView> GetList(Pagination pag, string orgId, string keyword)
         {
             if (string.IsNullOrWhiteSpace(orgId)) return null;
             var query = Read<User>(p => p.OrganId.Equals(orgId));
             query = string.IsNullOrWhiteSpace(keyword) ? query : query.Where(p => p.Name.Contains(keyword));
-            return query.Paging(pag).ToListAsync().Result;
-
+            return query.Paging(pag).ToListAsync().Result.MapToList<UserView>();
         }
 
         public dynamic GetById(string id) => Read<User>(p => p.Id.Equals(id)).FirstOrDefaultAsync().Result;
@@ -37,23 +37,16 @@ namespace ZHXY.Application
         {
             var user = dto.MapTo<User>();
             Add(user);
-            var userLogin = new UserLogin
-            {
-                UserId=user.Id,
-                Password = "17f123f731bca5b8925979dc1a228548",
-                Secretkey = "4a7d1ed414474e40"
-            };
-            Add(userLogin);
             SaveChanges();
         }
 
         public void Delete(string[] id)
         {
-            var users=Query<User>(p => id.Contains(p.Id)).ToList();
+            var users = Query<User>(p => id.Contains(p.Id)).ToList();
             DelAndSave<User>(users);
         }
 
-        public void UpdIco(string userId,string filepath)
+        public void UpdIco(string userId, string filepath)
         {
             var user = Get<User>(userId);
             user.HeadIcon = filepath;
@@ -62,14 +55,13 @@ namespace ZHXY.Application
 
         public CurrentUser CheckLogin(string username, string password)
         {
-            var user = Read<User>(p => p.Account.Equals(username)).FirstOrDefaultAsync().Result;
+            var user = Query<User>(p => p.Account.Equals(username)).FirstOrDefaultAsync().Result;
             if (user == null) throw new Exception("账户不存在，请重新输入");
-            var loginInfo = Get<UserLogin>(user.Id);
-            var dbPassword = Md5EncryptHelper.Encrypt(DESEncryptHelper.Encrypt(password.ToLower(), loginInfo.Secretkey).ToLower(), 32).ToLower();
-            if (dbPassword != loginInfo.Password) throw new Exception("密码不正确，请重新输入");
-            loginInfo.PreVisitTime = loginInfo.LastVisitTime.HasValue ? loginInfo.LastVisitTime : null;
-            loginInfo.LastVisitTime = DateTime.Now;
-            loginInfo.LoginCount = Convert.ToInt32(loginInfo.LoginCount) + 1;
+            var dbPassword = Md5EncryptHelper.Encrypt(DESEncryptHelper.Encrypt(password.ToLower(), user.Secretkey).ToLower(), 32).ToLower();
+            if (dbPassword != user.Password) throw new Exception("密码不正确，请重新输入");
+            user.PreVisitTime = user.LastVisitTime.HasValue ? user.LastVisitTime : null;
+            user.LastVisitTime = DateTime.Now;
+            user.LoginCount = Convert.ToInt32(user.LoginCount) + 1;
             SaveChanges();
             var cuser = user.MapTo<CurrentUser>();
             cuser.LoginToken = DESEncryptHelper.Encrypt(Guid.NewGuid().ToString());
@@ -82,10 +74,10 @@ namespace ZHXY.Application
         public void Enable(string id) => throw new NotImplementedException();
         public void Disable(string id) => throw new NotImplementedException();
 
-        public bool VerifyPwd(string userid, string password)
+        public bool VerifyPwd(string userId, string password)
         {
-            var userLogin = Read<UserLogin>(p => p.UserId.Equals(userid)).Select(p => new { SecretKey = p.Secretkey, Password = p.Password }).FirstOrDefaultAsync().Result;
-            var dbPassword = Md5EncryptHelper.Encrypt(DESEncryptHelper.Encrypt(password.ToLower(), userLogin.SecretKey).ToLower(), 32).ToLower();
+            var userLogin = Read<User>(p => p.Id.Equals(userId)).Select(p => new {  p.Secretkey,  p.Password }).FirstOrDefaultAsync().Result;
+            var dbPassword = Md5EncryptHelper.Encrypt(DESEncryptHelper.Encrypt(password.ToLower(), userLogin.Secretkey).ToLower(), 32).ToLower();
             return dbPassword == userLogin.Password;
         }
 
@@ -113,7 +105,7 @@ namespace ZHXY.Application
             SaveChanges();
         }
 
-        public void AddRole(string userId,string[] roleIds)
+        public void AddRole(string userId, string[] roleIds)
         {
             var existingRoles = GetUserRolesId(userId);
             var addRoles = roleIds.Except(existingRoles);
@@ -124,7 +116,7 @@ namespace ZHXY.Application
             SaveChanges();
         }
 
-        public void RemoveRole(string userId,string[] roleIds)
+        public void RemoveRole(string userId, string[] roleIds)
         {
             var removeList = Query<Relevance>(p =>
              p.Name.Equals(Relation.UserRole) &&
@@ -136,13 +128,13 @@ namespace ZHXY.Application
 
         public dynamic GetRolesExcludeUser(string userId)
         {
-            var exclude=GetUserRolesId(userId);
-           return Read<Role>(p => !exclude.Contains(p.Id)).ToListAsync().Result;
+            var exclude = GetUserRolesId(userId);
+            return Read<Role>(p => !exclude.Contains(p.Id)).ToListAsync().Result;
         }
 
         public void RevisePassword(string userPassword, string userId)
         {
-            var user = Query<UserLogin>(p => p.UserId.Equals(userId)).FirstOrDefaultAsync().Result;
+            var user = Query<User>(p => p.Id.Equals(userId)).FirstOrDefaultAsync().Result;
             user.Secretkey = Md5EncryptHelper.Encrypt(NumberBuilder.Build_18bit(), 16).ToLower();
             user.Password = Md5EncryptHelper.Encrypt(DESEncryptHelper.Encrypt(Md5EncryptHelper.Encrypt(userPassword, 32).ToLower(), user.Secretkey).ToLower(), 32).ToLower();
             SaveChanges();
@@ -158,7 +150,7 @@ namespace ZHXY.Application
                 Roles = user.Roles
             };
             var query = Read<Menu>(p => p.BelongSys.Equals("1"));
-            if (user.Name=="超级管理员")
+            if (user.Name == "超级管理员")
             {
                 var list = query.ToListAsync().Result;
                 d.Menus = TreeHelper.GetMenuJson(list, SYS_CONSTS.DbNull);
@@ -166,11 +158,11 @@ namespace ZHXY.Application
             }
             else
             {
-                d.Menus = GetUserMenuJson(user.Id,"1");
+                d.Menus = GetUserMenuJson(user.Id, "1");
                 d.Funcs = GetUserFuncJson(user.Id);
             }
-            
-           
+
+
             var o = Read<User>(p => p.Id.Equals(user.Id)).FirstOrDefaultAsync().Result;
             d.UserName = o.Name;
             d.HeadIcon = o.HeadIcon;
@@ -195,15 +187,15 @@ namespace ZHXY.Application
         /// 鉴定用户是否具有某项功能权限
         /// </summary>
         /// <returns></returns>
-        public bool Authentication(string userId,string funcId)
+        public bool Authentication(string userId, string funcId)
         {
-            var userRoles=Read<Relevance>(p => p.Name.Equals(Relation.UserRole) && p.FirstKey.Equals(userId)).Select(p => p.SecondKey).ToListAsync().Result;
+            var userRoles = Read<Relevance>(p => p.Name.Equals(Relation.UserRole) && p.FirstKey.Equals(userId)).Select(p => p.SecondKey).ToListAsync().Result;
             var userPowers = Read<Relevance>(p => p.Name.Equals(Relation.RolePower) && userRoles.Contains(p.FirstKey)).Select(p => p.ThirdKey).Distinct().ToArrayAsync().Result;
             return userPowers.Contains(funcId);
         }
 
 
-        public string GetUserMenuJson(string userId,string system)
+        public string GetUserMenuJson(string userId, string system)
         {
             var userRoles = GetUserRolesId(userId);
             var userMenus = Read<Relevance>(p => p.Name.Equals(Relation.RolePower) && userRoles.Contains(p.FirstKey) && p.ThirdKey.Equals(SYS_CONSTS.DbNull)).Select(p => p.SecondKey).ToArrayAsync().Result;

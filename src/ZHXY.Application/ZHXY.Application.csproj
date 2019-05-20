@@ -123,9 +123,6 @@
     <Compile Include="RequestDto\BaseApiInput.cs" />
     <Compile Include="SystemServices\Roles\Dto\UpdateRoleDto.cs" />
     <Compile Include="SystemServices\Users\Dto\AddUserDto.cs" />
-    <Compile Include="SystemServices\Users\Dto\Login\LoginInput.cs" />
-    <Compile Include="SystemServices\Users\Dto\Login\ResultModel.cs" />
-    <Compile Include="SystemServices\Users\Dto\Login\UserModel.cs" />
     <Compile Include="SystemServices\Users\Dto\UpdateUserDto.cs" />
     <Compile Include="SystemServices\Users\Dto\UserData.cs" />
     <Compile Include="WebCore\CookieHelper.cs" />
@@ -137,9 +134,7 @@
     <Compile Include="WebCore\Filters\LoginAuthentication.cs" />
     <Compile Include="WebCore\Filters\ValidateParam.cs" />
     <Compile Include="WebCore\Response\ResponseResult.cs" />
-    <Compile Include="SystemServices\Users\Dto\Login\SsoAuth.cs" />
     <Compile Include="01.Base\AppService.cs" />
-    <Compile Include="SystemServices\Users\Dto\Users\AuthorizeActionModel.cs" />
     <Compile Include="DormServices\SemesterService.cs" />
     <Compile Include="DormServices\StudentService.cs" />
     <Compile Include="SystemServices\DatabaseBackup\DbBackupService.cs" />
@@ -154,16 +149,11 @@
     <Compile Include="SystemServices\Logs\LogService.cs" />
     <Compile Include="SystemServices\Menus\MenuService.cs" />
     <Compile Include="SystemServices\Organizes\Dto\AddOrgDto.cs" />
-    <Compile Include="SystemServices\Users\Dto\Login\SsoUserInfo.cs" />
     <Compile Include="SystemServices\Organizes\Dto\OrganizeView.cs" />
     <Compile Include="SystemServices\Organizes\Dto\UpdateOrgDto.cs" />
     <Compile Include="SystemServices\Organizes\OrgService.cs" />
     <Compile Include="SystemServices\Roles\RoleService.cs" />
-    <Compile Include="SystemServices\Users\Dto\Parents\CreateParentDto.cs" />
-    <Compile Include="SystemServices\Users\Dto\Parents\CreateUserDto.cs" />
-    <Compile Include="SystemServices\Users\Dto\Parents\ParentView.cs" />
-    <Compile Include="SystemServices\Users\Dto\Users\UserListView.cs" />
-    <Compile Include="SystemServices\Users\Dto\Users\UserView.cs" />
+    <Compile Include="SystemServices\Users\Dto\UserView.cs" />
     <Compile Include="SystemServices\Users\UserService.cs" />
     <Compile Include="DormServices\TeacherService.cs" />
     <Compile Include="01.Base\DbLogType.cs" />
