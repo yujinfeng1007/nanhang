@@ -8,7 +8,7 @@ namespace ZHXY.Web.Dorm.Controllers
     /// <summary>
     /// 不计考勤请假控制器
     /// </summary>
-    public class SpecialLeaveController : ZhxyWebControllerBase
+    public class SpecialLeaveController : ZhxyController
     {
         public LeaveService App { get; }
         public SpecialLeaveController(LeaveService app) => App = app;
@@ -21,7 +21,7 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpPost]
         public ActionResult Apply(BulkLeaveDto input) 
         {
-            App.SpecialApply(input, Operator.Current.Id);
+            App.SpecialApply(input, Operator.GetCurrent().Id);
             return Resultaat.Success();
         }
 
@@ -31,7 +31,7 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpGet]
         public ActionResult Load(GetSpecialLeaveDto input)
         {
-            input.CurrentUserId = Operator.Current.Id;
+            input.CurrentUserId = Operator.GetCurrent().Id;
             var (list, recordCount, pageCount) = App.GetSpecialList(input);
             return Resultaat.PagingRst(list,recordCount,pageCount);
         }

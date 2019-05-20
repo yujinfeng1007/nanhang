@@ -5,7 +5,7 @@ using System.Web.Mvc;
 namespace ZHXY.Web.Dorm.Controllers
 {
 
-    public class DormStudentController : ZhxyWebControllerBase
+    public class DormStudentController : ZhxyController
 	{
    		     
 	 

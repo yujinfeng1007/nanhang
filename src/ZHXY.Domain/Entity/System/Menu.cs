@@ -5,14 +5,15 @@ using Newtonsoft.Json;
 namespace ZHXY.Domain
 {
     /// <summary>
-    /// 模块
+    /// 菜单
     /// </summary>
     public class Menu : IEntity
     {
         public string Id { get; set; } = Guid.NewGuid().ToString("N").ToUpper();
         public string ParentId { get; set; } = "null";
-        public int? Level { get; set; }
+        public int Level { get; set; }
         public string Name { get; set; }
+        public string FullName { get; set; }
         public string Icon { get; set; }
         public string IconForWeb { get; set; }
         public string Url { get; set; }
@@ -23,7 +24,7 @@ namespace ZHXY.Domain
         public int? SortCode { get; set; }
         public string BelongSys { get; set; }
 
-        public virtual List<Menu> ChildNodes { get; set; }
-        [JsonIgnore]public virtual Menu Parent { get; set; }
+        //public virtual List<Menu> ChildNodes { get; set; }
+        //[JsonIgnore]public virtual Menu Parent { get; set; }
     }
 }

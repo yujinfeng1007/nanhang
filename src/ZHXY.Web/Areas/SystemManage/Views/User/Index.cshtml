@@ -57,7 +57,7 @@
             ExpandColumn: 'name',
             ExpandColClick: false,
             onSelectRow: function (rowId) {
-                $("#centerGrid").jqGrid('setGridParam', { postData: { orgId: rowId } }).trigger('reloadGrid');
+                $("#centerGrid").jqGrid('setGridParam', { url: `/SystemManage/User/Load`,postData: { orgId: rowId } }).trigger('reloadGrid');
             },
             jsonReader: {
                 root: function (r) { return r.data; }
@@ -115,7 +115,7 @@
             height: window.innerHeight * 0.8,
             width: window.innerWidth * 0.7,
             datatype: 'json',
-            url: `/SystemManage/User/Load`,
+            
             multiselect: true,
             loadonce: false,
             viewrecords: true,

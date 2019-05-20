@@ -44,7 +44,7 @@ namespace ZHXY.Application
         {
             var data = new List<Menu>();
             var menus = Read<Menu>().OrderBy(t => t.SortCode).ToList();
-            if (Operator.Current.IsSystem)
+            if (Operator.GetCurrent().IsSystem)
             {
                 data = menus;
             }

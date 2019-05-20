@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-
 namespace ZHXY.Common
 {
     public class CurrentUser
@@ -11,24 +10,25 @@ namespace ZHXY.Common
         /// </summary>
         public string Id { get; set; }
         /// <summary>
-        /// 用户代码
+        /// 用户账号
         /// </summary>
-        public string UserCode { get; set; }
+        public string Account { get; set; }
         /// <summary>
         /// 用户姓名
         /// </summary>
-        public string UserName { get; set; }
+        public string Name { get; set; }
+        ///<summary>
         /// 部门Id
         /// </summary>
-        public string Organ { get; set; }
+        public string OrganId { get; set; }
         /// <summary>
         /// 登录地址
         /// </summary>
-        public string LoginIPAddress { get; set; }
+        public string Ip { get; set; }
         /// <summary>
         /// 登录地址名称
         /// </summary>
-        public string LoginIPAddressName { get; set; }
+        public string IpLocation { get; set; }
         /// <summary>
         /// 登录标识
         /// </summary>
@@ -50,7 +50,7 @@ namespace ZHXY.Common
         /// <summary>
         /// 岗位 老师 学生 家长
         /// </summary>
-        public string Duty { get; set; }
+        public string DutyId { get; set; }
 
         /// <summary>
         /// 手机

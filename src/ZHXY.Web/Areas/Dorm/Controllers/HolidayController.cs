@@ -12,7 +12,7 @@ namespace ZHXY.Web.Dorm.Controllers
     /// <summary>
     /// 节假日设置
     /// </summary>
-    public class HolidayController : ZhxyWebControllerBase
+    public class HolidayController : ZhxyController
     {
         private HolidayAppService App { get; }
         public HolidayController(HolidayAppService app) => App = app;

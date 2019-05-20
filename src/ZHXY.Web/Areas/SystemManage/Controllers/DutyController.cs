@@ -6,7 +6,7 @@ namespace ZHXY.Web.SystemManage.Controllers
     /// <summary>
     /// 岗位管理
     /// </summary>
-    public class DutyController : ZhxyWebControllerBase
+    public class DutyController : ZhxyController
     {
         private DutyService App { get; }
 

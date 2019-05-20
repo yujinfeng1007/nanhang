@@ -17,7 +17,7 @@ namespace ZHXY.Application
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
             if (Ignore) return;
-            if (Operator.Current == null || Operator.Current == null)
+            if (Operator.GetCurrent() == null || Operator.GetCurrent() == null)
             {
                 var sbScript = new StringBuilder();
                 if (filterContext.HttpContext.Request.Browser.IsMobileDevice)

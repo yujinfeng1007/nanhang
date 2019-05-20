@@ -5,8 +5,8 @@ namespace ZHXY.Application
 {
     public class UserData
     {
-        public dynamic Menus { get; set; }
-        public dynamic Buttons { get; set; }
+        public string Menus { get; set; }
+        public string Funcs { get; set; }
         public string[] Roles { get; set; }
         public string Duty { get; set; }
         public string Organ { get; set; }

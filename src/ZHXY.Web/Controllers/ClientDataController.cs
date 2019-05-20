@@ -19,33 +19,33 @@ namespace ZHXY.Web.Controllers
             data.organize = CacheService.GetOrganizeListByCache();
             data.role = CacheService.GetRoleListByCache();
 
-            if (Operator.Current == null) return Json(data, JsonRequestBehavior.AllowGet);
+            if (Operator.GetCurrent() == null) return Json(data, JsonRequestBehavior.AllowGet);
             //菜单按钮权限
-            var roles = Operator.Current.Roles;
-            foreach (var e in roles)
-            {
-                var roleId = e;
-                if (string.Equals(roleId, null, StringComparison.Ordinal)) continue;
-                var menuCache = cache.GetCache<string>("menu_" + roleId);
-                if (!string.IsNullOrEmpty(menuCache) && menuCache != "[]")
-                {
-                    data.authorizeMenu = cache.GetCache<string>("menu_" + roleId);
-                }
-                else
-                {
+            //var roles = Operator.Current.Roles;
+            //foreach (var e in roles)
+            //{
+            //    var roleId = e;
+            //    if (string.Equals(roleId, null, StringComparison.Ordinal)) continue;
+            //    var menuCache = cache.GetCache<string>("menu_" + roleId);
+            //    if (!string.IsNullOrEmpty(menuCache) && menuCache != "[]")
+            //    {
+            //        data.authorizeMenu = cache.GetCache<string>("menu_" + roleId);
+            //    }
+            //    else
+            //    {
                     data.authorizeMenu =CacheService.GetMenuList().ToString();
-                    cache.WriteCache(data.authorizeMenu, "menu_" + roleId);
-                }
-                if (!cache.GetCache<Dictionary<string, object>>("button_" + roleId).IsEmpty())
-                {
-                    data.authorizeButton = cache.GetCache<Dictionary<string, object>>("button_" + roleId);
-                }
-                else
-                {
-                    //data.authorizeButton = (Dictionary<string, object>)CacheService.GetMenuButtonList();
-                    //cache.WriteCache(data.authorizeButton, "button_" + roleId);
-                }
-            }
+            //        cache.WriteCache(data.authorizeMenu, "menu_" + roleId);
+            //    }
+            //    if (!cache.GetCache<Dictionary<string, object>>("button_" + roleId).IsEmpty())
+            //    {
+            //        data.authorizeButton = cache.GetCache<Dictionary<string, object>>("button_" + roleId);
+            //    }
+            //    else
+            //    {
+            //        //data.authorizeButton = (Dictionary<string, object>)CacheService.GetMenuButtonList();
+            //        //cache.WriteCache(data.authorizeButton, "button_" + roleId);
+            //    }
+            //}
 
             return Json(data, JsonRequestBehavior.AllowGet);
         }
@@ -54,12 +54,12 @@ namespace ZHXY.Web.Controllers
         [HttpGet]
         public JsonResult UserInfo()
         {
-            var current = Operator.Current;
+            var current = Operator.GetCurrent();
             return Json(new
             {
-                current?.UserCode,
-                current?.UserName,
-                current?.HeadIcon
+                UserCode = current?.Account,
+                UserName = current?.Name,
+                HeadIcon= current?.HeadIcon
             }, JsonRequestBehavior.AllowGet);
         }
 
