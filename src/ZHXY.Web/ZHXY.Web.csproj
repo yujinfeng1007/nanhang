@@ -18,7 +18,7 @@
     <AssemblyName>ZHXY.Web</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -231,7 +231,6 @@
     <Compile Include="Areas\Dorm\Controllers\VisitLimitController.cs" />
     <Compile Include="Areas\Dorm\Controllers\VisitLogController.cs" />
     <Compile Include="Areas\Dorm\DormAreaRegistration.cs" />
-    <Compile Include="Areas\SystemManage\Controllers\AreaController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\DicController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\DutyController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\CurrentUserController.cs" />
