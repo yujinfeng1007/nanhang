@@ -67,13 +67,16 @@ namespace ZHXY.Dorm.Device.DH
             {
                 personMoudle.photoBase64 = GetImageBase64Str.ImageBase64Str(personMoudle.photoUrl);//通过头像地址，获取头像Base64位字符串
             }
-            string PersonJson = HttpHelper.ExecuteGetPersons(Constants.SELECT_STUDENTS_INFO, new PersonMoudle() { code = personMoudle.code}, X_SUBJECT_TOKEN);
-            if(null != PersonJson)
+            if( default(int) == personMoudle.id)
             {
-                var code = PersonJson.ToJObject().Value<int>("code");
-                if(code == 200)
+                string PersonJson = HttpHelper.ExecuteGetPersons(Constants.SELECT_STUDENTS_INFO, new PersonMoudle() { code = personMoudle.code }, X_SUBJECT_TOKEN);
+                if (null != PersonJson)
                 {
-                    personMoudle.id = PersonJson.ToJObject()["data"]["list"][0].Value<int>("id");
+                    var code = PersonJson.ToJObject().Value<int>("code");
+                    if (code == 200)
+                    {
+                        personMoudle.id = PersonJson.ToJObject()["data"]["list"][0].Value<int>("id");
+                    }
                 }
             }
             return HttpHelper.ExecutePut(Constants.CREATE_STUDENTS_INFO + "/id" + "?sessionId=" + X_SUBJECT_TOKEN, JsonConvert.SerializeObject(personMoudle), X_SUBJECT_TOKEN);

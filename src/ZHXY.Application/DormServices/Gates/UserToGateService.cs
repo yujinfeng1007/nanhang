@@ -86,7 +86,8 @@ namespace ZHXY.Application.DormServices.Gates
                 try
                 {
                     var dhUserstr = DHAccount.SELECT_DH_PERSON(new PersonMoudle {  code = person.code});
-                    if (dhUserstr != null)
+                    var ResultList = (List<object>)dhUserstr.ToString().ToJObject()["data"]["list"].ToObject(typeof(List<object>));
+                    if (null != ResultList && ResultList.Count() > 0)
                     {
                         //var jo = dhUserstr.ToString().ToJObject();
                         //int code = jo.Value<int>("code"); //返回码
@@ -105,6 +106,7 @@ namespace ZHXY.Application.DormServices.Gates
                             person.dormitoryCode = null;
                             person.dormitoryFloor = null;
                             person.dormitoryRoom= null;
+                            person.id = ResultList.First().ToString().ToJObject()[0].Value<int>("id");
                             DHAccount.PUSH_DH_UPDATE_PERSON(person);
                         }
                         catch(Exception e)

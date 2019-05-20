@@ -70,11 +70,11 @@ namespace ZHXY.Api.Controllers
         }
 
         [HttpGet]
-        public object FindPerson()
+        public object FindPerson(int code)
         {
             //查询人员信息  大华
             PersonMoudle personMoudleTest = new PersonMoudle();
-            personMoudleTest.code = "987654321";
+            personMoudleTest.code = code + "";
             return DHAccount.SELECT_DH_PERSON(personMoudleTest);
         }
 
