@@ -284,7 +284,7 @@ namespace ZHXY.Application
 
             var a = currentVersion.Split('.');
 
-            var appVersion = Read<AppVersion>().OrderByDescending(t=>t.Id).FirstOrDefault();
+            var appVersion = Read<AppVersion>().OrderByDescending(t => t.Id).FirstOrDefault();
 
             if (appVersion != null)
             {
@@ -296,13 +296,13 @@ namespace ZHXY.Application
                 {
                     flag = true;
                 }
-                else if(Convert.ToInt16(b[0]) == Convert.ToInt16(a[0]))
+                else if (Convert.ToInt16(b[0]) == Convert.ToInt16(a[0]))
                 {
-                    if(Convert.ToInt16(b[1]) > Convert.ToInt16(a[1]))
+                    if (Convert.ToInt16(b[1]) > Convert.ToInt16(a[1]))
                     {
                         flag = true;
                     }
-                    else if(Convert.ToInt16(b[1]) == Convert.ToInt16(a[1]))
+                    else if (Convert.ToInt16(b[1]) == Convert.ToInt16(a[1]))
                     {
                         if (Convert.ToInt16(b[2]) > Convert.ToInt16(a[2]))
                         {
@@ -323,7 +323,7 @@ namespace ZHXY.Application
             }
 
             return null;
-           
+
         }
     }
 }
