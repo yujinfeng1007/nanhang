@@ -10,7 +10,7 @@ using System.Web.Mvc;
 namespace ZHXY.Web.Dorm.Controllers
 {
 
-    public class InOutReceiveController : ZhxyWebControllerBase
+    public class InOutReceiveController : ZhxyController
 	{
 		private InOutReceiveAppService App { get; }
 

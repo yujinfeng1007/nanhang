@@ -6,7 +6,7 @@ using ZHXY.Domain;
 
 namespace ZHXY.Web.SystemManage.Controllers
 {
-    public class CurrentUserController : ZhxyWebControllerBase
+    public class CurrentUserController : ZhxyController
     {
         private StudentService studentService { get; }
         private TeacherService App { get; }
@@ -22,35 +22,35 @@ namespace ZHXY.Web.SystemManage.Controllers
         [HttpGet]
         public ActionResult GetCurrentUser()
         {
-            var user = Operator.Current;
+            var user = Operator.GetCurrent();
             if (user.IsEmpty())
                 return null;
             if (user != null && user.IsSystem)
-                user.Duty = "admin";
+                user.DutyId = "admin";
             //老师用户绑定班级
             var classes = App.GetBindClass(user.Id);
             user.Classes = classes.Select(p=>(object)p).ToList();
-            var orgName = orgService.GetById(user.Organ)?.Name;
+            var orgName = orgService.GetById(user.OrganId)?.Name;
             return Content(new
             {
-                user.Duty,
+                Duty= user.DutyId,
                 user.HeadIcon,
                 user.Id,
                 user.IsSystem,
-                user.LoginIPAddress,
-                user.LoginIPAddressName,
+                LoginIPAddress= user.Ip,
+                LoginIPAddressName= user.IpLocation,
                 user.LoginTime,
                 user.LoginToken,
                 user.MobilePhone,
-                user.Organ,
+                Organ=  user.OrganId,
                 user.Roles,
                 user.SetUp,
-                user.UserCode,
-                user.UserName,
+                UserCode=  user.Account,
+                UserName= user.Name,
                 user.Classes,
                 UserId = user.Id,
                 OrgName = orgName,//机构名称
-                Num = getNum(user.Duty,user.Id)//学工号
+                Num = getNum(user.DutyId,user.Id)//学工号
 
             }.ToJson());
         }

@@ -12,7 +12,7 @@ namespace ZHXY.Web.SystemManage.Controllers
     /// 用户管理
     /// [OK]
     /// </summary>
-    public class UserController : ZhxyWebControllerBase
+    public class UserController : ZhxyController
     {
         private UserService App { get; }
 
@@ -136,7 +136,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         [HttpGet]
         public ActionResult GetUserData()
         {
-            return Resultaat.Success(App.GetUserData(Operator.Current));
+            return Resultaat.Success(App.GetUserData(Operator.GetCurrent()));
         }
 
 

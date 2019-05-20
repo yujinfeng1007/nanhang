@@ -14,7 +14,7 @@ namespace ZHXY.Application
 {
     [LoginAuthentication]
     [ValidateParam]
-    public abstract class ZhxyWebControllerBase : Controller
+    public abstract class ZhxyController : Controller
     {
         #region property
 

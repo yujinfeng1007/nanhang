@@ -2,13 +2,12 @@
 
 namespace ZHXY.Domain
 {
-    public class PlaceAreaMap : EntityTypeConfiguration<PlaceArea>
+    public class PlaceAreaMap : EntityTypeConfiguration<Area>
     {
         public PlaceAreaMap()
         {
             ToTable("zhxy_area");
             HasKey(t => t.Id);
-
 
             Property(p => p.Id).HasColumnName("id");
             Property(p => p.ParentId).HasColumnName("p_id");

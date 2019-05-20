@@ -7,7 +7,7 @@ using ZHXY.Common;
 
 namespace ZHXY.Web.Dorm.Controllers
 {
-    public class FaceController : ZhxyWebControllerBase
+    public class FaceController : ZhxyController
     {
        
         public FaceService App { get; }
@@ -37,8 +37,8 @@ namespace ZHXY.Web.Dorm.Controllers
 
                     var fullPath = $"{basePath}{uploadName}.{existen}";
                     files[i].SaveAs(fullPath);
-                    //approveFilepath = $"http://{Request.Url.Host}:{Request.Url.Port}{mapPath}{uploadName}.{existen}";
-                    approveFilepath = $"{mapPath}{uploadName}.{existen}";
+                    approveFilepath = $"http://{Request.Url.Host}:{Request.Url.Port}{mapPath}{uploadName}.{existen}";
+                   // approveFilepath = $"{mapPath}{uploadName}.{existen}";
                 }
             }
 

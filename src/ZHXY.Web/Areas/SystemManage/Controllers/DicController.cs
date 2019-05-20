@@ -3,7 +3,7 @@ using ZHXY.Application;
 
 namespace ZHXY.Web.SystemManage.Controllers
 {
-    public class DicController : ZhxyWebControllerBase
+    public class DicController : ZhxyController
     {
         private DicService App { get; }
 

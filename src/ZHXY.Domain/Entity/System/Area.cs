@@ -5,7 +5,7 @@ namespace ZHXY.Domain
     /// <summary>
     /// 地区
     /// </summary>
-    public class PlaceArea : IEntity
+    public class Area : IEntity
     {
         public string Id { get; set; }
         public string ParentId { get; set; }

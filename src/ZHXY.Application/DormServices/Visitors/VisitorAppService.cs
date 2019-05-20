@@ -123,7 +123,7 @@ namespace ZHXY.Application
         public void Submit(AddVisitApplyDto input)
         {
             var visit = input.MapTo<VisitApply>();
-            visit.ApplicantId = Operator.Current.Id;
+            visit.ApplicantId = Operator.GetCurrent().Id;
             visit.DormId = "";
             visit.BuildingId = "";
             AddAndSave(visit);

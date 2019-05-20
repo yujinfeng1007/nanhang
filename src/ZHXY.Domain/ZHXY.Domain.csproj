@@ -99,7 +99,7 @@
     <Compile Include="EntityConfig\System\RoleMap.cs" />
     <Compile Include="EntityConfig\System\SysOrgLeaderMap.cs" />
     <Compile Include="EntityConfig\System\OrgMap.cs" />
-    <Compile Include="EntityConfig\System\UserLogOnMap.cs" />
+    <Compile Include="EntityConfig\System\UserLoginMap.cs" />
     <Compile Include="EntityConfig\System\UserMap.cs" />
     <Compile Include="Entity\Dorm\DormTimeRule.cs" />
     <Compile Include="Entity\Dorm\DormRoom.cs" />
@@ -126,8 +126,7 @@
     <Compile Include="Entity\Dorm\Semester.cs" />
     <Compile Include="Entity\Dorm\Student.cs" />
     <Compile Include="Entity\Dorm\Teacher.cs" />
-    <Compile Include="Entity\System\AreaChild.cs" />
-    <Compile Include="Entity\System\PlaceArea.cs" />
+    <Compile Include="Entity\System\Area.cs" />
     <Compile Include="Entity\System\SysDicItem.cs" />
     <Compile Include="Entity\System\SysDic.cs" />
     <Compile Include="EntityExtensions\ModuleButtonComparer.cs" />
@@ -180,6 +179,9 @@
       <Project>{db19ce03-c307-43fe-a209-08aa4ae10e21}</Project>
       <Name>ZHXY.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DataAccess\Repos\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

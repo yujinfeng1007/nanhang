@@ -1,6 +1,6 @@
 ﻿namespace ZHXY.Application
 {
-    public class UpdatePlaceAreaDto: CreatePlaceAreaDto
+    public class UpdateFuncDto : AddFuncDto
     {
         public string Id { get; set; }
     }

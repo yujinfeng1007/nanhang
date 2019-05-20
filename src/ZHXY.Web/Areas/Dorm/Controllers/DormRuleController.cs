@@ -5,7 +5,7 @@ namespace ZHXY.Web.Dorm.Controllers
     /// <summary>
     /// 宿舍规则
     /// </summary>
-    public class DormRuleController : ZhxyWebControllerBase
+    public class DormRuleController : ZhxyController
     {
         private DormRuleAppService App { get; }
         public DormRuleController(DormRuleAppService app) => App = app;

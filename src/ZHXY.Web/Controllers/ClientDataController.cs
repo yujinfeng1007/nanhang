@@ -19,7 +19,7 @@ namespace ZHXY.Web.Controllers
             data.organize = CacheService.GetOrganizeListByCache();
             data.role = CacheService.GetRoleListByCache();
 
-            if (Operator.Current == null) return Json(data, JsonRequestBehavior.AllowGet);
+            if (Operator.GetCurrent() == null) return Json(data, JsonRequestBehavior.AllowGet);
             //菜单按钮权限
             //var roles = Operator.Current.Roles;
             //foreach (var e in roles)
@@ -54,12 +54,12 @@ namespace ZHXY.Web.Controllers
         [HttpGet]
         public JsonResult UserInfo()
         {
-            var current = Operator.Current;
+            var current = Operator.GetCurrent();
             return Json(new
             {
-                current?.UserCode,
-                current?.UserName,
-                current?.HeadIcon
+                UserCode = current?.Account,
+                UserName = current?.Name,
+                HeadIcon= current?.HeadIcon
             }, JsonRequestBehavior.AllowGet);
         }
 

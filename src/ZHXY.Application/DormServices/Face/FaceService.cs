@@ -34,7 +34,7 @@ namespace ZHXY.Application
             var buildingno = Read<DormRoom>(p => p.Id.Equals(dormid)).Select(p => p.BuildingId).FirstOrDefault();
             var buildingIds = Read<Building>(p => p.BuildingNo.Equals(buildingno)).Select(p => p.Id).FirstOrDefault();
             var Approvers = Read<Relevance>(p => p.FirstKey.Equals(buildingIds)).Select(p => p.SecondKey).ToListAsync().Result;
-
+            if (null == Approvers) throw new Exception("请先绑定宿管!");
             foreach (var item in Approvers)
             {
                 Add(new FaceApprove
@@ -94,6 +94,7 @@ namespace ZHXY.Application
                 ApplierName = face.Applicant.Name,
                 SubmitImg = face.SubmitImg,
                 ApproveImg = face.ApproveImg,
+                ApprovalStatus = face.Status,
                 CreatedTime = face.CreatedTime
             };
             //if (Convert.ToDecimal(view.LeaveDays) <= 3)
@@ -115,15 +116,20 @@ namespace ZHXY.Application
         {
             var face = Get<StuFaceOrder>(input.OrderId);
             if (null == face) throw new Exception("未找到头像申请信息!");
-            var faceApprove = Query<FaceApprove>(p => p.OrderId.Equals(face.Id) && p.ApproverId.Equals(input.CurrentUserId)).FirstOrDefaultAsync().Result;
+            //var faceApprove = Query<FaceApprove>(p => p.OrderId.Equals(face.Id) && p.ApproverId.Equals(input.CurrentUserId)).FirstOrDefaultAsync().Result;
+            var faceApprovers = Query<FaceApprove>(p => p.OrderId.Equals(face.Id)).ToListAsync().Result;
             //if (null == faceApprove) throw new Exception("您不可以审批,头像申请单异常!");
             //if (faceApprove.Result != 0) throw new Exception("您已经审批过,不需要重复审批!");
-            faceApprove.Result = input.IsAgreed ? 1 : -1;
-            faceApprove.Opinion = input.Opinion;
+            foreach ( var faceApprover in faceApprovers) {
+                faceApprover.Result = input.IsAgreed ? 1 : -1;  
+                faceApprover.Opinion = input.Opinion;
+            }
+            
             //SetOrderStatus(face);
             face.Status = "1";
             //if (!input.IsAgreed) MinusLimit(face.LeaveerId, Convert.ToDecimal(face.LeaveDays));
-            
+            //把多个审批人的状态同步更新为已审批
+
             SaveChanges();
             //审批同意则更新头像并下发
             if (input.IsAgreed) {
