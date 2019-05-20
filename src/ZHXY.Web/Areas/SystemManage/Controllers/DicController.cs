@@ -20,7 +20,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult GetItems(string code)
         {
             var data=App.GetItems(code);
-            return Resultaat.Success(data);
+            return Result.Success(data);
         }
 
 
@@ -28,38 +28,38 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult Load()
         {
             var data = App.GetList();
-            return Resultaat.Success(data);
+            return Result.Success(data);
         }
 
 
         public ActionResult Add(DicDto dto)
         {
             App.Add(dto);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
         public ActionResult Update(DicDto dto)
         {
             App.Update(dto);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
         public ActionResult Delete(string id)
         {
             App.Delete(id);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
         public ActionResult AddItem(DicItemDto dto)
         {
             App.AddItem(dto);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
         public ActionResult UpdateItem(DicItemDto dto)
         {
             App.UpdateItem(dto);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
         public ActionResult DeleteItem(string id)
@@ -68,7 +68,7 @@ namespace ZHXY.Web.SystemManage.Controllers
             {
                 App.DeleteItem(id.Split(','));
             }
-            return Resultaat.Success();
+            return Result.Success();
         }
     }
 }

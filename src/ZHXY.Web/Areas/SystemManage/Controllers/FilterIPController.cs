@@ -15,7 +15,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult Load(string keyword)
         {
             var data = App.GetList(keyword);
-            return Resultaat.Success(data);
+            return Result.Success(data);
         }
 
         [HttpGet]
@@ -23,21 +23,21 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult Get(string id)
         {
             var data = App.GetById(id);
-            return Resultaat.Success(data);
+            return Result.Success(data);
         }
 
         [HttpPost]
         public ActionResult Add(AddFilterIpDto input)
         {
             App.Add(input);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
         [HttpPost]
         public ActionResult Update(UpdateFilterIpDto input)
         {
             App.Update(input);
-            return Resultaat.Success();
+            return Result.Success();
         }
         [HttpPost]
         
@@ -46,7 +46,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult Delete(string id)
         {
             App.Delete(id);
-            return Resultaat.Success();
+            return Result.Success();
         }
     }
 }

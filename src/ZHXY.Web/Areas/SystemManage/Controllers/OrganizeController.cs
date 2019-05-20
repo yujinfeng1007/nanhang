@@ -152,20 +152,20 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult Get(string id)
         {
             var data = App.GetById(id);
-            return Resultaat.Success(data);
+            return Result.Success(data);
         }
 
         [HttpPost]
         public ActionResult Update(UpdateOrgDto dto)
         {
             App.Update(dto);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
         public ActionResult Add(AddOrgDto dto)
         {
             App.Add(dto);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
         [HttpPost]
@@ -174,7 +174,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult Delete(string id)
         {
             App.Delete(id);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
 
@@ -186,7 +186,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         public async Task<ActionResult> GetTeacherOrg(string nodeId = "3", int n_level = 0) => await Task.Run(() =>
              {
                  var result = App.GetTeacherOrg(nodeId, n_level);
-                 return Resultaat.Success(result);
+                 return Result.Success(result);
              });
 
         /// <summary>
@@ -197,14 +197,14 @@ namespace ZHXY.Web.SystemManage.Controllers
         public async Task<ActionResult> GetStudentOrg(string nodeId = "2", int n_level = 0) => await Task.Run(() =>
         {
             var result = App.GetTeacherOrg(nodeId, n_level);
-            return Resultaat.Success(result);
+            return Result.Success(result);
         });
 
         [HttpGet]
         public async Task<ActionResult> GetSubOrg(string nodeId = null, int n_level = 0) => await Task.Run(() =>
         {
             var result = App.GetChildOrg(nodeId, n_level);
-            return Resultaat.Success(result);
+            return Result.Success(result);
         });
 
 

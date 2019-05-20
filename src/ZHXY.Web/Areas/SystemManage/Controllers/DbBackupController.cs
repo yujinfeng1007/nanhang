@@ -24,7 +24,7 @@ namespace ZHXY.Web.SystemManage.Controllers
             dto.FilePath = Server.MapPath("~/Resource/DbBackup/" + dto.FileName + ".bak");
             dto.FileName += ".bak";
             App.Add(dto);
-            return Message("操作成功。");
+            return Result.Success();
         }
 
         [HttpPost]
@@ -34,7 +34,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult DeleteForm(string keyValue)
         {
             App.Delete(keyValue);
-            return Message("删除成功。");
+            return Result.Success();
         }
 
         [HttpPost]

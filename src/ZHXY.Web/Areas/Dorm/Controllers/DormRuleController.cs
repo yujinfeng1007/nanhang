@@ -11,15 +11,15 @@ namespace ZHXY.Web.Dorm.Controllers
         public DormRuleController(DormRuleAppService app) => App = app;
 
         [HttpGet]
-        public ActionResult Get(string id) => Resultaat.Success(App.GetById(id));
+        public ActionResult Get(string id) => Result.Success(App.GetById(id));
         public ActionResult Update(UpdateDormRuleDto input)
         {
             App.Update(input);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
         [HttpGet]
-        public ActionResult Load() => Resultaat.Success(App.Load());
+        public ActionResult Load() => Result.Success(App.Load());
        
     }
 }

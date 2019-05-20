@@ -108,7 +108,7 @@ namespace ZHXY.Web.Controllers
                         }
 
                         ).ToList();
-            return PagingResult(list, pagination.Records, pagination.Total);
+            return Result.PagingRst(list, pagination.Records, pagination.Total);
         }
 
         // add by ben
@@ -163,7 +163,7 @@ namespace ZHXY.Web.Controllers
                 }).ToList();
             list = list.OrderBy(p => string.IsNullOrEmpty(p.ParentName) ? p.Name : p.ParentName + p.SortCode).ToList();
 
-            return Result(list);
+            return Result.Success(list);
         }
 
         #endregion HttpGet

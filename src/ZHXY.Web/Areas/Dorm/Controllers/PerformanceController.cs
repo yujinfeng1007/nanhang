@@ -23,7 +23,7 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult LoginStatistics(GetLoginStatisticsDto input)
         {
             var data = App.GetLoginStatistics(input);
-            return Resultaat.PagingRst(data, input.Records, input.Total);
+            return Result.PagingRst(data, input.Records, input.Total);
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult LoginDetail(GetLoginDetailDto input)
         {
             var list = App.GetLoginDetail(input);
-            return Resultaat.Success(list);
+            return Result.Success(list);
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult BuildingAccessStatistics(GetBuildingAccessStatisticsDto input)
         {
             var (list, recordCount, pageCount) = App.GetBuildingAccessStatistics(input);
-            return Resultaat.PagingRst(list, recordCount, pageCount);
+            return Result.PagingRst(list, recordCount, pageCount);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult BuildingAccessDetail(GetBuildingAccessDetailDto input)
         {
             var list = App.GetBuildingAccessDetail(input);
-            return Resultaat.Success(list);
+            return Result.Success(list);
         }
     }
 }

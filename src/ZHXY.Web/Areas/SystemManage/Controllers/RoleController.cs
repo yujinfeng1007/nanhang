@@ -19,7 +19,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult Load(string keyword)
         {
             var data = App.GetList(keyword);
-            return Resultaat.Success(data);
+            return Result.Success(data);
         }
 
 
@@ -28,7 +28,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult Get(string id)
         {
             var data = App.GetById(id);
-            return Resultaat.Success(data);
+            return Result.Success(data);
         }
 
         [HttpPost]
@@ -36,7 +36,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult Update(UpdateRoleDto dto)
         {
             App.Update(dto);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
         [HttpPost]
@@ -44,26 +44,26 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult Add(AddRoleDto dto)
         {
             App.Add(dto);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
         [HttpPost]
         public ActionResult Delete(string id)
         {
             App.Delete(id);
-            return Resultaat.Success();
+            return Result.Success();
         }
         [HttpPost]
         public ActionResult AddRoleUser(string roleId, string[] userId)
         {
             App.AddRoleUser(roleId, userId);
-            return Resultaat.Success();
+            return Result.Success();
         }
         [HttpPost]
         public ActionResult RemoveRoleUser(string roleId, string[] userId)
         {
             App.RemoveRoleUser(roleId, userId);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
 
@@ -71,45 +71,45 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult RemoveRoleFunc(string roleId, string funcId)
         {
             App.RemoveRoleFunc(roleId, new[] { funcId});
-            return Resultaat.Success();
+            return Result.Success();
         }
         [HttpGet]
         public ActionResult GetRoleFuncs(string roleId)
         {
             var data=App.GetRoleFuncs(roleId);
-            return Resultaat.Success(data);
+            return Result.Success(data);
         }
         [HttpPost]
         public ActionResult AddRoleFunc(string roleId,string[] funcs)
         {
             App.AddRoleFunc(roleId, funcs);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
         [HttpGet]
         public ActionResult GetRoleMenus(string roleId)
         {
             var data = App.GetRoleMenus(roleId);
-            return Resultaat.Success(data);
+            return Result.Success(data);
         }
         [HttpPost]
         public ActionResult AddRoleMenu(string roleId, string[] menus)
         {
             App.AddRoleMenu(roleId, menus);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
 
         public ActionResult GetExcludeFuncs(string roleId,string menuId)
         {
             var data=App.GetMenuFuncsExcludeRole(roleId, menuId);
-            return Resultaat.Success(data);
+            return Result.Success(data);
         }
 
         public ActionResult GetExcludeMenus(string roleId, string menuId)
         {
             var data = App.GetMenusExcludeRole(roleId, menuId);
-            return Resultaat.Success(data);
+            return Result.Success(data);
         }
 
 

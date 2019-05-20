@@ -46,7 +46,7 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult DeleteForm(string id)
         {
             App.Delete(id);
-            return Message("删除成功。");
+            return Result.Success();
         }
         
 	

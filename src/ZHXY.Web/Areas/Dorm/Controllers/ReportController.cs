@@ -46,8 +46,8 @@ namespace ZHXY.Web.Dorm.Controllers
                  College = p.College,
                  InTime = p.InTime,
                  Ftime = p.F_Time
-             });
-            return PagingResult(list, pagination);
+             }).ToList();
+            return Result.PagingRst(list, pagination.Records,pagination.Total);
         }
         [HttpGet]
         public ActionResult GetNoReturnList(Pagination pagination, string startTime, string endTime, string classId)
@@ -62,8 +62,8 @@ namespace ZHXY.Web.Dorm.Controllers
                 College = p.College,
                 Time = p.OutTime,
                 DayCount   = p.DayCount
-            });
-            return PagingResult(list, pagination);
+            }).ToList();
+            return Result.PagingRst(list, pagination.Records,pagination.Total);
         }
         [HttpGet]
         public ActionResult GetNoOutList(Pagination pagination, string startTime, string endTime, string classId)
@@ -78,8 +78,8 @@ namespace ZHXY.Web.Dorm.Controllers
                 College = p.College,
                 InTime = p.InTime,
                 Time = p.Time
-            });
-            return PagingResult(list, pagination);
+            }).ToList();
+            return Result.PagingRst(list, pagination.Records, pagination.Total);
         }
         [HttpGet]
         public ActionResult GetOriginalList(Pagination pagination, string studentNum,string startTime,string endTime)
@@ -103,8 +103,8 @@ namespace ZHXY.Web.Dorm.Controllers
                     p.InOut,
                     p.Date
                 };
-            });
-            return PagingResult(list, pagination);
+            }).ToList();
+            return Result.PagingRst(list, pagination.Records, pagination.Total);
         }
         #endregion
         #region export

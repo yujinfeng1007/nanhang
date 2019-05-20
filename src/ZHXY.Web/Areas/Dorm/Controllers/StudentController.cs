@@ -18,7 +18,7 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult Load(Pagination pag, string keyword)
         {
             var data = App.GetList(pag, keyword);
-            return Resultaat.PagingRst(data, pag.Records, pag.Total);
+            return Result.PagingRst(data, pag.Records, pag.Total);
         }
 
         [HttpGet]
@@ -26,7 +26,7 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult Get(string id)
         {
             var data = App.GetById(id);
-            return Resultaat.Success(data);
+            return Result.Success(data);
         }
 
         [HttpGet]
@@ -34,7 +34,7 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult GetByStudentNumber(string number)
         {
             var data = App.GetByStudentNumber(number);
-            return Resultaat.Success(data);
+            return Result.Success(data);
         }
         /// <summary>
         /// 根据班级ID查学生
