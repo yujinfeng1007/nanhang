@@ -18,7 +18,7 @@ namespace ZHXY.Application
         public List<NoReturnReport> GetList(Pagination pag, string startTime, string endTime, string classId)
         {
             pag.Sord = "desc";
-            pag.Sidx = "F_CreatorTime";
+            pag.Sidx = "CreatedTime";
             var expression = ExtLinq.True<NoReturnReport>();
             if (!string.IsNullOrEmpty(classId))
                 expression = expression.And(p => p.ClassId.Equals(classId));

@@ -15,7 +15,7 @@ namespace ZHXY.Application
         public List<NoOutReport> GetList(Pagination pagination, string startTime, string endTime, string classId)
         {
             pagination.Sord = "desc";
-            pagination.Sidx = "F_CreatorTime";
+            pagination.Sidx = "CreatedTime";
             var expression = ExtLinq.True<NoOutReport>();
             if (!string.IsNullOrEmpty(classId))
                 expression = expression.And(p => p.ClassId.Equals(classId));

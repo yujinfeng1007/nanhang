@@ -214,7 +214,6 @@
     <Compile Include="Areas\Dorm\Controllers\DormBuildingController.cs" />
     <Compile Include="Areas\Dorm\Controllers\DormRoomController.cs" />
     <Compile Include="Areas\Dorm\Controllers\DormRuleController.cs" />
-    <Compile Include="Areas\Dorm\Controllers\DormStudentController.cs" />
     <Compile Include="Areas\Dorm\Controllers\GateController.cs" />
     <Compile Include="Areas\Dorm\Controllers\HighchartsController.cs" />
     <Compile Include="Areas\Dorm\Controllers\InOutController.cs" />
@@ -1710,6 +1709,7 @@
     <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-ca.js.map" />
     <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-bg.js.map" />
     <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-ar.js.map" />
+    <None Include="Properties\PublishProfiles\发布到125服务器.pubxml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
