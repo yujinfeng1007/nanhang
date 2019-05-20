@@ -20,7 +20,7 @@ namespace ZHXY.Domain
             Property(p => p.Email).HasColumnName("email");
             Property(p => p.OrganId).HasColumnName("organ_id");
             Property(p => p.DutyId).HasColumnName("duty_id");
-            Property(p => p.UserSetUp).HasColumnName("user_setup");
+            Property(p => p.SetUp).HasColumnName("user_setup");
         }
     }
 }

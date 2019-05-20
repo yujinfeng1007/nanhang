@@ -16,26 +16,26 @@ namespace ZHXY.Web.SystemManage.Controllers
             if (user.IsEmpty())
                 return null;
             if (user != null && user.IsSystem)
-                user.Duty = "admin";
+                user.DutyId = "admin";
             //老师用户绑定班级
             var classes = App.GetBindClass(user.Id);
             user.Classes = classes.ToJson();
             return Content(new
             {
-                user.Duty,
+                user.DutyId,
                 user.HeadIcon,
                 user.Id,
                 user.IsSystem,
-                user.LoginIPAddress,
-                user.LoginIPAddressName,
+                user.Ip,
+                user.IpLocation,
                 user.LoginTime,
                 user.LoginToken,
                 user.MobilePhone,
-                user.Organ,
+                user.OrganId,
                 user.Roles,
                 user.SetUp,               
-                user.UserCode,
-                user.UserName,
+                user.Account,
+                user.Name,
                 user.Classes,
                 UserId =user.Id
             }.ToJson());

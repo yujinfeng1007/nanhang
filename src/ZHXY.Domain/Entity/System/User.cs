@@ -66,7 +66,7 @@ namespace ZHXY.Domain
 
       
 
-        public string UserSetUp { get; set; }
+        public string SetUp { get; set; }
 
     }
 }

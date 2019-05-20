@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Web.Mvc;
-using System.Linq;
 using System.Net;
 using SSO_ClientSDK;
 using System.Data.Entity;
@@ -19,14 +17,12 @@ namespace ZHXY.Web.Controllers
     public class LoginController : Controller
     {
         private DutyService DutyApp { get; }
-        private RoleService RoleApp { get; }
         private UserService UserApp { get; }
 
         public LoginController(DutyService app, UserService userApp, RoleService roleApp)
         {
             DutyApp = app;
             UserApp = userApp;
-            RoleApp = roleApp;
         }
 
         #region view
@@ -85,9 +81,9 @@ namespace ZHXY.Web.Controllers
                     IPAddressName = Net.GetLocation(Net.Ip),
                     ModuleName = "系统登录",
                     Type = DbLogType.Exit.ToString(),
-                    Account = Operator.GetCurrent().UserCode,
+                    Account = Operator.GetCurrent().Account,
                     UserId = Operator.GetCurrent().Id,
-                    NickName = Operator.GetCurrent().UserName,
+                    NickName = Operator.GetCurrent().Name,
                     Result = true,
                     Description = "安全退出系统",
                 });
@@ -138,17 +134,16 @@ namespace ZHXY.Web.Controllers
                 {
                     var operatorModel = new CurrentUser();
                     operatorModel.Id = userEntity.Id;
-                    operatorModel.UserCode = userEntity.Account;
-                    operatorModel.UserName = userEntity.Name;
-                    operatorModel.SetUp = userEntity.UserSetUp;
-                    operatorModel.Organ = userEntity.OrganId;
+                    operatorModel.Account = userEntity.Account;
+                    operatorModel.Name = userEntity.Name;
+                    operatorModel.SetUp = userEntity.SetUp;
+                    operatorModel.OrganId = userEntity.OrganId;
                     operatorModel.HeadIcon = userEntity.HeadIcon;
-                    operatorModel.LoginIPAddress = Net.Ip;
-                    operatorModel.LoginIPAddressName = Net.GetLocation(operatorModel.LoginIPAddress);
+                    operatorModel.Ip = Net.Ip;
+                    operatorModel.IpLocation = Net.GetLocation(operatorModel.Ip);
                     operatorModel.LoginTime = DateTime.Now;
                     operatorModel.LoginToken = DESEncryptHelper.Encrypt(Guid.NewGuid().ToString());
                     operatorModel.MobilePhone = userEntity.MobilePhone;
-                    //operatorModel.F_Class = userEntity.F_Class;
                     if (userEntity.Account == "admin")
                     {
                         duty = "admin";
@@ -160,12 +155,8 @@ namespace ZHXY.Web.Controllers
                         operatorModel.IsSystem = false;
                     }
 
-                    //duty = userEntity.F_DutyId;
-                    //权限判断，先看个人有没有设置数据权限，再看角色是否有数据权限
                     operatorModel.Roles = UserApp.GetUserRolesId(userEntity.Id);
-                    //}
-                    //用户岗位 类型
-                    operatorModel.Duty = userEntity.DutyId;
+                    operatorModel.DutyId = userEntity.DutyId;
                     Operator.Set(operatorModel);
                     logEntity.Account = userEntity.Account;
                     logEntity.NickName = userEntity.Name;
@@ -196,28 +187,8 @@ namespace ZHXY.Web.Controllers
         {
             CheckVerifyCode(code);
             var user = UserApp.CheckLogin(username, password);
-            var duty = string.Empty;
-            if (user != null)
-            {
-                var op = new CurrentUser
-                {
-                    Id = user.Id,
-                    UserCode = user.Account,
-                    UserName = user.Name,
-                    SetUp = user.UserSetUp,
-                    Organ = user.OrganId,
-                    HeadIcon = user.HeadIcon,
-                    LoginIPAddress = Net.Ip,
-                    LoginTime = DateTime.Now,
-                    LoginToken = DESEncryptHelper.Encrypt(Guid.NewGuid().ToString()),
-                    MobilePhone = user.MobilePhone,
-                };
-                op.LoginIPAddressName = Net.GetLocation(op.LoginIPAddress);
-                op.Roles = UserApp.GetUserRolesId(user.Id);
-                op.Duty = user.DutyId;
-                Operator.Set(op);
-            }
-            return Resultaat.Success(new { duty, user.UserSetUp, user.Name });
+            Operator.Set(user);
+            return Resultaat.Success(new { user.DutyId, user.SetUp, user.Name });
         }
 
 
@@ -288,16 +259,16 @@ namespace ZHXY.Web.Controllers
             var current = new CurrentUser
             {
                 Id = user.Id,
-                UserCode = user.Account,
-                UserName = user.Name,
-                SetUp = user.UserSetUp,
-                Organ = user.OrganId,
+                Account = user.Account,
+                Name = user.Name,
+                SetUp = user.SetUp,
+                OrganId = user.OrganId,
                 HeadIcon = user.HeadIcon,
-                LoginIPAddress = Net.Ip,
+                Ip = Net.Ip,
                 MobilePhone = user.MobilePhone,
-                Duty = user.DutyId
+                DutyId = user.DutyId
             };
-            current.LoginIPAddressName = Net.GetLocation(current.LoginIPAddress);
+            current.IpLocation = Net.GetLocation(current.Ip);
             current.LoginToken = DESEncryptHelper.Encrypt(Guid.NewGuid().ToString());
 
             if (user.Account == "admin") current.IsSystem = true;
