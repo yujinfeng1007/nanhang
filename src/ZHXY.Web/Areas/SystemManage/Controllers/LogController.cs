@@ -4,7 +4,7 @@ using System.Web.Mvc;
 using ZHXY.Application;
 namespace ZHXY.Web.SystemManage.Controllers
 {
-    public class LogController : ZhxyWebControllerBase
+    public class LogController : ZhxyController
     {
         private LogService App { get; }
         public LogController(LogService app) => App = app;

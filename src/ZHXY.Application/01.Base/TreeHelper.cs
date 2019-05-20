@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Text;
+using ZHXY.Common;
 using ZHXY.Domain;
 
 namespace ZHXY.Application
@@ -114,6 +116,28 @@ namespace ZHXY.Application
                    ParentName = p.Parent.Name,
                    SortCode = p.SortCode ?? 0
                }).ToListAsync().Result;
+        }
+
+        /// <summary>
+        /// 获取菜单树
+        /// </summary>
+        public static string GetMenuJson(List<Menu> data, string parentId)
+        {
+            var sbJson = new StringBuilder();
+            sbJson.Append("[");
+            var entitys = data.FindAll(t => t.ParentId.Equals(parentId));
+            if (entitys.Any())
+            {
+                foreach (var item in entitys)
+                {
+                    var strJson = item.ToCamelJson();
+                    strJson = strJson.Insert(strJson.Length - 1, $",\"childNodes\":{GetMenuJson(data, item.Id)}{string.Empty}");
+                    sbJson.Append(strJson + ",");
+                }
+                sbJson = sbJson.Remove(sbJson.Length - 1, 1);
+            }
+            sbJson.Append("]");
+            return sbJson.ToString();
         }
     }
 }

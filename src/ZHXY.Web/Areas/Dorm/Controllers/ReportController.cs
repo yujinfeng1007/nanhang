@@ -9,7 +9,7 @@ using ZHXY.Common;
 namespace ZHXY.Web.Dorm.Controllers
 {
     //报表统计控制器
-    public class ReportController : ZhxyWebControllerBase
+    public class ReportController : ZhxyController
     {
         private LateReturnReportService LateReturnReportApp { get; }
 

@@ -539,6 +539,7 @@
     <Content Include="Areas\SystemManage\Views\Log\LoginHis.cshtml" />
     <Content Include="Areas\SystemManage\Views\Dic\Index.cshtml" />
     <Content Include="Areas\SystemManage\Views\Role\Power.cshtml" />
+    <Content Include="Areas\SystemManage\Views\Role\Menu.cshtml" />
     <None Include="Content\js\dialog\dialog.css.bak" />
     <Content Include="Content\js\dialog\dialog.css" />
     <Content Include="Content\js\dialog\dialog.js" />
@@ -1743,6 +1744,9 @@
     <Content Include="Areas\SystemManage\Views\Area\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\SystemManage\Views\Dic\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Areas\SystemManage\Views\Organize\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -1753,9 +1757,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\SystemManage\Views\Role\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\Area\Form.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\SystemManage\Views\User\Index.cshtml" />

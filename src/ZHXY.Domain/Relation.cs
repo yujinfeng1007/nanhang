@@ -32,5 +32,6 @@
         /// </summary>
         public static string RolePower { get; } = $"{nameof(Role)}{Separator}{nameof(Function)}";
 
+
     }
 }

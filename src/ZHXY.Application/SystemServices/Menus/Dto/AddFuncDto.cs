@@ -1,6 +1,6 @@
 ﻿namespace ZHXY.Application
 {
-    public class AddBtnDto
+    public class AddFuncDto
     {
         public string MenuId { get; set; }
         public string EnCode { get; set; }

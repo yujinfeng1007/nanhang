@@ -9,7 +9,7 @@ using ZHXY.Domain;
 
 namespace ZHXY.Web.Dorm.Controllers
 {
-    public class TeacherController : ZhxyWebControllerBase
+    public class TeacherController : ZhxyController
     {
 
         private TeacherService App { get; }

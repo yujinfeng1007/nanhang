@@ -12,7 +12,7 @@ namespace ZHXY.Domain
             entity.F_Id = Guid.NewGuid().ToString("N").ToUpper();
             if (flag)
             {
-                var LoginInfo = Operator.Current;
+                var LoginInfo = Operator.GetCurrent();
                 if (LoginInfo != null)
                 {
                     entity.F_CreatorUserId = LoginInfo.Id;
@@ -31,7 +31,7 @@ namespace ZHXY.Domain
             entity.F_Id = keyValue;
             if (flag)
             {
-                var LoginInfo = Operator.Current;
+                var LoginInfo = Operator.GetCurrent();
                 if (LoginInfo != null)
                 {
                     entity.F_LastModifyUserId = LoginInfo.Id;
@@ -45,7 +45,7 @@ namespace ZHXY.Domain
             var entity = this as IDeleteAudited;
             if (flag)
             {
-                var LoginInfo = Operator.Current;
+                var LoginInfo = Operator.GetCurrent();
                 if (LoginInfo != null)
                 {
                     entity.F_DeleteUserId = LoginInfo.Id;

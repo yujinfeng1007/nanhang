@@ -6,21 +6,18 @@ namespace ZHXY.Common
     {
         private static string LoginUserKey { get; } = "zhxy";
 
-        public static CurrentUser Current
+        public static CurrentUser GetCurrent()
         {
-            get
+            try
             {
-                try
-                {
-                    var content = HttpContext.Current.Session[LoginUserKey]?.ToString();
-                    return content.ToObject<CurrentUser>();
-                }
-                catch
-                {
-                    return default;
-                }
-
+                var content = HttpContext.Current.Session[LoginUserKey]?.ToString();
+                return content.ToObject<CurrentUser>();
             }
+            catch
+            {
+                return default;
+            }
+
         }
 
         /// <summary>

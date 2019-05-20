@@ -8,7 +8,7 @@ using ZHXY.Domain;
 
 namespace ZHXY.Web.Dorm.Controllers
 {
-    public class StudentController : ZhxyWebControllerBase
+    public class StudentController : ZhxyController
     {
 
         private StudentService App { get; }

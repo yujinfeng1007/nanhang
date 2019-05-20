@@ -35,7 +35,7 @@ namespace ZHXY.Web.Controllers
         public virtual ActionResult Index2()
         {
             Licence.IsLicence();
-            if (Operator.Current.IsEmpty())
+            if (Operator.GetCurrent().IsEmpty())
             {
                 return View("index");
             }
@@ -47,7 +47,7 @@ namespace ZHXY.Web.Controllers
         {
             Licence.IsLicence();
 
-            if (Operator.Current.IsEmpty())
+            if (Operator.GetCurrent().IsEmpty())
             {
                 return View();
             }
@@ -77,7 +77,7 @@ namespace ZHXY.Web.Controllers
         [HttpGet]
         public ActionResult OutLogin()
         {
-            if (Operator.Current != null)
+            if (Operator.GetCurrent() != null)
             {
                 WriteLog(new AddLogDto
                 {
@@ -85,9 +85,9 @@ namespace ZHXY.Web.Controllers
                     IPAddressName = Net.GetLocation(Net.Ip),
                     ModuleName = "系统登录",
                     Type = DbLogType.Exit.ToString(),
-                    Account = Operator.Current.UserCode,
-                    UserId = Operator.Current.Id,
-                    NickName = Operator.Current.UserName,
+                    Account = Operator.GetCurrent().UserCode,
+                    UserId = Operator.GetCurrent().Id,
+                    NickName = Operator.GetCurrent().UserName,
                     Result = true,
                     Description = "安全退出系统",
                 });
@@ -248,7 +248,7 @@ namespace ZHXY.Web.Controllers
         #region 南航单点登录
         public void Index3()
         {
-            if (Operator.Current == null)
+            if (Operator.GetCurrent() == null)
             {
                 Certification();
             }

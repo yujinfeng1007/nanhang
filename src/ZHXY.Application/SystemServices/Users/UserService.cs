@@ -147,9 +147,19 @@ namespace ZHXY.Application
                 Duty = user.Duty,
                 Roles = user.Roles
             };
-            //var menus=Read<Relevance>(p => p.Name.Equals(Relation.RoleMenu) && d.Roles.Contains(p.FirstKey)).Select(p => p.SecondKey).Distinct().ToArrayAsync().Result;
-            //var buttons =Read<Relevance>(p => p.Name.Equals(Relation.RoleButton) && d.Roles.Contains(p.FirstKey)).Select(p => p.SecondKey).Distinct().ToArrayAsync().Result;
-            d.Menus = Read<Menu>(p=>p.ParentId.Equals(SYS_CONSTS.DbNull)).Include("ChildNodes").OrderBy(p=>p.SortCode).ToListAsync().Result;
+            var query = Read<Menu>(p => p.BelongSys.Equals("1"));
+            if (user.IsSystem)
+            {
+                var list = query.ToListAsync().Result;
+                d.Menus = TreeHelper.GetMenuJson(list, SYS_CONSTS.DbNull);
+            }
+            else
+            {
+                var userMenus=Read<Relevance>(p => p.Name.Equals(Relation.RolePower) && d.Roles.Contains(p.FirstKey)&&p.ThirdKey.Equals(SYS_CONSTS.DbNull)).Select(p => p.SecondKey).ToArrayAsync().Result;
+                var list= query.Where(p=>userMenus.Contains(p.Id)).ToListAsync().Result;
+                d.Menus = TreeHelper.GetMenuJson(list, SYS_CONSTS.DbNull);
+            }
+            
             d.Buttons = Read<Function>().ToListAsync().Result;
             var o = Read<User>(p => p.Id.Equals(user.Id)).FirstOrDefaultAsync().Result;
             d.UserName = o.Name;
@@ -165,6 +175,29 @@ namespace ZHXY.Application
         public string[] GetUserRolesId(string userId)
         {
             return Read<Relevance>(p => p.Name.Equals(Relation.UserRole) && p.FirstKey.Equals(userId)).Select(p => p.SecondKey).ToArrayAsync().Result;
+        }
+
+
+
+
+        /// <summary>
+        /// 用户鉴权
+        /// 鉴定用户是否具有某项功能权限
+        /// </summary>
+        /// <returns></returns>
+        public bool Authentication(string userId,string funcId)
+        {
+            var userRoles=Read<Relevance>(p => p.Name.Equals(Relation.UserRole) && p.FirstKey.Equals(userId)).Select(p => p.SecondKey).ToListAsync().Result;
+            var userPowers = Read<Relevance>(p => p.Name.Equals(Relation.RolePower) && userRoles.Contains(p.FirstKey)).Select(p => p.ThirdKey).Distinct().ToArrayAsync().Result;
+            return userPowers.Contains(funcId);
+        }
+
+
+        public void GetUserMenuJson(string userId,string system)
+        {
+            var roles = GetUserRolesId(userId);
+            var menus=Read<Relevance>(p => p.Name.Equals(Relation.RolePower) && roles.Contains(p.FirstKey)).Select(p => p.SecondKey).Distinct().ToArrayAsync().Result;
+            var list = Read<Menu>(p => menus.Contains(p.Id)&&p.BelongSys.Equals(system)).ToListAsync().Result;
         }
     }
 }
