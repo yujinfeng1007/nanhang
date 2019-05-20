@@ -22,17 +22,17 @@ namespace ZHXY.Api.Controllers
 
             //推送人员信息至大华
             PersonMoudle personMoudle = new PersonMoudle();
-            personMoudle.id = level;
+            personMoudle.id = 0;
             personMoudle.orgId = "org001";
             personMoudle.code = "987654321";
             personMoudle.idCode = "360421199311144018";
             personMoudle.name = "Refuse";
             personMoudle.roleId = "student001"; //teacher001
             personMoudle.sex = 1;
-            personMoudle.colleageCode = "宿舍管理"; //默认分院
-            personMoudle.dormitoryCode = "1栋";//楼栋  例如： 11栋
-            personMoudle.dormitoryFloor = "1栋1层"; //楼层  例如：3楼
-            personMoudle.dormitoryRoom = "1栋104"; //宿舍号  例如：312
+            //personMoudle.colleageCode = "宿舍管理"; //默认分院
+            //personMoudle.dormitoryCode = "1栋";//楼栋  例如： 11栋
+            //personMoudle.dormitoryFloor = "1栋1层"; //楼层  例如：3楼
+            //personMoudle.dormitoryRoom = "1栋104"; //宿舍号  例如：312
             personMoudle.photoUrl = "http://localhost:8080/file/5.jpg";
             //return DHAccount.PUSH_DH_ADD_PERSON(personMoudle);
 

@@ -101,6 +101,10 @@ namespace ZHXY.Application.DormServices.Gates
                         //}
                         try
                         {
+                            person.colleageCode = null;
+                            person.dormitoryCode = null;
+                            person.dormitoryFloor = null;
+                            person.dormitoryRoom= null;
                             DHAccount.PUSH_DH_UPDATE_PERSON(person);
                         }
                         catch(Exception e)
