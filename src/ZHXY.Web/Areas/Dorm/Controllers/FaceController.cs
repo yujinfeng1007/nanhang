@@ -15,7 +15,7 @@ namespace ZHXY.Web.Dorm.Controllers
 
         [HttpPost]
         // <summary>
-        // 头像审批申请
+        // 头像审批申请 
         // </summary>     
         public dynamic Apply(FaceRequestDto input)
         {
