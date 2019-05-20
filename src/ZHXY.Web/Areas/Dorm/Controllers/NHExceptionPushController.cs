@@ -10,7 +10,7 @@ namespace ZHXY.Web.Dorm.Controllers
     /// </summary>
     public class NHExceptionPushController : Controller
     {
-        private MessageAppService App { get;}
+        private MessageAppService App { get; }
         public NHExceptionPushController(MessageAppService app) => App = app;
 
         /// <summary>

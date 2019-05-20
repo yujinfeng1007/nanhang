@@ -112,7 +112,6 @@
     <Compile Include="NHExceptionReport\NHExceptionJob.cs" />
     <Compile Include="NHExceptionReport\NHExceptionPushJob.cs" />
     <Compile Include="NHExceptionReport\School_Students.cs" />
-    <Compile Include="NHExceptionReport\School_Stu_Leave.cs" />
     <Compile Include="NHExceptionReport\Sys_Organize.cs" />
     <Compile Include="NHExceptionReport\sys_org_leader.cs" />
     <Compile Include="NHExceptionReport\Sys_User.cs" />

@@ -6,11 +6,23 @@ namespace ZHXY.Domain
     {
         public LateReturnReportMap()
         {
-            ToTable("Dorm_LateReturnReport");
-            HasKey(p => p.F_Id);
-            // Property(p => p.F_StudentId).HasColumnName("F_StudentId");
-            HasOptional(p => p.Class).WithMany().HasForeignKey(p => p.F_Class);
-            HasOptional(p => p.Dorm).WithMany().HasForeignKey(p => p.F_Dorm);
+            ToTable("zhxy_late_return_report");
+            HasKey(p => p.Id);
+
+            Property(p => p.Id).HasColumnName("F_Id");
+            Property(p => p.Account).HasColumnName("F_Account");
+            Property(p => p.Name).HasColumnName("F_Name");
+            Property(p => p.College).HasColumnName("F_College");
+            Property(p => p.Class).HasColumnName("F_Class");
+            Property(p => p.DormId).HasColumnName("F_Dorm");
+            Property(p => p.StudentId).HasColumnName("F_StudentId");
+            Property(p => p.CreatedTime).HasColumnName("F_CreatorTime");
+
+            Property(p => p.InTime).HasColumnName("F_InTime");
+            Property(p => p.F_Time).HasColumnName("F_Time");
+
+            HasOptional(p => p.Organ).WithMany().HasForeignKey(p => p.Class);
+            HasOptional(p => p.Dorm).WithMany().HasForeignKey(p => p.DormId);
 
         }
     }

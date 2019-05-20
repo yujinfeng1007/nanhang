@@ -7,16 +7,17 @@ namespace ZHXY.Domain
     {
         public DormStudentMap()
         {
-            ToTable("Dorm_DormStudent");
+            ToTable("zhxy_dorm_student");
             HasKey(t => t.Id);
 
 
-            Property(p => p.Id).HasColumnName("F_Id");
-            Property(p => p.StudentId).HasColumnName("F_Student_ID");
-            Property(p => p.DormId).HasColumnName("F_DormId");
-            Property(p => p.BedId).HasColumnName("F_Bed_ID");
-            Property(p => p.InTime).HasColumnName("F_In_Time");
-            Property(p => p.Gender).HasColumnName("F_Sex");
+            Property(p => p.Id).HasColumnName("id");
+            Property(p => p.StudentId).HasColumnName("student_id");
+            Property(p => p.DormId).HasColumnName("dorm_id");
+            Property(p => p.BedId).HasColumnName("bed_id");
+            Property(p => p.InTime).HasColumnName("in_time");
+            Property(p => p.Gender).HasColumnName("gender");
+            Property(p => p.Description).HasColumnName("description");
 
 
 

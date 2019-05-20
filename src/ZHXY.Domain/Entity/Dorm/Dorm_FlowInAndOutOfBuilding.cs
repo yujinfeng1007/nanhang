@@ -1,27 +1,40 @@
+using System;
+
 namespace ZHXY.Domain
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
-
-    public partial class Dorm_FlowInAndOutOfBuilding:IEntity
+    /// <summary>
+    /// 流动进出流水
+    /// </summary>
+    public partial class LDJCLS:IEntity
     {
-        [Key]
-        [StringLength(64)]
-        public string flow_id { get; set; }
+        /// <summary>
+        /// 流水Id
+        /// </summary>
+        public string FlowId { get; set; }
 
-        [StringLength(64)]
-        public string building_no { get; set; }
+        /// <summary>
+        /// 楼栋号
+        /// </summary>
+        public string BuildingNo { get; set; }
 
-        [StringLength(64)]
-        public string user_id { get; set; }
+        /// <summary>
+        /// 用户Id
+        /// </summary>
+        public string UserId { get; set; }
 
-        public bool? direction { get; set; }
+        /// <summary>
+        /// 进出方向
+        /// </summary>
+        public bool? Direction { get; set; }
 
-        public DateTime? occurrence_time { get; set; }
+        /// <summary>
+        /// 发生时间
+        /// </summary>
+        public DateTime? OccurrenceTime { get; set; }
 
-        public bool? is_abnormal { get; set; }
+        /// <summary>
+        /// 是否异常
+        /// </summary>
+        public bool? IsAbnormal { get; set; }
     }
 }

@@ -235,19 +235,13 @@
     <Compile Include="Areas\SystemManage\Controllers\DicController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\DutyController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\CurrentUserController.cs" />
-    <Compile Include="Areas\SystemManage\Controllers\ItemsDataController.cs" />
+    <Compile Include="Areas\SystemManage\Controllers\LogController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\MenuController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\OrganizeController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\OrgLeaderController.cs" />
-    <Compile Include="Areas\SystemManage\Controllers\RoleAuthorizeController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\RoleController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\UserController.cs" />
-    <Compile Include="Areas\SystemManage\Controllers\ItemsTypeController.cs" />
     <Compile Include="Areas\SystemManage\SystemManageAreaRegistration.cs" />
-    <Compile Include="Areas\SystemSecurity\Controllers\DbBackupController.cs" />
-    <Compile Include="Areas\SystemSecurity\Controllers\FilterIPController.cs" />
-    <Compile Include="Areas\SystemSecurity\Controllers\LogController.cs" />
-    <Compile Include="Areas\SystemSecurity\SystemSecurityAreaRegistration.cs" />
     <Compile Include="Controllers\ClientDataController.cs" />
     <Compile Include="Controllers\SelectController.cs" />
     <Compile Include="Controllers\FileController.cs" />
@@ -440,10 +434,7 @@
     <Content Include="Content\js\bootstrap-fileinput-master\themes\fa\theme.min.js" />
     <Content Include="Content\js\bootstrap-fileinput-master\themes\gly\theme.js" />
     <Content Include="Content\js\bootstrap-fileinput-master\themes\gly\theme.min.js" />
-    <Content Include="Areas\SystemManage\Views\StudentChange\Index.cshtml" />
     <Content Include="Areas\SystemManage\Views\OrgLeader\Select.cshtml" />
-    <Content Include="Areas\SystemSecurity\Views\Log\Index.cshtml" />
-    <Content Include="Areas\SystemSecurity\Views\Log\LoginHis.cshtml" />
     <Content Include="ApplicationInsights.config" />
     <Content Include="Areas\Dorm\Views\web.config" />
     <Content Include="Areas\Dorm\Views\XFTX\Index.cshtml" />
@@ -544,6 +535,10 @@
     <Content Include="Content\js\datepicker\开发包\skin\whyGreen\datepicker.css" />
     <Content Include="Content\js\datepicker\开发包\skin\whyGreen\img.gif" />
     <Content Include="Areas\Dorm\Views\Holiday\Index.cshtml" />
+    <Content Include="Areas\SystemManage\Views\Log\Index.cshtml" />
+    <Content Include="Areas\SystemManage\Views\Log\LoginHis.cshtml" />
+    <Content Include="Areas\SystemManage\Views\Dic\Index.cshtml" />
+    <Content Include="Areas\SystemManage\Views\Role\Power.cshtml" />
     <None Include="Content\js\dialog\dialog.css.bak" />
     <Content Include="Content\js\dialog\dialog.css" />
     <Content Include="Content\js\dialog\dialog.js" />
@@ -1748,24 +1743,6 @@
     <Content Include="Areas\SystemManage\Views\Area\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\ItemsData\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\ItemsType\Form.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\ItemsType\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\ItemsData\Form.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\ItemsType\Details.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\ItemsData\Details.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Areas\SystemManage\Views\Organize\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -1797,24 +1774,6 @@
     <Content Include="Areas\SystemManage\Views\Duty\Form.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\SystemSecurity\Views\DbBackup\Form.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\SystemSecurity\Views\DbBackup\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\SystemSecurity\Views\FilterIP\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\SystemSecurity\Views\FilterIP\Form.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\SystemSecurity\Views\FilterIP\Details.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\SystemSecurity\Views\ServerMonitoring\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Home\Default.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -1827,9 +1786,6 @@
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Areas\SystemManage\Views\TableDef\FieldForm.cshtml" />
-    <Content Include="Areas\SystemManage\Views\TableDef\Form.cshtml" />
-    <Content Include="Areas\SystemManage\Views\TableDef\index.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Content\js\bootstrap-fileinput-master\.github\CODE_OF_CONDUCT.md" />
     <Content Include="Content\js\bootstrap-fileinput-master\.github\CONTRIBUTING.md" />
@@ -1859,7 +1815,6 @@
     <Content Include="Views\Select\SelectCanOutGoods.cshtml" />
     <Content Include="Content\js\swiper-4.4.2\dist\js\swiper.min.js.map" />
     <Content Include="Areas\SystemManage\Views\web.config" />
-    <Content Include="Areas\SystemSecurity\Views\web.config" />
     <Content Include="Views\Select\SelectStudent.cshtml" />
     <Content Include="Views\Select\SelectUserByType.cshtml" />
     <Content Include="Views\Select\TeacherSelect.cshtml" />
@@ -2027,7 +1982,7 @@
           <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>
           </DevelopmentServerVPath>
-          <IISUrl>http://localhost:8082/</IISUrl>
+          <IISUrl>http://localhost:8081/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

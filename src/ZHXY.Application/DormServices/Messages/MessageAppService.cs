@@ -35,7 +35,7 @@ namespace ZHXY.Application
             DateTime EndTime = Time.AddDays(2).AddHours(2);
             List<string> OrgList = new List<string> { OrgId };
             this.GetChildOrg(OrgId, OrgList);
-            var LateReturnList = Read<LateReturnReport>(p => p.F_CreatorTime > StartTime && p.F_CreatorTime < EndTime && OrgList.Contains(p.F_Class)).ToList();
+            var LateReturnList = Read<LateReturnReport>(p => p.CreatedTime > StartTime && p.CreatedTime < EndTime && OrgList.Contains(p.Class)).ToList();
             return LateReturnList.ToJson();
         }
 
@@ -52,7 +52,7 @@ namespace ZHXY.Application
             DateTime EndTime = Time.AddDays(2).AddHours(2);
             List<string> OrgList = new List<string> { OrgId };
             this.GetChildOrg(OrgId, OrgList);
-            var NoReturnList = Read<NoReturnReport>(p => p.F_CreatorTime > StartTime && p.F_CreatorTime < EndTime && OrgList.Contains(p.F_Class)).ToList();
+            var NoReturnList = Read<NoReturnReport>(p => p.CreatedTime > StartTime && p.CreatedTime < EndTime && OrgList.Contains(p.ClassId)).ToList();
             return NoReturnList.ToJson();
         }
 
@@ -69,7 +69,7 @@ namespace ZHXY.Application
             DateTime EndTime = Time.AddDays(2).AddHours(2);
             List<string> OrgList = new List<string> { OrgId };
             this.GetChildOrg(OrgId, OrgList);
-            var NoOutList = Read<NoOutReport>(p => p.F_CreatorTime > StartTime && p.F_CreatorTime < EndTime && OrgList.Contains(p.F_Class)).ToList();
+            var NoOutList = Read<NoOutReport>(p => p.CreatedTime > StartTime && p.CreatedTime < EndTime && OrgList.Contains(p.ClassId)).ToList();
             return NoOutList.ToJson();
         }
     }

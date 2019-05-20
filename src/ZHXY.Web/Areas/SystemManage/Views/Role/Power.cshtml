@@ -1,0 +1,129 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+    let roleId = $.request("roleId");
+    $(function () {
+        $('#layout').layout({
+            west__resizable: true
+        }).sizePane("west", "40%");
+        gridRight();
+        gridLeft();
+    })
+    function gridRight() {
+        let selectedMenuId = $("#leftGrid").jqGrid('getGridParam', 'selrow');
+        $("#rightGrid").jqGrid({
+            styleUI: "Bootstrap",
+            height: window.innerHeight * 0.80,
+            width: window.innerWidth * 0.60,
+            datatype: 'json',
+            
+            multiselect: true,
+            pager: "#rightPager",
+            toppager: true,
+            rowNum: -1,
+            pgbuttons: false,
+            pgbuttons: false,
+            recordpos: "right",
+            viewrecords: false,
+            jsonReader: {
+                root: function (r) { return r.data; }
+            },
+            colModel: [
+                { name: "id", hidden: true, key: true },
+                { label: '名称', name: 'name', editable: true, editable: true },
+                { label: '编号', name: 'enCode', editable: true, editable: true },
+                { label: '排序', name: 'sortCode', editable: true, editable: true }
+            ],
+        });
+    }
+
+
+    function addPower() {
+        let funcs = $("#rightGrid").jqGrid('getGridParam', 'selarrrow');
+        var menuId=($("#leftGrid").jqGrid('getGridParam', 'selrow'));
+        $.post('/systemmanage/role/AddRoleFunc', { roleId: roleId, menuId: menuId, funcs: funcs }, function (r) {
+            $(`#rightGrid`).jqGrid().trigger('reloadGrid');
+        })
+    }
+
+    function reloadGrid(rowId) {
+        $("#rightGrid").jqGrid('setGridParam', {
+            url: `/SystemManage/Role/GetExcludeFuncs`,
+            postData: {
+                menuId: rowId,
+                roleId:roleId
+            },
+        }).trigger('reloadGrid');
+    }
+
+    function gridLeft() {
+        $("#leftGrid").jqGrid({
+            styleUI: "Bootstrap",
+            treeGrid: true,
+            url: "/SystemManage/Menu/GetMenu",
+            treeGridModel: "adjacency",
+            datatype: "json",
+            gridview: true,
+            autoGridWidth: false,
+            rowNum: -1,
+            autoGridHeight: true,
+            height: window.innerHeight * 0.80,
+            width: window.innerWidth * 0.40,
+            ExpandColumn: 'name',
+            onSelectRow: reloadGrid,
+            pager: "#leftPager",
+            toppager: true,
+            jsonReader: {
+                root: function (r) { return r.data; }
+            },
+            colModel: [
+
+                { label: '名称', name: 'name', width: 200, align: 'left', editable: true },
+                {
+                    label: '所属系统', name: "belongSys", editable: true,
+                    edittype: "select",
+                    editoptions: {
+                        value: "1:后台管理系统;2:家校通;3:其他"
+                    },
+                    formatter: function (cellvalue, options, rowobj) {
+                        switch (cellvalue) {
+                            case "1":
+                                {
+                                    return "后台管理系统";
+                                    break;
+                                }
+                            case "2":
+                                {
+                                    return "家校通";
+                                    break;
+                                }
+                            case "3":
+                                {
+                                    return "其他";
+                                    break;
+                                }
+                        }
+                    }
+                }, { name: "id", key: true, hidden: true },
+            ],
+
+        });
+    }
+</script>
+
+<div class="ui-layout" id="layout" style="height: 100%; width: 100%;">
+
+    <div class="ui-layout-west">
+        <table id="leftGrid"></table>
+        <div id="leftPager"></div>
+    </div>
+
+    <div class="ui-layout-center">
+        <div class="gridPanel">
+            <table id="rightGrid"></table>
+            <div id="rightPager"></div>
+        </div>
+    </div>
+
+</div>

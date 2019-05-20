@@ -3,11 +3,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ZHXY.Domain
 {
-    public class DormVisitLimit : Entity
+    public class DormVisitLimit : IEntity
     {
-        public new string F_Id { get; set; }
 
-        public string Student_Id { get; set; }
+        public string StudentId { get; set; }
 
         public int TotalLimit { get; set; }
 
@@ -15,16 +14,11 @@ namespace ZHXY.Domain
 
         public int IsAutoSet { get; set; }
 
-        public DateTime CreateTime { get; set; }
+        public DateTime CreatedTime { get; set; }
 
-        public DateTime UpdaetTime { get; set; }
+        public DateTime UpdateTime { get; set; }
 
-        public new bool F_EnabledMark { get; set; }
+        public bool Enabled { get; set; }
 
-        [ForeignKey("Student_Id")]
-        public virtual DormStudent DormStudent { get; set; }
-
-        [ForeignKey("Student_Id")]
-        public virtual Student student { get; set; }
     }
 }

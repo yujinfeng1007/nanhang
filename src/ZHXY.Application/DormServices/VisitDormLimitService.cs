@@ -148,7 +148,7 @@ namespace ZHXY.Application
         /// <returns></returns>
         public void SetVisitTimes(string[] Ids, int TimesOfWeek, int AutoSet)
         {
-            var DormStudents = Read<DormVisitLimit>(p => p.F_EnabledMark == true).Select(p => p.Student_Id).ToList();
+            var DormStudents = Read<DormVisitLimit>(p => p.Enabled == true).Select(p => p.StudentId).ToList();
             var InsertIds = Ids.Except(DormStudents); //需添加的数据
             var UpdateIds = Ids.Intersect(DormStudents); // 需修改的数据
             var DateTimeNow = DateTime.Now;

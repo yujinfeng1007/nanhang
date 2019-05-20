@@ -20,10 +20,9 @@
         }
     });
     function initControl() {
-       
-        $("#type").bindSelect({
-            dictionary: 'F_Duty_Type'
-        })
+        $("#type").append($.map(JSON.parse(localStorage.getItem("F_Duty_Type")), function (_item, _i) {
+            return '<option value=' + _i + '>' + _item + '</option>';
+        }).join(''));
     }
     function submitForm() {
         if (!$('#form1').formValid()) {

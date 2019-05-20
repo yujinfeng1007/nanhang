@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Web.Mvc;
-using ZHXY.Application;using ZHXY.Domain;
-using ZHXY.Common;
-
+﻿using System.Web.Mvc;
+using ZHXY.Application;
 namespace ZHXY.Web.SystemManage.Controllers
 {
     /// <summary>
@@ -15,6 +10,8 @@ namespace ZHXY.Web.SystemManage.Controllers
         private RoleService App { get; }
         public RoleController(RoleService app) => App = app;
 
+        [HttpGet]
+        public ViewResult Power() => View();
 
         [HttpGet]
 
@@ -50,11 +47,45 @@ namespace ZHXY.Web.SystemManage.Controllers
         }
 
         [HttpPost]
-
-        public ActionResult Delete(string[] id)
+        public ActionResult Delete(string id)
         {
             App.Delete(id);
             return Resultaat.Success();
         }
+        [HttpPost]
+        public ActionResult AddRoleUser(string roleId, string[] userId)
+        {
+            App.AddRoleUser(roleId, userId);
+            return Resultaat.Success();
+        }
+        [HttpPost]
+        public ActionResult RemoveRoleUser(string roleId, string[] userId)
+        {
+            App.RemoveRoleUser(roleId, userId);
+            return Resultaat.Success();
+        }
+
+        [HttpGet]
+        public ActionResult GetRoleFuncs(string roleId)
+        {
+            var data=App.GetRoleFuncs(roleId);
+            return Resultaat.Success(data);
+        }
+        [HttpPost]
+        public ActionResult AddRoleFunc(string roleId,string menuId, string[] funcs)
+        {
+            App.AddRoleFunc(roleId,menuId, funcs);
+            return Resultaat.Success();
+        }
+
+
+        public ActionResult GetExcludeFuncs(string roleId,string menuId)
+        {
+            var data=App.GetMenuFuncsExcludeRole(roleId, menuId);
+            return Resultaat.Success(data);
+        }
+
+
+
     }
 }

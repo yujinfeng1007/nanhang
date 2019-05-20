@@ -15,7 +15,7 @@ namespace ZHXY.Web.Dorm.Controllers
 
         [HttpPost]
         // <summary>
-        // 头像审批申请
+        // 头像审批申请 
         // </summary>     
         public dynamic Apply(FaceRequestDto input)
         {
@@ -54,8 +54,9 @@ namespace ZHXY.Web.Dorm.Controllers
         /// </summary>
         [HttpGet]
         public ActionResult GetList(GetFaceApprovalListDto input) {
-           input.CurrentUserId =  Operator.Current.Id;
+          // input.CurrentUserId =  Operator.Current.Id;
             var data = App.GetFaceApprovalList(input);
+          //  return Resultaat.Success(data);
             return Resultaat.PagingRst(data, input.Records, input.Total);
 
 
@@ -64,7 +65,12 @@ namespace ZHXY.Web.Dorm.Controllers
         /// 获取头像审批详情
         /// </summary>
         [HttpGet]
-        public ActionResult Get([Required(ErrorMessage = "请假Id不能为空!")]string id) => Resultaat.Success(App.GetFaceApprovalDetail(id, Operator.Current.Id));
+        // public ActionResult Get([Required(ErrorMessage = "申请Id不能为空!")]string id) => Resultaat.Success(App.GetFaceApprovalDetail(id, Operator.Current.Id));
+        public ActionResult Get(string appId, string currentUserId)
+        {
+            var data = App.GetFaceApprovalDetail(appId, currentUserId);
+            return Resultaat.Success(data);
+        }
 
 
         /// <summary>
@@ -73,10 +79,12 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpPost]
         public ActionResult Approval(FaceApprovalDto input)
         {
-            input.CurrentUserId = Operator.Current.Id;
+            //input.CurrentUserId = Operator.Current.Id;
             App.Approval(input);
             return Resultaat.Success();
         }
+
+       
 
 
     }

@@ -18,11 +18,11 @@ namespace ZHXY.Application
 
 
 
-        public dynamic GetOrganIdByStuNum(string stuNum) {
+        public Student GetOrganIdByStuNum(string stuNum) {
             return Read<Student>(p => p.StudentNumber.Equals(stuNum)).FirstOrDefault();
         }
 
-        public dynamic GetDormStuById(string studentId) {
+        public DormStudent GetDormStuById(string studentId) {
             return Read<DormStudent>(p => p.StudentId.Equals(studentId)).FirstOrDefault();
         } 
 

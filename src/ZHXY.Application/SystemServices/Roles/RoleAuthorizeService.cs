@@ -10,7 +10,7 @@ namespace ZHXY.Application
     public class RoleAuthorizeService : AppService
     {
 
-        public RoleAuthorizeService(IZhxyRepository r) :base(r)
+        public RoleAuthorizeService(IZhxyRepository r) : base(r)
         {
         }
 
@@ -43,7 +43,7 @@ namespace ZHXY.Application
         public List<Menu> GetEnableMenuList(string roleId)
         {
             var data = new List<Menu>();
-            var menus= Read<Menu>().OrderBy(t => t.SortCode).ToList(); 
+            var menus = Read<Menu>().OrderBy(t => t.SortCode).ToList();
             if (Operator.Current.IsSystem)
             {
                 data = menus;
@@ -51,10 +51,10 @@ namespace ZHXY.Application
             else
             {
                 var moduledata = menus;
-                var authorizedata =Read<RoleAuthorize>().Where(t => t.F_ObjectId == roleId && t.F_ItemType == 1).ToList();
+                var authorizedata = Query<Relevance>(p => p.Name.Equals(Relation.RolePower) && p.FirstKey.Equals(roleId)).ToList();
                 foreach (var item in authorizedata)
                 {
-                    var moduleEntity = moduledata.Find(t => t.Id == item.F_ItemId);
+                    var moduleEntity = moduledata.Find(t => t.Id == item.SecondKey);
                     if (moduleEntity != null)
                     {
                         data.Add(moduleEntity);
@@ -64,29 +64,29 @@ namespace ZHXY.Application
             return data.OrderBy(t => t.SortCode).ToList();
         }
 
-        public List<Button> GetButtonList(string roleId)
-        {
-            var data = new List<Button>();
-            var buttons=Read<Button>() .OrderBy(t => t.SortCode).ToList();
-            if (Operator.Current.IsSystem)
-            {
-                data = buttons;
-            }
-            else
-            {
-                var buttondata = buttons;
-                var authorizedata =Read<RoleAuthorize>().Where(t => t.F_ObjectId == roleId && t.F_ItemType == 2).ToList();
-                foreach (var item in authorizedata)
-                {
-                    var moduleButtonEntity = buttondata.Find(t => t.Id == item.F_ItemId);
-                    if (moduleButtonEntity != null)
-                    {
-                        data.Add(moduleButtonEntity);
-                    }
-                }
-            }
-            return data.OrderBy(t => t.SortCode).ToList();
-        }
+        //public List<Button> GetButtonList(string roleId)
+        //{
+        //    var data = new List<Button>();
+        //    var buttons = Read<Button>().OrderBy(t => t.SortCode).ToList();
+        //    if (Operator.Current.IsSystem)
+        //    {
+        //        data = buttons;
+        //    }
+        //    else
+        //    {
+        //        var buttondata = buttons;
+        //        var authorizedata = Query<Relevance>(p => p.Name.Equals(Relation.RoleButton) && p.FirstKey.Equals(roleId)).ToList();
+        //        foreach (var item in authorizedata)
+        //        {
+        //            var moduleButtonEntity = buttondata.Find(t => t.Id == item.SecondKey);
+        //            if (moduleButtonEntity != null)
+        //            {
+        //                data.Add(moduleButtonEntity);
+        //            }
+        //        }
+        //    }
+        //    return data.OrderBy(t => t.SortCode).ToList();
+        //}
 
         //public bool ActionValidate(string roleId, string moduleId, string action)
         //{

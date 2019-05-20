@@ -68,7 +68,7 @@ namespace ZHXY.Web.Dorm.Controllers
             var list = LateReturnReportApp.GetListByClass(null, startTime, endTime).Select(p =>
                 new
                 {
-                    inTime = p.F_InTime,
+                    inTime = p.InTime,
                     count = p.F_Time
                 });
             return Result(list);
@@ -90,7 +90,7 @@ namespace ZHXY.Web.Dorm.Controllers
             var list = LateReturnReportApp.GetLateListByStuId(studentId, startTime, endTime).Select(p =>
                 new
                 {
-                    inTime = p.F_InTime,
+                    inTime = p.InTime,
                     count = p.F_Time
                 });
             return Result(list);
@@ -108,8 +108,8 @@ namespace ZHXY.Web.Dorm.Controllers
             var list = NoReturnReportApp.GetList(startTime, endTime).Select(p =>
                new
                {
-                   outTime = p.F_OutTime,
-                   count = p.F_DayCount
+                   outTime = p.OutTime,
+                   count = p.DayCount
                });
             return Result(list);
         }
@@ -130,8 +130,8 @@ namespace ZHXY.Web.Dorm.Controllers
             var list = NoReturnReportApp.GetNoReturnListByStuId(studentId,startTime, endTime).Select(p =>
                new
                {
-                   outTime = p.F_OutTime,
-                   count = p.F_DayCount
+                   outTime = p.OutTime,
+                   count = p.DayCount
                });
             return Result(list);
         }
@@ -150,8 +150,8 @@ namespace ZHXY.Web.Dorm.Controllers
             var list = NoOutReportApp.GetList(startTime, endTime).Select(p =>
                new
                {
-                   inTime = p.F_InTime,
-                   count = p.F_Time
+                   inTime = p.InTime,
+                   count = p.Time
                });
             return Result(list);
         }
@@ -173,8 +173,8 @@ namespace ZHXY.Web.Dorm.Controllers
             var list = NoOutReportApp.GetNoOutListByStuId(studentId, startTime, endTime).Select(p =>
                new
                {
-                   inTime = p.F_InTime,
-                   count = p.F_Time
+                   inTime = p.InTime,
+                   count = p.Time
                });
             return Result(list);
         }
@@ -193,11 +193,11 @@ namespace ZHXY.Web.Dorm.Controllers
             var list = LateReturnReportApp.GetListByClass(classId, startTime, endTime).Select(p =>
              new
              {
-                 name = p.F_Name,
-                 className = p.Class?.Name,
+                 name = p.Name,
+                 className = p.Organ?.Name,
                  // address = p.Dorm?.Area + p.Dorm?.UnitNumber+ p.Dorm?.BuildingId + p.Dorm?.FloorNumber+p.Dorm?.Title,
                  address = p.Dorm?.Title,
-                 date = p.F_InTime,
+                 date = p.InTime,
                  record = p.F_Time
              });
             return Result(list);
@@ -217,12 +217,12 @@ namespace ZHXY.Web.Dorm.Controllers
             var list = NoReturnReportApp.GetList(classId, keyboard, startTime, endTime).Select(p =>
               new
               {
-                  name = p.F_Name,
-                  className = p.Class.Name,
+                  name = p.Name,
+                  className = p.Organ.Name,
                   //address = p.Dorm?.Area + p.Dorm?.UnitNumber + p.Dorm?.BuildingId + p.Dorm?.FloorNumber + p.Dorm?.Title,
                   address = p.Dorm?.Title,
-                  date = p.F_OutTime,
-                  count = p.F_DayCount
+                  date = p.OutTime,
+                  count = p.DayCount
               });
             return Result(list);
         }
@@ -239,12 +239,12 @@ namespace ZHXY.Web.Dorm.Controllers
             var list = NoOutReportApp.GetList(classId, keyboard, startTime, endTime).Select(p =>
               new
               {
-                  name = p.F_Name,
-                  className = p.Class.Name,
+                  name = p.Name,
+                  className = p.Organ.Name,
                   //address = p.Dorm?.Area + p.Dorm?.UnitNumber + p.Dorm?.BuildingId + p.Dorm?.FloorNumber + p.Dorm?.Title,
                   address = p.Dorm?.Title,
-                  date = p.F_InTime,
-                  count = p.F_Time
+                  date = p.InTime,
+                  count = p.Time
               });
             return Result(list);
         }
@@ -265,7 +265,7 @@ namespace ZHXY.Web.Dorm.Controllers
             var classList = new List<Organ>();
             var name = sysApp.GetClassInfosByDivisId(divisId,ref classList);
             var list = LateReturnReportApp.GetListByClassList(classList.Select(p=>p.Id).ToList(), startTime, endTime);
-            var group = list.GroupBy(p => p.F_Class);
+            var group = list.GroupBy(p => p.Class);
             foreach (var item in group)
             {
                 var obj = new

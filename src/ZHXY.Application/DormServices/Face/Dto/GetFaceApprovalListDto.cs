@@ -8,7 +8,7 @@ namespace ZHXY.Application
     /// <summary>
     /// 获取头像审批列表
     /// </summary>
-    public class GetFaceApprovalListDto: Pagination
+    public class GetFaceApprovalListDto: Pagination    
     {
 
         public string Keyword { get; set; }

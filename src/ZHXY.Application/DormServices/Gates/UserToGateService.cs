@@ -54,7 +54,7 @@ namespace ZHXY.Application.DormServices.Gates
                     var lds = Read<Relevance>(p => p.Name == "Gate_Building" && zjids.Contains(p.FirstKey)).Select(p => p.SecondKey).ToList();
 
                     var lddatas = Read<Building>(p => lds.Contains(p.Id)).ToList();
-                    ld = string.Join("_", lddatas);
+                    ld = lddatas.Count <= 0 ? "未绑定楼栋" : string.Join("_", lddatas);
                 }
                 if (d.DutyId.Contains("teacher"))
                 {
@@ -62,7 +62,7 @@ namespace ZHXY.Application.DormServices.Gates
                     studentNo = tea?.JobNumber;
                     //imgUri = tea?.FacePhoto;
                     gender = tea?.Gender == "0" ? 2 : 1;
-                    certificateNo = tea?.CredNum;
+                    certificateNo = tea?.CredNumber;
                     userType = "teacher001";// "教职工";
                 }
                 return new PersonMoudle
@@ -85,7 +85,21 @@ namespace ZHXY.Application.DormServices.Gates
             {
                 try
                 {
-                    DHAccount.PUSH_DH_DELETE_PERSON(new string[] { person.code });
+                    var dhUserstr=DHAccount.SELECT_DH_PERSON(new PersonMoudle {  code=person.code});
+                    if (dhUserstr != null)
+                    {
+                        var jo = dhUserstr.ToString().ToJObject();
+                        int code = jo.Value<int>("code"); //返回码
+                        if (code == 200)
+                        {
+                            var datas = (List<object>)jo["data"]["list"].ToObject(typeof(List<object>));
+                            for (int i = 0; i < datas.Count; i++)
+                            {
+                                string id = jo["data"]["list"][i]["id"]?.ToString();
+                                DHAccount.PUSH_DH_DELETE_PERSON(new string[] { id });
+                            }
+                        }
+                    }
                 }
                 catch
                 {

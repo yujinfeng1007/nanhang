@@ -18,16 +18,16 @@ namespace ZHXY.Application
             pagination.Sidx = "F_CreatorTime";
             var expression = ExtLinq.True<LateReturnReport>();
             if (!string.IsNullOrEmpty(classId))
-                expression = expression.And(p => p.F_Class.Equals(classId));
+                expression = expression.And(p => p.Class.Equals(classId));
             if (!string.IsNullOrEmpty(startTime))
             {
                 var start = Convert.ToDateTime(startTime + " 00:00:00");
-                expression = expression.And(p => p.F_CreatorTime >= start);
+                expression = expression.And(p => p.CreatedTime >= start);
             }
             if (!string.IsNullOrEmpty(endTime))
             {
                 var end = Convert.ToDateTime(endTime + " 23:59:59");
-                expression = expression.And(p => p.F_CreatorTime <= end);
+                expression = expression.And(p => p.CreatedTime <= end);
             }
             return Read(expression).Paging(pagination).ToList();
         }
@@ -37,16 +37,16 @@ namespace ZHXY.Application
         {
             var expression = ExtLinq.True<LateReturnReport>();
             if (!string.IsNullOrEmpty(studentId))
-                expression = expression.And(p => p.F_StudentId.Equals(studentId));
+                expression = expression.And(p => p.StudentId.Equals(studentId));
             if (!string.IsNullOrEmpty(startTime))
             {
                 var start = Convert.ToDateTime(startTime + " 00:00:00");
-                expression = expression.And(p => p.F_CreatorTime >= start);
+                expression = expression.And(p => p.CreatedTime >= start);
             }
             if (!string.IsNullOrEmpty(endTime))
             {
                 var end = Convert.ToDateTime(endTime + " 23:59:59");
-                expression = expression.And(p => p.F_CreatorTime <= end);
+                expression = expression.And(p => p.CreatedTime <= end);
             }
             return Read(expression).ToList();
         }
@@ -55,16 +55,16 @@ namespace ZHXY.Application
         {
             var expression = ExtLinq.True<LateReturnReport>();
             if (!string.IsNullOrEmpty(classId))
-                expression = expression.And(p => p.F_Class.Equals(classId));
+                expression = expression.And(p => p.Class.Equals(classId));
             if (!string.IsNullOrEmpty(startTime))
             {
                 var start = Convert.ToDateTime(startTime + " 00:00:00");
-                expression = expression.And(p => p.F_CreatorTime >= start);
+                expression = expression.And(p => p.CreatedTime >= start);
             }
             if (!string.IsNullOrEmpty(endTime))
             {
                 var end = Convert.ToDateTime(endTime + " 23:59:59");
-                expression = expression.And(p => p.F_CreatorTime <= end);
+                expression = expression.And(p => p.CreatedTime <= end);
             }
             return Read(expression).ToList();
         }
@@ -72,16 +72,16 @@ namespace ZHXY.Application
         public List<LateReturnReport> GetListByClassList(List<string> classIds, string startTime, string endTime)
         {
             var expression = ExtLinq.True<LateReturnReport>();
-                expression = expression.And(p => classIds.Contains(p.F_Class));
+                expression = expression.And(p => classIds.Contains(p.Class));
             if (!string.IsNullOrEmpty(startTime))
             {
                 var start = Convert.ToDateTime(startTime + " 00:00:00");
-                expression = expression.And(p => p.F_CreatorTime >= start);
+                expression = expression.And(p => p.CreatedTime >= start);
             }
             if (!string.IsNullOrEmpty(endTime))
             {
                 var end = Convert.ToDateTime(endTime + " 23:59:59");
-                expression = expression.And(p => p.F_CreatorTime <= end);
+                expression = expression.And(p => p.CreatedTime <= end);
             }
             return  Read(expression).ToList();
         }
@@ -91,21 +91,21 @@ namespace ZHXY.Application
             if (!string.IsNullOrEmpty(startTime))
             {
                 var start = Convert.ToDateTime(startTime + " 00:00:00");
-                expression = expression.And(p => p.F_CreatorTime >= start);
+                expression = expression.And(p => p.CreatedTime >= start);
             }
             if (!string.IsNullOrEmpty(endTime))
             {
                 var end = Convert.ToDateTime(endTime + " 23:59:59");
-                expression = expression.And(p => p.F_CreatorTime <= end);
+                expression = expression.And(p => p.CreatedTime <= end);
             }
             var lateReturnlist = Read(expression).ToList();
             var resObjList = new List<object>();
             foreach (var item in divisList)
             {
                 var classIds= classList.Where(p => p.ParentId.Equals(item.Id)).Select(p=>p.Id).ToList();
-                var stuLateList= lateReturnlist.Where(p => classIds.Contains(p.F_Class));
+                var stuLateList= lateReturnlist.Where(p => classIds.Contains(p.Class));
                 if (stuLateList.Count() < 1) continue;
-                var group = stuLateList.GroupBy(p => p.F_Class);
+                var group = stuLateList.GroupBy(p => p.Class);
                 var classObjList = new List<object>(); ;
                 foreach (var g in group)
                 {

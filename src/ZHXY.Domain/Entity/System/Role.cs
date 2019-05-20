@@ -9,8 +9,7 @@ namespace ZHXY.Domain
     {
         public string Id { get; set; } = Guid.NewGuid().ToString("N").ToUpper();
         public string OrganId { get; set; }
-        public int? Category { get; set; }
-        public string EnCode { get; set; }
+        public string Code { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
 
@@ -22,4 +21,5 @@ namespace ZHXY.Domain
         public int? SortCode { get; set; }
         public string Description { get; set; }
     }
+
 }

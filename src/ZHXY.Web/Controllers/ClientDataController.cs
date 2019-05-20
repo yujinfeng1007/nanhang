@@ -13,39 +13,39 @@ namespace ZHXY.Web.Controllers
         {
             var data = new data();
             var cache = CacheFactory.Cache();
-            data.area = SysCacheAppService.GetAreaListByCache();
-            data.dataItems = SysCacheAppService.GetDataItemListByCache();
-            data.duty = SysCacheAppService.GetDutyListByCache();
-            data.organize = SysCacheAppService.GetOrganizeListByCache();
-            data.role = SysCacheAppService.GetRoleListByCache();
+            data.area = CacheService.GetAreaListByCache();
+            data.dataItems = CacheService.GetDataItemListByCache();
+            data.duty = CacheService.GetDutyListByCache();
+            data.organize = CacheService.GetOrganizeListByCache();
+            data.role = CacheService.GetRoleListByCache();
 
             if (Operator.Current == null) return Json(data, JsonRequestBehavior.AllowGet);
             //菜单按钮权限
-            var roles = Operator.Current.Roles;
-            foreach (var e in roles)
-            {
-                var roleId = e;
-                if (string.Equals(roleId, null, StringComparison.Ordinal)) continue;
-                var menuCache = cache.GetCache<string>("menu_" + roleId);
-                if (!string.IsNullOrEmpty(menuCache) && menuCache != "[]")
-                {
-                    data.authorizeMenu = cache.GetCache<string>("menu_" + roleId);
-                }
-                else
-                {
-                    data.authorizeMenu = SysCacheAppService.GetMenuList().ToString();
-                    cache.WriteCache(data.authorizeMenu, "menu_" + roleId);
-                }
-                if (!cache.GetCache<Dictionary<string, object>>("button_" + roleId).IsEmpty())
-                {
-                    data.authorizeButton = cache.GetCache<Dictionary<string, object>>("button_" + roleId);
-                }
-                else
-                {
-                    data.authorizeButton = (Dictionary<string, object>)SysCacheAppService.GetMenuButtonList();
-                    cache.WriteCache(data.authorizeButton, "button_" + roleId);
-                }
-            }
+            //var roles = Operator.Current.Roles;
+            //foreach (var e in roles)
+            //{
+            //    var roleId = e;
+            //    if (string.Equals(roleId, null, StringComparison.Ordinal)) continue;
+            //    var menuCache = cache.GetCache<string>("menu_" + roleId);
+            //    if (!string.IsNullOrEmpty(menuCache) && menuCache != "[]")
+            //    {
+            //        data.authorizeMenu = cache.GetCache<string>("menu_" + roleId);
+            //    }
+            //    else
+            //    {
+                    data.authorizeMenu =CacheService.GetMenuList().ToString();
+            //        cache.WriteCache(data.authorizeMenu, "menu_" + roleId);
+            //    }
+            //    if (!cache.GetCache<Dictionary<string, object>>("button_" + roleId).IsEmpty())
+            //    {
+            //        data.authorizeButton = cache.GetCache<Dictionary<string, object>>("button_" + roleId);
+            //    }
+            //    else
+            //    {
+            //        //data.authorizeButton = (Dictionary<string, object>)CacheService.GetMenuButtonList();
+            //        //cache.WriteCache(data.authorizeButton, "button_" + roleId);
+            //    }
+            //}
 
             return Json(data, JsonRequestBehavior.AllowGet);
         }
