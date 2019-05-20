@@ -107,7 +107,11 @@ namespace ZHXY.Application.DormServices.Gates
                             person.dormitoryFloor = null;
                             person.dormitoryRoom= null;
                             person.id = ResultList.First().ToString().ToJObject()[0].Value<int>("id");
-                            DHAccount.PUSH_DH_UPDATE_PERSON(person);
+                            var str = DHAccount.PUSH_DH_UPDATE_PERSON(person);
+                            if(null == str)
+                            {
+                                throw new Exception("修改人员失败：" + str);
+                            }
                         }
                         catch(Exception e)
                         {
@@ -118,7 +122,11 @@ namespace ZHXY.Application.DormServices.Gates
                     {
                         try
                         {
-                            DHAccount.PUSH_DH_ADD_PERSON(person);
+                            var str = DHAccount.PUSH_DH_ADD_PERSON(person);
+                            if (null == str)
+                            {
+                                throw new Exception("添加人员失败：" + str);
+                            }
                         }
                         catch (Exception e)
                         {

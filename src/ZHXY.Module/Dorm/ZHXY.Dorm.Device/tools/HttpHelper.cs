@@ -99,7 +99,7 @@ namespace ZHXY.Dorm.Device.tools
                     string res = sr.ReadToEnd();
                     return res;
                 }
-                return null;
+                return ex.Message;
             }
         }
 
@@ -167,9 +167,9 @@ namespace ZHXY.Dorm.Device.tools
                 string res = sr.ReadToEnd();
                 return res;
             }
-            catch
+            catch (Exception ex)
             {
-                return null;
+                return ex.Message;
             }
         }
         /// <summary>

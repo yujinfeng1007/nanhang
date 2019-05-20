@@ -39,5 +39,10 @@ namespace ZHXY.Dorm.Device.tools
         public string photoUrl { get; set; } //照片路径
         public string resume { get; set; } //履历
 
+        public string dormitoryAreaName { get; set; } = "宿舍管理";
+        public string dormitoryName { get; set; }
+        public string dormitoryFloorName { get; set; }
+        public string dormitoryRoomName { get; set; }
+
     }
 }

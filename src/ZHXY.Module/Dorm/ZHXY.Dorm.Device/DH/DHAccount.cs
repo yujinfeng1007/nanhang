@@ -79,7 +79,7 @@ namespace ZHXY.Dorm.Device.DH
                     }
                 }
             }
-            return HttpHelper.ExecutePut(Constants.CREATE_STUDENTS_INFO + "/id" + "?sessionId=" + X_SUBJECT_TOKEN, JsonConvert.SerializeObject(personMoudle), X_SUBJECT_TOKEN);
+            return HttpHelper.ExecutePut(Constants.UPDATE_STUDENTS_INFO + "?sessionId=" + X_SUBJECT_TOKEN, JsonConvert.SerializeObject(personMoudle), X_SUBJECT_TOKEN);
         }
 
         /// <summary>
