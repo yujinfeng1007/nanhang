@@ -210,9 +210,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Areas\Dorm\Controllers\FaceController.cs" />
+   <Compile Include="Areas\Dorm\Controllers\FaceController.cs" />
     <Compile Include="Areas\Dorm\Controllers\HolidayController.cs" />
-    <Compile Include="Areas\Dorm\Controllers\NHExceptionPushController.cs" />
+	<Compile Include="Areas\Dorm\Controllers\NHExceptionPushController.cs" />
     <Compile Include="Areas\Dorm\Controllers\XFTXController.cs" />
     <Compile Include="Areas\Dorm\Controllers\DormBuildingController.cs" />
     <Compile Include="Areas\Dorm\Controllers\DormRoomController.cs" />
@@ -550,6 +550,7 @@
     <Content Include="Content\js\doublebox\doublebox.css" />
     <Content Include="Content\js\doublebox\doublebox.js" />
     <Content Include="Content\js\Fileupload.js" />
+    <Content Include="Content\js\framework-clientdata.js" />
     <Content Include="Content\js\indextab.js" />
     <Content Include="Content\js\framework-ui.js" />
     <Content Include="Content\js\jqgrid\grid.locale-cn.js" />
