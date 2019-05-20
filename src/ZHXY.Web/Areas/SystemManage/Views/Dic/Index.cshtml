@@ -34,16 +34,16 @@
             jsonReader: {
                 root: function (r) { return r.data; }
             },
-           
             colModel: [
-                { label: '字典', name: 'dicId', editable: true, editable: true },
-                { label: '键', name: 'key', editable: true, editable: true },
-                { label: '值', name: 'value', editable: true, editable: true }
+                { name: 'id', key: true, hidden:true },
+                { label: 'CODE', name: 'code', editable: true,  },
+                { label: 'KEY', name: 'key', editable: true,},
+                { label: 'VALUE', name: 'value', editable: true,}
             ],
         });
         $("#rightGrid").jqGrid('navGrid', '#rightPager',
             {
-                edit: true,
+                edit: false,
                 add: true,
                 del: true,
                 search: false,
@@ -52,7 +52,7 @@
                 cloneToTop: true,
             },
             {
-                url: "updateBtn",
+                url: "updateItem",
                 top: 200,
                 left: 200,
                 drag: true,
@@ -60,13 +60,13 @@
                 closeOnEscape: true,
             },
             {
-                url: "addBtn",
+                url: "addItem",
                 drag: true,
                 resize: false,
                 closeOnEscape: true,
             },
             {
-                url: "deleteBtn",
+                url: "deleteItem",
                 drag: true,
                 resize: false,
                 closeOnEscape: true,
@@ -78,7 +78,7 @@
     function reloadGrid(rowId) {
         $("#rightGrid").jqGrid('setGridParam', {
             postData: {
-                dicId: rowId
+                code: rowId
             },
         }).trigger('reloadGrid');
     }
@@ -95,7 +95,6 @@
             autoGridHeight: true,
             height: TREE_GRID_HEIGHT,
             width: TREE_GRID_WIDTH,
-            ExpandColumn: 'name',
             onSelectRow: reloadGrid,
             pager: "#leftPager",
             toppager: true,
@@ -103,16 +102,22 @@
                 root: function (r) { return r.data; }
             },
             colModel: [
-                { label: 'ID', name: 'id',  editable: true },
                 { label: '名称', name: 'name',  editable: true },
+                { label: 'CODE', name: 'code',  editable: true,key:true },
                 {
-                    label: '类型', name: "category", editable: true,
-                    formatter: function (cellValue) { return top.window.getDicValue("dicGroup", cellValue); },
+                    label: '类型', name: "type", editable: true,
+                    formatter: function (cellValue) {
+                        return top.window.getDicValue("dicGroup", cellValue);
+                    },
                     edittype: "select",
                     editoptions: { value: ()=>top.window.getDic("dicGroup") },
                 },
                 { label: '排序', name: "sortCode", editable: true, edittype: "number"},
             ],
+             grouping:true,
+             groupingView : {
+               groupField : ['type']
+             },
         });
 
         $("#leftGrid").jqGrid('navGrid', '#leftPager',
@@ -122,7 +127,7 @@
                 del: true,
                 search: false,
                 refresh: true,
-                view: true,
+                view: false,
                 cloneToTop: true,
             },
             {

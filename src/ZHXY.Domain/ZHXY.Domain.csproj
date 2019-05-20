@@ -114,8 +114,8 @@
     <Compile Include="Entity\Dorm\Student.cs" />
     <Compile Include="Entity\Dorm\Teacher.cs" />
     <Compile Include="Entity\System\Area.cs" />
-    <Compile Include="Entity\System\SysDicItem.cs" />
-    <Compile Include="Entity\System\SysDic.cs" />
+    <Compile Include="Entity\System\DicItem.cs" />
+    <Compile Include="Entity\System\Dic.cs" />
     <Compile Include="EntityExtensions\ModuleButtonComparer.cs" />
     <Compile Include="Entity\System\Function.cs" />
     <Compile Include="EntityExtensions\ModuleComparer.cs" />

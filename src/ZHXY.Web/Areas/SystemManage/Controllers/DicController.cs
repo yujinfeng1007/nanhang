@@ -17,9 +17,9 @@ namespace ZHXY.Web.SystemManage.Controllers
             return Json(data,JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult GetItems(string dicId)
+        public ActionResult GetItems(string code)
         {
-            var data=App.GetItems(dicId);
+            var data=App.GetItems(code);
             return Resultaat.Success(data);
         }
 
@@ -64,7 +64,10 @@ namespace ZHXY.Web.SystemManage.Controllers
 
         public ActionResult DeleteItem(string id)
         {
-            App.DeleteItem(id);
+            if (!string.IsNullOrEmpty(id))
+            {
+                App.DeleteItem(id.Split(','));
+            }
             return Resultaat.Success();
         }
     }

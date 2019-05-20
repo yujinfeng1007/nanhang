@@ -2,14 +2,14 @@
 
 namespace ZHXY.Domain
 {
-    public class DicItemMap : EntityTypeConfiguration<SysDicItem>
+    public class DicItemMap : EntityTypeConfiguration<DicItem>
     {
         public DicItemMap()
         {
             ToTable("zhxy_dic_item");
-            HasKey(p=>new { p.DicId,p.Key});
+            HasKey(p=>p.Id);
 
-            Property(p => p.DicId).HasColumnName("dic_id");
+            Property(p => p.Code).HasColumnName("code");
             Property(p => p.Key).HasColumnName("key");
             Property(p => p.Value).HasColumnName("value");
         }

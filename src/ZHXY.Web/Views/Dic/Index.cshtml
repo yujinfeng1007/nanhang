@@ -39,9 +39,9 @@
             },
            
             colModel: [
-                { label: '字典', name: 'dicId', editable: true, editable: true },
-                { label: '键', name: 'key', editable: true, editable: true },
-                { label: '值', name: 'value', editable: true, editable: true }
+                { label: 'CODE', name: 'code', editable: true, editable: true },
+                { label: 'KEY', name: 'key', editable: true, editable: true },
+                { label: 'VALUE', name: 'value', editable: true, editable: true }
             ],
         });
         $("#rightGrid").jqGrid('navGrid', '#rightPager',
@@ -55,7 +55,7 @@
                 cloneToTop: true,
             },
             {
-                url: "updateBtn",
+                url: "updateItem",
                 top: 200,
                 left: 200,
                 drag: true,
@@ -63,13 +63,13 @@
                 closeOnEscape: true,
             },
             {
-                url: "addBtn",
+                url: "addItem",
                 drag: true,
                 resize: false,
                 closeOnEscape: true,
             },
             {
-                url: "deleteBtn",
+                url: "deleteItem",
                 drag: true,
                 resize: false,
                 closeOnEscape: true,
@@ -106,7 +106,7 @@
                 root: function (r) { return r.data; }
             },
             colModel: [
-                { label: 'ID', name: 'id',  editable: true },
+                { label: 'CODE', name: 'code',  editable: true },
                 { label: '名称', name: 'name',  editable: true },
                 {
                     label: '类型', name: "category", editable: true,
