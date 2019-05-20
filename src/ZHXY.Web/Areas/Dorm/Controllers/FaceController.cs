@@ -37,8 +37,8 @@ namespace ZHXY.Web.Dorm.Controllers
 
                     var fullPath = $"{basePath}{uploadName}.{existen}";
                     files[i].SaveAs(fullPath);
-                    //approveFilepath = $"http://{Request.Url.Host}:{Request.Url.Port}{mapPath}{uploadName}.{existen}";
-                    approveFilepath = $"{mapPath}{uploadName}.{existen}";
+                    approveFilepath = $"http://{Request.Url.Host}:{Request.Url.Port}{mapPath}{uploadName}.{existen}";
+                   // approveFilepath = $"{mapPath}{uploadName}.{existen}";
                 }
             }
 
