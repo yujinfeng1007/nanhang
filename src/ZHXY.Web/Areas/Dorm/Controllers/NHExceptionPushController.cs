@@ -13,23 +13,36 @@ namespace ZHXY.Web.Dorm.Controllers
         private MessageAppService App { get; }
         public NHExceptionPushController(MessageAppService app) => App = app;
 
-        /// <summary>
-        ///  通过 sys_org_leader表的参数，生成异常报表
-        /// </summary>
-        /// <param name="OrgId"></param>
-        /// <returns></returns>
+       /// <summary>
+       ///  异常报表 - 晚归
+       /// </summary>
+       /// <param name="OrgId"></param>
+       /// <param name="ReportDate"></param>
+       /// <returns></returns>
         [HttpGet]
         public object GetLateReturnReport(string OrgId, string ReportDate)
         {
             return App.GetLateReturnReport(OrgId, ReportDate);
         }
 
+        /// <summary>
+        ///  异常报表 - 未归
+        /// </summary>
+        /// <param name="OrgId"></param>
+        /// <param name="ReportDate"></param>
+        /// <returns></returns>
         [HttpGet]
         public object GetNotReturnReport(string OrgId, string ReportDate)
         {
             return App.GetNotReturnReport(OrgId, ReportDate);
         }
 
+        /// <summary>
+        ///  异常报表 - 长时间未出
+        /// </summary>
+        /// <param name="OrgId"></param>
+        /// <param name="ReportDate"></param>
+        /// <returns></returns>
         [HttpGet]
         public object GetNotOutReport(string OrgId, string ReportDate)
         {

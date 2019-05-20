@@ -85,40 +85,53 @@ namespace ZHXY.Application.DormServices.Gates
             {
                 try
                 {
-                    var dhUserstr=DHAccount.SELECT_DH_PERSON(new PersonMoudle {  code=person.code});
-                    if (dhUserstr != null)
+                    var dhUserstr = DHAccount.SELECT_DH_PERSON(new PersonMoudle {  code = person.code});
+                    var ResultList = (List<object>)dhUserstr.ToString().ToJObject()["data"]["list"].ToObject(typeof(List<object>));
+                    if (null != ResultList && ResultList.Count() > 0)
                     {
-                        var jo = dhUserstr.ToString().ToJObject();
-                        int code = jo.Value<int>("code"); //返回码
-                        if (code == 200)
+                        //var jo = dhUserstr.ToString().ToJObject();
+                        //int code = jo.Value<int>("code"); //返回码
+                        //if (code == 200)
+                        //{
+                        //    var datas = (List<object>)jo["data"]["list"].ToObject(typeof(List<object>));
+                        //    for (int i = 0; i < datas.Count; i++)
+                        //    {
+                        //        string id = jo["data"]["list"][i]["id"]?.ToString();
+                        //        DHAccount.PUSH_DH_DELETE_PERSON(new string[] { id });
+                        //    }
+                        //}
+                        try
                         {
-                            var datas = (List<object>)jo["data"]["list"].ToObject(typeof(List<object>));
-                            for (int i = 0; i < datas.Count; i++)
-                            {
-                                string id = jo["data"]["list"][i]["id"]?.ToString();
-                                DHAccount.PUSH_DH_DELETE_PERSON(new string[] { id });
-                            }
+                            person.colleageCode = null;
+                            person.dormitoryCode = null;
+                            person.dormitoryFloor = null;
+                            person.dormitoryRoom= null;
+                            person.id = ResultList.First().ToString().ToJObject()[0].Value<int>("id");
+                            DHAccount.PUSH_DH_UPDATE_PERSON(person);
+                        }
+                        catch(Exception e)
+                        {
+                            result += person.name + ",";
+                        }
+                    }
+                    else
+                    {
+                        try
+                        {
+                            DHAccount.PUSH_DH_ADD_PERSON(person);
+                        }
+                        catch (Exception e)
+                        {
+                            result += person.name + ",";
                         }
                     }
                 }
                 catch
                 {
-
-                }
-                try
-                {
-                   
-                    var d = DHAccount.PUSH_DH_ADD_PERSON(person);
-                }
-                catch (Exception e)
-                {
-                    result += person.name + ",";
                 }
             }
             if (result != null)
                 throw new Exception("以下用户下载失败!"+result);
         }
-
     }
-
 }

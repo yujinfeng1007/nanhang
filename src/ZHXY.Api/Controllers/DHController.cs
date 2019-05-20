@@ -21,18 +21,19 @@ namespace ZHXY.Api.Controllers
             //return DHAccount.DHUpdate();
 
             //推送人员信息至大华
-            //PersonMoudle personMoudle = new PersonMoudle();
-            //personMoudle.orgId = "org001";
-            //personMoudle.code = "20145014sdfsdagh52265";
-            //personMoudle.idCode = "360421199311144018";
-            //personMoudle.name = "田忠华";
-            //personMoudle.roleId = "student001"; //teacher001
-            //personMoudle.sex = 1;
-            //personMoudle.colleageCode = "55f67dcc42a5426fb0670d58dda22a5b"; //默认分院
-            //personMoudle.dormitoryCode = "fe8a5225be5f43478d0dd0c85da5dd1d";//楼栋  例如： 11栋
-            //personMoudle.dormitoryFloor = "8e447843bc8c4e92b9ffdf777047d20d"; //楼层  例如：3楼
-            //personMoudle.dormitoryRoom = "20c70f65b54b4f96851e26343678c4ec"; //宿舍号  例如：312
-            //personMoudle.photoUrl = "http://169.254.234.66:8080/file/test.jpg";
+            PersonMoudle personMoudle = new PersonMoudle();
+            personMoudle.id = 0;
+            personMoudle.orgId = "org001";
+            personMoudle.code = "987654321";
+            personMoudle.idCode = "360421199311144018";
+            personMoudle.name = "Refuse";
+            personMoudle.roleId = "student001"; //teacher001
+            personMoudle.sex = 1;
+            //personMoudle.colleageCode = "宿舍管理"; //默认分院
+            //personMoudle.dormitoryCode = "1栋";//楼栋  例如： 11栋
+            //personMoudle.dormitoryFloor = "1栋1层"; //楼层  例如：3楼
+            //personMoudle.dormitoryRoom = "1栋104"; //宿舍号  例如：312
+            personMoudle.photoUrl = "http://localhost:8080/file/5.jpg";
             //return DHAccount.PUSH_DH_ADD_PERSON(personMoudle);
 
             //创建宿舍
@@ -42,14 +43,14 @@ namespace ZHXY.Api.Controllers
             //return DHAccount.SELECT_DORMITOR(name, pid);
 
             //修改人员信息至大华
-            //return DHAccount.PUSH_DH_UPDATE_PERSON(personMoudle);
+            return DHAccount.PUSH_DH_UPDATE_PERSON(personMoudle);
 
             //删除人员信息 至大华
             //return DHAccount.PUSH_DH_DELETE_PERSON(new string[] { "35" });
 
             //查询人员信息  大华
             //PersonMoudle personMoudleTest = new PersonMoudle();
-            //personMoudleTest.name = "";
+            //personMoudleTest.code = "987654321";
             //return DHAccount.SELECT_DH_PERSON(personMoudleTest);
 
             //导入人员照片（.zip压缩包）
@@ -58,15 +59,23 @@ namespace ZHXY.Api.Controllers
 
             //导入人员信息（excel文件）
             //DHAccount.PUSH_DH_STUDENT_EXCEL("C:\\人员信息.xlsx");
-            DHAccount.PUSH_DH_TEACHER_EXCEL("C:\\人员信息.xlsx");
+            //DHAccount.PUSH_DH_TEACHER_EXCEL("C:\\人员信息.xlsx");
             //DHAccount.PUSH_DH_PERSON_EXCEL("C:\\" + name);
-            return null;
             //获取大华设备信息
             //return DHAccount.GetMachineInfo("001", "01;01,02,05,07_4,08_3,08_5,34,38;01@9,07,12", "0", "");
 
             //获取MQ相关配置
             //return DHAccount.GetMQConfig(new MQMoudle());
 
+        }
+
+        [HttpGet]
+        public object FindPerson(int code)
+        {
+            //查询人员信息  大华
+            PersonMoudle personMoudleTest = new PersonMoudle();
+            personMoudleTest.code = code + "";
+            return DHAccount.SELECT_DH_PERSON(personMoudleTest);
         }
 
         public static void process()

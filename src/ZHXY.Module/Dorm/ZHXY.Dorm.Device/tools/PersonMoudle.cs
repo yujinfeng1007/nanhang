@@ -4,6 +4,7 @@ namespace ZHXY.Dorm.Device.tools
 {
     public class PersonMoudle
     {
+        public int id { get; set; }
         public string accessCardsn { get; set; } //门禁卡号
         public string code { get; set; } //学工号
         public string colleageClass { get; set; } //班级编号
