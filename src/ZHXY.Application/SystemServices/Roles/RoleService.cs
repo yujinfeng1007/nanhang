@@ -57,7 +57,7 @@ namespace ZHXY.Application
 
         public string[] GetRoleMenusId(string roleId)
         {
-            return Read<Relevance>(p => p.Name.Equals(Relation.RolePower) && p.FirstKey.Equals(roleId)).Select(p => p.SecondKey).Distinct().ToArrayAsync().Result;
+            return Read<Relevance>(p => p.Name.Equals(Relation.RolePower) && p.FirstKey.Equals(roleId)&&p.ThirdKey.Equals(SYS_CONSTS.DbNull)).Select(p => p.SecondKey).Distinct().ToArrayAsync().Result;
         }
 
         public dynamic GetRoleMenus(string roleId)
@@ -77,9 +77,26 @@ namespace ZHXY.Application
             });
             SaveChanges();
         }
+
+        public void AddRoleMenu(string roleId, string[] menus)
+        {
+            var menuList = Read<Menu>(p => menus.Contains(p.Id)).Select(p =>  p.Id).ToList();
+            menuList.ForEach(item =>
+            {
+                Add(new Relevance { Name = Relation.RolePower, FirstKey = roleId, SecondKey = item});
+            });
+            SaveChanges();
+        }
+
         public void RemoveRoleFunc(string roleId, string[] funcs)
         {
             var removeList = Read<Relevance>(p => p.Name.Contains(Relation.RolePower) && p.FirstKey.Equals(roleId) && funcs.Contains(p.ThirdKey)).ToList();
+            DelAndSave<Relevance>(removeList);
+        }
+
+        public void RemoveRoleMenu(string roleId, string[] menus)
+        {
+            var removeList = Read<Relevance>(p => p.Name.Contains(Relation.RolePower) && p.FirstKey.Equals(roleId) &&p.ThirdKey.Equals(SYS_CONSTS.DbNull)&& menus.Contains(p.SecondKey)).ToList();
             DelAndSave<Relevance>(removeList);
         }
 
@@ -100,6 +117,12 @@ namespace ZHXY.Application
         {
             var roleFuncs = Read<Relevance>(p => p.Name.Equals(Relation.RolePower) && p.FirstKey.Equals(roleId) && p.SecondKey.Equals(menuId)).Select(p => p.ThirdKey).ToArrayAsync().Result;
             return Read<Function>(p => p.MenuId.Equals(menuId) && !roleFuncs.Contains(p.Id)).ToListAsync().Result;
+        }
+
+        public dynamic GetMenusExcludeRole(string roleId, string menuId)
+        {
+            var roleFuncs = Read<Relevance>(p => p.Name.Equals(Relation.RolePower) && p.FirstKey.Equals(roleId) ).Select(p => p.SecondKey).ToArrayAsync().Result;
+            return Read<Menu>(p => p.ParentId.Equals(menuId) && !roleFuncs.Contains(p.Id)).ToListAsync().Result;
         }
 
         public void AddRoleUser(string roleId, string[] userIds)

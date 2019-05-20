@@ -4,7 +4,7 @@ using ZHXY.Common;
 
 namespace ZHXY.Web.SystemManage.Controllers
 {
-    public class CurrentUserController : ZhxyWebControllerBase
+    public class CurrentUserController : ZhxyController
     {
         private TeacherService App { get; }
         public CurrentUserController(TeacherService app) => App = app;
@@ -12,7 +12,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         [HttpGet]
         public ActionResult GetCurrentUser()
         {
-            var user = Operator.Current;
+            var user = Operator.GetCurrent();
             if (user.IsEmpty())
                 return null;
             if (user != null && user.IsSystem)

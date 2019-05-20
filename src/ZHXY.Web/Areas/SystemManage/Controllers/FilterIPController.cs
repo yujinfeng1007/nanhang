@@ -5,7 +5,7 @@ using ZHXY.Common;
 
 namespace ZHXY.Web.SystemManage.Controllers
 {
-    public class FilterIPController : ZhxyWebControllerBase
+    public class FilterIPController : ZhxyController
     {
         private FilterIpService App { get; }
         public FilterIPController(FilterIpService app) => App = app;

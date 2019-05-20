@@ -10,7 +10,7 @@ namespace ZHXY.Web.Controllers
     /// <summary>
     /// 获取数据
     /// </summary>
-    public class SelectController : ZhxyWebControllerBase
+    public class SelectController : ZhxyController
     {
         private UserService App { get; set; }
         private TeacherService TeacherApp { get; set; }

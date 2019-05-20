@@ -3,7 +3,7 @@ using ZHXY.Application;using ZHXY.Domain;
 using ZHXY.Common;
 namespace ZHXY.Web.SystemManage.Controllers
 {
-    public class DbBackupController : ZhxyWebControllerBase
+    public class DbBackupController : ZhxyController
     {
         private DbBackupService App { get; }
         public DbBackupController(DbBackupService app) => App = app;

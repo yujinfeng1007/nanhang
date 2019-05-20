@@ -546,6 +546,7 @@
     <Content Include="Areas\SystemManage\Views\DbBackup\Index.cshtml" />
     <Content Include="Areas\SystemManage\Views\User\Role.cshtml" />
     <Content Include="Areas\SystemManage\Views\Role\Power.cshtml" />
+    <Content Include="Areas\SystemManage\Views\Role\Menu.cshtml" />
     <None Include="Content\js\dialog\dialog.css.bak" />
     <Content Include="Content\js\dialog\dialog.css" />
     <Content Include="Content\js\dialog\dialog.js" />

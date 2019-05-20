@@ -144,9 +144,19 @@ namespace ZHXY.Application
                 Duty = user.Duty,
                 Roles = user.Roles
             };
-            var menus=Read<Menu>(p => p.BelongSys.Equals("1")).ToListAsync().Result;
-
-            d.Menus = TreeHelper.GetMenuJson(menus, SYS_CONSTS.DbNull);
+            var query = Read<Menu>(p => p.BelongSys.Equals("1"));
+            if (user.IsSystem)
+            {
+                var list = query.ToListAsync().Result;
+                d.Menus = TreeHelper.GetMenuJson(list, SYS_CONSTS.DbNull);
+            }
+            else
+            {
+                var userMenus=Read<Relevance>(p => p.Name.Equals(Relation.RolePower) && d.Roles.Contains(p.FirstKey)&&p.ThirdKey.Equals(SYS_CONSTS.DbNull)).Select(p => p.SecondKey).ToArrayAsync().Result;
+                var list= query.Where(p=>userMenus.Contains(p.Id)).ToListAsync().Result;
+                d.Menus = TreeHelper.GetMenuJson(list, SYS_CONSTS.DbNull);
+            }
+            
             d.Buttons = Read<Function>().ToListAsync().Result;
             var o = Read<User>(p => p.Id.Equals(user.Id)).FirstOrDefaultAsync().Result;
             d.UserName = o.Name;

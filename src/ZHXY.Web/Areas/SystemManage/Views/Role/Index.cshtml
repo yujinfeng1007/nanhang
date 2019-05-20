@@ -20,6 +20,20 @@
             });
         })
 
+         $("#btnAddMenu").click(() => {
+            let rowId = $("#centerGrid").jqGrid('getGridParam', 'selrow');
+            $.modalOpen({
+                id: "Form",
+                title: "修改",
+                url: `/systemmanage/Role/Menu?roleId=${rowId}`,
+                width: "1200px",
+                height: "980px",
+                callBack: function (iframeId) {
+                    top.frames[iframeId].addMenu();
+                }
+            });
+        })
+
     })
     function centerGrid() {
         $("#centerGrid").jqGrid({
@@ -171,6 +185,7 @@
     <input type="text" class="form-control" id="keyword" placeholder="关键字">
     <button type="button" id="btn_search" class="btn btn-default"><i class="fa fa-search"></i></button>
     <button type="button" id="btnAddPower" class="btn btn-default">添加角色权限</button>
+    <button type="button" id="btnAddMenu" class="btn btn-default">添加角色菜单</button>
 </form>
 <div class="gridPanel">
     <table id="centerGrid"></table>

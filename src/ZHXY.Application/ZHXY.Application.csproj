@@ -111,9 +111,9 @@
     <Compile Include="SystemServices\Filters\Dto\UpdateFilterIpDto.cs" />
     <Compile Include="SystemServices\Logs\Dto\AddLogDto.cs" />
     <Compile Include="SystemServices\Logs\Dto\GetLogListDto.cs" />
-    <Compile Include="SystemServices\Menus\Dto\AddBtnDto.cs" />
+    <Compile Include="SystemServices\Menus\Dto\AddFuncDto.cs" />
     <Compile Include="SystemServices\Menus\Dto\AddMenuDto.cs" />
-    <Compile Include="SystemServices\Menus\Dto\UpdateBtnDto.cs" />
+    <Compile Include="SystemServices\Menus\Dto\UpdateFuncDto.cs" />
     <Compile Include="SystemServices\Menus\Dto\UpdateMenuDto.cs" />
     <Compile Include="SystemServices\Menus\Dto\MenuView.cs" />
     <Compile Include="SystemServices\Organizes\Dto\AddOrRemoveOrgLeaderDto.cs" />
@@ -121,7 +121,6 @@
     <Compile Include="RequestDto\Api\CheckVersionInput.cs" />
     <Compile Include="RequestDto\Api\StudentLeaveInput.cs" />
     <Compile Include="RequestDto\BaseApiInput.cs" />
-    <Compile Include="SystemServices\PlaceAreas\Dto\AreaChild.cs" />
     <Compile Include="SystemServices\Roles\Dto\UpdateRoleDto.cs" />
     <Compile Include="SystemServices\Users\Dto\AddUserDto.cs" />
     <Compile Include="SystemServices\Users\Dto\Login\LoginInput.cs" />
@@ -143,7 +142,6 @@
     <Compile Include="SystemServices\Users\Dto\Users\AuthorizeActionModel.cs" />
     <Compile Include="DormServices\SemesterService.cs" />
     <Compile Include="DormServices\StudentService.cs" />
-    <Compile Include="SystemServices\PlaceAreas\AreaService.cs" />
     <Compile Include="SystemServices\DatabaseBackup\DbBackupService.cs" />
     <Compile Include="SystemServices\Dics\DicService.cs" />
     <Compile Include="SystemServices\Duties\Dto\AddDutyDto.cs" />
@@ -170,7 +168,6 @@
     <Compile Include="DormServices\TeacherService.cs" />
     <Compile Include="01.Base\DbLogType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WebCore\Response\CheckBox\CheckBoxSelectModel.cs" />
     <Compile Include="WebCore\Response\TreeGrid\TreeGrid.cs" />
     <Compile Include="WebCore\Response\TreeGrid\TreeGridModel.cs" />
     <Compile Include="WebCore\Response\TreeView\TreeViewExt.cs" />
@@ -179,7 +176,7 @@
     <Compile Include="WebCore\Response\Tree\TreeSelect.cs" />
     <Compile Include="WebCore\Response\Tree\TreeSelectModel.cs" />
     <Compile Include="WebCore\Response\Tree\TreeView.cs" />
-    <Compile Include="WebCore\ZhxyWebControllerBase.cs" />
+    <Compile Include="WebCore\ZhxyController.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Autofac">

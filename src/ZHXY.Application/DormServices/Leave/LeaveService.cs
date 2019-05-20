@@ -375,7 +375,7 @@ namespace ZHXY.Application
                 order.Status = "1";
                 return;
             }
-            var currentUserId = Operator.Current.Id;
+            var currentUserId = Operator.GetCurrent().Id;
             var approve = Read<LeaveApprove>(p => p.OrderId.Equals(order.Id) && p.ApproverId.Equals(currentUserId)).FirstOrDefaultAsync().Result;
             if (approve.ApproveLevel == 2) order.Status = "1";
         }

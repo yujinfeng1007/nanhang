@@ -6,7 +6,7 @@ using HttpPostAttribute = System.Web.Http.HttpPostAttribute;
 
 namespace ZHXY.Web.Dorm.Controllers
 {
-    public class VisitLimitController : ZhxyWebControllerBase
+    public class VisitLimitController : ZhxyController
     {
 
         private VisitDormLimitService service => new VisitDormLimitService();

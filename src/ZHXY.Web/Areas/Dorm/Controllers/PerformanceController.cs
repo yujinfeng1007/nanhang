@@ -6,7 +6,7 @@ namespace ZHXY.Web.Dorm.Controllers
     /// <summary>
     /// 考核
     /// </summary>
-    public class PerformanceController : ZhxyWebControllerBase
+    public class PerformanceController : ZhxyController
     {
         private PerformanceAppService App { get; }
         public PerformanceController(PerformanceAppService app) => App = app;

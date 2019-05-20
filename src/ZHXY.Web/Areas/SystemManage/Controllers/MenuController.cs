@@ -5,7 +5,7 @@ namespace ZHXY.Web.SystemManage.Controllers
     /// <summary>
     /// 菜单管理
     /// </summary>
-    public class MenuController : ZhxyWebControllerBase
+    public class MenuController : ZhxyController
     {
         private MenuService App { get; }
         public MenuController(MenuService app) => App = app;
@@ -35,7 +35,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddBth(AddBtnDto dto)
+        public ActionResult AddBth(AddFuncDto dto)
         {
             App.AddFunc(dto);
             return Resultaat.Success();
@@ -50,7 +50,7 @@ namespace ZHXY.Web.SystemManage.Controllers
             return Resultaat.Success();
         }
         [HttpPost]
-        public ActionResult UpdateBtn(UpdateBtnDto dto)
+        public ActionResult UpdateBtn(UpdateFuncDto dto)
         {
             App.UpdateFunc(dto);
             return Resultaat.Success();

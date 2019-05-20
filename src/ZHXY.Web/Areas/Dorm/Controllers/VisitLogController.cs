@@ -5,7 +5,7 @@ using ZHXY.Common;
 
 namespace ZHXY.Web.Dorm.Controllers
 {
-    public class VisitLogController : ZhxyWebControllerBase
+    public class VisitLogController : ZhxyController
     {
         private VisitorAppService App { get; }
 
@@ -43,7 +43,7 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpGet]
         public ActionResult VisivorByStudent( Pagination pag, int status)
         {
-            var data = App.VisivorByStudent(pag,Operator.Current.Id, status);
+            var data = App.VisivorByStudent(pag,Operator.GetCurrent().Id, status);
             return Resultaat.Success(data);
         }
 

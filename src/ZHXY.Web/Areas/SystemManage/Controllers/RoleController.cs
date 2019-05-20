@@ -5,13 +5,14 @@ namespace ZHXY.Web.SystemManage.Controllers
     /// <summary>
     /// 角色管理
     /// </summary>
-    public class RoleController : ZhxyWebControllerBase
+    public class RoleController : ZhxyController
     {
         private RoleService App { get; }
         public RoleController(RoleService app) => App = app;
 
         [HttpGet]
         public ViewResult Power() => View();
+        public ViewResult Menu() => View();
 
         [HttpGet]
 
@@ -85,12 +86,32 @@ namespace ZHXY.Web.SystemManage.Controllers
             return Resultaat.Success();
         }
 
+        [HttpGet]
+        public ActionResult GetRoleMenus(string roleId)
+        {
+            var data = App.GetRoleMenus(roleId);
+            return Resultaat.Success(data);
+        }
+        [HttpPost]
+        public ActionResult AddRoleMenu(string roleId, string[] menus)
+        {
+            App.AddRoleMenu(roleId, menus);
+            return Resultaat.Success();
+        }
+
 
         public ActionResult GetExcludeFuncs(string roleId,string menuId)
         {
             var data=App.GetMenuFuncsExcludeRole(roleId, menuId);
             return Resultaat.Success(data);
         }
+
+        public ActionResult GetExcludeMenus(string roleId, string menuId)
+        {
+            var data = App.GetMenusExcludeRole(roleId, menuId);
+            return Resultaat.Success(data);
+        }
+
 
 
 

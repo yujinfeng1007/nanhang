@@ -6,7 +6,6 @@ using ZHXY.Common;
 using System.Data.Entity;
 namespace ZHXY.Application
 {
-
     /// <summary>
     /// 菜单管理
     /// </summary>
@@ -73,13 +72,13 @@ namespace ZHXY.Application
             DelAndSave<Function>(btns);
         }
 
-        public void AddFunc(AddBtnDto dto)
+        public void AddFunc(AddFuncDto dto)
         {
             var button = dto.MapTo<Function>();
             AddAndSave(button);
         }
 
-        public void UpdateFunc(UpdateBtnDto dto)
+        public void UpdateFunc(UpdateFuncDto dto)
         {
             var button = Get<Function>(dto.Id);
             dto.MapTo(button);
