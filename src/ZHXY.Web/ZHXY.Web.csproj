@@ -18,7 +18,7 @@
     <AssemblyName>ZHXY.Web</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -210,9 +210,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-   <Compile Include="Areas\Dorm\Controllers\FaceController.cs" />
+    <Compile Include="Areas\Dorm\Controllers\FaceController.cs" />
     <Compile Include="Areas\Dorm\Controllers\HolidayController.cs" />
-	<Compile Include="Areas\Dorm\Controllers\NHExceptionPushController.cs" />
+    <Compile Include="Areas\Dorm\Controllers\NHExceptionPushController.cs" />
     <Compile Include="Areas\Dorm\Controllers\XFTXController.cs" />
     <Compile Include="Areas\Dorm\Controllers\DormBuildingController.cs" />
     <Compile Include="Areas\Dorm\Controllers\DormRoomController.cs" />
@@ -550,7 +550,6 @@
     <Content Include="Content\js\doublebox\doublebox.css" />
     <Content Include="Content\js\doublebox\doublebox.js" />
     <Content Include="Content\js\Fileupload.js" />
-    <Content Include="Content\js\framework-clientdata.js" />
     <Content Include="Content\js\indextab.js" />
     <Content Include="Content\js\framework-ui.js" />
     <Content Include="Content\js\jqgrid\grid.locale-cn.js" />
@@ -1742,24 +1741,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\SystemManage\Views\Area\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\ItemsData\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\ItemsType\Form.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\ItemsType\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\ItemsData\Form.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\ItemsType\Details.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\ItemsData\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\SystemManage\Views\Organize\Index.cshtml" />

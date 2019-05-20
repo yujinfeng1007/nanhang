@@ -56,6 +56,7 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult GetList(GetFaceApprovalListDto input) {
           // input.CurrentUserId =  Operator.Current.Id;
             var data = App.GetFaceApprovalList(input);
+          //  return Resultaat.Success(data);
             return Resultaat.PagingRst(data, input.Records, input.Total);
 
 
@@ -83,17 +84,7 @@ namespace ZHXY.Web.Dorm.Controllers
             return Resultaat.Success();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        [HttpPost]
-        public ActionResult Approval(string CurrentUserId,string keyWord,string approveStatus)
-        {
-            //input.CurrentUserId = Operator.Current.Id;
-            return GetList(new GetFaceApprovalListDto() { });
-
-
-        }
+       
 
 
     }

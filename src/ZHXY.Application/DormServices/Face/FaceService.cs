@@ -48,6 +48,8 @@ namespace ZHXY.Application
             SaveChanges();
         }
 
+      
+
 
         /// <summary>
         /// 获取头像审批列表
@@ -55,11 +57,9 @@ namespace ZHXY.Application
         public dynamic GetFaceApprovalList(GetFaceApprovalListDto input)
         {
             //获取当前用户所审批的审批单据
-            var leaveIds = Read<FaceApprove>(p => p.ApproverId.Equals(input.CurrentUserId)).Select(p => p.OrderId).ToListAsync().Result;
-            //var leaveIds = Read<LeaveApprove>(p => p.ApproverId.Equals(input.CurrentUserId)).Select(p => p.OrderId).ToListAsync().Result;
+            var faceIds = Read<FaceApprove>(p => p.ApproverId.Equals(input.CurrentUserId)).Select(p => p.OrderId).ToListAsync().Result;            
             //根据审批单据获取头像详细信息
-            var query = Read <StuFaceOrder>(p => leaveIds.Contains(p.Id));
-            //var query = Read<StuLeaveOrder>(p => leaveIds.Contains(p.Id));
+            var query = Read <StuFaceOrder>(p => faceIds.Contains(p.Id));            
             query = input.SearchPattern == 0 ? query : query.Where(p => p.Status.Equals(input.SearchPattern));
 
             query = string.IsNullOrEmpty(input.Keyword)
