@@ -24,17 +24,16 @@ namespace ZHXY.Api.Controllers
             PersonMoudle personMoudle = new PersonMoudle();
             personMoudle.id = 0;
             personMoudle.orgId = "org001";
-            personMoudle.code = "987654321";
-            personMoudle.idCode = "360421199311144018";
-            personMoudle.name = "Refuse";
+            personMoudle.code = "888888";
+            personMoudle.idCode = "360421199311144020";
+            personMoudle.name = "Refuse12";
             personMoudle.roleId = "student001"; //teacher001
             personMoudle.sex = 1;
-            //personMoudle.colleageCode = "宿舍管理"; //默认分院
-            //personMoudle.dormitoryCode = "1栋";//楼栋  例如： 11栋
-            //personMoudle.dormitoryFloor = "1栋1层"; //楼层  例如：3楼
-            //personMoudle.dormitoryRoom = "1栋104"; //宿舍号  例如：312
+            personMoudle.dormitoryName = "1栋"; //默认分院
+            personMoudle.dormitoryFloorName = "1栋1层"; //楼层  例如：3层
+            personMoudle.dormitoryRoomName = "1栋104"; //宿舍号  例如：312
             personMoudle.photoUrl = "http://localhost:8080/file/5.jpg";
-            //return DHAccount.PUSH_DH_ADD_PERSON(personMoudle);
+            return DHAccount.PUSH_DH_ADD_PERSON(personMoudle);
 
             //创建宿舍
             //return DHAccount.CREATE_DORMITORY(name, pname, level);
@@ -43,7 +42,7 @@ namespace ZHXY.Api.Controllers
             //return DHAccount.SELECT_DORMITOR(name, pid);
 
             //修改人员信息至大华
-            return DHAccount.PUSH_DH_UPDATE_PERSON(personMoudle);
+            //return DHAccount.PUSH_DH_UPDATE_PERSON(personMoudle);
 
             //删除人员信息 至大华
             //return DHAccount.PUSH_DH_DELETE_PERSON(new string[] { "35" });

@@ -12,7 +12,8 @@
         public static string DAHUA_LOGIN_PASSWORD = "admin123";//登录大华设备的用户密码（大华提供）
         public static string AUTHENTICATION_URI = REQUEST_AUTHENTICATION_URI + "/admin/API/accounts/authorize"; //鉴权的请求地址
         public static string UPDATE_TOKEN_URI = REQUEST_AUTHENTICATION_URI + "/admin/API/accounts/updateToken"; //更新令牌和取消授权请求地址
-        public static string CREATE_STUDENTS_INFO = REQUEST_URL_PORT + "/pims/person"; //创建人员信息
+        public static string CREATE_STUDENTS_INFO = REQUEST_URL_PORT + "/pims/person/third"; //创建人员信息(可自动创建宿舍)
+        public static string UPDATE_STUDENTS_INFO = REQUEST_URL_PORT + "/pims/person/id"; //修改人员信息(不可自动创建宿舍)
         public static string SELECT_STUDENTS_INFO = REQUEST_URL_PORT + "/pims/persons"; //查询人员信息
         public static string UPLOAD_PHOTO_ZIP_URI = REQUEST_URL_PORT + "/pims/batchPhoto"; // 导入人员照片 （.ZIP文件）
         public static string UPLOAD_TEACHER_EXCEL_URI = REQUEST_URL_PORT + "/pims/defaultUploadPerson?cid=1"; // 导入教师人员信息excel
