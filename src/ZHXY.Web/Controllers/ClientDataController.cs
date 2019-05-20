@@ -57,8 +57,8 @@ namespace ZHXY.Web.Controllers
             var current = Operator.GetCurrent();
             return Json(new
             {
-                current?.UserCode,
-                current?.UserName,
+                current?.Account,
+                current?.Name,
                 current?.HeadIcon
             }, JsonRequestBehavior.AllowGet);
         }

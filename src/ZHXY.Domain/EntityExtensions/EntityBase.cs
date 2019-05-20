@@ -17,7 +17,7 @@ namespace ZHXY.Domain
                 {
                     entity.F_CreatorUserId = LoginInfo.Id;
                     if (entity.F_DepartmentId.IsEmpty())
-                        entity.F_DepartmentId = LoginInfo.Organ;
+                        entity.F_DepartmentId = LoginInfo.OrganId;
                 }
             }
 

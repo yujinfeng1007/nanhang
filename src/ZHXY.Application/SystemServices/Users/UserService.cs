@@ -39,7 +39,15 @@ namespace ZHXY.Application
         public void Add(AddUserDto dto)
         {
             var user = dto.MapTo<User>();
-            AddAndSave(user);
+            Add(user);
+            var userLogin = new UserLogin
+            {
+                UserId=user.Id,
+                Password = "17f123f731bca5b8925979dc1a228548",
+                Secretkey = "4a7d1ed414474e40"
+            };
+            Add(userLogin);
+            SaveChanges();
         }
 
         public void Delete(string[] id)
@@ -55,18 +63,23 @@ namespace ZHXY.Application
             SaveChanges();
         }
 
-        public User CheckLogin(string username, string password)
+        public CurrentUser CheckLogin(string username, string password)
         {
             var user = Read<User>(p => p.Account.Equals(username)).FirstOrDefaultAsync().Result;
             if (user == null) throw new Exception("账户不存在，请重新输入");
-            var userLogin = Get<UserLogin>(user.Id);
-            var dbPassword = Md5EncryptHelper.Encrypt(DESEncryptHelper.Encrypt(password.ToLower(), userLogin.Secretkey).ToLower(), 32).ToLower();
-            if (dbPassword != userLogin.Password) throw new Exception("密码不正确，请重新输入");
-            userLogin.PreVisitTime = userLogin.LastVisitTime.HasValue ? userLogin.LastVisitTime : null;
-            userLogin.LastVisitTime = DateTime.Now;
-            userLogin.LoginCount = Convert.ToInt32(userLogin.LoginCount) + 1;
+            var loginInfo = Get<UserLogin>(user.Id);
+            var dbPassword = Md5EncryptHelper.Encrypt(DESEncryptHelper.Encrypt(password.ToLower(), loginInfo.Secretkey).ToLower(), 32).ToLower();
+            if (dbPassword != loginInfo.Password) throw new Exception("密码不正确，请重新输入");
+            loginInfo.PreVisitTime = loginInfo.LastVisitTime.HasValue ? loginInfo.LastVisitTime : null;
+            loginInfo.LastVisitTime = DateTime.Now;
+            loginInfo.LoginCount = Convert.ToInt32(loginInfo.LoginCount) + 1;
             SaveChanges();
-            return user;
+            var cuser = user.MapTo<CurrentUser>();
+            cuser.LoginToken = DESEncryptHelper.Encrypt(Guid.NewGuid().ToString());
+            cuser.Ip = Net.Ip;
+            cuser.IpLocation = Net.GetLocation(cuser.Ip);
+            cuser.Roles = GetUserRolesId(user.Id);
+            return cuser;
         }
 
         public void Enable(string id) => throw new NotImplementedException();
@@ -143,24 +156,24 @@ namespace ZHXY.Application
             var d = new UserData
             {
                 UserId = user.Id,
-                Organ = user.Organ,
-                Duty = user.Duty,
+                Organ = user.OrganId,
+                Duty = user.DutyId,
                 Roles = user.Roles
             };
             var query = Read<Menu>(p => p.BelongSys.Equals("1"));
-            if (user.IsSystem)
+            if (user.Name=="超级管理员")
             {
                 var list = query.ToListAsync().Result;
                 d.Menus = TreeHelper.GetMenuJson(list, SYS_CONSTS.DbNull);
+                d.Funcs = Read<Function>().ToListAsync().Result.ToCamelJson();
             }
             else
             {
-                var userMenus=Read<Relevance>(p => p.Name.Equals(Relation.RolePower) && d.Roles.Contains(p.FirstKey)&&p.ThirdKey.Equals(SYS_CONSTS.DbNull)).Select(p => p.SecondKey).ToArrayAsync().Result;
-                var list= query.Where(p=>userMenus.Contains(p.Id)).ToListAsync().Result;
-                d.Menus = TreeHelper.GetMenuJson(list, SYS_CONSTS.DbNull);
+                d.Menus = GetUserMenuJson(user.Id,"1");
+                d.Funcs = GetUserFuncJson(user.Id);
             }
             
-            d.Buttons = Read<Function>().ToListAsync().Result;
+           
             var o = Read<User>(p => p.Id.Equals(user.Id)).FirstOrDefaultAsync().Result;
             d.UserName = o.Name;
             d.HeadIcon = o.HeadIcon;
@@ -193,11 +206,20 @@ namespace ZHXY.Application
         }
 
 
-        public void GetUserMenuJson(string userId,string system)
+        public string GetUserMenuJson(string userId,string system)
         {
-            var roles = GetUserRolesId(userId);
-            var menus=Read<Relevance>(p => p.Name.Equals(Relation.RolePower) && roles.Contains(p.FirstKey)).Select(p => p.SecondKey).Distinct().ToArrayAsync().Result;
-            var list = Read<Menu>(p => menus.Contains(p.Id)&&p.BelongSys.Equals(system)).ToListAsync().Result;
+            var userRoles = GetUserRolesId(userId);
+            var userMenus = Read<Relevance>(p => p.Name.Equals(Relation.RolePower) && userRoles.Contains(p.FirstKey) && p.ThirdKey.Equals(SYS_CONSTS.DbNull)).Select(p => p.SecondKey).ToArrayAsync().Result;
+            var list = Read<Menu>(p => userMenus.Contains(p.Id) && p.BelongSys.Equals(system)).ToListAsync().Result;
+            return TreeHelper.GetMenuJson(list, SYS_CONSTS.DbNull);
+        }
+
+        public string GetUserFuncJson(string userId)
+        {
+            var userRoles = GetUserRolesId(userId);
+            var userFuncs = Read<Relevance>(p => p.Name.Equals(Relation.RolePower) && userRoles.Contains(p.FirstKey) && !p.ThirdKey.Equals(SYS_CONSTS.DbNull)).Select(p => p.ThirdKey).Distinct().ToArrayAsync().Result;
+            var list = Read<Function>(p => userFuncs.Contains(p.Id)).ToListAsync().Result;
+            return list.ToCamelJson();
         }
     }
 }

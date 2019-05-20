@@ -2,9 +2,9 @@
 
 namespace ZHXY.Domain
 {
-    public class UserLogOnMap : EntityTypeConfiguration<UserLogin>
+    public class UserLoginMap : EntityTypeConfiguration<UserLogin>
     {
-        public UserLogOnMap()
+        public UserLoginMap()
         {
             ToTable("zhxy_user_login");
             HasKey(t => t.UserId);
