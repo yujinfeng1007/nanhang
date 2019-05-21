@@ -64,7 +64,6 @@
     <Compile Include="Entity\Dorm\StuFaceOrder.cs" />
     <Compile Include="Entity\System\AppVersion.cs" />
     <Compile Include="Entity\System\Duty.cs" />
-    <Compile Include="Entity\System\SysViewUser.cs" />
     <Compile Include="Relation.cs" />
     <Compile Include="SYS_CONSTS.cs" />
     <Compile Include="DataAccess\Extensions\DbHelper.cs" />

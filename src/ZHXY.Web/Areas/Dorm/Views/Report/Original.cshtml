@@ -15,24 +15,24 @@
             url: "/Dorm/Report/GetOriginalList",
             colModel: [
                 //{ label: "通道名称", name: "ChannelName", width: 150, align: 'left' },
-                { label: "学号", name: "Code", width: 150, align: 'left' },                
-                { label: '姓名', name: 'Name', width: 150, align: 'left' },
+                { label: "学号", name: "code", width: 150, align: 'left' },                
+                { label: '姓名', name: 'name', width: 150, align: 'left' },
                 {
-                    label: '年级', name: 'DepartmentId', width: 200, align: 'left',                   
+                    label: '年级', name: 'departmentId', width: 200, align: 'left',                   
                      formatter: function (cv) {
                         return orgList[cv] == null ? "" : orgList[cv];
                     },
                     
                 },
                 {
-                    label: '院系', name: 'GradeId', width: 200, align: 'left',
+                    label: '院系', name: 'gradeId', width: 200, align: 'left',
                     formatter: function (cv) {
                         return orgList[cv] == null ? "" : orgList[cv];
                     },
 
                 },
                 {
-                    label: '班级', name: 'ClassId', width: 200, align: 'left',
+                    label: '班级', name: 'classId', width: 200, align: 'left',
                     formatter: function (cv) {
                         return orgList[cv] == null ? "" : orgList[cv];
                     },
@@ -41,8 +41,8 @@
                 
                 //{ label: '年级', name: 'DepartmentName', width: 200, align: 'left' },
                 //{ label: '班级', name: 'DepartmentName', width: 200, align: 'left' },
-                { label: '宿舍号', name: 'DormNum', width: 150, align: 'left' },
-                { label: '进出', name: 'InOut', width: 150, align: 'left' },
+                { label: '宿舍号', name: 'dormNum', width: 150, align: 'left' },
+                { label: '进出', name: 'inOut', width: 150, align: 'left' },
                 //{ label: "卡号", name: "CardNum", width: 150, align: 'left' },
                 //{ label: "电话", name: "Tel", width: 150, align: 'left' },
                 //{
@@ -58,7 +58,7 @@
                 //        return top.clients.dataItems["InOut"] == null ? "" : top.clients.dataItems.InOut[cellvalue];
                 //    }
                 //},
-                { label: "记录时间", name: "Time", width: 150, align: 'left' },
+                { label: "记录时间", name: "time", width: 150, align: 'left' },
             ],
             pager: '#gridPager',
             multiselect: false

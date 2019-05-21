@@ -91,5 +91,10 @@ namespace ZHXY.Application
         {
             return Read<DicItem>(p=>p.Code.Equals(code)).ToListAsync().Result;
         }
+
+        public List<DicItem> GetAllItems()
+        {
+            return Read<DicItem>().ToListAsync().Result;
+        }
     }
 }

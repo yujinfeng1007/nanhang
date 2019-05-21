@@ -136,7 +136,7 @@ namespace ZHXY.Application
             //审批同意则更新头像并下发
             if (input.IsAgreed) {
 
-                new UserService().UpdIco(face.ApplicantId, face.ApproveImg);
+                new UserService(new ZhxyRepository()).UpdIco(face.ApplicantId, face.ApproveImg);
                 new UserToGateService().SendUserHeadIco(new string[] { face.ApplicantId });
             }
            
