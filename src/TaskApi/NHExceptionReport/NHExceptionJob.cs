@@ -2,12 +2,8 @@
 using Quartz;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TaskApi.DH;
 using ZHXY.Common;
 using ZHXY.Domain;
 
@@ -33,7 +29,7 @@ namespace TaskApi.NHExceptionReport
             Console.WriteLine("南航项目：开始统计请假学生列表 --> " + DateTime.Now.ToLocalTime());
             //过滤：请假的人员
             var EndTime = QuartzTime.Date.AddDays(-1).AddHours(12);
-            var ListLeave = dbContext.Set<LeaveOrder>().Where(p => p.EndOfTime.Contains("AM")).Select(p => new LeaveOrder
+            var ListLeave = dbContext.Set<LeaveOrder>().Where(p => p.EndOfTime.Contains("AM")).Select(p => new 
             {
                 Id = p.Id,
                 CreatedTime = p.CreatedTime,
