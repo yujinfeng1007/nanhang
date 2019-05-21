@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ZHXY.Domain
 {
@@ -23,13 +19,12 @@ namespace ZHXY.Domain
         /// </summary>
         public string Url { get; set; }
 
-
         /// <summary>
         /// 更新说明
         /// </summary>
         public string Description { get; set; }
 
-        public DateTime? CreatorTime { get; set; }
+        public DateTime CreatedTime { get; set; } = DateTime.Now;
 
     }
 }

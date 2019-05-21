@@ -6,8 +6,14 @@ namespace ZHXY.Domain.EntityConfig.System
     {
         public AppVersionMap()
         {
-            ToTable("Sys_AppVersion");
+            ToTable("zhxy_app_version");
             HasKey(t => t.Id);
+
+            Property(p => p.Id).HasColumnName("id");
+            Property(p => p.Version).HasColumnName("version");
+            Property(p => p.Url).HasColumnName("url");
+            Property(p => p.Description).HasColumnName("description");
+            Property(p => p.CreatedTime).HasColumnName("created_time");
         }
     }
 }
