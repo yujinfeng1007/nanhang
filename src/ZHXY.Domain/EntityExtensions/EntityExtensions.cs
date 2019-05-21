@@ -12,9 +12,6 @@ namespace ZHXY.Domain
     /// </summary>
     public static class EntityExtensions
     {
-     
-
-
         public static string GetSearchString<T>(this T t, string[] fields) where T : IEntity
         {
             var sb = new StringBuilder();

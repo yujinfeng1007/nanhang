@@ -47,7 +47,7 @@ namespace ZHXY.Application
         public const string Warning = "warning";
     }
 
-    public static class Resultaat
+    public static class Result
     {
         public static ActionResult Success(object data = null)
         {
@@ -61,8 +61,7 @@ namespace ZHXY.Application
 
         public static ActionResult PagingRst<T>(this List<T> rows)
         {
-            return new ContentResult { Content = new { rows,   state = ResultState.Success }.ToCamelJson(), ContentEncoding = Encoding.UTF8, ContentType = "application/json" };
+            return new ContentResult { Content = new { rows, state = ResultState.Success }.ToCamelJson(), ContentEncoding = Encoding.UTF8, ContentType = "application/json" };
         }
-
     }
 }

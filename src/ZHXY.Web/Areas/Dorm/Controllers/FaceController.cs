@@ -46,7 +46,7 @@ namespace ZHXY.Web.Dorm.Controllers
 
 
 
-            return Resultaat.Success();
+            return Result.Success();
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace ZHXY.Web.Dorm.Controllers
           // input.CurrentUserId =  Operator.Current.Id;
             var data = App.GetFaceApprovalList(input);
           //  return Resultaat.Success(data);
-            return Resultaat.PagingRst(data, input.Records, input.Total);
+            return Result.PagingRst(data, input.Records, input.Total);
 
 
         }
@@ -69,7 +69,7 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult Get(string appId, string currentUserId)
         {
             var data = App.GetFaceApprovalDetail(appId, currentUserId);
-            return Resultaat.Success(data);
+            return Result.Success(data);
         }
 
 
@@ -81,7 +81,7 @@ namespace ZHXY.Web.Dorm.Controllers
         {
             //input.CurrentUserId = Operator.Current.Id;
             App.Approval(input);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
        

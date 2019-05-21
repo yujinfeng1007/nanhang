@@ -14,7 +14,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult Load(GetLogListDto input)
         {
             var list = App.Load(input);
-            return Resultaat.PagingRst(list, input.Records, input.Total);
+            return Result.PagingRst(list, input.Records, input.Total);
         }
     }
 }

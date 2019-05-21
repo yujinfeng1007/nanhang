@@ -23,21 +23,21 @@ namespace ZHXY.Web.Dorm.Controllers
         {
 
             await App.AddAsync(dto);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
         [HttpPost]
         public async Task<ActionResult> Delete(string id)
         {
             await App.DelAsync(id);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
         [HttpPost]
         public async Task<ActionResult> Update(UpdateDormBuildingDto dto)
         {
             await App.UpdAsync(dto);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
         #endregion HttpPost
@@ -45,18 +45,18 @@ namespace ZHXY.Web.Dorm.Controllers
         #region HttpGet
 
         [HttpGet]
-        public async Task<ActionResult> Get(string id) => await Task.Run(() => Resultaat.Success(App.Get(id)));
+        public async Task<ActionResult> Get(string id) => await Task.Run(() => Result.Success(App.Get(id)));
 
         [HttpGet]
         public async Task<ActionResult> GetList(Pagination pagination, string keyword)
         {
-            return await Task.Run(() => Resultaat.PagingRst(App.GetList(pagination, keyword), pagination.Records, pagination.Total));
+            return await Task.Run(() => Result.PagingRst(App.GetList(pagination, keyword), pagination.Records, pagination.Total));
         }
 
         [HttpGet]
         public async Task<ActionResult> GetAll()
         {
-            return await Task.Run(() => Resultaat.Success(App.GetAll()));
+            return await Task.Run(() => Result.Success(App.GetAll()));
         }
 
         //获取未绑定的宿管
@@ -64,7 +64,7 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult GetNotBindUsers(string id)
         {
             var data = App.GetNotBindUsers(id);
-            return Resultaat.Success(data);
+            return Result.Success(data);
         }
 
         
@@ -72,14 +72,14 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult BindUsers(string id, string[] users)
         {
             App.BindUsers(id, users);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
         [HttpPost]
         public ActionResult UnBindUser(string id, string userId)
         {
             App.UnBindUser(id, userId);
-            return Resultaat.Success();
+            return Result.Success();
         }
         
 
@@ -87,7 +87,7 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult SubBindUsers(string id)
         {
             var data = App.GetSubBindUsers(id);
-            return Resultaat.Success(data);
+            return Result.Success(data);
         }
        
 

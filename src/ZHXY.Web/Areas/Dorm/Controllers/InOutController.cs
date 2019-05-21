@@ -26,10 +26,10 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpGet]
         public ActionResult GetOriginalListBydate(GetOriginalListBydateParms parms)
         {
-            if (string.IsNullOrEmpty(parms.date)) return Error("请输入日期");
+            if (string.IsNullOrEmpty(parms.date))  throw new System.Exception("请输入日期");
             var pagination = new Pagination() { Page = parms.PageIndex, Rows = parms.PageSize };
             var list = OriginalReportApp.GetOriginalListBydate(pagination, parms.userId, parms.date);
-            return PagingResult(list, pagination);
+            return Result.PagingRst(list, pagination.Records,pagination.Total);
         }
         /// <summary>
         /// 获取学生出入记录
@@ -40,10 +40,10 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpGet]
         public ActionResult GetDormRecords(string studentId, string date)
         {
-            if (string.IsNullOrEmpty(date)) return Error("请输入日期");
-            if (string.IsNullOrEmpty(studentId)) return Error("请输入学生ID");
+            if (string.IsNullOrEmpty(date)) throw new System.Exception("请输入日期");
+            if (string.IsNullOrEmpty(studentId)) throw new System.Exception("请输入学生ID");
             var student = new StudentService().GetById(studentId);
-            if (student == null) return Error("未找到学生");
+            if (student == null) throw new System.Exception("未找到学生");
             var classInfo = new OrgService().GetById(student.ClassId);
             var list = OriginalReportApp.GetOriginalListBydate(studentId, date);
             var data = new
@@ -52,7 +52,7 @@ namespace ZHXY.Web.Dorm.Controllers
                 classname = classInfo.Name,
                 records = list.Select(p => new { p.InOut, p.Date, p.ChannelName })
             };
-            return Result(data);
+            return Result.Success(data);
 
         }
         
@@ -71,7 +71,7 @@ namespace ZHXY.Web.Dorm.Controllers
                     inTime = p.InTime,
                     count = p.F_Time
                 });
-            return Result(list);
+            return Result.Success(list);
         }
 
         /// <summary>
@@ -84,16 +84,16 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpGet]
         public ActionResult GetLateListByStuId(string studentId, string startTime, string endTime)
         {
-            if (string.IsNullOrEmpty(studentId)) return Error("请输入学生ID");
+            if (string.IsNullOrEmpty(studentId)) throw new System.Exception("请输入学生ID");
             var student = new StudentService().GetById(studentId);
-            if (student == null) return Error("未找到学生");
+            if (student == null) throw new System.Exception("未找到学生");
             var list = LateReturnReportApp.GetLateListByStuId(studentId, startTime, endTime).Select(p =>
                 new
                 {
                     inTime = p.InTime,
                     count = p.F_Time
                 });
-            return Result(list);
+            return Result.Success(list);
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace ZHXY.Web.Dorm.Controllers
                    outTime = p.OutTime,
                    count = p.DayCount
                });
-            return Result(list);
+            return Result.Success(list);
         }
 
         /// <summary>
@@ -124,16 +124,16 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpGet]
         public ActionResult GetNoReturnListByStuId(string studentId, string startTime, string endTime)
         {
-            if (string.IsNullOrEmpty(studentId)) return Error("请输入学生ID");
+            if (string.IsNullOrEmpty(studentId)) throw new System.Exception("请输入学生ID");
             var student = new StudentService().GetById(studentId);
-            if (student == null) return Error("未找到学生");
+            if (student == null) throw new System.Exception("未找到学生");
             var list = NoReturnReportApp.GetNoReturnListByStuId(studentId,startTime, endTime).Select(p =>
                new
                {
                    outTime = p.OutTime,
                    count = p.DayCount
                });
-            return Result(list);
+            return Result.Success(list);
         }
 
         
@@ -153,7 +153,7 @@ namespace ZHXY.Web.Dorm.Controllers
                    inTime = p.InTime,
                    count = p.Time
                });
-            return Result(list);
+            return Result.Success(list);
         }
 
 
@@ -167,16 +167,16 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpGet]
         public ActionResult GetNoOutListByStuId(string studentId, string startTime, string endTime)
         {
-            if (string.IsNullOrEmpty(studentId)) return Error("请输入学生ID");
+            if (string.IsNullOrEmpty(studentId)) throw new System.Exception("请输入学生ID");
             var student = new StudentService().GetById(studentId);
-            if (student == null) return Error("未找到学生");
+            if (student == null) throw new System.Exception("未找到学生");
             var list = NoOutReportApp.GetNoOutListByStuId(studentId, startTime, endTime).Select(p =>
                new
                {
                    inTime = p.InTime,
                    count = p.Time
                });
-            return Result(list);
+            return Result.Success(list);
         }
 
 
@@ -200,7 +200,7 @@ namespace ZHXY.Web.Dorm.Controllers
                  date = p.InTime,
                  record = p.F_Time
              });
-            return Result(list);
+            return Result.Success(list);
         }
 
         /// <summary>
@@ -224,7 +224,7 @@ namespace ZHXY.Web.Dorm.Controllers
                   date = p.OutTime,
                   count = p.DayCount
               });
-            return Result(list);
+            return Result.Success(list);
         }
         /// <summary>
         /// 获取未出统计
@@ -246,7 +246,7 @@ namespace ZHXY.Web.Dorm.Controllers
                   date = p.InTime,
                   count = p.Time
               });
-            return Result(list);
+            return Result.Success(list);
         }
         /// <summary>
         /// 获取学部下晚归统计
@@ -276,7 +276,7 @@ namespace ZHXY.Web.Dorm.Controllers
                 };
                 objlist.Add(obj);
             }
-            return Result(objlist);
+            return Result.Success(list);
         }
         [HttpGet]
         public ActionResult GetLateListByGrade(string gradeId, string startTime, string endTime)
@@ -287,7 +287,7 @@ namespace ZHXY.Web.Dorm.Controllers
             var divisList = new List<Organ>();
             sysApp.GetClassInfosByGradeId(gradeId, ref classList,ref divisList);
             var data = LateReturnReportApp.GetListByDivisList(divisList,classList, startTime, endTime);
-            return Result(data);
+            return Result.Success(data);
         }
     }
     public class GetOriginalListBydateParms

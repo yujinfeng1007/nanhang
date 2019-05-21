@@ -13,32 +13,32 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult Add(AddMenuDto dto)
         {
             App.Add(dto);
-            return Resultaat.Success();
+            return Result.Success();
         }
         [HttpPost]
         public ActionResult Delete(string id)
         {
             App.Delete(id);
-            return Resultaat.Success();
+            return Result.Success();
         }
         [HttpPost]
         public ActionResult Update(UpdateMenuDto dto)
         {
             App.Update(dto);
-            return Resultaat.Success();
+            return Result.Success();
         }
         [HttpGet]
         public ActionResult GetMenu(string nodeId, int n_level = 0)
         {
             var data=App.GetMenu(nodeId, n_level);
-            return Resultaat.Success(data);
+            return Result.Success(data);
         }
 
         [HttpPost]
         public ActionResult AddBth(AddFuncDto dto)
         {
             App.AddFunc(dto);
-            return Resultaat.Success();
+            return Result.Success();
         }
         [HttpPost]
         public ActionResult DeleteBtn(string id)
@@ -47,20 +47,20 @@ namespace ZHXY.Web.SystemManage.Controllers
             {
                 App.DeleteFunc(id.Split(','));
             }
-            return Resultaat.Success();
+            return Result.Success();
         }
         [HttpPost]
         public ActionResult UpdateBtn(UpdateFuncDto dto)
         {
             App.UpdateFunc(dto);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
         [HttpGet]
         public ActionResult GetMenuBth(string menuId = null)
         {
             var data = App.GetMenuFunc(menuId);
-            return Resultaat.Success(data);
+            return Result.Success(data);
         }
 
     }

@@ -6,5 +6,7 @@ namespace ZHXY.Application
     {
         public RelevanceService(IZhxyRepository r) : base(r) { }
 
+
+
     }
 }

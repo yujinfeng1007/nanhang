@@ -8,6 +8,9 @@
     let TREE_GRID_HEIGHT = window.innerHeight * 0.84;
     let GRID_STYLE = "Bootstrap";
 
+    let dicGroupList = JSON.parse(localStorage.getItem("dicGroup"));
+
+
     $(function () {
         $('#layout').layout({
             west__resizable: true
@@ -34,16 +37,16 @@
             jsonReader: {
                 root: function (r) { return r.data; }
             },
+           
             colModel: [
-                { name: 'id', key: true, hidden:true },
-                { label: 'CODE', name: 'code', editable: true,  },
-                { label: 'KEY', name: 'key', editable: true,},
-                { label: 'VALUE', name: 'value', editable: true,}
+                { label: 'CODE', name: 'code', editable: true, editable: true },
+                { label: 'KEY', name: 'key', editable: true, editable: true },
+                { label: 'VALUE', name: 'value', editable: true, editable: true }
             ],
         });
         $("#rightGrid").jqGrid('navGrid', '#rightPager',
             {
-                edit: false,
+                edit: true,
                 add: true,
                 del: true,
                 search: false,
@@ -78,7 +81,7 @@
     function reloadGrid(rowId) {
         $("#rightGrid").jqGrid('setGridParam', {
             postData: {
-                code: rowId
+                dicId: rowId
             },
         }).trigger('reloadGrid');
     }
@@ -95,6 +98,7 @@
             autoGridHeight: true,
             height: TREE_GRID_HEIGHT,
             width: TREE_GRID_WIDTH,
+            ExpandColumn: 'name',
             onSelectRow: reloadGrid,
             pager: "#leftPager",
             toppager: true,
@@ -102,22 +106,19 @@
                 root: function (r) { return r.data; }
             },
             colModel: [
+                { label: 'CODE', name: 'code',  editable: true },
                 { label: '名称', name: 'name',  editable: true },
-                { label: 'CODE', name: 'code',  editable: true,key:true },
                 {
-                    label: '类型', name: "type", editable: true,
-                    formatter: function (cellValue) {
-                        return top.window.getDicValue("dicGroup", cellValue);
+                    label: '类型', name: "category", editable: true,
+                     formatter: function (cv) {
+                        return dicGroupList[cv] == null ? "" : dicGroupList[cv];
                     },
                     edittype: "select",
-                    editoptions: { value: ()=>top.window.getDic("dicGroup") },
+                    editoptions: { value: dicGroupList },
+                    edittype: 'select',
                 },
-                { label: '排序', name: "sortCode", editable: true, edittype: "number"},
+                { label: '排序', name: "sortCode", editable: true},
             ],
-             grouping:true,
-             groupingView : {
-               groupField : ['type']
-             },
         });
 
         $("#leftGrid").jqGrid('navGrid', '#leftPager',
@@ -127,7 +128,7 @@
                 del: true,
                 search: false,
                 refresh: true,
-                view: false,
+                view: true,
                 cloneToTop: true,
             },
             {

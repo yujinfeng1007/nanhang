@@ -20,31 +20,31 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpGet]
         public ActionResult Get(string id)
         {
-           return Resultaat.Success(App.GetById(id));
+           return Result.Success(App.GetById(id));
         }
         public ActionResult Update(UpdateHolidayDto input)
         {
             App.Update(input);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
         [HttpGet]
         public ActionResult Load(Pagination pag,string keyword)
         {
             var rows = App.Load(pag,  keyword);
-            return Resultaat.PagingRst(rows, pag.Records, pag.Total);
+            return Result.PagingRst(rows, pag.Records, pag.Total);
         }
 
         public ActionResult GetList()
         {
-            return Resultaat.Success(App.Read<Holiday>().ToList().ToCamelJson());
+            return Result.Success(App.Read<Holiday>().ToList().ToCamelJson());
         }
 
         [HttpPost]
         public ActionResult Add(AddHolidayDto dto)
         {
             App.Add(dto);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
         [HttpPost]
@@ -54,7 +54,7 @@ namespace ZHXY.Web.Dorm.Controllers
             {
                 App.Delete(id.Split(','));
             }
-            return Resultaat.Success();
+            return Result.Success();
         }
 
     }

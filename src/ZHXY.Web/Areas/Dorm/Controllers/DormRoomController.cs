@@ -14,14 +14,14 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult Load(Pagination p)
         {
             var rows = App.Load(p);
-            return Resultaat.PagingRst(rows, p.Records, p.Total);
+            return Result.PagingRst(rows, p.Records, p.Total);
         }
 
         [HttpGet]
         public ActionResult Get(string id)
         {
             var data = App.GetById(id);
-            return Resultaat.Success(data);
+            return Result.Success(data);
         }
 
     }

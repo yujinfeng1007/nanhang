@@ -20,7 +20,7 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult Load(Pagination pag, string keyword)
         {
             var data = App.GetList(pag, keyword);
-            return Resultaat.PagingRst(data,pag.Records,pag.Total);
+            return Result.PagingRst(data,pag.Records,pag.Total);
         }
 
         [HttpGet]
@@ -28,7 +28,7 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult Get(string id)
         {
             var data = App.GetById(id);
-            return Resultaat.Success(data);
+            return Result.Success(data);
         }
 
         [HttpGet]
@@ -36,7 +36,7 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult GetByJobNumber(string F_Num)
         {
             var data = App.GetByJobNumber(F_Num);
-            return Resultaat.Success(data);
+            return Result.Success(data);
         }
 
         [HttpPost]
@@ -44,7 +44,7 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult TeacherBindClass(string classId, string teacherId)
         {
             App.BindTeacherOrg(classId, teacherId);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
         [HttpGet]
@@ -52,7 +52,7 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult GetBindClass(string teacherId)
         {
             var data =  App.GetBindClass(teacherId);
-            return Resultaat.Success(data);
+            return Result.Success(data);
         }
 
     }

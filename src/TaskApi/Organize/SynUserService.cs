@@ -203,20 +203,12 @@ namespace TaskApi
 
         private void setUserInfo(IUnitWork db, User entity)
         {
-            if (db.FindEntity<UserLogin>(t => t.UserId == entity.Id) != null)
-                return;
-            var userLogOnEntity = new UserLogin
-            {
-                UserId = entity.Id,
-                Secretkey = Md5EncryptHelper.Encrypt("0000", 16).ToLower()
-            };
-            userLogOnEntity.Password = Md5EncryptHelper.Encrypt(DESEncryptHelper.Encrypt(Md5EncryptHelper.Encrypt("0000", 32).ToLower(), userLogOnEntity.Secretkey).ToLower(), 32).ToLower();
-            db.Insert(userLogOnEntity);
-
+            entity.Secretkey = Md5EncryptHelper.Encrypt("0000", 16).ToLower();
+            entity.Password = Md5EncryptHelper.Encrypt(DESEncryptHelper.Encrypt(Md5EncryptHelper.Encrypt("0000", 32).ToLower(), entity.Secretkey).ToLower(), 32).ToLower();
             var isPost = true;
             var parameters = "sysid=" + entity.Id + "&amp;appid=" + AppId + "&amp;nickname=" +
                              entity.Name + "&amp;username=" + entity.Account +
-                             "&amp;password=" + userLogOnEntity.Password +
+                             "&amp;password=" + entity.Password +
                              "&amp;sysgroupid=" + entity.OrganId + "&amp;headicon=" +
                              entity.HeadIcon + "&amp;birthday=" + entity.Birthday + "";
             WebHelper.SendRequest(CallUrlAdd, parameters, isPost, "application/json");

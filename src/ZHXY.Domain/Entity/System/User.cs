@@ -5,7 +5,6 @@ namespace ZHXY.Domain
     /// <summary>
     /// 用户
     /// </summary>
-    [Serializable]
     public class User : IEntity
     {
         /// <summary>
@@ -67,6 +66,24 @@ namespace ZHXY.Domain
       
 
         public string SetUp { get; set; }
+
+        public string Password { get; set; } = "17f123f731bca5b8925979dc1a228548";
+        /// <summary>
+        /// 安全码
+        /// </summary>
+        public string Secretkey { get; set; } = "4a7d1ed414474e40";
+        /// <summary>
+        /// 上次访问时间
+        /// </summary>
+        public DateTime? PreVisitTime { get; set; }
+        /// <summary>
+        /// 最后访问时间
+        /// </summary>
+        public DateTime? LastVisitTime { get; set; }
+        /// <summary>
+        /// 登录总次数
+        /// </summary>
+        public int LoginCount { get; set; }
 
     }
 }
