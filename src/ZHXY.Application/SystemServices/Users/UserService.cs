@@ -14,7 +14,12 @@ namespace ZHXY.Application
     /// </summary>
     public class UserService : AppService
     {
+        private RelevanceService RelevanceApp { get; }
         public UserService(IZhxyRepository r) : base(r) { }
+        public UserService(IZhxyRepository r, RelevanceService relevanceApp) : base(r)
+        {
+            RelevanceApp = relevanceApp;
+        }
 
         public List<UserView> GetList(Pagination pag, string orgId, string keyword)
         {
@@ -67,7 +72,7 @@ namespace ZHXY.Application
             cuser.LoginToken = DESEncryptHelper.Encrypt(Guid.NewGuid().ToString());
             cuser.Ip = Net.Ip;
             cuser.IpLocation = Net.GetLocation(cuser.Ip);
-            cuser.Roles = GetUserRolesId(user.Id);
+            cuser.Roles = RelevanceApp.GetUserRole(user.Id);
             return cuser;
         }
 
@@ -107,7 +112,7 @@ namespace ZHXY.Application
 
         public void AddRole(string userId, string[] roleIds)
         {
-            var existingRoles = GetUserRolesId(userId);
+            var existingRoles = RelevanceApp.GetUserRole(userId);
             var addRoles = roleIds.Except(existingRoles);
             foreach (var item in addRoles)
             {
@@ -128,7 +133,7 @@ namespace ZHXY.Application
 
         public dynamic GetRolesExcludeUser(string userId)
         {
-            var exclude = GetUserRolesId(userId);
+            var exclude = RelevanceApp.GetUserRole(userId);
             return Read<Role>(p => !exclude.Contains(p.Id)).ToListAsync().Result;
         }
 
@@ -149,17 +154,15 @@ namespace ZHXY.Application
                 Duty = user.DutyId,
                 Roles = user.Roles
             };
-            var query = Read<Menu>(p => p.BelongSys.Equals("1"));
+            var query = Read<Resource>(p => p.BelongSys.Equals("1")&&p.Type.Equals(SYS_CONSTS.Menu));
             if (user.Name == "超级管理员")
             {
                 var list = query.ToListAsync().Result;
                 d.Menus = TreeHelper.GetMenuJson(list, SYS_CONSTS.DbNull);
-                d.Funcs = Read<Function>().ToListAsync().Result.ToCamelJson();
             }
             else
             {
-                d.Menus = GetUserMenuJson(user.Id, "1");
-                d.Funcs = GetUserFuncJson(user.Id);
+                d.Menus = GetUserMenu(user.Id, "1");
             }
 
 
@@ -171,16 +174,9 @@ namespace ZHXY.Application
 
         public dynamic GetUserRoles(string userId)
         {
-            var roles = Read<Relevance>(p => p.Name.Equals(Relation.UserRole) && p.FirstKey.Equals(userId)).Select(p => p.SecondKey).ToArrayAsync().Result;
+            var roles = RelevanceApp.GetUserRole(userId);
             return Read<Role>(p => roles.Contains(p.Id)).ToListAsync().Result;
         }
-        public string[] GetUserRolesId(string userId)
-        {
-            return Read<Relevance>(p => p.Name.Equals(Relation.UserRole) && p.FirstKey.Equals(userId)).Select(p => p.SecondKey).ToArrayAsync().Result;
-        }
-
-
-
 
         /// <summary>
         /// 用户鉴权
@@ -195,20 +191,16 @@ namespace ZHXY.Application
         }
 
 
-        public string GetUserMenuJson(string userId, string system)
+        public string GetUserMenu(string userId, string system)
         {
-            var userRoles = GetUserRolesId(userId);
-            var userMenus = Read<Relevance>(p => p.Name.Equals(Relation.RolePower) && userRoles.Contains(p.FirstKey) && p.ThirdKey.Equals(SYS_CONSTS.DbNull)).Select(p => p.SecondKey).ToArrayAsync().Result;
-            var list = Read<Menu>(p => userMenus.Contains(p.Id) && p.BelongSys.Equals(system)).ToListAsync().Result;
+            var userMenus = RelevanceApp.GetUserMenu(userId);
+            var list = Read<Resource>(p => userMenus.Contains(p.Id) && p.BelongSys.Equals(system)&&p.Type.Equals(SYS_CONSTS.Menu)).ToListAsync().Result;
             return TreeHelper.GetMenuJson(list, SYS_CONSTS.DbNull);
         }
 
-        public string GetUserFuncJson(string userId)
+        public void GerUserResource(string userId)
         {
-            var userRoles = GetUserRolesId(userId);
-            var userFuncs = Read<Relevance>(p => p.Name.Equals(Relation.RolePower) && userRoles.Contains(p.FirstKey) && !p.ThirdKey.Equals(SYS_CONSTS.DbNull)).Select(p => p.ThirdKey).Distinct().ToArrayAsync().Result;
-            var list = Read<Function>(p => userFuncs.Contains(p.Id)).ToListAsync().Result;
-            return list.ToCamelJson();
+
         }
     }
 }

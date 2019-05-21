@@ -1,11 +1,8 @@
 ﻿using ZHXY.Domain;
-using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.Data.Entity;
 using System.Linq;
-using System.Linq.Expressions;
 using ZHXY.Common;
 
 namespace ZHXY.Application
@@ -18,8 +15,6 @@ namespace ZHXY.Application
         public TeacherService(IZhxyRepository r):base(r)
         {
         }
-
-
         public dynamic GetByJobNumber(string num)
         {
             return Read<Teacher>(p => p.JobNumber.Equals(num)).FirstOrDefaultAsync().Result;

@@ -19,6 +19,7 @@ namespace ZHXY.Application
         protected ILog FileLog => Logger.GetLogger(GetType().ToString());
 
         #endregion property
+
         #region View
 
         [HttpGet]
@@ -49,4 +50,5 @@ namespace ZHXY.Application
         }
         #endregion others
     }
+   
 }

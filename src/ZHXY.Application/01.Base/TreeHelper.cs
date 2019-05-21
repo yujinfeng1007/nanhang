@@ -121,7 +121,7 @@ namespace ZHXY.Application
         /// <summary>
         /// 获取菜单树
         /// </summary>
-        public static string GetMenuJson(List<Menu> data, string parentId)
+        public static string GetMenuJson(List<Resource> data, string parentId)
         {
             var sbJson = new StringBuilder();
             sbJson.Append("[");
