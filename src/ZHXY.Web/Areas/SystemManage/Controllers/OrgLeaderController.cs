@@ -20,7 +20,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         /// </summary>
         [HttpGet]
         
-        public async Task<ActionResult> Get(string orgId) => await Task.Run(() => Resultaat.Success(App.Get(orgId)));
+        public async Task<ActionResult> Get(string orgId) => await Task.Run(() => Result.Success(App.Get(orgId)));
 
         /// <summary>
         /// 添加机构负责人
@@ -29,7 +29,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         public async Task<ActionResult> Add(AddOrRemoveOrgLeaderDto input) => await Task.Run(() =>
         {
             App.Add(input);
-            return Resultaat.Success();
+            return Result.Success();
         });
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         public async Task<ActionResult> Remove(AddOrRemoveOrgLeaderDto input) => await Task.Run(() =>
         {
             App.Remove(input);
-            return Resultaat.Success();
+            return Result.Success();
         });
     }
 }

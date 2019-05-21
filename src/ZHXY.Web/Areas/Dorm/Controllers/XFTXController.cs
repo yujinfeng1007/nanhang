@@ -26,7 +26,7 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult XF(string[] userId)
         {
             App.SendUserHeadIco(userId);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpPost]
         public ActionResult ZX(string[] userId)
         {
-            return Resultaat.Success();
+            return Result.Success();
         }
     }
 }

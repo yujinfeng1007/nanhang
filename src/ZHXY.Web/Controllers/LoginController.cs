@@ -188,7 +188,7 @@ namespace ZHXY.Web.Controllers
             CheckVerifyCode(code);
             var user = UserApp.CheckLogin(username, password);
             Operator.Set(user);
-            return Resultaat.Success(new { user.DutyId, user.SetUp, user.Name });
+            return Result.Success(new { user.DutyId, user.SetUp, user.Name });
         }
 
 

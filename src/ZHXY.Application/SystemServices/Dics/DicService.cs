@@ -13,26 +13,25 @@ namespace ZHXY.Application
     public class DicService : AppService
     {
         public DicService(IZhxyRepository r) : base(r) { }
-        public List<SysDic> GetAll() => Read<SysDic>().ToList();
+        public List<Dic> GetAll() => Read<Dic>().ToList();
 
-        public SysDic GetById(string id) => Get<SysDic>(id);
+        public Dic GetById(string id) => Get<Dic>(id);
       
 
         public void Add(DicDto dto)
         {
-            var dic = dto.MapTo<SysDic>();
+            var dic = dto.MapTo<Dic>();
             AddAndSave(dic);
         }
         public void Delete(string id)
         {
-            if (Read<SysDicItem>(p => p.Code.Equals(id)).Any()) throw new Exception("删除失败！操作的对象包含了下级数据。");
-            DelAndSave<SysDic>(id);
+            if (Read<DicItem>(p => p.Code.Equals(id)).Any()) throw new Exception("删除失败！操作的对象包含了下级数据。");
+            DelAndSave<Dic>(id);
         }
 
         public dynamic GetList()
         {
-           
-            return Read<SysDic>().OrderBy(p => p.SortCode).Select(p =>
+            return Read<Dic>().OrderBy(p => p.SortCode).OrderBy(p=>p.Type).Select(p =>
                     new
                     {
                         p.Code,
@@ -44,7 +43,7 @@ namespace ZHXY.Application
 
         public void Update(DicDto dto)
         {
-            var dic = Get<SysDic>(dto.Id);
+            var dic = Get<Dic>(dto.Code);
             dto.MapTo(dic);
             SaveChanges();
         }
@@ -53,10 +52,10 @@ namespace ZHXY.Application
         public object GetData()
         {
             var data = new Dictionary<string, Dictionary<string, string>>();
-            var dics = Read<SysDic>().ToList();
+            var dics = Read<Dic>().ToList();
             dics.ForEach(item =>
             {
-                var items = Read((SysDicItem p) => p.Code.Equals(item.Code)).ToDictionary(p=> p.Key,e=> e.Value);
+                var items = Read<DicItem>( p => p.Code.Equals(item.Code)).ToDictionary(p=> p.Key,e=> e.Value);
                 data.Add(item.Code, items);
             });
 
@@ -71,30 +70,31 @@ namespace ZHXY.Application
 
         public void AddItem(DicItemDto dto)
         {
-            var item = dto.MapTo<SysDicItem>();
+            var item = dto.MapTo<DicItem>();
             AddAndSave(item);
         }
 
         public void UpdateItem(DicItemDto dto)
         {
-            var item = Get<SysDicItem>(dto.DicId);
+            var item = Get<DicItem>(dto.Code);
             dto.MapTo(item);
             SaveChanges();
         }
 
-        public void DeleteItem(string id)
+        public void DeleteItem(string[] id)
         {
-            DelAndSave<SysDicItem>(id);
+            var removeList = Query<DicItem>(p => id.Contains(p.Id)).ToList();
+            DelAndSave<DicItem>(removeList);
         }
 
-        public List<SysDicItem> GetItems(string dicId)
+        public dynamic GetItems(string code)
         {
-            return Read<SysDicItem>(p => p.Code.Equals(dicId)).ToListAsync().Result;
+            return Read<DicItem>(p=>p.Code.Equals(code)).ToListAsync().Result;
         }
 
-        public List<SysDicItem> GetAllItems()
+        public List<DicItem> GetAllItems()
         {
-            return Read<SysDicItem>().ToListAsync().Result;
+            return Read<DicItem>().ToListAsync().Result;
         }
     }
 }

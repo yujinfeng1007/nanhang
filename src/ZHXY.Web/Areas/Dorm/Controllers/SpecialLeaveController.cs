@@ -22,7 +22,7 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult Apply(BulkLeaveDto input) 
         {
             App.SpecialApply(input, Operator.GetCurrent().Id);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace ZHXY.Web.Dorm.Controllers
         {
             input.CurrentUserId = Operator.GetCurrent().Id;
             var (list, recordCount, pageCount) = App.GetSpecialList(input);
-            return Resultaat.PagingRst(list,recordCount,pageCount);
+            return Result.PagingRst(list,recordCount,pageCount);
         }
 
         /// <summary>
@@ -41,6 +41,6 @@ namespace ZHXY.Web.Dorm.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult> GetStudentByOrg(string orgId, string keyword) => await Task.Run(() => Resultaat.Success(App.GetStuByOrg(orgId, keyword)));
+        public async Task<ActionResult> GetStudentByOrg(string orgId, string keyword) => await Task.Run(() => Result.Success(App.GetStuByOrg(orgId, keyword)));
     }
 }

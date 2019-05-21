@@ -35,7 +35,7 @@ namespace ZHXY.Domain
         /// <summary>
         /// 审批结果  0:未审批  1:同意  -1:拒绝
         /// </summary>
-        public int Result { get; set; }
+        public string Result { get; set; }
 
         /// <summary>
         /// 审批意见

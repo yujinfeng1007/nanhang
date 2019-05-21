@@ -42,34 +42,34 @@
         $gridList.dataGrid({
             url: "/Dorm/Report/GetNoReturnList",
             colModel: [
-                { label: '学号', name: 'Account', width: 200, align: 'left' },
-                { label: '姓名', name: 'Name', width: 150, align: 'left' },
+                { label: '学号', name: 'account', width: 200, align: 'left' },
+                { label: '姓名', name: 'name', width: 150, align: 'left' },
                 //{ label: "院系", name: "College", width: 150, align: 'left' },
                 //{ label: "班级", name: "Class", width: 150, align: 'left' },
                 {
-                    label: '年级', name: 'DepartmentId', width: 200, align: 'left',
+                    label: '年级', name: 'departmentId', width: 200, align: 'left',
                     formatter: function (cv) {
                         return orgList[cv] == null ? "" : orgList[cv];
                     },
 
                 },
                 {
-                    label: '院系', name: 'GradeId', width: 200, align: 'left',
+                    label: '院系', name: 'gradeId', width: 200, align: 'left',
                     formatter: function (cv) {
                         return orgList[cv] == null ? "" : orgList[cv];
                     },
 
                 },
                 {
-                    label: '班级', name: 'ClassId', width: 200, align: 'left',
+                    label: '班级', name: 'classId', width: 200, align: 'left',
                     formatter: function (cv) {
                         return orgList[cv] == null ? "" : orgList[cv];
                     },
 
                 },
-                { label: "宿舍号", name: "Dorm", width: 150, align: 'left' },
-                { label: "出宿舍时间", name: "Time", width: 150, align: 'left' },
-                { label: "未归时长(时)", name: "DayCount", width: 150, align: 'left' }
+                { label: "宿舍号", name: "dorm", width: 150, align: 'left' },
+                { label: "出宿舍时间", name: "time", width: 150, align: 'left' },
+                { label: "未归时长(时)", name: "dayCount", width: 150, align: 'left' }
             ],
             pager: '#gridPager',
             multiselect:false

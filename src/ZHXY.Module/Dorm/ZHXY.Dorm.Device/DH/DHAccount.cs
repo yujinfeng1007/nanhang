@@ -21,11 +21,7 @@ namespace ZHXY.Dorm.Device.DH
         /// </summary>
         public static object DHLogOut()
         {
-            if(X_SUBJECT_TOKEN == null)
-            {
-                var db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
-                X_SUBJECT_TOKEN = db.StringGet(REDIS_TOKEN_SET_KEY);
-            }
+            X_SUBJECT_TOKEN = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL).StringGet(REDIS_TOKEN_SET_KEY);
             string cookieStr = "X-Subject-Token="+ X_SUBJECT_TOKEN;
             var DataDic = new Dictionary<string, string>();
             DataDic.Add("userName", Constants.DAHUA_LOGIN_USERNAME);
@@ -39,11 +35,7 @@ namespace ZHXY.Dorm.Device.DH
         /// </summary>
         public static object PUSH_DH_ADD_PERSON(PersonMoudle personMoudle)
         {
-            if (X_SUBJECT_TOKEN == null)
-            {
-                var db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
-                X_SUBJECT_TOKEN = db.StringGet(REDIS_TOKEN_SET_KEY);
-            }
+            X_SUBJECT_TOKEN = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL).StringGet(REDIS_TOKEN_SET_KEY);
 
             if (personMoudle.photoUrl != null && personMoudle.photoUrl.Length != 0)
             {
@@ -58,11 +50,7 @@ namespace ZHXY.Dorm.Device.DH
         /// <param name="personMoudle"></param>
         public static object PUSH_DH_UPDATE_PERSON(PersonMoudle personMoudle)
         {
-            if (X_SUBJECT_TOKEN == null)
-            {
-                var db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
-                X_SUBJECT_TOKEN = db.StringGet(REDIS_TOKEN_SET_KEY);
-            }
+             X_SUBJECT_TOKEN = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL).StringGet(REDIS_TOKEN_SET_KEY);
             if (personMoudle.photoUrl != null && personMoudle.photoUrl.Length != 0)
             {
                 personMoudle.photoBase64 = GetImageBase64Str.ImageBase64Str(personMoudle.photoUrl);//通过头像地址，获取头像Base64位字符串
@@ -88,11 +76,7 @@ namespace ZHXY.Dorm.Device.DH
         /// <param name="personMoudle"></param>
         public static object PUSH_DH_DELETE_PERSON(string[] Ids)
         {
-            if (X_SUBJECT_TOKEN == null)
-            {
-                var db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
-                X_SUBJECT_TOKEN = db.StringGet(REDIS_TOKEN_SET_KEY);
-            }
+            X_SUBJECT_TOKEN = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL).StringGet(REDIS_TOKEN_SET_KEY);
             return HttpHelper.ExecuteDelete(Constants.SELECT_STUDENTS_INFO+ "?sessionId=" + X_SUBJECT_TOKEN, JsonConvert.SerializeObject(Ids), X_SUBJECT_TOKEN);
         }
 
@@ -104,11 +88,7 @@ namespace ZHXY.Dorm.Device.DH
         /// <returns></returns>
         public static object SELECT_DH_PERSON(PersonMoudle personMoudle)
         {
-            if (X_SUBJECT_TOKEN == null)
-            {
-                var db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
-                X_SUBJECT_TOKEN = db.StringGet(REDIS_TOKEN_SET_KEY);
-            }
+            X_SUBJECT_TOKEN = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL).StringGet(REDIS_TOKEN_SET_KEY);
             return HttpHelper.ExecuteGetPersons(Constants.SELECT_STUDENTS_INFO, personMoudle, X_SUBJECT_TOKEN);
         }
 
@@ -121,12 +101,8 @@ namespace ZHXY.Dorm.Device.DH
         /// <returns></returns>
         public static object CREATE_DORMITORY(String name, string pid, int level)
         {
-            if (X_SUBJECT_TOKEN == null)
-            {
-                var db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
-                X_SUBJECT_TOKEN = db.StringGet(REDIS_TOKEN_SET_KEY);
-            }
-            var dicObj = new Dictionary<string, object>();
+            X_SUBJECT_TOKEN = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL).StringGet(REDIS_TOKEN_SET_KEY);
+            Dictionary<string, object> dicObj = new Dictionary<string, object>();
             var dic = new Dictionary<string, string>();
             dic.Add("name", name);
             dic.Add("pname", pid);
@@ -146,11 +122,7 @@ namespace ZHXY.Dorm.Device.DH
         /// <returns></returns>
         public static object SELECT_DORMITOR(string name, string pid)
         {
-            if (X_SUBJECT_TOKEN == null)
-            {
-                var db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
-                X_SUBJECT_TOKEN = db.StringGet(REDIS_TOKEN_SET_KEY);
-            }
+            X_SUBJECT_TOKEN = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL).StringGet(REDIS_TOKEN_SET_KEY);
             return HttpHelper.GetDormitorInfo(Constants.SELECT_DORMITORY_INFOS_URI, name, pid, X_SUBJECT_TOKEN);
         }
 
@@ -161,11 +133,7 @@ namespace ZHXY.Dorm.Device.DH
         /// <param name="zipFilePath"> 压缩多张图片之后的压缩包路径 </param>
         public static object PUSH_DH_BATCHPHOTO_ZIP(string zipFilePath)
         {
-            if (X_SUBJECT_TOKEN == null)
-            {
-                var db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
-                X_SUBJECT_TOKEN = db.StringGet(REDIS_TOKEN_SET_KEY);
-            }
+            X_SUBJECT_TOKEN = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL).StringGet(REDIS_TOKEN_SET_KEY);
 
             //var dire = new DirectoryInfo(zipFilePath);
             //foreach(var file in dire.GetFiles())
@@ -182,11 +150,7 @@ namespace ZHXY.Dorm.Device.DH
         /// <param name="excelFilePath">填入数据的Excel表格所在路径</param>
         public static void PUSH_DH_STUDENT_EXCEL(string excelFilePath)
         {
-            if (X_SUBJECT_TOKEN == null)
-            {
-                var db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
-                X_SUBJECT_TOKEN = db.StringGet(REDIS_TOKEN_SET_KEY);
-            }
+            X_SUBJECT_TOKEN = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL).StringGet(REDIS_TOKEN_SET_KEY);
             HttpHelper.UploadFileToDH(Constants.UPLOAD_STUDENT_EXCEL_URI, X_SUBJECT_TOKEN, excelFilePath);
         }
 
@@ -196,11 +160,7 @@ namespace ZHXY.Dorm.Device.DH
         /// <param name="excelFilePath"></param>
         public static void PUSH_DH_TEACHER_EXCEL(string excelFilePath)
         {
-            if (X_SUBJECT_TOKEN == null)
-            {
-                var db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
-                X_SUBJECT_TOKEN = db.StringGet(REDIS_TOKEN_SET_KEY);
-            }
+            X_SUBJECT_TOKEN = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL).StringGet(REDIS_TOKEN_SET_KEY);
             HttpHelper.UploadFileToDH(Constants.UPLOAD_TEACHER_EXCEL_URI, X_SUBJECT_TOKEN, excelFilePath);
         }
 
@@ -214,11 +174,7 @@ namespace ZHXY.Dorm.Device.DH
         /// <param name="searchKey">设备名称（模糊查询）</param>
         public static JObject GetMachineInfo(string id, string type, string isDomain, string searchKey)
         {
-            if (X_SUBJECT_TOKEN == null)
-            {
-                var db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
-                X_SUBJECT_TOKEN = db.StringGet(REDIS_TOKEN_SET_KEY);
-            }
+            X_SUBJECT_TOKEN = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL).StringGet(REDIS_TOKEN_SET_KEY);
             var DataDic = new Dictionary<string, string>();
             DataDic.Add("id", id);
             DataDic.Add("type", type);
@@ -234,11 +190,7 @@ namespace ZHXY.Dorm.Device.DH
         /// <param name="mqMoudle"></param>
         public static JObject GetMQConfig(MQMoudle mqMoudle)
         {
-            if (X_SUBJECT_TOKEN == null)
-            {
-                var db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
-                X_SUBJECT_TOKEN = db.StringGet(REDIS_TOKEN_SET_KEY);
-            }
+            X_SUBJECT_TOKEN = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL).StringGet(REDIS_TOKEN_SET_KEY);
             mqMoudle.data.optional = Constants.GET_MQ_CONFIG_URI + "?token=" + X_SUBJECT_TOKEN;
             string response = HttpHelper.ExecutePostMachineInfo(mqMoudle.data.optional, JsonConvert.SerializeObject(mqMoudle), X_SUBJECT_TOKEN);
             var jo = (JObject)JsonConvert.DeserializeObject(response);

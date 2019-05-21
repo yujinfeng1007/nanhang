@@ -6,14 +6,14 @@ namespace ZHXY.Domain
     {
         public FaceApproveMap()
         {
-            ToTable("School_FaceApprove");
+            ToTable("zhxy_face_approve");
             HasKey(p => p.Id);
-            Property(p => p.Id).HasColumnName("F_Id");
-            Property(p => p.OrderId).HasColumnName("F_FaceId");
-            Property(p => p.ApproverId).HasColumnName("F_ApproverId");
-            Property(p => p.ApproveLevel).HasColumnName("F_ApproveLevel");
-            Property(p => p.Result).HasColumnName("F_Status");
-            Property(p => p.Opinion).HasColumnName("F_Opinion");
+            Property(p => p.Id).HasColumnName("id");
+            Property(p => p.OrderId).HasColumnName("face_id");
+            Property(p => p.ApproverId).HasColumnName("approver_id");
+            Property(p => p.ApproveLevel).HasColumnName("approve_level");
+            Property(p => p.Result).HasColumnName("status");
+            Property(p => p.Opinion).HasColumnName("opinion");
 
             HasOptional(p => p.Approver).WithMany().HasForeignKey(p => p.ApproverId);
         }

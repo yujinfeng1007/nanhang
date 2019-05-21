@@ -35,10 +35,6 @@ namespace ZHXY.Web.Dorm.Controllers
             var data = App.GetById(id);
             return Content(data.ToJson());
         }
-        
-        
-        
-
    
 	}
 }

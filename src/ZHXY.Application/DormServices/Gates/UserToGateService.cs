@@ -158,8 +158,12 @@ namespace ZHXY.Application.DormServices.Gates
                     // 楼栋Id列表
                     var lds = Read<Relevance>(p => p.Name == "Gate_Building" && zjids.Contains(p.FirstKey)).Select(p => p.SecondKey).ToList();
 
-                    var lddatas = Read<Building>(p => lds.Contains(p.Id)).ToList();
-                    person.dormitoryCode = lddatas.Count <= 0 ? "未绑定楼栋" : string.Join("_", lddatas);
+                    var ldNums = Read<Building>(p => lds.Contains(p.Id)).Select(t=>t.BuildingNo).ToList().OrderBy(t=>t);
+                    person.dormitoryCode = "";
+                    foreach (var ld in ldNums)
+                    {
+                        person.dormitoryCode += (ld + "栋");
+                    }
                 }
 
                 if (u.DutyId.Contains("teacher"))
@@ -199,10 +203,10 @@ namespace ZHXY.Application.DormServices.Gates
                         //}
                         try
                         {
-                            person.colleageCode = null;
                             person.dormitoryCode = null;
                             person.dormitoryFloor = null;
                             person.dormitoryRoom = null;
+                            person.dormitoryArea = null;
                             person.id = ResultList.First().ToString().ToJObject().Value<int>("id");
                             DHAccount.PUSH_DH_UPDATE_PERSON(person);
                         }
