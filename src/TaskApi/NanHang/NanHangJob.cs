@@ -12,12 +12,14 @@ using ZHXY.Dorm.Device.DH;
 using ZHXY.Dorm.Device.tools;
 using EntityFramework.Extensions;
 using System.Data;
+using ZHXY.Domain;
 
 namespace TaskApi.Job
 {
     public class NanHangJob : IJob
     {
         private ILog Logger { get; } = LogManager.GetLogger(typeof(NanHangJob));
+        private ZhxyDbContext ZhxyDb;
         public void Execute(IJobExecutionContext context)
         {
             //downImage();

@@ -136,7 +136,6 @@ namespace ZHXY.Application.DormServices.Gates
         //}
         public void SendUserHeadIco(string[] userId)
         {
-
             var stuList = Read<User>().Where(t => userId.Contains(t.Id)).ToList();
             List<PersonMoudle> listPerson = new List<PersonMoudle>();
             foreach(User u in stuList)
