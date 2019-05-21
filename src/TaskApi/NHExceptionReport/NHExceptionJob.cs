@@ -20,12 +20,12 @@ namespace TaskApi.NHExceptionReport
         public static int WeekendLateReturnTime = 24; //休息日晚归时间点 （周五、周六） 当晚24:00
         public static int NotReturnTime = 2; //未归时间点 次日凌晨2点
         public static string NotOutTime = "24"; //长时间未出  最近的一次打卡记录为进入宿舍且24小时内没有外出打卡记录
+        public ZhxyDbContext dbContext = new ZhxyDbContext();
         public void Execute(IJobExecutionContext context)
         {
-            ExceptionMoudle moudle = new ExceptionMoudle();
             // 测试用时间点   
-            //DateTime QuartzTime = Convert.ToDateTime("2019-05-17 02:00:00");
-            DateTime QuartzTime = DateTime.Now;
+            DateTime QuartzTime = Convert.ToDateTime("2019-05-21 02:00:00");
+            //DateTime QuartzTime = DateTime.Now;
             string TableName = "DHFLOW_" + QuartzTime.Year + QuartzTime.Month.ToString().PadLeft(2, '0');
             var sw = new Stopwatch();
             sw.Start();
@@ -33,31 +33,31 @@ namespace TaskApi.NHExceptionReport
             Console.WriteLine("南航项目：开始统计请假学生列表 --> " + DateTime.Now.ToLocalTime());
             //过滤：请假的人员
             var EndTime = QuartzTime.Date.AddDays(-1).AddHours(12);
-            var ListLeave = moudle.School_Stu_Leave.Where(p => p.F_EndTime.Contains("AM")).Select(p => new School_Stu_Leave
+            var ListLeave = dbContext.Set<LeaveOrder>().Where(p => p.EndOfTime.Contains("AM")).Select(p => new LeaveOrder
             {
-                F_Id = p.F_Id,
-                F_CreatorTime = p.F_CreatorTime,
-                F_StudentID = p.F_StudentID,
-                F_EndTime = p.F_EndTime,
-                F_LastModifyTime = Convert.ToDateTime(p.F_EndTime.Replace("AM", "")).AddHours(12)
+                Id = p.Id,
+                CreatedTime = p.CreatedTime,
+                LeaveerId = p.LeaveerId,
+                EndOfTime = p.EndOfTime,
+                TempTime = Convert.ToDateTime(p.EndOfTime.Replace("AM", "")).AddHours(12)
             }).ToList();
-            var LeaveListId = ListLeave.Where(p => p.F_LastModifyTime >= EndTime).Select(p => p.F_StudentID).ToList();
+            var LeaveListId = ListLeave.Where(p => p.TempTime >= EndTime).Select(p => p.LeaveerId).ToList();
 
             Console.WriteLine("南航项目：开始统计未归报表 --> " + DateTime.Now.ToLocalTime());
             //Step1  统计未归报表
-            ProcessNoReturnException(QuartzTime, moudle, TableName, LeaveListId);
+            ProcessNoReturnException(QuartzTime, TableName, LeaveListId);
             sw.Stop();
             Console.WriteLine("南航项目：统计未归报表 --> 合计耗时：" + sw.ElapsedMilliseconds / 1000 + "s");
             sw.Restart();
             Console.WriteLine("南航项目：开始统计晚归报表 --> " + DateTime.Now.ToLocalTime());
             //Step2 统计晚归报表
-            ProcessLateReturnException(QuartzTime, moudle, TableName, LeaveListId);
+            ProcessLateReturnException(QuartzTime, TableName, LeaveListId);
             sw.Stop();
             Console.WriteLine("南航项目：统计晚归报表 --> 合计耗时：" + sw.ElapsedMilliseconds / 1000 + "s");
             sw.Restart();
             Console.WriteLine("南航项目：开始统计长时间未出报表 --> " + DateTime.Now.ToLocalTime());
             //Step3: 统计长时间未出报表
-            ProcessNotOutException(QuartzTime, moudle, TableName);
+            ProcessNotOutException(QuartzTime, TableName);
             sw.Stop();
             Console.WriteLine("南航项目：统计长时间未出报表 --> 合计耗时：" + sw.ElapsedMilliseconds / 1000 + "s");
         }
@@ -68,42 +68,33 @@ namespace TaskApi.NHExceptionReport
         /// <param name="QuartzTime"></param>
         /// <param name="moudle"></param>
         /// <param name="TableName"></param>
-        public void ProcessNoReturnException(DateTime QuartzTime, ExceptionMoudle moudle, string TableName, List<string> LeaveListId)
+        public void ProcessNoReturnException(DateTime QuartzTime, string TableName, List<string> LeaveListId)
         {
             //查看所有人员当天的最后一条记录
             long StartTimestamp = DateHelper.ConvertDateTimeInt(QuartzTime.AddDays(-1));
             long EndTimestamp = DateHelper.ConvertDateTimeInt(QuartzTime);
             String UsersLastRecordSql = "select b.id,b.code,b.inout, b.swipDate, b.date,b.firstName name from (SELECT code, MAX(swipDate) swipDate FROM [dbo].[" + TableName + "] GROUP BY code HAVING MAX(swipDate) BETWEEN '" + StartTimestamp + "' and '" + EndTimestamp + "' ) a JOIN " + TableName + " b on a.code=b.code and a.swipDate = b.swipDate";
             var List = SqlHelper.ExecuteDataTable(UsersLastRecordSql).ToJson().ToList<LastRecordMoudle>().Where(p => p.inout == 1 && !LeaveListId.Contains(p.studentId)).ToList();
-            List<Dorm_NoReturnReport> ReportList = new List<Dorm_NoReturnReport>();
+            List<NoReturnReport> ReportList = new List<NoReturnReport>();
             foreach (var noReturn in List)
             {
-                var IdAndClass = moudle.School_Students.Where(s => s.F_StudentNum.Equals(noReturn.code)).Select(p => new
-                {
-                    Id = p.F_Id,
-                    ClassId = p.F_Class_ID
-                }).FirstOrDefault();
-                if(IdAndClass == null)
-                {
-                    continue;
-                }
-                Dorm_NoReturnReport report = new Dorm_NoReturnReport();
-                report.F_Id = Guid.NewGuid().ToString().Replace("-", "");
-                report.F_CreatorTime = DateTime.Now;
-                report.F_DeleteMark = false;
-                report.F_EnabledMark = true;
-                report.F_College = "root";
-                report.F_Account = noReturn.code;
-                report.F_OutTime = DateHelper.GetTime(noReturn.swipDate);
-                report.F_Name = noReturn.name;
-                report.F_StudentId = IdAndClass.Id;
-                report.F_Class = IdAndClass.ClassId;
-                report.F_Dorm = moudle.Dorm_DormStudent.Where(s => s.F_Student_ID.Equals(IdAndClass.Id)).Select(u => u.F_DormId).FirstOrDefault();
-                report.F_DayCount = (decimal) DateHelper.DateDiff("hour", DateHelper.GetTime(noReturn.swipDate), QuartzTime);
+                var IdAndClass = dbContext.Set<Student>().Where(s => s.StudentNumber.Equals(noReturn.code)).FirstOrDefault();
+                if(IdAndClass == null){continue;}
+                NoReturnReport report = new NoReturnReport();
+                report.Id = Guid.NewGuid().ToString().Replace("-", "");
+                report.CreatedTime = DateTime.Now;
+                report.College = "root";
+                report.Account = noReturn.code;
+                report.OutTime = DateHelper.GetTime(noReturn.swipDate);
+                report.Name = noReturn.name;
+                report.StudentId = IdAndClass.Id;
+                report.ClassId = IdAndClass.ClassId;
+                report.DormId = dbContext.Set<DormStudent>().Where(s => s.StudentId.Equals(IdAndClass.Id)).Select(u => u.DormId).FirstOrDefault();
+                report.DayCount = (decimal) DateHelper.DateDiff("hour", DateHelper.GetTime(noReturn.swipDate), QuartzTime);
                 ReportList.Add(report);
             }
-            moudle.Dorm_NoReturnReport.AddRange(ReportList);
-            moudle.SaveChanges();
+            dbContext.Set<NoReturnReport>().AddRange(ReportList);
+            dbContext.SaveChanges();
             Console.WriteLine(" **********  未归人员数量：" + ReportList.Count());
         }
 
@@ -113,7 +104,7 @@ namespace TaskApi.NHExceptionReport
         /// <param name="QuartzTime"></param>
         /// <param name="moudle"></param>
         /// <param name="TableName"></param>
-        public void ProcessLateReturnException(DateTime QuartzTime, ExceptionMoudle moudle, string TableName, List<string> LeaveListId)
+        public void ProcessLateReturnException(DateTime QuartzTime, string TableName, List<string> LeaveListId)
         {
             //查看所有人员23:00到凌晨2点的最后一条记录
             DateTime StartTime = QuartzTime.AddDays(-1).Date.AddHours(WorkDayLateReturnTime);
@@ -127,34 +118,26 @@ namespace TaskApi.NHExceptionReport
             long EndTimestamp = DateHelper.ConvertDateTimeInt(EndTime);
             string UsersLastRecordSql = "select b.id,b.code,b.inout, b.swipDate, b.date,b.firstName name from (SELECT code, MAX(swipDate) swipDate FROM [dbo].[" + TableName + "] GROUP BY code HAVING MAX(swipDate) BETWEEN '" + StartTimestamp + "' and '" + EndTimestamp + "' ) a JOIN " + TableName + " b on a.code=b.code and a.swipDate = b.swipDate";
             var List = SqlHelper.ExecuteDataTable(UsersLastRecordSql).ToJson().ToList<LastRecordMoudle>().Where(p => p.inout == 0 && !LeaveListId.Contains(p.studentId));
-            List<Dorm_LateReturnReport> reportList = new List<Dorm_LateReturnReport>();
+            List<LateReturnReport> reportList = new List<LateReturnReport>();
             foreach(var p in List)
             {
-                var IDClassId = moudle.School_Students.Where(s => s.F_StudentNum.Equals(p.code)).Select(d => new {
-                    Id = d.F_Id,
-                    ClassId = d.F_Class_ID
-                }).FirstOrDefault();
-                if(null == IDClassId)
-                {
-                    continue;
-                }
-                Dorm_LateReturnReport r = new Dorm_LateReturnReport();
-                r.F_Id = Guid.NewGuid().ToString().Replace("-", "");
-                r.F_CreatorTime = DateTime.Now;
-                r.F_DeleteMark = false;
-                r.F_EnabledMark = true;
-                r.F_College = "root";
-                r.F_Account = p.code;
-                r.F_InTime = DateHelper.GetTime(p.swipDate);
-                r.F_Name = p.name;
-                r.F_StudentId = IDClassId.Id;
-                r.F_Class = IDClassId.ClassId;
+                var IDClassId = dbContext.Set<Student>().Where(s => s.StudentNumber.Equals(p.code)).FirstOrDefault();
+                if(null == IDClassId) {continue; }
+                LateReturnReport r = new LateReturnReport();
+                r.Id = Guid.NewGuid().ToString().Replace("-", "");
+                r.CreatedTime = DateTime.Now;
+                r.College = "root";
+                r.Account = p.code;
+                r.InTime = DateHelper.GetTime(p.swipDate);
+                r.Name = p.name;
+                r.StudentId = IDClassId.Id;
+                r.Class = IDClassId.ClassId;
                 r.F_Time = (decimal)DateHelper.DateDiff("hour", StartTime, DateHelper.GetTime(p.swipDate));
-                r.F_Dorm = moudle.Dorm_DormStudent.Where(s => s.F_Student_ID.Equals(IDClassId.Id)).Select(u => u.F_DormId).FirstOrDefault();
+                r.DormId = dbContext.Set<DormStudent>().Where(s => s.StudentId.Equals(IDClassId.Id)).Select(u => u.DormId).FirstOrDefault();
                 reportList.Add(r);
             }
-            moudle.Dorm_LateReturnReport.AddRange(reportList);
-            moudle.SaveChanges();
+            dbContext.Set<LateReturnReport>().AddRange(reportList);
+            dbContext.SaveChanges();
             Console.WriteLine(" **********  晚归人员数量：" + reportList.Count());
         }
 
@@ -165,48 +148,36 @@ namespace TaskApi.NHExceptionReport
         /// <param name="QuartzTime"></param>
         /// <param name="moudle"></param>
         /// <param name="TableName"></param>
-        public void ProcessNotOutException(DateTime QuartzTime, ExceptionMoudle moudle, string TableName)
+        public void ProcessNotOutException(DateTime QuartzTime, string TableName)
         {
             //查看所有人员当天的最后一条记录
             long StartTimestamp = DateHelper.ConvertDateTimeInt(QuartzTime.Date.AddDays(-(int) QuartzTime.Day+1));
             long EndTimestamp = DateHelper.ConvertDateTimeInt(QuartzTime);
             String UsersLastRecordSql = "select b.id,b.code,b.inout, b.swipDate, b.date,b.firstName name from (SELECT code, MAX(swipDate) swipDate FROM [dbo].[" + TableName + "] GROUP BY code HAVING MAX(swipDate) BETWEEN '" + StartTimestamp + "' and '" + EndTimestamp + "' ) a JOIN " + TableName + " b on a.code=b.code and a.swipDate = b.swipDate";
             var List = SqlHelper.ExecuteDataTable(UsersLastRecordSql).ToJson().ToList<LastRecordMoudle>().Where(p => p.inout == 0).ToList();
-            List<Dorm_NoOutReport> ReportList = new List<Dorm_NoOutReport>();
+            List<NoOutReport> ReportList = new List<NoOutReport>();
             foreach(var noOut in List)
             {
                 var FTime = DateHelper.DateDiff("hour", DateHelper.GetTime(noOut.swipDate), QuartzTime);
-                if (FTime < 24)
-                {
-                    continue;
-                }
-                var IdAndClass = moudle.School_Students.Where(s => s.F_StudentNum.Equals(noOut.code)).Select(p => new
-                {
-                    Id = p.F_Id,
-                    ClassId = p.F_Class_ID
-                }).FirstOrDefault();
-                if (IdAndClass == null)
-                {
-                    continue;
-                }
-                
-                Dorm_NoOutReport report = new Dorm_NoOutReport();
-                report.F_Id = Guid.NewGuid().ToString().Replace("-", "");
-                report.F_CreatorTime = DateTime.Now;
-                report.F_DeleteMark = false;
-                report.F_EnabledMark = true;
-                report.F_College = "root";
-                report.F_Account = noOut.code;
-                report.F_InTime = DateHelper.GetTime(noOut.swipDate);
-                report.F_Name = noOut.name;
-                report.F_StudentId = IdAndClass.Id;
-                report.F_Class = IdAndClass.ClassId;
-                report.F_Time = (decimal) FTime;
-                report.F_Dorm = moudle.Dorm_DormStudent.Where(s => s.F_Student_ID.Equals(IdAndClass.Id)).Select(u => u.F_DormId).FirstOrDefault();
+                if (FTime < 24){continue; }
+                var IdAndClass = dbContext.Set<Student>().Where(s => s.StudentNumber.Equals(noOut.code)).FirstOrDefault();
+                if (IdAndClass == null){continue; }
+
+                NoOutReport report = new NoOutReport();
+                report.Id = Guid.NewGuid().ToString().Replace("-", "");
+                report.CreatedTime = DateTime.Now;
+                report.College = "root";
+                report.Account = noOut.code;
+                report.InTime = DateHelper.GetTime(noOut.swipDate);
+                report.Name = noOut.name;
+                report.StudentId = IdAndClass.Id;
+                report.ClassId = IdAndClass.ClassId;
+                report.Time = (decimal) FTime;
+                report.DormId = dbContext.Set<DormStudent>().Where(s => s.StudentId.Equals(IdAndClass.Id)).Select(u => u.DormId).FirstOrDefault();
                 ReportList.Add(report);
             }
-            moudle.Dorm_NoOutReport.AddRange(ReportList);
-            moudle.SaveChanges();
+            dbContext.Set<NoOutReport>().AddRange(ReportList);
+            dbContext.SaveChanges();
             Console.WriteLine(" **********  长时间未出人员数量：" + ReportList.Count());
         }
 

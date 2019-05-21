@@ -136,7 +136,6 @@ namespace ZHXY.Application.DormServices.Gates
         //}
         public void SendUserHeadIco(string[] userId)
         {
-
             var stuList = Read<User>().Where(t => userId.Contains(t.Id)).ToList();
             List<PersonMoudle> listPerson = new List<PersonMoudle>();
             foreach(User u in stuList)
@@ -153,13 +152,13 @@ namespace ZHXY.Application.DormServices.Gates
                     var ssdata = Query<DormStudent>(p => p.StudentId == stu.Id).FirstOrDefault();
                     person.dormitoryRoom = ssdata?.DormInfo?.Title;
                     person.dormitoryCode = ssdata?.DormInfo?.FloorNumber;
-                    var ldid = ssdata?.DormInfo?.BuildingId;
+                    var ldid = ssdata?.DormInfo?.UnitNumber;
                     // 闸机Id列表
                     var zjids = Read<Relevance>(p => p.SecondKey == ldid && p.Name == "Gate_Building").Select(p => p.FirstKey).ToList();
                     // 楼栋Id列表
                     var lds = Read<Relevance>(p => p.Name == "Gate_Building" && zjids.Contains(p.FirstKey)).Select(p => p.SecondKey).ToList();
 
-                    var ldNums = Read<Building>(p => lds.Contains(p.Id)).Select(t=>t.BuildingNo).ToList().OrderBy(t=>t);
+                    var ldNums = Read<Building>(p => lds.Contains(p.Id)).Select(t=>t.BuildingNo).ToList().Distinct().OrderBy(t=>t);
                     person.dormitoryCode = "";
                     foreach (var ld in ldNums)
                     {
@@ -204,10 +203,10 @@ namespace ZHXY.Application.DormServices.Gates
                         //}
                         try
                         {
-                            person.colleageCode = null;
                             person.dormitoryCode = null;
                             person.dormitoryFloor = null;
                             person.dormitoryRoom = null;
+                            person.dormitoryArea = null;
                             person.id = ResultList.First().ToString().ToJObject().Value<int>("id");
                             DHAccount.PUSH_DH_UPDATE_PERSON(person);
                         }

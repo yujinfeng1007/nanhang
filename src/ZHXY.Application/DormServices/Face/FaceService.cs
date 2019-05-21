@@ -29,11 +29,12 @@ namespace ZHXY.Application
                 ApproveImg = approveFilepath,               
                 Status = "0"
             };
-            //获取学生所属楼栋的宿管
+            //获取学生所在的dormid
             var dormid = Read<DormStudent>(p => p.StudentId.Equals(input.ApplicantId)).Select(p => p.DormId).FirstOrDefault();
-            var buildingno = Read<DormRoom>(p => p.Id.Equals(dormid)).Select(p => p.BuildingId).FirstOrDefault();
-            var buildingIds = Read<Building>(p => p.BuildingNo.Equals(buildingno)).Select(p => p.Id).FirstOrDefault();
-            var Approvers = Read<Relevance>(p => p.FirstKey.Equals(buildingIds)).Select(p => p.SecondKey).ToListAsync().Result;
+            //获取dorm对应的楼栋Id
+            var buildingId = Read<DormRoom>(p => p.Id.Equals(dormid)).Select(p => p.BuildingId).FirstOrDefault();
+            //获取楼栋对应的宿管
+            var Approvers = Read<Relevance>(p => p.FirstKey.Equals(buildingId)).Select(p => p.SecondKey).ToListAsync().Result;
             if (null == Approvers) throw new Exception("请先绑定宿管!");
             foreach (var item in Approvers)
             {
@@ -48,65 +49,114 @@ namespace ZHXY.Application
             SaveChanges();
         }
 
-      
+
 
 
         /// <summary>
         /// 获取头像审批列表
         /// </summary>
-        public dynamic GetFaceApprovalList(GetFaceApprovalListDto input)
-        {
-            //获取当前用户所审批的审批单据
-            var faceIds = Read<FaceApprove>(p => p.ApproverId.Equals(input.CurrentUserId)).Select(p => p.OrderId).ToListAsync().Result;
-            //根据审批单据获取头像详细信息
-            //var query1 = Read<StuFaceOrder>(p => faceIds.Contains(p.Id)).Select(p => p.Applicant).FirstOrDefault();
-            //var test = query1.Name;
-            var query = Read <StuFaceOrder>(p => faceIds.Contains(p.Id));
-            query = string.IsNullOrEmpty(input.SearchPattern) ? query : query.Where(p => p.Status.Equals(input.SearchPattern));
-            query = string.IsNullOrEmpty(input.Keyword) ? query : query.Where(p => p.Applicant.Name.Contains(input.Keyword));
-           
-                     
-            query = query.Paging(input);
-            var list = query.Select(p => new FaceListView
-            {
-                Id = p.Id,
-                //tea?.JobNumber;
-                ApplierName = p.Applicant.Name,
-                SubmitImg = p.SubmitImg,
-                ApproveImg = p.ApproveImg,                
-                ApprovalStatus = p.Status,         
-                CreatedTime = p.CreatedTime
-            }).OrderByDescending(p =>p.CreatedTime).ToListAsync().Result;
-            //SetViewStatus(input.CurrentUserId, ref list);
-            return list;
-            }
+        //public dynamic GetFaceApprovalList(GetFaceApprovalListDto input)
+        //{
+        //    //获取当前用户所审批的审批单据
+        //    var faceIds = Read<FaceApprove>(p => p.ApproverId.Equals(input.CurrentUserId)).Select(p => p.OrderId).ToListAsync().Result;
+        //    //根据审批单据获取头像详细信息
+        //    var query = Read<StuFaceOrder>(p => faceIds.Contains(p.Id));
+        //    query = string.IsNullOrEmpty(input.SearchPattern) ? query : query.Where(p => p.Status.Equals(input.SearchPattern));
+        //    query = string.IsNullOrEmpty(input.Keyword) ? query : query.Where(p => p.Applicant.Name.Contains(input.Keyword));
+        //    query = query.Paging(input);
+        //    var list = query.Select(p => new FaceListView
+        //    {
+        //        Id = p.Id,
+        //        ApplierName = p.Applicant.Name,
+        //        SubmitImg = p.SubmitImg,
+        //        ApproveImg = p.ApproveImg,
+        //        ApprovalStatus = p.Status,
+        //        CreatedTime = p.CreatedTime
+        //    }).OrderByDescending(p => p.CreatedTime).ToListAsync().Result;
+        //    return list;
+        //}
 
         /// <summary>
         /// 获取头像审批详情
         /// </summary>
-        public FaceView GetFaceApprovalDetail(string appId, string currentUserId)
+        //public FaceListView GetFaceApprovalDetail(string appId, string currentUserId)
+        //{
+
+        //    var face = Get<StuFaceOrder>(appId);
+        //    var view = new FaceListView
+        //    {
+        //        Id = face.Id,
+        //        ApplierName = face.Applicant.Name,
+        //        SubmitImg = face.SubmitImg,
+        //        ApproveImg = face.ApproveImg,
+        //        ApprovalStatus = face.Status,
+        //        CreatedTime = face.CreatedTime
+        //    };
+        //    return view;
+        //}
+
+
+        /// <summary>
+        /// 学生和宿管获取头像审批列表
+        /// </summary>
+        public dynamic GetFaceApprovalList(GetFaceApprovalListDto input)
         {
+            IQueryable<StuFaceOrder> query = null;
+            List<FaceListView> faceListViews = new List<FaceListView>();
+            //判断登陆用户是学生，还是宿管   若是学生获取所有提交的申请，若是老师则查看所有审批的申请
+            var dutyId = Read<User>(p => p.Id.Equals(input.CurrentUserId)).Select(p => p.DutyId).FirstOrDefaultAsync().Result;
+            if (dutyId.Equals("teacherDuty"))
+            {
+                //获取当前用户所审批的审批单据
+                var faceIds = Read<FaceApprove>(p => p.ApproverId.Equals(input.CurrentUserId)).Select(p => p.OrderId).ToListAsync().Result;
+                //根据审批单据获取头像详细信息
+                query = Read<StuFaceOrder>(p => faceIds.Contains(p.Id));
+            }
+            else if (dutyId.Equals("studentDuty"))
+            {
+                query = Read<StuFaceOrder>(p => p.ApplicantId.Equals(input.CurrentUserId));
+            }
+            else
+            {
+                return faceListViews;
+            }
+            query = string.IsNullOrEmpty(input.SearchPattern) ? query : query.Where(p => p.Status.Equals(input.SearchPattern));
+            query = string.IsNullOrEmpty(input.Keyword) ? query : query.Where(p => p.Applicant.Name.Contains(input.Keyword));
+            //query = (input.StartTime != null && input.EndTime !=null) ? query : query.Where(p => p.Applicant.Name.Contains(input.Keyword));
+            query = query.Paging(input);
+            faceListViews = query.Select(p => new FaceListView
+            {
+                Id = p.Id,
+                ApplierName = p.Applicant.Name,
+                SubmitImg = p.SubmitImg,
+                ApproveImg = p.ApproveImg,
+                ApprovalStatus = p.Status,
+                CreatedTime = p.CreatedTime
+            }).OrderByDescending(p => p.CreatedTime).ToListAsync().Result;
+            return faceListViews;
+        }
+
+        /// <summary>
+        /// 学生、宿管获取头像审批详情
+        /// </summary>
+        public FaceListView GetFaceApprovalDetail(string appId, string currentUserId)
+        {
+            //获取审批结果和意见（随机取一条即可）
+            var approveInfo = Read<FaceApprove>(p => p.OrderId.Equals(appId)).FirstOrDefaultAsync().Result;
+
 
             var face = Get<StuFaceOrder>(appId);
-            //var leaveApprove = Read<FaceApprove>(p => p.OrderId.Equals(appId) && p.ApproverId.Equals(currentUserId)).FirstOrDefaultAsync().Result;
-            //if (null == leaveApprove) throw new Exception("您不可以审批!");
-            var view = new FaceView
+            var view = new FaceListView
             {
                 Id = face.Id,
                 ApplierName = face.Applicant.Name,
                 SubmitImg = face.SubmitImg,
                 ApproveImg = face.ApproveImg,
                 ApprovalStatus = face.Status,
+                Result = approveInfo.Result,
+                Opinion = approveInfo.Opinion,
                 CreatedTime = face.CreatedTime
             };
-            //if (Convert.ToDecimal(view.LeaveDays) <= 3)
-            //{
-            //    view.IsFinal = true;
-            //}
-            //else
-            //{
-            //    view.IsFinal = leaveApprove.ApproveLevel == 2;
-            //}
             return view;
         }
 
@@ -118,20 +168,12 @@ namespace ZHXY.Application
         {
             var face = Get<StuFaceOrder>(input.OrderId);
             if (null == face) throw new Exception("未找到头像申请信息!");
-            //var faceApprove = Query<FaceApprove>(p => p.OrderId.Equals(face.Id) && p.ApproverId.Equals(input.CurrentUserId)).FirstOrDefaultAsync().Result;
             var faceApprovers = Query<FaceApprove>(p => p.OrderId.Equals(face.Id)).ToListAsync().Result;
-            //if (null == faceApprove) throw new Exception("您不可以审批,头像申请单异常!");
-            //if (faceApprove.Result != 0) throw new Exception("您已经审批过,不需要重复审批!");
             foreach ( var faceApprover in faceApprovers) {
-                faceApprover.Result = input.IsAgreed ? 1 : -1;  
+                faceApprover.Result = input.IsAgreed ? "1" :"-1" ;  
                 faceApprover.Opinion = input.Opinion;
-            }
-            
-            //SetOrderStatus(face);
-            face.Status = "1";
-            //if (!input.IsAgreed) MinusLimit(face.LeaveerId, Convert.ToDecimal(face.LeaveDays));
-            //把多个审批人的状态同步更新为已审批
-
+            }                        
+            face.Status = "1";                        
             SaveChanges();
             //审批同意则更新头像并下发
             if (input.IsAgreed) {

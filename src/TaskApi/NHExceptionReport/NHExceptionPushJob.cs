@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ZHXY.Common;
+using ZHXY.Domain;
 using ZHXY.Dorm.Device.NH;
 
 namespace TaskApi.NHExceptionReport
@@ -15,20 +16,20 @@ namespace TaskApi.NHExceptionReport
     public class NHExceptionPushJob : IJob
     {
         private ILog Logger { get; } = LogManager.GetLogger(typeof(NHExceptionPushJob));
+        public ZhxyDbContext dbContext;
         public void Execute(IJobExecutionContext context)
         {
             Console.WriteLine("进入方法！");
             //new PushAppMessage().PushReportMessage("48038@nchu.edu.cn", "Test Message", "");
             //DateTime Time = Convert.ToDateTime("2019-05-16 08:00:00");
             DateTime Time = DateTime.Now;
-            ExceptionMoudle moudle = new ExceptionMoudle();
-            var leaderList = moudle.sys_org_leader.ToList();
+            var leaderList = dbContext.Set<OrgLeader>().ToList();
             foreach (var leader in leaderList)
             {
                 HashSet<string> Ids = new HashSet<string>(); //当前组织机构下属所有组织机构的ID集合
-                string OrgId = leader.org_id;
-                string UserId = leader.user_id;
-                var OrgIds = moudle.Sys_Organize.Where(p => p.F_ParentId.Equals(OrgId)).Select(p => p.F_Id).ToList();
+                string OrgId = leader.OrgId;
+                string UserId = leader.UserId;
+                var OrgIds = dbContext.Set<Organ>().Where(p => p.ParentId.Equals(OrgId)).Select(p => p.Id).ToList();
                 if (null == OrgIds || OrgIds.Count() == 0)
                 {
                     continue;
@@ -36,7 +37,7 @@ namespace TaskApi.NHExceptionReport
                 foreach (var id in OrgIds)
                 {
                     Ids.Add(id);
-                    var SonOrgIds = moudle.Sys_Organize.Where(p => p.F_ParentId.Equals(id)).Select(p => p.F_Id).ToList();
+                    var SonOrgIds = dbContext.Set<Organ>().Where(p => p.ParentId.Equals(id)).Select(p => p.Id).ToList();
                     if (null == SonOrgIds || SonOrgIds.Count() == 0)
                     {
                         continue;
@@ -44,7 +45,7 @@ namespace TaskApi.NHExceptionReport
                     foreach (var sid in SonOrgIds)
                     {
                         Ids.Add(sid);
-                        var SonOfSonOrgIds = moudle.Sys_Organize.Where(p => p.F_ParentId.Equals(sid)).Select(p => p.F_Id).ToList();
+                        var SonOfSonOrgIds = dbContext.Set<Organ>().Where(p => p.ParentId.Equals(sid)).Select(p => p.Id).ToList();
                         if (null == SonOfSonOrgIds || SonOfSonOrgIds.Count() == 0)
                         {
                             continue;
@@ -52,7 +53,7 @@ namespace TaskApi.NHExceptionReport
                         foreach (var ssid in SonOfSonOrgIds)
                         {
                             Ids.Add(sid);
-                            var SonOfSonOfSonIds = moudle.Sys_Organize.Where(p => p.F_ParentId.Equals(ssid)).Select(p => p.F_Id).ToList();
+                            var SonOfSonOfSonIds = dbContext.Set<Organ>().Where(p => p.ParentId.Equals(ssid)).Select(p => p.Id).ToList();
                             if (null == SonOfSonOfSonIds || SonOfSonOfSonIds.Count() == 0)
                             {
                                 continue;
@@ -69,21 +70,21 @@ namespace TaskApi.NHExceptionReport
                 {
                     List<Dictionary<string, object>> DataList = new List<Dictionary<string, object>>();
                     DateTime Yeatday = Time.Date.AddDays(-1).AddHours(2);
-                    string userName = moudle.Sys_User.Where(p => p.F_Id.Equals(leader.user_id)).Select(p => p.F_Account).FirstOrDefault();
-                    var NoReturnCount = moudle.Dorm_NoReturnReport.Where(p => Yeatday < p.F_CreatorTime && Ids.Contains(p.F_Class)).ToList().Count();
-                    var LateReturnCount = moudle.Dorm_LateReturnReport.Where(p => Yeatday < p.F_CreatorTime && Ids.Contains(p.F_Class)).ToList().Count();
-                    var NoOutCount = moudle.Dorm_NoOutReport.Where(p => Yeatday < p.F_CreatorTime && Ids.Contains(p.F_Class)).ToList().Count();
+                    string userName = dbContext.Set<User>().Where(p => p.Id.Equals(leader.UserId)).Select(p => p.Account).FirstOrDefault();
+                    var NoReturnCount = dbContext.Set<NoReturnReport>().Where(p => Yeatday < p.CreatedTime && Ids.Contains(p.ClassId)).ToList().Count();
+                    var LateReturnCount = dbContext.Set<LateReturnReport>().Where(p => Yeatday < p.CreatedTime && Ids.Contains(p.Class)).ToList().Count();
+                    var NoOutCount = dbContext.Set<NoOutReport>().Where(p => Yeatday < p.CreatedTime && Ids.Contains(p.ClassId)).ToList().Count();
 
                     Dictionary<string, object> NoReturnDic = new Dictionary<string, object>();
                     Dictionary<string, object> LateReturnDic = new Dictionary<string, object>();
                     Dictionary<string, object> NotOutDic = new Dictionary<string, object>();
                     Dictionary<string, object> DataDic = new Dictionary<string, object>();
                     NoReturnDic.Add("未归人员数量：", NoReturnCount + "人");
-                    NoReturnDic.Add("URI", ConfigurationManager.AppSettings["NoReturnReport"] + "?OrgId=" + leader.org_id + "&ReportDate=" + Yeatday.Date.ToString().Replace("/", "-"));
+                    NoReturnDic.Add("URI", ConfigurationManager.AppSettings["NoReturnReport"] + "?OrgId=" + leader.OrgId + "&ReportDate=" + Yeatday.Date.ToString().Replace("/", "-"));
                     LateReturnDic.Add("晚归人员数量：", LateReturnCount + "人");
-                    LateReturnDic.Add("URI", ConfigurationManager.AppSettings["LaterReturnReport"] + "?OrgId=" + leader.org_id + "&ReportDate=" + Yeatday.Date.ToString().Replace("/", "-"));
+                    LateReturnDic.Add("URI", ConfigurationManager.AppSettings["LaterReturnReport"] + "?OrgId=" + leader.OrgId + "&ReportDate=" + Yeatday.Date.ToString().Replace("/", "-"));
                     NotOutDic.Add("长时间未出人员数量：", NoOutCount + "人");
-                    NotOutDic.Add("URI", ConfigurationManager.AppSettings["NotOutReport"] + "?OrgId=" + leader.org_id + "&ReportDate=" + Yeatday.Date.ToString().Replace("/", "-"));
+                    NotOutDic.Add("URI", ConfigurationManager.AppSettings["NotOutReport"] + "?OrgId=" + leader.OrgId + "&ReportDate=" + Yeatday.Date.ToString().Replace("/", "-"));
                     DataDic.Add("data", DateTime.Now);
                     DataDic.Add("to", userName);
                     DataList.Add(NoReturnDic);

@@ -107,7 +107,7 @@ namespace ZHXY.Application
         public List<Building> GetNotBoundBuildings(string id)
         {
             var buildingIds = Read<Relevance>(p => p.Name.Equals(Relation.GateBuilding) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
-            var list = Read<Building>(p => !buildingIds.Contains(p.Id)).ToList();
+            var list = Read<Building>(p => !buildingIds.Contains(p.Id)).OrderBy(t => t.BuildingNo).ToList();
             return list;
         }
 
