@@ -200,10 +200,10 @@ namespace ZHXY.Application.DormServices.Gates
                         //}
                         try
                         {
-                            person.colleageCode = null;
                             person.dormitoryCode = null;
                             person.dormitoryFloor = null;
                             person.dormitoryRoom = null;
+                            person.dormitoryArea = null;
                             person.id = ResultList.First().ToString().ToJObject().Value<int>("id");
                             DHAccount.PUSH_DH_UPDATE_PERSON(person);
                         }

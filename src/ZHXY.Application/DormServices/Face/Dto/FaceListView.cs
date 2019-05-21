@@ -1,4 +1,5 @@
 ﻿using System;
+using ZHXY.Application;
 
 namespace ZHXY.Application
 {
@@ -42,14 +43,18 @@ namespace ZHXY.Application
         /// </summary>
         public string ApprovalStatus { get; set; }
 
-       
+        /// <summary>
+        /// 审批结果  0:未审批  1:同意  -1:拒绝
+        /// </summary>
+        public string Result { get; set; }
 
-      
+        /// <summary>
+        /// 审批意见
+        /// </summary>
+        public string Opinion { get; set; }
+
+
     }
 
-    public class FaceView : FaceListView
-    {
-        public bool IsFinal { get; set; }
-    }
-
+  
 }
