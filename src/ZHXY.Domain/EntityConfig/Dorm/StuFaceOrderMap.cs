@@ -9,7 +9,7 @@ namespace ZHXY.Domain
     {
         public StuFaceOrderMap()
         {
-            ToTable("School_Stu_Face");
+            ToTable("zhxy_stu_face");
 
             HasKey(p => p.Id);
 
