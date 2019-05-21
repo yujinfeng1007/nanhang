@@ -82,5 +82,7 @@ namespace ZHXY.Domain
         /// </summary>
         public virtual User Applicant { get; set; }
         public string AttachmentsPath { get; set; }
+
+        public DateTime TempTime { get; set; }
     }
 }

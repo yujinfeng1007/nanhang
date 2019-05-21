@@ -9,17 +9,17 @@ namespace ZHXY.Domain
     {
         public StuFaceOrderMap()
         {
-            ToTable("School_Stu_Face");
+            ToTable("zhxy_stu_face");
 
             HasKey(p => p.Id);
 
-            Property(p => p.Id).HasColumnName("F_Id");
-            Property(p => p.CreatedTime).HasColumnName("F_CreatorTime");
-            Property(p => p.ApplicantId).HasColumnName("F_Applicant").HasColumnType("varchar").HasMaxLength(50);
-            Property(p => p.SubmitImg).HasColumnName("F_SubmitImg").HasColumnType("varchar").HasMaxLength(50);
-            Property(p => p.ApproveImg).HasColumnName("F_ApproveImg").HasColumnType("varchar").HasMaxLength(50);           
-            Property(p => p.Status).HasColumnName("F_Status").HasColumnType("varchar");
-            Property(p => p.ApprovalOpinion).HasColumnName("F_ApprovalOpinion").HasColumnType("varchar");
+            Property(p => p.Id).HasColumnName("id");
+            Property(p => p.CreatedTime).HasColumnName("created_time");
+            Property(p => p.ApplicantId).HasColumnName("applicant");
+            Property(p => p.SubmitImg).HasColumnName("submit_img");
+            Property(p => p.ApproveImg).HasColumnName("approve_img");           
+            Property(p => p.Status).HasColumnName("status");
+            Property(p => p.ApprovalOpinion).HasColumnName("opinion");
 
 
             // 导航属性
