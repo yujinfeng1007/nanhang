@@ -26,14 +26,14 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpGet]
         public ActionResult GetFloor(string BuildingName)
         {
-            return Result(service.GetFloor(BuildingName));
+            return Result.Success(service.GetFloor(BuildingName));
         }
 
         [HttpPost]
         public ActionResult SubmitForm(int TimesOfWeek, string Organ, string OrganGrade, string OrganCourts, string OrganClass, int AutoSet)
         {
             service.SubmitForm(TimesOfWeek, Organ, OrganGrade, OrganCourts, OrganClass, AutoSet);
-            return Message("操作成功。");
+            return Result.Success();
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpGet]
         public ActionResult FindOrgan(string OrganName)
         {
-            return Result(service.FindOrgan(OrganName));
+            return Result.Success(service.FindOrgan(OrganName));
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpGet]
         public ActionResult FindOrganGrade(string OrganId, string GradeName)
         {
-            return Result(service.FindOrganGrade(OrganId, GradeName));
+            return Result.Success(service.FindOrganGrade(OrganId, GradeName));
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpGet]
         public ActionResult FindOrganCourts(string GradeId, string CourtName)
         {
-            return Result(service.FindOrganCourts(GradeId, CourtName));
+            return Result.Success(service.FindOrganCourts(GradeId, CourtName));
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpGet]
         public ActionResult FindOrganClass(string CourtsId, string ClassName)
         {
-            return Result(service.FindOrganClass(CourtsId, ClassName));
+            return Result.Success(service.FindOrganClass(CourtsId, ClassName));
         }
     }
 }

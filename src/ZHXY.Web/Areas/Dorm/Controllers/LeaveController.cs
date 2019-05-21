@@ -23,7 +23,7 @@ namespace ZHXY.Web.Dorm.Controllers
         /// 获取老师
         /// </summary>
         [HttpGet]
-        public ActionResult GetTeachers() => Resultaat.Success(App.GetTeachers());
+        public ActionResult GetTeachers() => Result.Success(App.GetTeachers());
 
         /// <summary>
         /// 获取审批详情
@@ -31,7 +31,10 @@ namespace ZHXY.Web.Dorm.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult GetDetail([Required(ErrorMessage = "请假Id不能为空!")]string id) => AjaxResult(App.GetRequestDetail(id));
+        public ActionResult GetDetail([Required(ErrorMessage = "请假Id不能为空!")]string id)
+        {
+            return Result.Success(App.GetRequestDetail(id));
+        }
 
 
         /// <summary>
@@ -41,7 +44,7 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult Apply(LeaveRequestDto input)
         {
             App.Request(input);
-            return Resultaat.Success();
+            return Result.Success();
         }
         #endregion
 
@@ -54,7 +57,7 @@ namespace ZHXY.Web.Dorm.Controllers
         /// 获取详情
         /// </summary>
         [HttpGet]
-        public ActionResult Get([Required(ErrorMessage = "请假Id不能为空!")]string id) => Resultaat.Success(App.GetApprovalDetail(id, Operator.GetCurrent().Id));
+        public ActionResult Get([Required(ErrorMessage = "请假Id不能为空!")]string id) => Result.Success(App.GetApprovalDetail(id, Operator.GetCurrent().Id));
 
         /// <summary>
         /// 请假审批
@@ -64,7 +67,7 @@ namespace ZHXY.Web.Dorm.Controllers
         {
             input.CurrentUserId = Operator.GetCurrent().Id;
             App.Approval(input);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
         /// <summary>
@@ -75,7 +78,7 @@ namespace ZHXY.Web.Dorm.Controllers
         {
             input.CurrentUserId = Operator.GetCurrent().Id;
             App.OneKeyApproval(input);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
         /// <summary>
@@ -87,7 +90,7 @@ namespace ZHXY.Web.Dorm.Controllers
         public async Task<ActionResult> GetLeaveHistory(GetLeaveHistoryDto input) => await Task.Run(() =>
         {
             var data= App.GetLeaveHistory(input);
-            return Resultaat.PagingRst(data, input.Records,input.Total);
+            return Result.PagingRst(data, input.Records,input.Total);
         });
 
         /// <summary>
@@ -98,7 +101,7 @@ namespace ZHXY.Web.Dorm.Controllers
         {
             input.CurrentUserId = Operator.GetCurrent().Id;
             var data= App.GetApprovalList(input);
-            return  Resultaat.PagingRst(data,input.Records,input.Total);
+            return  Result.PagingRst(data,input.Records,input.Total);
         }
 
         /// <summary>
@@ -107,7 +110,7 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpGet]
         public async Task<ActionResult> LoadFinals(string search)
         {
-            return await Task.Run(() => Resultaat.Success(App.GetFinalJudgeList(search)));
+            return await Task.Run(() => Result.Success(App.GetFinalJudgeList(search)));
         }
 
         /// <summary>
@@ -121,7 +124,7 @@ namespace ZHXY.Web.Dorm.Controllers
         /// 获取上级审批信息
         /// </summary>
         [HttpGet]
-        public ActionResult GetPreApprove(string id) => Resultaat.Success(App.GetPrevApprove(id));
+        public ActionResult GetPreApprove(string id) => Result.Success(App.GetPrevApprove(id));
         #endregion
 
         #endregion
@@ -140,7 +143,7 @@ namespace ZHXY.Web.Dorm.Controllers
         {
             input.CurrentUserId = Operator.GetCurrent().Id;
             var data = App.GetCanceList(input);
-            return Resultaat.PagingRst(data, input.Records, input.Total);
+            return Result.PagingRst(data, input.Records, input.Total);
         }
 
         /// <summary>
@@ -151,7 +154,7 @@ namespace ZHXY.Web.Dorm.Controllers
         {
             input.OperatorId = Operator.GetCurrent().Id;
             App.CancelHoliday(input);
-            return Resultaat.Success();
+            return Result.Success();
         }
         #endregion
     }

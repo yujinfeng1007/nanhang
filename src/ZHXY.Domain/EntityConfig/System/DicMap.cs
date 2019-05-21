@@ -2,7 +2,7 @@
 
 namespace ZHXY.Domain
 {
-    public class DicMap : EntityTypeConfiguration<SysDic>
+    public class DicMap : EntityTypeConfiguration<Dic>
     {
         public DicMap()
         {
@@ -13,6 +13,7 @@ namespace ZHXY.Domain
             Property(p => p.Code).HasColumnName("code");
             Property(p => p.Name).HasColumnName("name");
             Property(p => p.SortCode).HasColumnName("sort_code");
+
 
         }
     }

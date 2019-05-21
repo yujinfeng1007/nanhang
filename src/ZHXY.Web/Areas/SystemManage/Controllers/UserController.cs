@@ -31,28 +31,28 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult Load(Pagination pag,string orgId, string keyword)
         {
             var rows = App.GetList(pag, orgId,keyword);
-            return Resultaat.PagingRst(rows, pag.Records, pag.Total);
+            return Result.PagingRst(rows, pag.Records, pag.Total);
         }
 
         [HttpGet]
         public ActionResult Get(string id)
         {
             var data = App.GetById(id);
-            return Resultaat.Success(data);
+            return Result.Success(data);
         }
 
         [HttpPost]
         public ActionResult Add(AddUserDto dto)
         {
             App.Add(dto);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
         [HttpPost]
         public ActionResult Update(UpdateUserDto dto)
         {
             App.Update(dto);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
         [HttpPost]
@@ -62,35 +62,35 @@ namespace ZHXY.Web.SystemManage.Controllers
             {
                 App.Delete(id.Split(','));
             }
-            return Resultaat.Success();
+            return Result.Success();
         }
 
         [HttpPost]
         public ActionResult RevisePassword(string userPassword, string keyValue)
         {
             App.RevisePassword(userPassword, keyValue);
-            return Resultaat.Success(); 
+            return Result.Success(); 
         }
 
         [HttpPost]
         public ActionResult Disable(string id)
         {
             App.Disable(id);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
         [HttpPost]
         public ActionResult Enable(string id)
         {
             App.Enable(id);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
         /// <summary>
         /// 获取机构下的用户
         /// </summary>
         [HttpGet]
-        public async Task<ActionResult> GetOrgUsers(string orgId, string keyword) => await Task.Run(() => Resultaat.Success(App.GetByOrg(orgId, keyword)));
+        public async Task<ActionResult> GetOrgUsers(string orgId, string keyword) => await Task.Run(() => Result.Success(App.GetByOrg(orgId, keyword)));
 
 
         public JsonResult UpdIco(string userId)
@@ -129,36 +129,36 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult SetRole(string userId,string[] roleId)
         {
             App.SetRole(userId, roleId);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
 
         [HttpGet]
         public ActionResult GetUserData()
         {
-            return Resultaat.Success(App.GetUserData(Operator.GetCurrent()));
+            return Result.Success(App.GetUserData(Operator.GetCurrent()));
         }
 
 
         public ActionResult GetUserRoles(string userId)
         {
-            return Resultaat.Success(App.GetUserRoles(userId));
+            return Result.Success(App.GetUserRoles(userId));
         }
 
         public ActionResult GetExcludeRoles(string userId)
         {
-            return Resultaat.Success(App.GetRolesExcludeUser(userId));
+            return Result.Success(App.GetRolesExcludeUser(userId));
         }
 
         public ActionResult AddRole(string userId,string[] roleId)
         {
             App.AddRole(userId, roleId);
-            return Resultaat.Success();
+            return Result.Success();
         }
         public ActionResult RemoveRole(string userId, string roleId)
         {
             App.RemoveRole(userId, new[] { roleId });
-            return Resultaat.Success();
+            return Result.Success();
         }
     }
 }

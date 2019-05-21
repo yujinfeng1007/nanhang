@@ -44,7 +44,7 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult VisivorByStudent( Pagination pag, int status)
         {
             var data = App.VisivorByStudent(pag,Operator.GetCurrent().Id, status);
-            return Resultaat.Success(data);
+            return Result.Success(data);
         }
 
        
@@ -60,7 +60,7 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult CheckVisitor(string VisitLogId, string UserId, int CheckType)
         {
             App.CheckVisitor(UserId, CheckType, VisitLogId);
-            return Message("操作成功");
+            return Result.Success();
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpGet]
         public ActionResult SearchStudent(string KeyWords)
         {
-            return Result(App.SearchStudents(KeyWords).ToJson());
+            return Result.Success(App.SearchStudents(KeyWords).ToJson());
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpGet]
         public ActionResult SupervisorByStudent(string StudentId)
         {
-            return Result(App.SupervisorByStudent(StudentId));
+            return Result.Success(App.SupervisorByStudent(StudentId));
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpGet]
         public ActionResult SearchStudentLimit(string StudentId)
         {
-            return Result(App.SearchStudentLimit(StudentId));
+            return Result.Success(App.SearchStudentLimit(StudentId));
         }
 
         [HttpGet]
@@ -110,7 +110,7 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult Submit(AddVisitApplyDto input)
         {
             App.Submit(input);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
         /// <summary>
@@ -120,19 +120,19 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult Approval(string id, bool pass)
         {
             App.Approval(id, pass);
-            return Resultaat.Success();
+            return Result.Success();
         }
 
         [HttpGet]
         public ActionResult GetBuilding(string KeyWords)
         {
-            return Result(App.GetBuilding(KeyWords));
+            return Result.Success(App.GetBuilding(KeyWords));
         }
 
         [HttpGet]
         public ActionResult GetDetail(string id)
         {
-            return Result(App.GetDetail(id));
+            return Result.Success(App.GetDetail(id));
         }
     }
 }

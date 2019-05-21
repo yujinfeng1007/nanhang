@@ -15,7 +15,7 @@ namespace ZHXY.Application
         public List<LateReturnReport> GetList(Pagination pagination,string startTime, string endTime, string classId)
         {
             pagination.Sord = "desc";
-            pagination.Sidx = "F_CreatorTime";
+            pagination.Sidx = "CreatedTime";
             var expression = ExtLinq.True<LateReturnReport>();
             if (!string.IsNullOrEmpty(classId))
                 expression = expression.And(p => p.Class.Equals(classId));
