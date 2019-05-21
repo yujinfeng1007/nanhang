@@ -150,9 +150,6 @@ namespace ZHXY.Application
         }
 
 
-
-        
-
         /// <summary>
         /// 机构缓存
         /// </summary>
@@ -177,28 +174,6 @@ namespace ZHXY.Application
             CacheFactory.Cache().WriteCache(GetOrganizeList(), SmartCampusConsts.ORGANIZE);
             return cache.GetCache<Dictionary<string, object>>(SmartCampusConsts.ORGANIZE);
         }
-
-        
-
-        //public static object GetMenuButtonList()
-        //{
-        //    var roles = Operator.Current.Roles;
-        //    var app = new RoleAuthorizeService(new ZhxyRepository());
-        //    var data = new List<Button>();
-        //    foreach (var e in roles)
-        //    {
-        //        data = data.Union(app.GetButtonList(e), new ModuleButtonComparer()).ToList();
-        //    }
-
-        //    var dataModuleId = data.Select(t => t.MenuId).Distinct();
-        //    var dictionary = new Dictionary<string, object>();
-        //    foreach (var item in dataModuleId)
-        //    {
-        //        var buttonList = data.Where(t => t.MenuId.Equals(item)).ToList();
-        //        dictionary.Add(item, buttonList);
-        //    }
-        //    return dictionary;
-        //}
 
         /// <summary>
         /// 菜单缓存

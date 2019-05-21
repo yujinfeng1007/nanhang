@@ -1,129 +1,108 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<script>
-    let roleId = $.request("roleId");
-    $(function () {
-        $('#layout').layout({
-            west__resizable: true
-        }).sizePane("west", "40%");
-        gridRight();
-        gridLeft();
-    })
-    function gridRight() {
-        let selectedMenuId = $("#leftGrid").jqGrid('getGridParam', 'selrow');
-        $("#rightGrid").jqGrid({
-            styleUI: "Bootstrap",
-            height: window.innerHeight * 0.80,
-            width: window.innerWidth * 0.60,
-            datatype: 'json',
-            
-            multiselect: true,
-            pager: "#rightPager",
-            toppager: true,
-            rowNum: -1,
-            pgbuttons: false,
-            pgbuttons: false,
-            recordpos: "right",
-            viewrecords: false,
-            jsonReader: {
-                root: function (r) { return r.data; }
-            },
-            colModel: [
-                { name: "id", hidden: true, key: true },
-                { label: '名称', name: 'name', editable: true, editable: true },
-                { label: '编号', name: 'enCode', editable: true, editable: true },
-                { label: '排序', name: 'sortCode', editable: true, editable: true }
-            ],
-        });
-    }
+<script type="text/javascript">
+    var setting = {
+        view: {
+            addHoverDom: addHoverDom,
+            removeHoverDom: removeHoverDom,
+            selectedMulti: false
+        },
+        check: {
+            enable: true,
+        },
+        data: {
+            simpleData: {
+                enable: true
+            }
+        },
+        edit: {
+            enable: true
+        },
+        callback: {
+            onCheck: onCheckz,
+        },
+    };
 
-
-    function addPower() {
-        let funcs = $("#rightGrid").jqGrid('getGridParam', 'selarrrow');
-        var menuId=($("#leftGrid").jqGrid('getGridParam', 'selrow'));
-        $.post('/systemmanage/role/AddRoleFunc', { roleId: roleId, menuId: menuId, funcs: funcs }, function (r) {
-            $(`#rightGrid`).jqGrid().trigger('reloadGrid');
-        })
-    }
-
-    function reloadGrid(rowId) {
-        $("#rightGrid").jqGrid('setGridParam', {
-            url: `/SystemManage/Role/GetExcludeFuncs`,
-            postData: {
-                menuId: rowId,
-                roleId:roleId
-            },
-        }).trigger('reloadGrid');
-    }
-
-    function gridLeft() {
-        $("#leftGrid").jqGrid({
-            styleUI: "Bootstrap",
-            treeGrid: true,
-            url: "/SystemManage/Menu/GetMenu",
-            treeGridModel: "adjacency",
-            datatype: "json",
-            gridview: true,
-            autoGridWidth: false,
-            rowNum: -1,
-            autoGridHeight: true,
-            height: window.innerHeight * 0.80,
-            width: window.innerWidth * 0.40,
-            ExpandColumn: 'name',
-            onSelectRow: reloadGrid,
-            pager: "#leftPager",
-            toppager: true,
-            jsonReader: {
-                root: function (r) { return r.data; }
-            },
-            colModel: [
-
-                { label: '名称', name: 'name', width: 200, align: 'left', editable: true },
-                {
-                    label: '所属系统', name: "belongSys", editable: true,
-                    edittype: "select",
-                    editoptions: {
-                        value: "1:后台管理系统;2:家校通;3:其他"
-                    },
-                    formatter: function (cellvalue, options, rowobj) {
-                        switch (cellvalue) {
-                            case "1":
-                                {
-                                    return "后台管理系统";
-                                    break;
-                                }
-                            case "2":
-                                {
-                                    return "家校通";
-                                    break;
-                                }
-                            case "3":
-                                {
-                                    return "其他";
-                                    break;
-                                }
+    var zNodes = [];
+    $(document).ready(function () {
+        $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+    });
+    var nodeArr = [];
+    function onCheckz(event, treeId, treeNode) {
+        console.log(treeNode.tId + ", " + treeNode.name + "," + treeNode.checked);
+        if (treeNode.checked == true) {
+            if (treeNode.isParent) {
+                for (var i = 0; i < treeNode.children.length; i++) {
+                    nodeConcat = {
+                        id: treeNode.children[i].id,
+                        name: treeNode.children[i].name,
+                        checked: treeNode.children[i].checked,
+                    };
+                    nodeArr = nodeArr.concat(nodeConcat);
+                    console.log("父节点选中之后：", nodeArr);
+                }
+            } else if (!treeNode.isParent) {
+                nodeConcat = {
+                    id: treeNode.id,
+                    name: treeNode.name,
+                    checked: treeNode.checked,
+                };
+                nodeArr = nodeArr.concat(nodeConcat);
+                console.log("子节点选中之后：", nodeArr);
+            }
+        }
+        else if (treeNode.checked == false) {
+            if (treeNode.isParent) {
+                for (var i = treeNode.children.length - 1; i >= 0; i--) {
+                    for (var j = nodeArr.length - 1; j >= 0; j--) {
+                        if (nodeArr[j].id == treeNode.children[i].id) {
+                            nodeArr.splice(j, 1);
                         }
                     }
-                }, { name: "id", key: true, hidden: true },
-            ],
-
+                }
+            } else if (!treeNode.isParent) {
+                nodeArr.splice(nodeArr.length - 1, 1);
+                console.log("子节点未选中之后：", nodeArr);
+            }
+        }
+    };
+    var newCount = 1;
+    function addHoverDom(treeId, treeNode) {
+        var sObj = $("#" + treeNode.tId + "_span");
+        if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0) return;
+        var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
+            + "' title='add node' onfocus='this.blur();'></span>";
+        sObj.after(addStr);
+        var btn = $("#addBtn_" + treeNode.tId);
+        if (btn) btn.bind("click", function () {
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+            zTree.addNodes(treeNode, { id: (100 + newCount), pId: treeNode.id, name: "new node" + (newCount++) });
+            return false;
         });
+    };
+    function removeHoverDom(treeId, treeNode) {
+        $("#addBtn_" + treeNode.tId).unbind().remove();
+    };
+    function zonclick() {
+        console.log(nodeArr);
     }
+            //-->
 </script>
-
-<div class="ui-layout" id="layout" style="height: 100%; width: 100%;">
-
-    <div class="ui-layout-west">
-        <table id="leftGrid"></table>
-        <div id="leftPager"></div>
-    </div>
-
-    <div class="ui-layout-center">
-        <div class="gridPanel">
-            <table id="rightGrid"></table>
-            <div id="rightPager"></div>
+    <div class="content_wrap">
+        <div class="zTreeDemoBackground left">
+            <ul id="treeDemo" class="ztree"></ul>
+        </div>
+        <div class="right">
+            <ul class="info">
+                <li class="title">
+                    <h2>1、样式文件说明</h2>
+                    <ul class="list">
+                        <li class="highlight_red">请使用 css/metroStyle 目录内的样式文件 和 图片</li>
+                        <li>感谢网友 rqx110 提供， 仅供参考</li>
+                    </ul>
+                </li>
+            </ul>
+            <button type="button" onclick=zonclick();>nodes</button>
         </div>
     </div>
-
-</div>

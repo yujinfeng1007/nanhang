@@ -15,7 +15,6 @@ namespace ZHXY.Domain
             Property(p => p.Area).HasColumnName("area");
             Property(p => p.BuildingId).HasColumnName("building_id");
             Property(p => p.FloorNumber).HasColumnName("floor");
-            Property(p => p.UnitNumber).HasColumnName("unit_number");
             Property(p => p.Capacity).HasColumnName("capacity");
             Property(p => p.DormType).HasColumnName("dorm_type");
             Property(p => p.RoomNumber).HasColumnName("room_number");

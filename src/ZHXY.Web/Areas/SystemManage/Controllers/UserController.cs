@@ -132,7 +132,6 @@ namespace ZHXY.Web.SystemManage.Controllers
             return Result.Success();
         }
 
-
         [HttpGet]
         public ActionResult GetUserData()
         {
