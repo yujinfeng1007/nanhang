@@ -117,14 +117,14 @@
       <recover>false</recover>
     </job>
 -->
-    <job>
+    <!--<job>
       <name>NanHangJob</name>
       <group>NanHang</group>
       <description>南航项目同步师生信息</description>
       <job-type>TaskApi.Job.NanHangJob,TaskApi</job-type>
       <durable>true</durable>
       <recover>false</recover>
-    </job>
+    </job>-->
     <!-- <job>
       <name>NanHangReportJob</name>
       <group>NanHangReport</group>
@@ -150,10 +150,10 @@
       <job-type>TaskApi.DH.DHMigrateJob,TaskApi</job-type>
       <durable>true</durable>
       <recover>false</recover>
-    </job>
+    </job>-->
 
-    <job>
-      <name>UpdateTokenJob</name>
+    <!-- <job>
+     <name>UpdateTokenJob</name>
       <group>UpdateToken</group>
       <description>南航项目-大华Token保活定时任务</description>
       <job-type>TaskApi.DH.UpdateTokenJob,TaskApi</job-type>
@@ -170,7 +170,7 @@
       <recover>false</recover>
     </job>-->
 
-    <job>
+   <job>
       <name>NHExceptionJob</name>
       <group>NHException</group>
       <description>南航项目-异常报表处理</description>
@@ -179,14 +179,14 @@
       <recover>false</recover>
     </job>
 
-    <job>
+      <!--<job>
       <name>NHExceptionPushJob</name>
       <group>NHExceptionPush</group>
       <description>南航项目-异常报表处理（推送）</description>
       <job-type>TaskApi.NHExceptionReport.NHExceptionPushJob, TaskApi</job-type>
       <durable>true</durable>
       <recover>false</recover>
-    </job>
+    </job>-->
 
     <!--<trigger>
       <cron>
@@ -220,28 +220,29 @@
       </cron>
     </trigger>-->
     
-    <trigger>
+    <!--<trigger>
       <cron>
         <name>NanHangJobTrigger</name>
         <group>NanHang</group>
         <job-name>NanHangJob</job-name>
         <job-group>NanHang</job-group>
-         <!--每日凌晨2点启动定时任务--> 
+         --><!--每日凌晨2点启动定时任务-->
+      <!-- 
         <cron-expression>0 30 2 ? * *</cron-expression>
       </cron>
-    </trigger>
+    </trigger>-->
 
     
-    <trigger>
+      <trigger>
       <cron>
         <name>NHExceptionJobTrigger</name>
         <group>NHException</group>
         <job-name>NHExceptionJob</job-name>
         <job-group>NHException</job-group>
-        <cron-expression>10 57 11 ? * *</cron-expression>
+        <cron-expression>30 31 16 ? * *</cron-expression>
       </cron>
     </trigger>
-    
+    <!--
     <trigger>
       <cron>
         <name>NHExceptionPushJobTrigger</name>
@@ -250,7 +251,7 @@
         <job-group>NHExceptionPush</job-group>
         <cron-expression>0 0 8 ? * *</cron-expression>
       </cron>
-    </trigger>
+    </trigger>-->
     
     <!--<trigger>
       <cron>
