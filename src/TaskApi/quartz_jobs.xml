@@ -238,7 +238,7 @@
         <group>NHException</group>
         <job-name>NHExceptionJob</job-name>
         <job-group>NHException</job-group>
-        <cron-expression>10 57 11 ? * *</cron-expression>
+        <cron-expression>40 28 15 ? * *</cron-expression>
       </cron>
     </trigger>
     
