@@ -3,7 +3,7 @@
 namespace ZHXY.Domain
 {
 
-    public class VisitApplyMap : EntityTypeConfiguration<VisitApply>
+    public class VisitApplyMap : EntityTypeConfiguration<VisitorApply>
     {
         public VisitApplyMap()
         {
@@ -15,6 +15,7 @@ namespace ZHXY.Domain
             Property(p => p.VisitorName).HasColumnName("visitor_name");
             Property(p => p.VisitorIDCard).HasColumnName("visitor_id_card");
             Property(p => p.VisitReason).HasColumnName("reason");
+            Property(p => p.VisitType).HasColumnName("type");
             Property(p => p.ApplicantId).HasColumnName("applicant_id");
             Property(p => p.DormId).HasColumnName("dorm_id");
             Property(p => p.BuildingId).HasColumnName("building_id");

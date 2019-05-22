@@ -55,7 +55,6 @@
     <Compile Include="DormServices\DormRules\Dto\UpdateDormRuleDto.cs" />
     <Compile Include="DormServices\Face\Dto\FaceListView.cs" />
     <Compile Include="DormServices\Face\Dto\FaceApprovalDto.cs" />
-    <Compile Include="DormServices\Face\Dto\FaceApproveView.cs" />
     <Compile Include="DormServices\Face\Dto\FaceRequestDto.cs" />
     <Compile Include="DormServices\Face\Dto\GetFaceApprovalListDto.cs" />
     <Compile Include="DormServices\Face\FaceService.cs" />
@@ -73,6 +72,9 @@
     <Compile Include="DormServices\Holiday\Dto\UpdateHolidayDto.cs" />
     <Compile Include="DormServices\Holiday\HolidayAppService.cs" />
     <Compile Include="DormServices\Performances\Dto\BuildingAccessStatisticsView.cs" />
+    <Compile Include="DormServices\Visitors\Dto\VisitorApprovalDto.cs" />
+    <Compile Include="DormServices\Visitors\Dto\VisitorApprovalListDto.cs" />
+    <Compile Include="DormServices\Visitors\Dto\VisitorListView.cs" />
     <Compile Include="SystemServices\Resource\ResourceService.cs" />
     <Compile Include="SystemServices\Relevances\RelevanceService.cs" />
     <Compile Include="DormServices\Reports\InOutReceiveAppService.cs" />
@@ -112,7 +114,7 @@
     <Compile Include="DormServices\Performances\Dto\GetBuildingAccessDetailDto.cs" />
     <Compile Include="DormServices\Performances\PerformanceAppService.cs" />
     <Compile Include="DormServices\Reports\ReportAppService.cs" />
-    <Compile Include="DormServices\Visitors\Dto\AddVisitApplyDto.cs" />
+    <Compile Include="DormServices\Visitors\Dto\VisitorApplySubmitDto.cs" />
     <Compile Include="SystemServices\Caches\SmartCampusConsts.cs" />
     <Compile Include="SystemServices\Caches\FieldItem.cs" />
     <Compile Include="SystemServices\Caches\CacheService.cs" />
