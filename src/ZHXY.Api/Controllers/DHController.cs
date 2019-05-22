@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Web.Http;
 using TaskApi.NanHang;
+using ZHXY.Common;
 using ZHXY.Dorm.Device.DH;
 using ZHXY.Dorm.Device.tools;
 
@@ -76,6 +77,55 @@ namespace ZHXY.Api.Controllers
             personMoudleTest.code = code + "";
             return DHAccount.SELECT_DH_PERSON(personMoudleTest);
         }
+
+        /// <summary>
+        /// 布控访客相关
+        /// </summary>
+        /// <param name="PicUrl"></param>
+        /// <param name="idCode"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public string TempSurvey(string PicUrl, string idCode, string name)
+        {
+            string[] str = { "1000004$7$0$0", "1000009$7$0$0", "1000013$7$0$0", "1000002$7$0$0", "1000010$7$0$0", "1000000$7$0$0", "1000012$7$0$0", "1000008$7$0$0", "1000011$7$0$0", "1000003$7$0$0" };
+            SurveyMoudle survey = new SurveyMoudle();
+            survey.channelId = str;
+            survey.code = "";
+            survey.name = name;
+            survey.sex =1;
+            survey.idCode = idCode;
+            survey.photoBase64 = GetImageBase64Str.ImageBase64Str(PicUrl); ;
+            survey.initialTime = "2019-05-22 00:00:00";
+            survey.expireTime = "2019-05-22 23:59:59";
+            return DHAccount.TempSurvey(survey);
+        }
+
+        /// <summary>
+        /// 撤控 
+        /// </summary>
+        /// <param name="personId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public string CancelSurvey(string personId)
+        {
+            string[] str = { "1000004$7$0$0", "1000009$7$0$0", "1000013$7$0$0", "1000002$7$0$0", "1000010$7$0$0", "1000000$7$0$0", "1000012$7$0$0", "1000008$7$0$0", "1000011$7$0$0", "1000003$7$0$0" };
+            return DHAccount.CancelSurvey(str, personId);
+        }
+
+        /// <summary>
+        /// 一键常开、常闭
+        /// </summary>
+        /// <param name="type">开门的动作（int类型，必填）：1-开门，2关门，3-常开门，4常关门</param>  
+        /// <param name="channelId">开门的通道Id(String类型，必填)</param>
+        /// <param name="sequens">请求的序列（long类型，非必填）</param>
+        /// <returns></returns>
+        [HttpGet]
+        public string OpenDoor(int type, string channelId, long sequens = 236576575657)
+        {
+            return DHAccount.OpenDoor(type, channelId, sequens);
+        }
+
 
         public static void process()
         {

@@ -201,5 +201,50 @@ namespace ZHXY.Dorm.Device.DH
             string password = jo["data"]["password"].ToString(); //密码
             return jo;
         }
+
+        ///*********************************     二期： 临时布控、撤控（用于访客）    ***********************************////
+
+        /// <summary>
+        ///  闸机临时布控（人员新增）
+        /// </summary>
+        /// <param name="surveyMoudle"></param>
+        /// <returns></returns>
+        public static string TempSurvey(SurveyMoudle surveyMoudle)
+        {
+            X_SUBJECT_TOKEN = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL).StringGet(REDIS_TOKEN_SET_KEY);
+            return HttpHelper.ExecutePost(Constants.ADD_VISIT_SURVEY_URL, JsonConvert.SerializeObject(surveyMoudle), X_SUBJECT_TOKEN);
+        }
+
+        /// <summary>
+        /// 闸机撤控（访客）
+        /// </summary>
+        /// <param name="channelId"></param>
+        /// <param name="personId"></param>
+        /// <returns></returns>
+        public static string CancelSurvey(string[] channelId, string personId)
+        {
+            Dictionary<string, object> dic = new Dictionary<string, object>();
+            dic.Add("channelId", channelId);
+            dic.Add("personId", personId);
+            X_SUBJECT_TOKEN = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL).StringGet(REDIS_TOKEN_SET_KEY);
+            return HttpHelper.ExecutePost(Constants.CALCLE_VISIT_SURVEY_URL, JsonConvert.SerializeObject(dic), X_SUBJECT_TOKEN);
+        }
+
+        /// <summary>
+        /// 一键常开、常闭
+        /// </summary>
+        /// <param name="type">开门的动作（int类型，必填）：1-开门，2关门，3-常开门，4常关门</param>  
+        /// <param name="channelId">开门的通道Id(String类型，必填)</param>
+        /// <param name="sequens">请求的序列（long类型，非必填）</param>
+        /// <returns></returns>
+        public static string OpenDoor(int type, string channelId, long sequens= 236576575657)
+        {
+            X_SUBJECT_TOKEN = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL).StringGet(REDIS_TOKEN_SET_KEY);
+            Dictionary<string, object> dic = new Dictionary<string, object>();
+            dic.Add("type", type);
+            dic.Add("channelId", channelId);
+            dic.Add("sequens", sequens);
+            return HttpHelper.ExecutePost("", JsonConvert.SerializeObject(dic), X_SUBJECT_TOKEN);
+        }
     }
 }
