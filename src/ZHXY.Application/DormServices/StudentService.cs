@@ -50,5 +50,12 @@ namespace ZHXY.Application
         {
             return Read<DormStudent>(p => p.StudentId.Equals(id)).FirstOrDefaultAsync().Result;            
         }
+        //更新学生头像
+        public void UpdIco(string userId, string filepath)
+        {
+            var student = Get<Student>(userId);
+            student.FacePic = filepath;
+            SaveChanges();
+        }
     }
 }

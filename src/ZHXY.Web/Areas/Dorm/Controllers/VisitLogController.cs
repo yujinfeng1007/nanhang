@@ -7,9 +7,9 @@ namespace ZHXY.Web.Dorm.Controllers
 {
     public class VisitLogController : ZhxyController
     {
-        private VisitorAppService App { get; }
+        private VisitorService App { get; }
 
-        public VisitLogController(VisitorAppService app) => App = app;
+        public VisitLogController(VisitorService app) => App = app;
 
 
         /// <summary>

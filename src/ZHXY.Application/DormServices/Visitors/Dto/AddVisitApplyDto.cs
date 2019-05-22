@@ -27,7 +27,7 @@ namespace ZHXY.Application
 
         public DateTime VisitStartTime { get; set; }
 
-        public DateTime VisitEndOfTime { get; set; }
+        public DateTime VisitEndTime { get; set; }
 
         /// <summary>
         /// 关系
