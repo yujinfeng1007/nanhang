@@ -47,7 +47,18 @@ namespace ZHXY.Web.Dorm.Controllers
             return Result.Success(data);
         }
 
-       
+        /// <summary>
+        ///  宿管查询所审批访客，学生查询所提交访客
+        /// </summary>
+        public ActionResult GetList(VisitorApprovalListDto input)
+        {
+             input.CurrentUserId = Operator.GetCurrent().Id;
+            var data = App.GetVisitorApprovalList(input);
+            return Result.PagingRst(data, input.Records, input.Total);            
+
+        }
+
+
 
         /// <summary>
         /// 审批类型：  1=通过，2=不通过
@@ -107,7 +118,7 @@ namespace ZHXY.Web.Dorm.Controllers
         /// 提交访客信息
         /// </summary>
         [HttpPost]
-        public ActionResult Submit(AddVisitApplyDto input)
+        public ActionResult Submit(VisitorApplySubmitDto input)
         {
             App.Submit(input);
             return Result.Success();

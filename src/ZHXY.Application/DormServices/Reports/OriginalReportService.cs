@@ -81,7 +81,7 @@ namespace ZHXY.Application
                 ressb.Append("select top "+pagination.Rows+" *");
                 ressb.Append(" from(select row_number() over(order by "+nameof(OriginalReport.Date)+" asc) as rownumber,*");
                 ressb.Append(" from(" + sb.ToString() + ") as a) temp_row");
-                ressb.Append(" where rownumber>(("+pagination.Page+"-1)*"+pagination.Rows+ ") order by " + nameof(OriginalReport.Date) + " asc");
+                ressb.Append(" where rownumber>(("+pagination.Page+"-1)*"+pagination.Rows+ ") order by " + nameof(OriginalReport.Date) + " desc");
                 var data = GetDataTable(ressb.ToString(), new DbParameter[] { });                
                 list = data.TableToList<OriginalReport>();                 
                 var countsb = new StringBuilder();
@@ -108,7 +108,7 @@ namespace ZHXY.Application
                     countsb.Append(" where code='"+studentNum+"'");
                     sb.Append(" where code='" + studentNum + "'");
                 }
-                sb.Append(") temp_row where rownumber > ((" + pagination.Page + " - 1) * " + pagination.Rows + ") order by "+nameof(OriginalReport.Date)+" asc");
+                sb.Append(") temp_row where rownumber > ((" + pagination.Page + " - 1) * " + pagination.Rows + ") order by "+nameof(OriginalReport.Date)+" desc");
                var data = GetDataTable(sb.ToString(), new DbParameter[]{ });
                 list = data.TableToList<OriginalReport>();
                 var countData = GetDataTable(countsb.ToString(), new DbParameter[] { });

@@ -62,7 +62,7 @@
     <Compile Include="Entity\Dorm\LeaveLimit.cs" />
     <Compile Include="Entity\Dorm\LeaveOrder.cs" />
     <Compile Include="Entity\Dorm\StuFaceOrder.cs" />
-    <Compile Include="Entity\Dorm\VisitApprove.cs" />
+    <Compile Include="Entity\Dorm\VisitorApprove.cs" />
     <Compile Include="Entity\System\AppVersion.cs" />
     <Compile Include="Entity\System\Duty.cs" />
     <Compile Include="Entity\System\Resource.cs" />
@@ -110,7 +110,7 @@
     <Compile Include="Entity\Dorm\Report\NoOutReport.cs" />
     <Compile Include="Entity\Dorm\Report\NoReturnReport.cs" />
     <Compile Include="Entity\Dorm\Report\OriginalReport.cs" />
-    <Compile Include="Entity\Dorm\VisitApply.cs" />
+    <Compile Include="Entity\Dorm\VisitorApply.cs" />
     <Compile Include="EntityExtensions\EntityExtensions.cs" />
     <Compile Include="EntityExtensions\IEntity.cs" />
     <Compile Include="EntityExtensions\ITreeable.cs" />

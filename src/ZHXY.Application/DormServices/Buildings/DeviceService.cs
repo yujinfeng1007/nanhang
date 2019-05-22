@@ -113,7 +113,7 @@ namespace ZHXY.Application
             var dormStudents = Read<DormStudent>(t => dorms.Contains(t.DormId)).Select(t => t.StudentId).ToList();
 
             // 获取到访记录名单
-            var vistors = Read<VisitApply>(t => dormStudents.Contains(t.ApplicantId)).OrderByDescending(t => t.VisitStartTime).Select(t => new
+            var vistors = Read<VisitorApply>(t => dormStudents.Contains(t.ApplicantId)).OrderByDescending(t => t.VisitStartTime).Select(t => new
             {
                 F_Name = t.Student.Name,
                 F_Dorm = t.DormRoom.Title,
