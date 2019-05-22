@@ -19,11 +19,11 @@ namespace ZHXY.Domain
             Property(p => p.DormId).HasColumnName("dorm_id");
             Property(p => p.BuildingId).HasColumnName("building_id");
             Property(p => p.VisitStartTime).HasColumnName("start_time");
-            Property(p => p.VisitEndOfTime).HasColumnName("end_time");
+            Property(p => p.VisitEndTime).HasColumnName("end_time");
             Property(p => p.Relationship).HasColumnName("relation");
             Property(p => p.Status).HasColumnName("status");
-            Property(p => p.ApplicationTime).HasColumnName("application_time");
-            Property(p => p.ProcessingTime).HasColumnName("processing_time");
+            Property(p => p.CreatedTime).HasColumnName("created_time");
+            Property(p => p.ApprovedTime).HasColumnName("approved_time");
 
             // 导航属性
             HasOptional(p => p.Student).WithMany().HasForeignKey(p => p.ApplicantId);

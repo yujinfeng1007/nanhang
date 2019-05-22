@@ -82,7 +82,7 @@
     <Compile Include="DormServices\Reports\OriginalReportService.cs" />
     <Compile Include="DormServices\Reports\ReportHelper.cs" />
     <Compile Include="DormServices\VisitDormLimitService.cs" />
-    <Compile Include="DormServices\Visitors\VisitorAppService.cs" />
+    <Compile Include="DormServices\Visitors\VisitorService.cs" />
     <Compile Include="DormServices\Leave\Dto\AddApproverDto.cs" />
     <Compile Include="DormServices\Leave\Dto\CancelHolidayDto.cs" />
     <Compile Include="DormServices\Leave\Dto\CancellableLeaveView.cs" />

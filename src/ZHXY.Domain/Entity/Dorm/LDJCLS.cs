@@ -3,7 +3,7 @@ using System;
 namespace ZHXY.Domain
 {
     /// <summary>
-    /// 流动进出流水
+    /// 楼栋进出流水
     /// </summary>
     public partial class LDJCLS:IEntity
     {

@@ -37,6 +37,5 @@
 
         public int Skip => (Page - 1) * Rows;
 
-        public string SortBy { get; set; }
     }
 }
