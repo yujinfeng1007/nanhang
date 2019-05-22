@@ -28,8 +28,6 @@ namespace ZHXY.Application
             return Read<Relevance>(p => p.Name.Equals(Relation.UserRole) && p.SecondKey.Equals(roleId)).Select(p => p.FirstKey).ToArrayAsync().Result;
         }
 
-       
-
         /// <summary>
         /// 添加角色资源
         /// </summary>
