@@ -16,7 +16,7 @@ namespace ZHXY.Application
         public List<Dic> GetAll() => Read<Dic>().ToList();
 
         public Dic GetById(string id) => Get<Dic>(id);
-      
+
 
         public void Add(DicDto dto)
         {
@@ -31,14 +31,14 @@ namespace ZHXY.Application
 
         public dynamic GetList()
         {
-            return Read<Dic>().OrderBy(p => p.SortCode).OrderBy(p=>p.Type).Select(p =>
-                    new
-                    {
-                        p.Code,
-                        p.Type,
-                        p.Name,
-                        p.SortCode,
-                    }).ToListAsync().Result;
+            return Read<Dic>().OrderBy(p => p.SortCode).OrderBy(p => p.Type).Select(p =>
+                      new
+                      {
+                          p.Code,
+                          p.Type,
+                          p.Name,
+                          p.SortCode,
+                      }).ToListAsync().Result;
         }
 
         public void Update(DicDto dto)
@@ -55,15 +55,14 @@ namespace ZHXY.Application
             var dics = Read<Dic>().ToList();
             dics.ForEach(item =>
             {
-                var items = Read<DicItem>( p => p.Code.Equals(item.Code)).ToDictionary(p=> p.Key,e=> e.Value);
+                var items = Read<DicItem>(p => p.Code.Equals(item.Code)).ToDictionary(p => p.Key, e => e.Value);
                 data.Add(item.Code, items);
             });
 
             data.Add("orgList", Read<Organ>().Select(p => new { p.Id, p.Name }).ToDictionary(p => p.Id, e => e.Name));
             data.Add("dutyList", Read<Duty>().Select(p => new { p.Id, p.Name }).ToDictionary(p => p.Id, e => e.Name));
             data.Add("roleList", Read<Role>().Select(p => new { p.Id, p.Name }).ToDictionary(p => p.Id, e => e.Name));
-            data.Add("menuList", Read<Menu>().Select(p => new { p.Id, p.Name }).ToDictionary(p => p.Id, e => e.Name));
-            data.Add("funcList", Read<Function>().Select(p => new { p.Id, p.Name }).ToDictionary(p => p.Id, e => e.Name));
+            data.Add("resourceList", Read<Resource>().Select(p => new { p.Id, p.Name }).ToDictionary(p => p.Id, e => e.Name));
             return data;
         }
 
@@ -89,7 +88,7 @@ namespace ZHXY.Application
 
         public dynamic GetItems(string code)
         {
-            return Read<DicItem>(p=>p.Code.Equals(code)).ToListAsync().Result;
+            return Read<DicItem>(p => p.Code.Equals(code)).ToListAsync().Result;
         }
 
         public List<DicItem> GetAllItems()

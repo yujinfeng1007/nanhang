@@ -27,15 +27,11 @@
         /// </summary>
         public static string UserRole { get; } = $"{nameof(User)}{Separator}{nameof(Role)}";
 
-        /// <summary>
-        /// 角色权限
-        /// </summary>
-        public static string RolePower { get; } = $"{nameof(Role)}{Separator}{nameof(Function)}";
 
         /// <summary>
         /// 用户资源
         /// </summary>
-        public static string RoleResource { get; } = $"{nameof(Role).ToLower()}{Separator}{nameof(Function).ToLower()}";
+        public static string RoleResource { get; } = $"{nameof(Role).ToLower()}{Separator}{nameof(Resource).ToLower()}";
 
     }
 }

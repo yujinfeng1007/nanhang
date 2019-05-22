@@ -5,7 +5,7 @@ namespace ZHXY.Domain
     public class Resource : IEntity
     {
         public string Id { get; set; } = Guid.NewGuid().ToString("N").ToUpper();
-        public string ParentId { get; set; } = "null";
+        public string ParentId { get; set; } 
         public int? Level { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }

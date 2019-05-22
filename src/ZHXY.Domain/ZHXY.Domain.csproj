@@ -93,8 +93,6 @@
     <Compile Include="EntityConfig\System\DbBackupMap.cs" />
     <Compile Include="EntityConfig\System\FilterIPMap.cs" />
     <Compile Include="EntityConfig\System\LogMap.cs" />
-    <Compile Include="EntityConfig\System\FunctionMap.cs" />
-    <Compile Include="EntityConfig\System\MenuMap.cs" />
     <Compile Include="EntityConfig\System\PlaceAreaMap.cs" />
     <Compile Include="EntityConfig\System\RelevanceMap.cs" />
     <Compile Include="EntityConfig\System\RoleMap.cs" />
@@ -126,8 +124,6 @@
     <Compile Include="Entity\System\Area.cs" />
     <Compile Include="Entity\System\DicItem.cs" />
     <Compile Include="Entity\System\Dic.cs" />
-    <Compile Include="Entity\System\Function.cs" />
-    <Compile Include="Entity\System\Menu.cs" />
     <Compile Include="Entity\System\Organ.cs" />
     <Compile Include="Entity\System\Role.cs" />
     <Compile Include="Entity\System\User.cs" />
