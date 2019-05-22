@@ -28,37 +28,7 @@ namespace ZHXY.Application
             return Read<Relevance>(p => p.Name.Equals(Relation.UserRole) && p.SecondKey.Equals(roleId)).Select(p => p.FirstKey).ToArrayAsync().Result;
         }
 
-        /// <summary>
-        /// 获取角色功能
-        /// </summary>
-        /// <param name="roleId"></param>
-        /// <returns></returns>
-        public string[] GetRoleFunc(string roleId)
-        {
-            return Read<Relevance>(p => p.Name.Equals(Relation.RolePower) && p.FirstKey.Equals(roleId)).Select(p => p.ThirdKey).ToArrayAsync().Result;
-        }
-
-        /// <summary>
-        /// 获取角色菜单
-        /// </summary>
-        /// <param name="roleId"></param>
-        /// <returns></returns>
-        public string[] GetRoleMenu(string roleId)
-        {
-            return Read<Relevance>(p => p.Name.Equals(Relation.RolePower) && p.FirstKey.Equals(roleId) && p.ThirdKey.Equals(SYS_CONSTS.DbNull)).Select(p => p.SecondKey).Distinct().ToArrayAsync().Result;
-        }
-
-        /// <summary>
-        /// 获取用户菜单
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        public string[] GetUserMenu(string userId)
-        {
-            var userRoles = GetUserRole(userId);
-            return Read<Relevance>(p => p.Name.Equals(Relation.RolePower) && userRoles.Contains(p.FirstKey) && p.ThirdKey.Equals(SYS_CONSTS.DbNull)).Select(p => p.SecondKey).ToArrayAsync().Result;
-
-        }
+       
 
         /// <summary>
         /// 添加角色资源

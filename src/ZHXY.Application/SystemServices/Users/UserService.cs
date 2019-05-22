@@ -158,7 +158,7 @@ namespace ZHXY.Application
             if (user.Name == "超级管理员")
             {
                 var list = query.ToListAsync().Result;
-                d.Menus = TreeHelper.GetMenuJson(list, SYS_CONSTS.DbNull);
+                d.Menus = TreeHelper.GetMenuJson(list);
             }
             else
             {
@@ -178,24 +178,13 @@ namespace ZHXY.Application
             return Read<Role>(p => roles.Contains(p.Id)).ToListAsync().Result;
         }
 
-        /// <summary>
-        /// 用户鉴权
-        /// 鉴定用户是否具有某项功能权限
-        /// </summary>
-        /// <returns></returns>
-        public bool Authentication(string userId, string funcId)
-        {
-            var userRoles = Read<Relevance>(p => p.Name.Equals(Relation.UserRole) && p.FirstKey.Equals(userId)).Select(p => p.SecondKey).ToListAsync().Result;
-            var userPowers = Read<Relevance>(p => p.Name.Equals(Relation.RolePower) && userRoles.Contains(p.FirstKey)).Select(p => p.ThirdKey).Distinct().ToArrayAsync().Result;
-            return userPowers.Contains(funcId);
-        }
-
+       
 
         public string GetUserMenu(string userId, string system)
         {
-            var userMenus = RelevanceApp.GetUserMenu(userId);
+            var userMenus = RelevanceApp.GetUserRosource(userId);
             var list = Read<Resource>(p => userMenus.Contains(p.Id) && p.BelongSys.Equals(system)&&p.Type.Equals(SYS_CONSTS.Menu)).ToListAsync().Result;
-            return TreeHelper.GetMenuJson(list, SYS_CONSTS.DbNull);
+            return TreeHelper.GetMenuJson(list);
         }
 
         public void GerUserResource(string userId)

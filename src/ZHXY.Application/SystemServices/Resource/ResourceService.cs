@@ -62,20 +62,30 @@ namespace ZHXY.Application
 
         private void SetParentAndFullName(Resource resource)
         {
-            resource.ParentId = string.IsNullOrWhiteSpace(resource.ParentId) ? SYS_CONSTS.DbNull :
-                !Read<Resource>(p => p.ParentId.Equals(resource.ParentId)).Any() ? SYS_CONSTS.DbNull :
-                resource.ParentId;
-            if (resource.ParentId.Equals(SYS_CONSTS.DbNull))
+
+            if (!string.IsNullOrWhiteSpace(resource.ParentId) && Read<Resource>(p => p.Id.Equals(resource.ParentId)).Any())
             {
-                resource.FullName = resource.Name;
-                resource.Level = 0;
-            }
-            else
-            {
-                var parent = Read<Menu>(p => p.Id.Equals(resource.ParentId)).FirstOrDefaultAsync().Result;
+                var parent = Read<Resource>(p => p.Id.Equals(resource.ParentId)).FirstOrDefaultAsync().Result;
                 resource.FullName = $"{parent.FullName}/{resource.Name}";
                 resource.Level = parent.Level + 1;
             }
+            else
+            {
+                resource.FullName = resource.Name;
+                resource.ParentId = null;
+            }
+        }
+
+        public dynamic GetMenu(string parentId = null)
+        {
+
+            return Read<Resource>(p => p.ParentId == parentId && p.Type.Equals(SYS_CONSTS.Menu))
+                .ToListAsync().Result.Select(p => new
+                {
+                    p.Id, p.Name, p.Type, p.Url, p.BelongSys,
+                    p.Icon, p.IconForWeb, p.ParentId,p.Level,
+                    IsLeaf=!Read<Resource>(c=>c.ParentId==p.Id&&c.Type.Equals(SYS_CONSTS.Menu)).Any()
+                }).ToList();
         }
 
         public dynamic GetUserMenu(string userId)
@@ -88,20 +98,20 @@ namespace ZHXY.Application
         {
             var list = Read<Resource>(p => p.Type.Equals(SYS_CONSTS.Menu)).OrderBy(p => p.FullName).ToListAsync().Result;
             return list.Select(p => new
-                {
-                    p.Id,
-                    p.ParentId,
-                    p.Level,
-                    p.Name,
-                    p.Type,
-                    p.FullName,
-                    p.BelongSys,
-                    p.Icon,
-                    p.IconForWeb,
-                    IsLeaf = !Read<Resource>(c => c.ParentId.Equals(p.Id) && p.Type.Equals(SYS_CONSTS.Menu)).Any(),
-                    Loaded = true,
-                    Expanded = false
-                }).ToList();
+            {
+                p.Id,
+                p.ParentId,
+                p.Level,
+                p.Name,
+                p.Type,
+                p.FullName,
+                p.BelongSys,
+                p.Icon,
+                p.IconForWeb,
+                IsLeaf = !Read<Resource>(c => c.ParentId.Equals(p.Id) && p.Type.Equals(SYS_CONSTS.Menu)).Any(),
+                Loaded = true,
+                Expanded = false
+            }).ToList();
         }
     }
 }

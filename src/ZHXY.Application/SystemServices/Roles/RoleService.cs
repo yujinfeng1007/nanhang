@@ -51,72 +51,12 @@ namespace ZHXY.Application
             DelAndSave<Role>(id);
         }
 
-        public List<User> GetRoleUsers(string roleId)
+        public List<User> GetRoleUser(string roleId)
         {
-            var users = Read<Relevance>(p => p.Name.Equals(Relation.UserRole) && p.SecondKey.Equals(roleId)).Select(p => p.FirstKey).ToArrayAsync().Result;
+            var users = RelevanceApp.GetRoleUser(roleId);
             return Read<User>(p => users.Contains(p.Id)).ToListAsync().Result;
         }
        
-
-        public dynamic GetRoleMenus(string roleId)
-        {
-            var menus = RelevanceApp.GetRoleMenu(roleId);
-            return Read<Menu>(p => menus.Contains(p.Id)).ToArrayAsync().Result;
-        }
-
-        public void AddRoleFunc(string roleId,  string[] funcs)
-        {
-            var functions = Read<Function>(p => funcs.Contains(p.Id)).Select(p => new { p.Id, p.MenuId }).ToList();
-            functions.ForEach(item =>
-            {
-                Add(new Relevance { Name = Relation.RolePower, FirstKey = roleId, SecondKey = item.MenuId, ThirdKey = item.Id });
-            });
-            SaveChanges();
-        }
-
-        public void AddRoleMenu(string roleId, string[] menus)
-        {
-            var menuList = Read<Menu>(p => menus.Contains(p.Id)).Select(p =>  p.Id).ToList();
-            menuList.ForEach(item =>
-            {
-                Add(new Relevance { Name = Relation.RolePower, FirstKey = roleId, SecondKey = item});
-            });
-            SaveChanges();
-        }
-
-        public void RemoveRoleFunc(string roleId, string[] funcs)
-        {
-            var removeList = Read<Relevance>(p => p.Name.Contains(Relation.RolePower) && p.FirstKey.Equals(roleId) && funcs.Contains(p.ThirdKey)).ToList();
-            DelAndSave<Relevance>(removeList);
-        }
-
-        public void RemoveRoleMenu(string roleId, string[] menus)
-        {
-            var removeList = Read<Relevance>(p => p.Name.Contains(Relation.RolePower) && p.FirstKey.Equals(roleId) &&p.ThirdKey.Equals(SYS_CONSTS.DbNull)&& menus.Contains(p.SecondKey)).ToList();
-            DelAndSave<Relevance>(removeList);
-        }
-
-
-
-        public dynamic GetRoleFuncs(string roleId)
-        {
-            var buttons = RelevanceApp.GetRoleFunc(roleId);
-            return Read<Function>(p => buttons.Contains(p.Id)).ToArrayAsync().Result;
-        }
-
-
-        public dynamic GetMenuFuncsExcludeRole(string roleId, string menuId)
-        {
-            var roleFuncs = Read<Relevance>(p => p.Name.Equals(Relation.RolePower) && p.FirstKey.Equals(roleId) && p.SecondKey.Equals(menuId)).Select(p => p.ThirdKey).ToArrayAsync().Result;
-            return Read<Function>(p => p.MenuId.Equals(menuId) && !roleFuncs.Contains(p.Id)).ToListAsync().Result;
-        }
-
-        public dynamic GetMenusExcludeRole(string roleId, string menuId)
-        {
-            var roleFuncs = Read<Relevance>(p => p.Name.Equals(Relation.RolePower) && p.FirstKey.Equals(roleId) ).Select(p => p.SecondKey).ToArrayAsync().Result;
-            return Read<Menu>(p => p.ParentId.Equals(menuId) && !roleFuncs.Contains(p.Id)).ToListAsync().Result;
-        }
-
         public void AddRoleUser(string roleId, string[] userIds)
         {
             var existingUsers = RelevanceApp.GetRoleUser(roleId);

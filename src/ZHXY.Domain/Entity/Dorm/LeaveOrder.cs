@@ -69,7 +69,5 @@ namespace ZHXY.Domain
 
       
         public string AttachmentsPath { get; set; }
-
-
     }
 }

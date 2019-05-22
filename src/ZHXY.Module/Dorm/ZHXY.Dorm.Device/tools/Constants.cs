@@ -22,5 +22,7 @@
         public static string GET_MQ_CONFIG_URI = REQUEST_URL_PORT + "/admin/API/BRM/Config/GetMqConfig"; //获取MQ配置
         public static string CREATE_DORMITORY_INFO_URI = REQUEST_URL_PORT + "/pims/dormitory/info"; //创建宿舍信息
         public static string SELECT_DORMITORY_INFOS_URI = REQUEST_URL_PORT + "/pims/dromitory/infos"; //查看宿舍信息
+        public static string ADD_VISIT_SURVEY_URL = REQUEST_URL_PORT + "/pims/door/tempSurvey"; //布控（访客相关）
+        public static string CALCLE_VISIT_SURVEY_URL = REQUEST_URL_PORT + "/pims/door/cancerSurvey"; //撤控 （访客相关）
     }
 }

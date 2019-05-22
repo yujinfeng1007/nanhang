@@ -15,4 +15,16 @@
     {
         public string optional { get; set; } //url信息
     }
+
+    public class SurveyMoudle
+    {
+        public string[] channelId { get; set; }
+        public string code { get; set; }
+        public string name { get; set; }
+        public int sex { get; set; } //性别 1男 2女
+        public string idCode { get; set; }
+        public string photoBase64 { get; set; }
+        public string initialTime { get; set; }
+        public string expireTime { get; set; }
+    }
 }

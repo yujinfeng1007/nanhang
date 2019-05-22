@@ -2,8 +2,13 @@
 using Quartz;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using TaskApi.DH;
 using ZHXY.Common;
 using ZHXY.Domain;
 
@@ -16,44 +21,44 @@ namespace TaskApi.NHExceptionReport
         public static int WeekendLateReturnTime = 24; //休息日晚归时间点 （周五、周六） 当晚24:00
         public static int NotReturnTime = 2; //未归时间点 次日凌晨2点
         public static string NotOutTime = "24"; //长时间未出  最近的一次打卡记录为进入宿舍且24小时内没有外出打卡记录
-        public ZhxyDbContext dbContext = new ZhxyDbContext();
+        public DbContext db = new ZhxyDbContext();
         public void Execute(IJobExecutionContext context)
         {
             // 测试用时间点   
-            DateTime QuartzTime = Convert.ToDateTime("2019-05-21 02:00:00");
-            //DateTime QuartzTime = DateTime.Now;
+            //DateTime QuartzTime = Convert.ToDateTime("2019-05-22 02:00:00");
+            DateTime QuartzTime = DateTime.Now;
             string TableName = "DHFLOW_" + QuartzTime.Year + QuartzTime.Month.ToString().PadLeft(2, '0');
+            ZhxyDbContext db = new ZhxyDbContext();
             var sw = new Stopwatch();
             sw.Start();
 
             Console.WriteLine("南航项目：开始统计请假学生列表 --> " + DateTime.Now.ToLocalTime());
             //过滤：请假的人员
             var EndTime = QuartzTime.Date.AddDays(-1).AddHours(12);
-            var ListLeave = dbContext.Set<LeaveOrder>().Where(p => p.EndOfTime.Contains("AM")).Select(p => new 
+            var ListLeave = db.Set<LeaveOrder>().Where(p => p.EndOfTime.Contains("AM")).Select(p => new
             {
                 p.Id,
                 p.CreatedTime,
                 p.LeaveerId,
                 p.EndOfTime,
-                TempTime = Convert.ToDateTime(p.EndOfTime.Replace("AM", "")).AddHours(12)
+                TempTime = p.EndOfTime.Replace("AM", "")
             }).ToList();
-            var LeaveListId = ListLeave.Where(p => p.TempTime >= EndTime).Select(p => p.LeaveerId).ToList();
-
+            var LeaveListId = ListLeave.Where(p => Convert.ToDateTime(p.TempTime) > EndTime).Select(p => p.LeaveerId).ToList();
             Console.WriteLine("南航项目：开始统计未归报表 --> " + DateTime.Now.ToLocalTime());
             //Step1  统计未归报表
-            ProcessNoReturnException(QuartzTime, TableName, LeaveListId);
+            ProcessNoReturnException(QuartzTime, TableName, LeaveListId, db);
             sw.Stop();
             Console.WriteLine("南航项目：统计未归报表 --> 合计耗时：" + sw.ElapsedMilliseconds / 1000 + "s");
             sw.Restart();
             Console.WriteLine("南航项目：开始统计晚归报表 --> " + DateTime.Now.ToLocalTime());
             //Step2 统计晚归报表
-            ProcessLateReturnException(QuartzTime, TableName, LeaveListId);
+            ProcessLateReturnException(QuartzTime, TableName, LeaveListId, db);
             sw.Stop();
             Console.WriteLine("南航项目：统计晚归报表 --> 合计耗时：" + sw.ElapsedMilliseconds / 1000 + "s");
             sw.Restart();
             Console.WriteLine("南航项目：开始统计长时间未出报表 --> " + DateTime.Now.ToLocalTime());
             //Step3: 统计长时间未出报表
-            ProcessNotOutException(QuartzTime, TableName);
+            ProcessNotOutException(QuartzTime, TableName, db);
             sw.Stop();
             Console.WriteLine("南航项目：统计长时间未出报表 --> 合计耗时：" + sw.ElapsedMilliseconds / 1000 + "s");
         }
@@ -64,7 +69,7 @@ namespace TaskApi.NHExceptionReport
         /// <param name="QuartzTime"></param>
         /// <param name="moudle"></param>
         /// <param name="TableName"></param>
-        public void ProcessNoReturnException(DateTime QuartzTime, string TableName, List<string> LeaveListId)
+        public void ProcessNoReturnException(DateTime QuartzTime, string TableName, List<string> LeaveListId, ZhxyDbContext db)
         {
             //查看所有人员当天的最后一条记录
             long StartTimestamp = DateHelper.ConvertDateTimeInt(QuartzTime.AddDays(-1));
@@ -74,7 +79,7 @@ namespace TaskApi.NHExceptionReport
             List<NoReturnReport> ReportList = new List<NoReturnReport>();
             foreach (var noReturn in List)
             {
-                var IdAndClass = dbContext.Set<Student>().Where(s => s.StudentNumber.Equals(noReturn.code)).FirstOrDefault();
+                var IdAndClass = db.Set<Student>().Where(s => s.StudentNumber.Equals(noReturn.code)).FirstOrDefault();
                 if(IdAndClass == null){continue;}
                 NoReturnReport report = new NoReturnReport();
                 report.Id = Guid.NewGuid().ToString().Replace("-", "");
@@ -85,12 +90,12 @@ namespace TaskApi.NHExceptionReport
                 report.Name = noReturn.name;
                 report.StudentId = IdAndClass.Id;
                 report.ClassId = IdAndClass.ClassId;
-                report.DormId = dbContext.Set<DormStudent>().Where(s => s.StudentId.Equals(IdAndClass.Id)).Select(u => u.DormId).FirstOrDefault();
+                report.DormId = db.Set<DormStudent>().Where(s => s.StudentId.Equals(IdAndClass.Id)).Select(u => u.DormId).FirstOrDefault();
                 report.DayCount = (decimal) DateHelper.DateDiff("hour", DateHelper.GetTime(noReturn.swipDate), QuartzTime);
                 ReportList.Add(report);
             }
-            dbContext.Set<NoReturnReport>().AddRange(ReportList);
-            dbContext.SaveChanges();
+            db.Set<NoReturnReport>().AddRange(ReportList);
+            db.SaveChanges();
             Console.WriteLine(" **********  未归人员数量：" + ReportList.Count());
         }
 
@@ -100,7 +105,7 @@ namespace TaskApi.NHExceptionReport
         /// <param name="QuartzTime"></param>
         /// <param name="moudle"></param>
         /// <param name="TableName"></param>
-        public void ProcessLateReturnException(DateTime QuartzTime, string TableName, List<string> LeaveListId)
+        public void ProcessLateReturnException(DateTime QuartzTime, string TableName, List<string> LeaveListId, ZhxyDbContext db)
         {
             //查看所有人员23:00到凌晨2点的最后一条记录
             DateTime StartTime = QuartzTime.AddDays(-1).Date.AddHours(WorkDayLateReturnTime);
@@ -117,7 +122,7 @@ namespace TaskApi.NHExceptionReport
             List<LateReturnReport> reportList = new List<LateReturnReport>();
             foreach(var p in List)
             {
-                var IDClassId = dbContext.Set<Student>().Where(s => s.StudentNumber.Equals(p.code)).FirstOrDefault();
+                var IDClassId = db.Set<Student>().Where(s => s.StudentNumber.Equals(p.code)).FirstOrDefault();
                 if(null == IDClassId) {continue; }
                 LateReturnReport r = new LateReturnReport();
                 r.Id = Guid.NewGuid().ToString().Replace("-", "");
@@ -129,11 +134,11 @@ namespace TaskApi.NHExceptionReport
                 r.StudentId = IDClassId.Id;
                 r.Class = IDClassId.ClassId;
                 r.F_Time = (decimal)DateHelper.DateDiff("hour", StartTime, DateHelper.GetTime(p.swipDate));
-                r.DormId = dbContext.Set<DormStudent>().Where(s => s.StudentId.Equals(IDClassId.Id)).Select(u => u.DormId).FirstOrDefault();
+                r.DormId = db.Set<DormStudent>().Where(s => s.StudentId.Equals(IDClassId.Id)).Select(u => u.DormId).FirstOrDefault();
                 reportList.Add(r);
             }
-            dbContext.Set<LateReturnReport>().AddRange(reportList);
-            dbContext.SaveChanges();
+            db.Set<LateReturnReport>().AddRange(reportList);
+            db.SaveChanges();
             Console.WriteLine(" **********  晚归人员数量：" + reportList.Count());
         }
 
@@ -144,7 +149,7 @@ namespace TaskApi.NHExceptionReport
         /// <param name="QuartzTime"></param>
         /// <param name="moudle"></param>
         /// <param name="TableName"></param>
-        public void ProcessNotOutException(DateTime QuartzTime, string TableName)
+        public void ProcessNotOutException(DateTime QuartzTime, string TableName, ZhxyDbContext db)
         {
             //查看所有人员当天的最后一条记录
             long StartTimestamp = DateHelper.ConvertDateTimeInt(QuartzTime.Date.AddDays(-(int) QuartzTime.Day+1));
@@ -156,7 +161,7 @@ namespace TaskApi.NHExceptionReport
             {
                 var FTime = DateHelper.DateDiff("hour", DateHelper.GetTime(noOut.swipDate), QuartzTime);
                 if (FTime < 24){continue; }
-                var IdAndClass = dbContext.Set<Student>().Where(s => s.StudentNumber.Equals(noOut.code)).FirstOrDefault();
+                var IdAndClass = db.Set<Student>().Where(s => s.StudentNumber.Equals(noOut.code)).FirstOrDefault();
                 if (IdAndClass == null){continue; }
 
                 NoOutReport report = new NoOutReport();
@@ -169,11 +174,11 @@ namespace TaskApi.NHExceptionReport
                 report.StudentId = IdAndClass.Id;
                 report.ClassId = IdAndClass.ClassId;
                 report.Time = (decimal) FTime;
-                report.DormId = dbContext.Set<DormStudent>().Where(s => s.StudentId.Equals(IdAndClass.Id)).Select(u => u.DormId).FirstOrDefault();
+                report.DormId = db.Set<DormStudent>().Where(s => s.StudentId.Equals(IdAndClass.Id)).Select(u => u.DormId).FirstOrDefault();
                 ReportList.Add(report);
             }
-            dbContext.Set<NoOutReport>().AddRange(ReportList);
-            dbContext.SaveChanges();
+            db.Set<NoOutReport>().AddRange(ReportList);
+            db.SaveChanges();
             Console.WriteLine(" **********  长时间未出人员数量：" + ReportList.Count());
         }
 
