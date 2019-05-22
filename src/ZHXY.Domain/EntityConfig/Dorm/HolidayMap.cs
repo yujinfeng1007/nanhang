@@ -6,8 +6,13 @@ namespace ZHXY.Domain
     {
         public HolidayMap()
         {
-            ToTable("dorm_holiday");
+            ToTable("zhxy_holiday");
             HasKey(p => p.Id);
-       }
+
+            Property(p => p.Id).HasColumnName("id");
+            Property(p => p.Name).HasColumnName("name");
+            Property(p => p.StartTime).HasColumnName("start_time");
+            Property(p => p.EndTime).HasColumnName("end_time");
+        }
     }
 }

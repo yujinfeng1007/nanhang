@@ -121,11 +121,11 @@ namespace ZHXY.Application
         /// <summary>
         /// 获取菜单树
         /// </summary>
-        public static string GetMenuJson(List<Resource> data, string parentId)
+        public static string GetMenuJson(List<Resource> data, string parentId=null)
         {
             var sbJson = new StringBuilder();
             sbJson.Append("[");
-            var entitys = data.FindAll(t => t.ParentId.Equals(parentId));
+            var entitys = data.FindAll(t => t.ParentId==parentId);
             if (entitys.Any())
             {
                 foreach (var item in entitys)

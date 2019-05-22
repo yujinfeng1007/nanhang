@@ -65,55 +65,5 @@ namespace ZHXY.Web.SystemManage.Controllers
             App.RemoveRoleUser(roleId, userId);
             return Result.Success();
         }
-
-
-        [HttpPost]
-        public ActionResult RemoveRoleFunc(string roleId, string funcId)
-        {
-            App.RemoveRoleFunc(roleId, new[] { funcId});
-            return Result.Success();
-        }
-        [HttpGet]
-        public ActionResult GetRoleFuncs(string roleId)
-        {
-            var data=App.GetRoleFuncs(roleId);
-            return Result.Success(data);
-        }
-        [HttpPost]
-        public ActionResult AddRoleFunc(string roleId,string[] funcs)
-        {
-            App.AddRoleFunc(roleId, funcs);
-            return Result.Success();
-        }
-
-        [HttpGet]
-        public ActionResult GetRoleMenus(string roleId)
-        {
-            var data = App.GetRoleMenus(roleId);
-            return Result.Success(data);
-        }
-        [HttpPost]
-        public ActionResult AddRoleMenu(string roleId, string[] menus)
-        {
-            App.AddRoleMenu(roleId, menus);
-            return Result.Success();
-        }
-
-
-        public ActionResult GetExcludeFuncs(string roleId,string menuId)
-        {
-            var data=App.GetMenuFuncsExcludeRole(roleId, menuId);
-            return Result.Success(data);
-        }
-
-        public ActionResult GetExcludeMenus(string roleId, string menuId)
-        {
-            var data = App.GetMenusExcludeRole(roleId, menuId);
-            return Result.Success(data);
-        }
-
-
-
-
     }
 }

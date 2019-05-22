@@ -5,7 +5,7 @@ namespace ZHXY.Domain
     /// <summary>
     /// 头像审批
     /// </summary>
-    public class VisitApprove : IEntity
+    public class VisitorApprove : IEntity
     {
         /// <summary>
         /// 主键

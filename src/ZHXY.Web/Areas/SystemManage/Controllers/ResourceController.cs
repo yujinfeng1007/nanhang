@@ -57,5 +57,11 @@ namespace ZHXY.Web.SystemManage.Controllers
             var data = App.GetAllMenu();
             return Result.Success(data);
         }
+
+        public ActionResult GetMenu(string nodeId=null)
+        {
+            var data=App.GetMenu(nodeId);
+            return Result.Success(data);
+        }
     }
 }

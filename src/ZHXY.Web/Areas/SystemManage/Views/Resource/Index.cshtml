@@ -6,19 +6,28 @@
         $('#layout').layout({
             west__resizable: true
         }).sizePane("west", "70%");
-        gridRight();
+
+        //gridRight();
+
         gridLeft();
 
-        $("#btnAddMenu").click(function () {
-            $("#myModal").modal({
-                backdrop: 'static',     // 点击空白不关闭
-                keyboard: false,        // 按键盘esc也不会关闭
-                remote: 'page/addmenuform'    // 从远程加载内容的地址
-            });
-        })
+        $("#belongSys").html(yujf.select7({ '1': '后台系统', '2': '家校通' }));
 
+        $("#btnAddMenu").click(() => $("#myModal").modal("show"));
+
+        $("#btnDeleteMenu").click(function(){
+            let rowId = $("#leftGrid").jqGrid("getGridParam", "selrow");
+
+            $.post("delete", { id: rowId }, (r) => {
+                if (r.state == 'success') {
+                    $("#leftGrid").jqGrid().trigger("reloadGrid");
+                } else {
+
+                }
+            })
+        });
     });
-        
+
 
 
     function addMenu() {
@@ -35,7 +44,7 @@
     function gridLeft() {
         $("#leftGrid").jqGrid({
             styleUI: "Bootstrap",
-            //url: "/SystemManage/Resource/GetAllMenu",
+            url: "/SystemManage/Resource/GetMenu",
             datatype: "json",
             gridview: true,
             hoverrows: false,
@@ -44,19 +53,19 @@
             treeGrid: true,
             treedatatype: "json",
             treeGridModel: "adjacency",
-            loadonce: true,
+            loadonce: false,
             rowNum: -1,
             autoGridHeight: true,
             height: window.innerHeight * 0.86,
             width: window.innerWidth * 0.68,
             ExpandColumn: 'name',
-            onSelectRow: function (rowId) {
-                $("#rightGrid").jqGrid('setGridParam', {
-                    postData: {
-                        menuId: rowId
-                    },
-                }).trigger('reloadGrid');
-            },
+            //onSelectRow: function (rowId) {
+            //    $("#rightGrid").jqGrid('setGridParam', {
+            //        postData: {
+            //            menuId: rowId
+            //        },
+            //    }).trigger('reloadGrid');
+            //},
             jsonReader: {
                 root: function (r) { return r.data; }
             },
@@ -64,14 +73,11 @@
                 "parent_id_field": "parentId",
                 "level_field": "level",
                 "leaf_field": "isLeaf",
-                "expanded_field": "false",
-                "loaded": "loaded",
                 "icon_field": "icon"
-            },
+            }, 
             colModel: [
                 { label: '名称', name: 'name', width: 200, align: 'left' },
-                { label: '编号', name: "enCode" },
-                { label: '目标', name: "type" },
+                { label: '类型', name: "type" },
                 { label: 'URL', name: "url" },
                 {
                     label: '所属系统', name: "belongSys",
@@ -102,8 +108,8 @@
                 { label: '图标', name: "icon" },
                 { label: 'WEB图标', name: "iconForWeb" },
                 { label: '排序', name: "sortCode" },
-                { label: '上级', name: "parentId" },
                 { name: "id", key: true, hidden: true },
+                 { name: "parentId", hidden:true},
             ],
         });
     }
@@ -140,11 +146,12 @@
 <div class="ui-layout" id="layout" style="height: 100%; width: 100%;">
 
     <div class="ui-layout-west">
-        <div class="form-inline topPanel" autocomplete="off">
-            <button type="button" class="btn btn-default" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></button>
+        <div class="form-inline topPanel" autocomplete="off" >
+            <button type="button" class="btn btn-sm btn-default" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></button>
             <input type="text" class="form-control" id="keyword" placeholder="关键字">
-            <button type="button" id="btn_search" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-            <button type="button" id="btnAddMenu" class="btn btn-default"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>添加菜单</button>
+            <button type="button" id="btn_search" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+            <button type="button" id="btnAddMenu" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+            <button type="button" id="btnDeleteMenu" class="btn btn-sm btn-default "><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
         </div>
         <table id="leftGrid"></table>
     </div>
@@ -161,7 +168,51 @@
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-           
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">添加菜单</h4>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="parentId" class="col-sm-2 control-label">上级菜单</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="parentName" name="parentName">
+                            <input type="hidden" id="parentId" name="parentId">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="name" class="col-sm-2 control-label">菜单名称</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="name" name="name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="icon" class="col-sm-2 control-label">图标</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="icon" name="icon">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="url" class="col-sm-2 control-label">Url</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="url" name="url">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="belongSys" class="col-sm-2 control-label">所属系统</label>
+                        <div class="col-sm-10">
+                            <select type="text" class="form-control" id="belongSys" name="belongSys"></select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="addMenu();">保存</button>
+            </div>
         </div>
     </div>
 </div>
