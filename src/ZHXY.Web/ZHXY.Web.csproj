@@ -1843,9 +1843,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="log4net.config" />
-    <Content Include="Configs\system.config">
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_Index.cshtml" />
