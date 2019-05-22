@@ -16,13 +16,13 @@ namespace TaskApi.NHExceptionReport
     public class NHExceptionPushJob : IJob
     {
         private ILog Logger { get; } = LogManager.GetLogger(typeof(NHExceptionPushJob));
-        public ZhxyDbContext dbContext;
         public void Execute(IJobExecutionContext context)
         {
             Console.WriteLine("进入方法！");
             //new PushAppMessage().PushReportMessage("48038@nchu.edu.cn", "Test Message", "");
             //DateTime Time = Convert.ToDateTime("2019-05-16 08:00:00");
             DateTime Time = DateTime.Now;
+            ZhxyDbContext dbContext = new ZhxyDbContext();
             var leaderList = dbContext.Set<OrgLeader>().ToList();
             foreach (var leader in leaderList)
             {
