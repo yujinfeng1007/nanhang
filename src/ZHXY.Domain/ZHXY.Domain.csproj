@@ -56,7 +56,7 @@
     <Compile Include="EntityConfig\System\DicMap.cs" />
     <Compile Include="EntityConfig\System\DutyMap.cs" />
     <Compile Include="EntityConfig\System\ResourceMap.cs" />
-    <Compile Include="Entity\Dorm\Dorm_FlowInAndOutOfBuilding.cs" />
+    <Compile Include="Entity\Dorm\LDJCLS.cs" />
     <Compile Include="Entity\Dorm\FaceApprove.cs" />
     <Compile Include="Entity\Dorm\Holiday.cs" />
     <Compile Include="Entity\Dorm\LeaveLimit.cs" />

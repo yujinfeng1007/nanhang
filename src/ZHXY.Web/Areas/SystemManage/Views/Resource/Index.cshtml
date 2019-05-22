@@ -1,5 +1,5 @@
 ﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_My.cshtml";
 }
 <script>
     let GRID_WIDTH = window.innerWidth * 0.30;
@@ -8,12 +8,31 @@
     let TREE_GRID_HEIGHT = window.innerHeight * 0.84;
     let GRID_STYLE = "Bootstrap";
 
+    let sys = { "1": "后台管理系统", "2": "家校通" };
+
     $(function () {
         $('#layout').layout({
             west__resizable: true
         }).sizePane("west", "70%");
         gridRight();
         gridLeft();
+
+        let options = [`<option>请选择</option>`];
+        for (let k in sys) {
+            let option = `<option value='${k}'>${sys[k]}</option>`;
+            options.push(option);
+        }
+        $("#belongSys").html(select7(sys));
+
+        $("#btnAddMenu").click(function () {
+            $("#menuModal").modal("toggle");
+        })
+
+        $("#submitMenu").click(function () {
+            $("#menuModal").modal("toggle");
+        })
+
+
     })
 
     function gridRight() {
@@ -36,45 +55,13 @@
             },
             colModel: [
                 { name: "id", hidden: true, key: true },
-                { label: '名称', name: 'name', editable: true, editable: true },
-                { label: '编号', name: 'enCode', editable: true, editable: true },
-                { label: '图标', name: 'icon', editable: true, editable: true },
-                { label: '菜单', name: 'menuId', editable: true, editable: true },
-                { label: '排序', name: 'sortCode', editable: true, editable: true }
+                { label: '名称', name: 'name' },
+                { label: '编号', name: 'enCode' },
+                { label: '图标', name: 'icon' },
+                { label: '菜单', name: 'menuId' },
+                { label: '排序', name: 'sortCode' }
             ],
         });
-        $("#rightGrid").jqGrid('navGrid', '#rightPager',
-            {
-                edit: true,
-                add: true,
-                del: true,
-                search: false,
-                refresh: true,
-                view: false,
-                cloneToTop: true,
-            },
-            {
-                url: "updateBtn",
-                top: 200,
-                left: 200,
-                drag: true,
-                resize: false,
-                closeOnEscape: true,
-            },
-            {
-                url: "addBtn",
-                drag: true,
-                resize: false,
-                closeOnEscape: true,
-            },
-            {
-                url: "deleteBtn",
-                drag: true,
-                resize: false,
-                closeOnEscape: true,
-            },
-        );
-        $("#rightGrid").jqGrid('bindKeys');
     }
 
     function reloadGrid(rowId) {
@@ -90,7 +77,6 @@
         $("#leftGrid").jqGrid({
             styleUI: GRID_STYLE,
             url: "/SystemManage/Resource/GetAllMenu",
-            
             datatype: "json",
             gridview: true,
             hoverrows: false,
@@ -120,12 +106,12 @@
                 "icon_field": "icon"
             },
             colModel: [
-                { label: '名称', name: 'name', width: 200, align: 'left', editable: true },
-                { label: '编号', name: "enCode", editable: true },
-                { label: '目标', name: "type", editable: true },
-                { label: 'URL', name: "url", editable: true },
+                { label: '名称', name: 'name', width: 200, align: 'left' },
+                { label: '编号', name: "enCode" },
+                { label: '目标', name: "type" },
+                { label: 'URL', name: "url" },
                 {
-                    label: '所属系统', name: "belongSys", editable: true,
+                    label: '所属系统', name: "belongSys",
                     edittype: "select",
                     editoptions: {
                         value: "1:后台管理系统;2:家校通;3:其他"
@@ -150,57 +136,29 @@
                         }
                     }
                 },
-                { label: '图标', name: "icon", editable: true },
-                { label: 'WEB图标', name: "iconForWeb", editable: true },
-                { label: '排序', name: "sortCode", editable: true },
-                { label: '上级', name: "parentId", editable: true},
-                { label: '全名', name: "fullName", editable: true},
-                { label: 'level', name: "level", editable: true, hidedlg: true },
+                { label: '图标', name: "icon" },
+                { label: 'WEB图标', name: "iconForWeb" },
+                { label: '排序', name: "sortCode" },
+                { label: '上级', name: "parentId" },
+                { label: '全名', name: "fullName" },
+                { label: 'level', name: "level" },
                 { name: "id", key: true, hidden: true },
             ],
 
         });
-
-        $("#leftGrid").jqGrid(
-            'navGrid',
-            '#leftPager',
-            {
-                edit: true,
-                add: true,
-                del: true,
-                search: false,
-                refresh: true,
-                view: true,
-                cloneToTop: true,
-            },
-            {
-                url: "updatemenu",
-                top: 200,
-                left: 200,
-                drag: true,
-                resize: false,
-                closeOnEscape: true,
-            },
-            {
-                url: "addmenu",
-                drag: true,
-                resize: false,
-                closeOnEscape: true,
-            },
-            {
-                url: "delete",
-                drag: true,
-                resize: false,
-                closeOnEscape: true,
-            },
-        );
-        $("#leftGrid").jqGrid('bindKeys');
     }
 </script>
 
 <div class="ui-layout" id="layout" style="height: 100%; width: 100%;">
 
     <div class="ui-layout-west">
+        <form class="form-inline topPanel" autocomplete="off">
+            <button type="button" class="btn btn-default" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></button>
+            <input type="text" class="form-control" id="keyword" placeholder="关键字">
+            <button type="button" id="btn_search" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+            <button type="button" id="btnAddMenu" class="btn btn-default"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>添加菜单</button>
+            <button type="button" id="btnAddFunc" class="btn btn-default"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>添加功能</button>
+        </form>
         <table id="leftGrid"></table>
         <div id="leftPager"></div>
     </div>
@@ -213,3 +171,55 @@
     </div>
 
 </div>
+
+<div class="modal fade" id="menuModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">添加菜单</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label for="parentId" class="col-sm-2 control-label">上级菜单</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="parentName" name="parentName">
+                            <input type="hidden" id="parentId" name="parentId">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="name" class="col-sm-2 control-label">菜单名称</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="name" name="name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="icon" class="col-sm-2 control-label">图标</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="icon" name="icon">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="url" class="col-sm-2 control-label">Url</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="url" name="url">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="belongSys" class="col-sm-2 control-label">所属系统</label>
+                        <div class="col-sm-10">
+                            <select type="text" class="form-control" id="belongSys" name="belongSys"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="submitMenu" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+

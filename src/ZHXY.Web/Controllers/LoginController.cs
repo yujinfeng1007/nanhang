@@ -106,11 +106,6 @@ namespace ZHXY.Web.Controllers
             Session.Abandon();
             Session.Clear();
             Operator.Remove();
-            if ("on".Equals(Configs.GetValue("ifSso")))
-            {
-                Session.Remove("authorizationState");
-                return Redirect(Paths.ResourceServerBaseAddress + Paths.LogoutPath);
-            }
             return Content("退出成功");
         }
 

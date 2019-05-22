@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Text;
 using System.Web.Mvc;
@@ -13,7 +14,7 @@ namespace ZHXY.Web.Controllers
         /// <summary>
         /// 允许的扩展名
         /// </summary>
-        private static string AllowedExtension { get; } = Configs.GetValue("existen");
+        private static string AllowedExtension { get; } = ConfigurationManager.AppSettings["existen"];
 
         /// <summary>
         /// 验证是否允许
@@ -31,15 +32,15 @@ namespace ZHXY.Web.Controllers
             object state = null;
             try
             {
-                var privateCloud = Configs.GetValue("PrivateCloud");
-                var mapFormat = Configs.GetValue("MapFormat");
-                var mapPath = Configs.GetValue("MapPath") + DateTime.Now.ToString("yyyyMMdd") + "/";
+                var privateCloud = ConfigurationManager.AppSettings["PrivateCloud"];
+                var mapFormat = ConfigurationManager.AppSettings["MapFormat"];
+                var mapPath = ConfigurationManager.AppSettings["MapPath"] + DateTime.Now.ToString("yyyyMMdd") + "/";
                 if (privateCloud == "Yes")
                 {
                    
                     var UrlPath = System.Web.HttpContext.Current.Request.UrlReferrer.LocalPath.Split('/');
                     var localPath = UrlPath[UrlPath.Length - 2];
-                    mapPath = Configs.GetValue("MapPath") +  "/" + localPath + "/" + DateTime.Now.ToString("yyyyMMdd") + "/";
+                    mapPath = ConfigurationManager.AppSettings["MapPath"] +  "/" + localPath + "/" + DateTime.Now.ToString("yyyyMMdd") + "/";
                 }
                 var basePath = Server.MapPath(mapPath);
                 var files = System.Web.HttpContext.Current.Request.Files;

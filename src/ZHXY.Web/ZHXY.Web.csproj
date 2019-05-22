@@ -296,6 +296,7 @@
     <Content Include="Content\css\select2.min.css" />
     <Content Include="Content\dots.css" />
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\fonts\gijgo-material.svg" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\fonts\weathericons-regular-webfont.svg" />
     <Content Include="Content\img\ajax-loader.gif" />
@@ -554,6 +555,9 @@
     <Content Include="Areas\SystemManage\Views\Dic\Index.cshtml" />
     <Content Include="Areas\SystemManage\Views\Role\Power.cshtml" />
     <Content Include="Areas\SystemManage\Views\Role\Menu.cshtml" />
+    <Content Include="Content\fonts\gijgo-material.woff" />
+    <Content Include="Content\fonts\gijgo-material.ttf" />
+    <Content Include="Content\fonts\gijgo-material.eot" />
     <None Include="Content\js\dialog\dialog.css.bak" />
     <Content Include="Content\js\dialog\dialog.css" />
     <Content Include="Content\js\dialog\dialog.js" />
@@ -598,6 +602,12 @@
     <Content Include="Content\pace\themes\pace-theme-loading-bar.css" />
     <Content Include="Content\pace\themes\pace-theme-mac-osx.css" />
     <Content Include="Content\pace\themes\pace-theme-minimal.css" />
+    <Content Include="Content\treeview\checkbox.css" />
+    <Content Include="Content\treeview\checkbox.min.css" />
+    <Content Include="Content\treeview\core.css" />
+    <Content Include="Content\treeview\core.min.css" />
+    <Content Include="Content\treeview\tree.css" />
+    <Content Include="Content\treeview\tree.min.css" />
     <Content Include="Content\zTree.css" />
     <Content Include="Content\zTree.min.css" />
     <Content Include="Content\zTree.theme.metro.css" />
@@ -713,8 +723,19 @@
     <Content Include="Content\js\webuploader\webuploader.withoutimage.js" />
     <Content Include="Content\js\webuploader\webuploader.withoutimage.min.js" />
     <Content Include="Content\css\wizard.css" />
+    <Content Include="Scripts\treeview\checkbox.js" />
+    <Content Include="Scripts\treeview\checkbox.min.js" />
+    <Content Include="Scripts\treeview\core.js" />
+    <Content Include="Scripts\treeview\core.min.js" />
+    <Content Include="Scripts\treeview\draggable.js" />
+    <Content Include="Scripts\treeview\draggable.min.js" />
+    <Content Include="Scripts\treeview\droppable.js" />
+    <Content Include="Scripts\treeview\droppable.min.js" />
+    <Content Include="Scripts\treeview\tree.js" />
+    <Content Include="Scripts\treeview\tree.min.js" />
     <Content Include="Scripts\wizard.js" />
     <Content Include="Content\css\zoom.css" />
+    <Content Include="Scripts\select7.js" />
     <Content Include="Scripts\zoom.js" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\themes\base\accordion.css" />
@@ -1794,6 +1815,7 @@
     <Content Include="Scripts\jquery.qrcode.min.js.map" />
     <Content Include="Scripts\tinymce\skins\ui\oxide\fonts\tinymce-mobile.woff" />
     <Content Include="Scripts\tinymce\langs\readme.md" />
+    <Content Include="Views\Shared\_My.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_Layout.cshtml" />
