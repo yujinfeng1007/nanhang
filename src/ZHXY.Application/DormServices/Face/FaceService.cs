@@ -179,6 +179,7 @@ namespace ZHXY.Application
             if (input.IsAgreed) {
 
                 new UserService(new ZhxyRepository()).UpdIco(face.ApplicantId, face.ApproveImg);
+                new StudentService(new ZhxyRepository()).UpdIco(face.ApplicantId, face.ApproveImg);                
                 new UserToGateService().SendUserHeadIco(new string[] { face.ApplicantId });
             }
            

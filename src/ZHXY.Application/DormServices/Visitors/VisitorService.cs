@@ -13,9 +13,9 @@ namespace ZHXY.Application
     /// <summary>
     /// 访客管理
     /// </summary>
-    public class VisitorAppService :  AppService
+    public class VisitorService :  AppService
     {
-        public VisitorAppService(IZhxyRepository r) : base(r)
+        public VisitorService(IZhxyRepository r) : base(r)
         {
         }
 
@@ -110,8 +110,8 @@ namespace ZHXY.Application
         public void Approval(string id,bool pass)
         {
             var v = Get<VisitApply>(id);
-            v.Status = pass ? 1 : -1;
-            v.ProcessingTime = DateTime.Now;
+            v.Status = pass ? "1" : "-1";
+            v.ApprovedTime = DateTime.Now;
             SaveChanges();
         }
 
@@ -122,10 +122,39 @@ namespace ZHXY.Application
         /// <param name="input"></param>
         public void Submit(AddVisitApplyDto input)
         {
-            var visit = input.MapTo<VisitApply>();
-            visit.ApplicantId = Operator.GetCurrent().Id;
-            visit.DormId = "";
-            visit.BuildingId = "";
+            var currentUserId = Operator.GetCurrent().Id;
+           // var visit = input.MapTo<VisitApply>();//映射到数据库中对应的表
+            var visit = new VisitApply
+            {
+                ApplicantId = currentUserId,
+                VisitorGender = input.VisitorGender,
+                VisitorName = input.VisitorName,
+                VisitorIDCard = input.VisitorIDCard,
+                VisitReason = input.VisitReason,
+                VisitStartTime = input.VisitStartTime,
+                VisitEndTime = input.VisitEndTime,
+                Relationship = input.Relationship,
+                Status = "0"
+            };
+            visit.ApplicantId = currentUserId;
+            
+            //获取学生所在的dormid
+            var dormid = Read<DormStudent>(p => p.StudentId.Equals(currentUserId)).Select(p => p.DormId).FirstOrDefault();
+            //获取dorm对应的楼栋Id
+            var buildingId = Read<DormRoom>(p => p.Id.Equals(dormid)).Select(p => p.BuildingId).FirstOrDefault();
+            //获取楼栋对应的宿管
+            var Approvers = Read<Relevance>(p => p.FirstKey.Equals(buildingId)).Select(p => p.SecondKey).ToListAsync().Result;
+            if (null == Approvers) throw new Exception("请先绑定宿管!");
+            foreach (var approver in Approvers) {
+                Add(new VisitApprove {
+                    ApproverId = approver,
+                    VisitId = visit.Id,
+                    ApproveLevel = 1
+
+                });
+            }            
+            visit.DormId = dormid;
+            visit.BuildingId = buildingId;
             AddAndSave(visit);
         }
 

@@ -11,13 +11,14 @@ namespace ZHXY.Domain
 
         /// <summary>
         /// 申请时间
+        /// 
         /// </summary>
-        public DateTime ApplicationTime { get; set; } = DateTime.Now;
+        public DateTime CreatedTime { get; set; } = DateTime.Now;
 
         /// <summary>
         /// 审批时间
         /// </summary>
-        public DateTime? ProcessingTime { get; set; }
+        public DateTime? ApprovedTime { get; set; }
         /// <summary>
         /// 入住性别
         /// </summary>
@@ -54,7 +55,7 @@ namespace ZHXY.Domain
 
         public DateTime VisitStartTime { get; set; }
 
-        public DateTime VisitEndOfTime { get; set; }
+        public DateTime VisitEndTime { get; set; }
 
         /// <summary>
         /// 关系
@@ -64,7 +65,7 @@ namespace ZHXY.Domain
         /// <summary>
         /// 审批状态  0:未审批  1:通过   -1:不通过
         /// </summary>
-        public int Status { get; set; }
+        public string Status { get; set; }
 
 
         /// <summary>
