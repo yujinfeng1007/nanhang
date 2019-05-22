@@ -185,16 +185,16 @@ namespace ZHXY.Application
 
                 // 1= 请假 2= 晚归 3=未归 4=未出 5=异常
                 var sql = "SELECT '4' AS F_Status ,'未出' AS F_StatusName,"
- + "(SELECT COUNT(0) FROM [Dorm_NoOutReport] WHERE F_Dorm IN ( '" + string.Join("','", dorms.ToArray()) + "' )) AS F_Num "
+ + "(SELECT COUNT(0) FROM [zhxy_no_out_report] WHERE F_Dorm IN ( '" + string.Join("','", dorms.ToArray()) + "' )) AS F_Num "
  + " UNION "
  + " SELECT '3' AS F_Status ,'未归' AS F_StatusName,"
- + "(SELECT COUNT(0) FROM [Dorm_NoReturnReport] WHERE F_Dorm IN ('" + string.Join("','", dorms.ToArray()) + "' )) AS F_Num "
+ + "(SELECT COUNT(0) FROM [zhxy_no_return_report] WHERE F_Dorm IN ('" + string.Join("','", dorms.ToArray()) + "' )) AS F_Num "
  + " UNION "
  + " SELECT '2' AS F_Status ,'晚归' AS F_StatusName,"
- + "(SELECT COUNT(0) FROM [Dorm_LateReturnReport] WHERE F_Dorm IN ('" + string.Join("','", dorms.ToArray()) + "' )) AS F_Num "
+ + "(SELECT COUNT(0) FROM [zhxy_late_return_report] WHERE F_Dorm IN ('" + string.Join("','", dorms.ToArray()) + "' )) AS F_Num "
  + " UNION "
  + " SELECT '1' AS F_Status ,'请假' AS F_StatusName,"
- + "(SELECT COUNT(0) FROM [School_Stu_Leave] WHERE F_StudentID IN ('" + string.Join("','", dormStudents.ToArray()) + "' ) AND CONVERT(VARCHAR(10),F_StartTime,120)< GETDATE() AND CONVERT(VARCHAR(10),F_EndTime,120)> GETDATE()  ) AS F_Num "
+ + "(SELECT COUNT(0) FROM [zhxy_leave_order] WHERE Applicant_Id IN ('" + string.Join("','", dormStudents.ToArray()) + "' ) AND CONVERT(VARCHAR(10),StartTime,120)< GETDATE() AND CONVERT(VARCHAR(10),EndTime,120)> GETDATE()  ) AS F_Num "
  + " UNION "
  + " SELECT '5' AS F_Status, '其他异常' AS F_StatusName,0 AS F_Num ";
 
