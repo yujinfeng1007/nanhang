@@ -9,9 +9,10 @@ namespace ZHXY.Web.SystemManage.Controllers
     {
         private ResourceService App { get; }
         public ResourceController(ResourceService app) => App = app;
+        [HttpGet]
+        public ViewResult MenuFrm() => View();
 
-
-
+        [HttpPost]
         public ActionResult AddMenu(AddMenuDto dto)
         {
             App.AddMenu(dto);
