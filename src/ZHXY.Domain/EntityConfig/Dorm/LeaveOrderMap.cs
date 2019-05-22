@@ -25,12 +25,6 @@ namespace ZHXY.Domain
             Property(p => p.Reason).HasColumnName("reason").HasColumnType("varchar");
             Property(p => p.Status).HasColumnName("status").HasColumnType("varchar");
             Property(p => p.Opinion).HasColumnName("opinion").HasColumnType("varchar");
-
-
-            // 导航属性
-            HasOptional(p => p.Applicant).WithMany().HasForeignKey(p => p.ApplicantId);
-            HasOptional(p => p.Leaveer).WithMany().HasForeignKey(p => p.LeaveerId);
-            HasOptional(p => p.HeadTeacher).WithMany().HasForeignKey(p => p.HeadTeacherId);
         }
     }
 }

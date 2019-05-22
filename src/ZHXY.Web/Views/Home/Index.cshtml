@@ -196,16 +196,7 @@
                 }
             });
 
-            window.getItem = function (key) {
-                return JSON.parse(localStorage[key]);
-            };
-            window.getDic = function (dicName) {
-                return window.getItem("dic")[dicName];
-            };
-            window.getDicValue = function (dicName, dicKey) {
-                return window.getDic(dicName)[dicKey] == undefined?"":window.getDic(dicName)[dicKey];
-            };
-
+           
 
 
         }

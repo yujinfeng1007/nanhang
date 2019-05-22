@@ -109,7 +109,7 @@ namespace ZHXY.Application
             var view = new LeaveView
             {
                 Id = leave.Id,
-                LeaveerName = leave.Leaveer.Name,
+                LeaveerName = Get<User>(leave.LeaveerId)?.Name,
                 StartTime = leave.StartTime,
                 EndOfTime = leave.EndOfTime,
                 LeaveDays = leave.LeaveDays,
@@ -165,7 +165,7 @@ namespace ZHXY.Application
             var obj = new ApproveDetailView
             {
                 Id = leave.Id,
-                LeaveerName = leave.Leaveer?.Name,
+                LeaveerName = Get<User>(leave.LeaveerId)?.Name,
                 StartTime = leave.StartTime,
                 EndOfTime = leave.EndOfTime,
                 LeaveDays = leave.LeaveDays,
@@ -252,17 +252,17 @@ namespace ZHXY.Application
             query = string.IsNullOrEmpty(input.Status) ? query : query.Where(p => p.Status.Equals(input.Status));
             query = string.IsNullOrEmpty(input.Keyword) ? query : query.Where(p => p.Reason.Contains(input.Keyword));
             query=query.Paging(input);
-            var list = query.Select(p => new LeaveListView
+            var list = query.Join(Read<User>(),a=>a.LeaveerId,a=>a.Id,(a,b)=>new { a,b}).Select(j => new LeaveListView
             {
-                Id = p.Id,
-                LeaveerName = p.Leaveer.Name,
-                StartTime = p.StartTime,
-                EndOfTime = p.EndOfTime,
-                LeaveDays = p.LeaveDays,
-                LeaveType = p.LeaveType,
-                ApprovalStatus = p.Status,
-                ReasonForLeave = p.Reason,
-                CreatedTime = p.CreatedTime
+                Id = j.a.Id,
+                LeaveerName = j.b.Name,
+                StartTime = j.a.StartTime,
+                EndOfTime = j.a.EndOfTime,
+                LeaveDays = j.a.LeaveDays,
+                LeaveType = j.a.LeaveType,
+                ApprovalStatus = j.a.Status,
+                ReasonForLeave = j.a.Reason,
+                CreatedTime = j.a.CreatedTime
             }).ToListAsync().Result;
 
             foreach (var item in list)
@@ -308,17 +308,17 @@ namespace ZHXY.Application
                 ? query
                 : query.Where(p => p.Reason.Contains(input.Keyword));
             query=query.Paging(input);
-            var list = query.Select(p => new LeaveListView
+            var list = query.Join(Read<User>(),a=>a.LeaveerId,b=>b.Id,(a,b)=> new{a,b }).Select(p => new LeaveListView
             {
-                Id = p.Id,
-                LeaveerName = p.Leaveer.Name,
-                StartTime = p.StartTime,
-                EndOfTime = p.EndOfTime,
-                LeaveDays = p.LeaveDays,
-                LeaveType = p.LeaveType,
-                ApprovalStatus = p.Status,
-                ReasonForLeave = p.Reason,
-                CreatedTime = p.CreatedTime
+                Id = p.a.Id,
+                LeaveerName = p.b.Name,
+                StartTime = p.a.StartTime,
+                EndOfTime = p.a.EndOfTime,
+                LeaveDays = p.a.LeaveDays,
+                LeaveType = p.a.LeaveType,
+                ApprovalStatus = p.a.Status,
+                ReasonForLeave = p.a.Reason,
+                CreatedTime = p.a.CreatedTime
             }).ToListAsync().Result;
             SetViewStatus(input.CurrentUserId, ref list);
             return list;
@@ -420,15 +420,15 @@ namespace ZHXY.Application
             var recordCount = query.CountAsync().Result;
             var pageCount = recordCount % input.Rows == 0 ? recordCount / input.Rows : (recordCount / input.Rows) + 1;
             query = query.OrderByDescending(p => p.CreatedTime).Skip(input.Page - 1).Take(input.Rows);
-            var list = query.Select(p => new LeaveListView
+            var list = query.Join(Read<User>(), a => a.LeaveerId, b => b.Id, (a, b) => new { a, b }).Select(p => new LeaveListView
             {
-                Id = p.Id,
-                LeaveerName = p.Leaveer.Name,
-                StartTime = p.StartTime,
-                EndOfTime = p.EndOfTime,
-                LeaveDays = p.LeaveDays,
-                LeaveType = p.LeaveType,
-                ReasonForLeave = p.Reason,
+                Id = p.a.Id,
+                LeaveerName = p.b.Name,
+                StartTime = p.a.StartTime,
+                EndOfTime = p.a.EndOfTime,
+                LeaveDays = p.a.LeaveDays,
+                LeaveType = p.a.LeaveType,
+                ReasonForLeave = p.a.Reason,
             }).ToListAsync().Result;
             return (list, recordCount, pageCount);
         }
@@ -483,7 +483,6 @@ namespace ZHXY.Application
              {
                  OrderId = p.Id,
                  ApplicantId = p.ApplicantId,
-                 ApplicantName = p.Applicant.Name,
                  StartTime = p.StartTime,
                  EndOfTime = p.EndOfTime,
                  LeaveDays = p.LeaveDays,
@@ -491,7 +490,9 @@ namespace ZHXY.Application
                  LeaveType = p.LeaveType
              }).ToListAsync()
              .Result.Where(p => DateTime.Parse(p.EndOfTime).Date >= DateTime.Now.Date);
-            return query.AsQueryable().Paging(input).ToListAsync().Result;
+            var list= query.AsQueryable().Paging(input).ToListAsync().Result;
+            list.ForEach(item => item.ApplicantName = Read<User>(p => p.Id.Equals(item.ApplicantId)).Select(p => p.Name).FirstOrDefault());
+            return list;
         }
 
         /// <summary>
@@ -500,13 +501,9 @@ namespace ZHXY.Application
         public void CancelHoliday(CancelHolidayDto input)
         {
             var cancelHoliday = input.MapTo<CancelHoliday>();
-            // 验证是否可行
             var order = Read<LeaveOrder>(p => p.Id.Equals(input.OrderId)).FirstOrDefaultAsync().Result;
             if (null == order) throw new Exception($"未找到请假单! leaveId:{input.OrderId}");
             if (input.Days > decimal.Parse(order.LeaveDays)) throw new Exception("销假天数不能大于请假天数!");
-            // var endDate = DateTime.Parse(order.EndOfTime).Date.AddDays((double)input.Days);
-            //endDate = (order.EndOfTime.Contains("AM") || order.EndOfTime.Contains("am")) ? endDate.AddDays(.5) : endDate.AddDays(1);
-            //if (endDate > DateTime.Now.AddDays(.5)) throw new Exception("销假天数非法!");
             AddAndSave(cancelHoliday);
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -10,9 +11,9 @@ namespace ZHXY.Common
     public class FtpHelper
     {
         #region config
-        private static string FtpPassword { get; } = Configs.GetValue("ftppassword");
-        private static string FtpUserName { get; } = Configs.GetValue("ftpname");
-        public static string FtpUri { get; set; } = Configs.GetValue("ftpURI");
+        private static string FtpPassword { get; } = ConfigurationManager.AppSettings["ftppassword"];
+        private static string FtpUserName { get; } = ConfigurationManager.AppSettings["ftpname"];
+        public static string FtpUri { get; set; } = ConfigurationManager.AppSettings["ftpURI"];
         #endregion
 
         public static void StartUpload(string targetPath, string relativePath)

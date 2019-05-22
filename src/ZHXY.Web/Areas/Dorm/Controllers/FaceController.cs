@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Configuration;
 using System.IO;
 using System.Web.Mvc;
 using ZHXY.Application;
@@ -21,7 +22,7 @@ namespace ZHXY.Web.Dorm.Controllers
         {
             var approveFilepath = string.Empty;//审批后的头像
             var existen = string.Empty;
-            var mapPath = Configs.GetValue("MapPath") + DateTime.Now.ToString("yyyyMMdd") + "/";
+            var mapPath = ConfigurationManager.AppSettings["MapPath"] + DateTime.Now.ToString("yyyyMMdd") + "/";
             var basePath = Server.MapPath(mapPath);
             var files = System.Web.HttpContext.Current.Request.Files;
             if (files.Count > 0)

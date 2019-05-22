@@ -76,7 +76,7 @@ namespace ZHXY.Application
 
             ids.ForEach(item =>
             {
-                var dorms = Read<DormRoom>(t => t.UnitNumber == item).Select(t => t.Id).ToList();
+                var dorms = Read<DormRoom>(t => t.BuildingId == item).Select(t => t.Id).ToList();
 
                 // 根据宿舍查找学生宿舍对应表
                 var students = Read<DormStudent>(t => dorms.Contains(t.DormId)).Select(t => t.StudentId).ToList();
@@ -107,7 +107,7 @@ namespace ZHXY.Application
             // 根据楼栋ID，查找所有宿舍信息
             var ids = buildingIds.Split(',').ToList();
 
-            var dorms = Read<DormRoom>(t => ids.Contains(t.UnitNumber)).Select(t => t.Id).ToList();
+            var dorms = Read<DormRoom>(t => ids.Contains(t.BuildingId)).Select(t => t.Id).ToList();
 
             // 根据宿舍查找学生宿舍对应表
             var dormStudents = Read<DormStudent>(t => dorms.Contains(t.DormId)).Select(t => t.StudentId).ToList();
@@ -142,7 +142,7 @@ namespace ZHXY.Application
 
             ids.ForEach(item =>
             {
-                var dorms = Read<DormRoom>(t => t.UnitNumber == item).Select(t => t.Id).ToList();
+                var dorms = Read<DormRoom>(t => t.BuildingId == item).Select(t => t.Id).ToList();
 
                 // 根据宿舍查找学生宿舍对应表
                 var students = Read<DormStudent>(t => dorms.Contains(t.DormId)).Select(t => t.StudentId).ToList();
@@ -178,7 +178,7 @@ namespace ZHXY.Application
 
             ids.ForEach(item =>
             {
-                var dorms = Read<DormRoom>(t => t.UnitNumber == item).Select(t => t.Id).ToList();
+                var dorms = Read<DormRoom>(t => t.BuildingId == item).Select(t => t.Id).ToList();
 
                 // 根据宿舍查找学生宿舍对应表
                 var dormStudents = Read<DormStudent>(t => dorms.Contains(t.DormId)).Select(t => t.StudentId).ToList();
@@ -218,7 +218,7 @@ namespace ZHXY.Application
             // 根据楼栋ID，查找所有宿舍信息
             var ids = buildingIds.Split(',').ToList();
 
-            var dorms = Read<DormRoom>(t => ids.Contains(t.UnitNumber)).Select(t => t.Id).ToList();
+            var dorms = Read<DormRoom>(t => ids.Contains(t.BuildingId)).Select(t => t.Id).ToList();
 
             // 根据宿舍查找学生宿舍对应表
             var dormStudents = Read<DormStudent>(t => dorms.Contains(t.DormId)).Select(t => t.Student.StudentNumber).ToList();

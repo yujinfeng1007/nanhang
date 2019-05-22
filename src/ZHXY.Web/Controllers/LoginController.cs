@@ -18,11 +18,13 @@ namespace ZHXY.Web.Controllers
     {
         private DutyService DutyApp { get; }
         private UserService UserApp { get; }
+        public RelevanceService RelevanceApp { get; }
 
-        public LoginController(DutyService app, UserService userApp, RoleService roleApp)
+        public LoginController(DutyService app, UserService userApp, RelevanceService relevanceApp)
         {
             DutyApp = app;
             UserApp = userApp;
+            RelevanceApp = relevanceApp;
         }
 
         #region view
@@ -104,11 +106,6 @@ namespace ZHXY.Web.Controllers
             Session.Abandon();
             Session.Clear();
             Operator.Remove();
-            if ("on".Equals(Configs.GetValue("ifSso")))
-            {
-                Session.Remove("authorizationState");
-                return Redirect(Paths.ResourceServerBaseAddress + Paths.LogoutPath);
-            }
             return Content("退出成功");
         }
 
@@ -155,7 +152,7 @@ namespace ZHXY.Web.Controllers
                         operatorModel.IsSystem = false;
                     }
 
-                    operatorModel.Roles = UserApp.GetUserRolesId(userEntity.Id);
+                    operatorModel.Roles = RelevanceApp.GetUserRole(userEntity.Id);
                     operatorModel.DutyId = userEntity.DutyId;
                     Operator.Set(operatorModel);
                     logEntity.Account = userEntity.Account;

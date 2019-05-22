@@ -123,7 +123,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NPOI, Version=2.4.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
       <HintPath>..\packages\NPOI.2.4.1\lib\net45\NPOI.dll</HintPath>
@@ -234,7 +234,7 @@
     <Compile Include="Areas\SystemManage\Controllers\DutyController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\CurrentUserController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\LogController.cs" />
-    <Compile Include="Areas\SystemManage\Controllers\MenuController.cs" />
+    <Compile Include="Areas\SystemManage\Controllers\ResourceController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\OrganizeController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\OrgLeaderController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\RoleController.cs" />
@@ -296,6 +296,7 @@
     <Content Include="Content\css\select2.min.css" />
     <Content Include="Content\dots.css" />
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\fonts\gijgo-material.svg" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\fonts\weathericons-regular-webfont.svg" />
     <Content Include="Content\img\ajax-loader.gif" />
@@ -307,10 +308,24 @@
     <Content Include="Content\img\cover\cover3.jpg" />
     <Content Include="Content\img\cy-reward-title-bg.jpg" />
     <Content Include="Content\img\default-logo.png" />
+    <Content Include="Content\img\diy\1_close.png" />
+    <Content Include="Content\img\diy\1_open.png" />
+    <Content Include="Content\img\diy\2.png" />
+    <Content Include="Content\img\diy\3.png" />
+    <Content Include="Content\img\diy\4.png" />
+    <Content Include="Content\img\diy\5.png" />
+    <Content Include="Content\img\diy\6.png" />
+    <Content Include="Content\img\diy\7.png" />
+    <Content Include="Content\img\diy\8.png" />
+    <Content Include="Content\img\diy\9.png" />
     <Content Include="Content\img\file.png" />
     <Content Include="Content\img\file.svg" />
     <Content Include="Content\img\fileico_v5.png" />
+    <Content Include="Content\img\line_conn.gif" />
+    <Content Include="Content\img\line_conn.png" />
     <Content Include="Content\img\loading.gif" />
+    <Content Include="Content\img\metro.gif" />
+    <Content Include="Content\img\metro.png" />
     <Content Include="Content\img\radio1.jpg" />
     <Content Include="Content\img\radio2.jpg" />
     <Content Include="Content\img\samples\angelina-300.jpg" />
@@ -336,6 +351,8 @@
     <Content Include="Content\img\sso-login.jpg" />
     <Content Include="Content\img\teacher-checkbox.png" />
     <Content Include="Content\img\wechat.jpg" />
+    <Content Include="Content\img\zTreeStandard.gif" />
+    <Content Include="Content\img\zTreeStandard.png" />
     <Content Include="Content\inputs-ext\address\address.css" />
     <Content Include="Content\inputs-ext\typeaheadjs\lib\typeahead.js-bootstrap.css" />
     <Content Include="Content\inputs-ext\wysihtml5\bootstrap-wysihtml5-0.0.2\bootstrap-wysihtml5-0.0.2.css" />
@@ -538,6 +555,9 @@
     <Content Include="Areas\SystemManage\Views\Dic\Index.cshtml" />
     <Content Include="Areas\SystemManage\Views\Role\Power.cshtml" />
     <Content Include="Areas\SystemManage\Views\Role\Menu.cshtml" />
+    <Content Include="Content\fonts\gijgo-material.woff" />
+    <Content Include="Content\fonts\gijgo-material.ttf" />
+    <Content Include="Content\fonts\gijgo-material.eot" />
     <None Include="Content\js\dialog\dialog.css.bak" />
     <Content Include="Content\js\dialog\dialog.css" />
     <Content Include="Content\js\dialog\dialog.js" />
@@ -582,8 +602,23 @@
     <Content Include="Content\pace\themes\pace-theme-loading-bar.css" />
     <Content Include="Content\pace\themes\pace-theme-mac-osx.css" />
     <Content Include="Content\pace\themes\pace-theme-minimal.css" />
+    <Content Include="Content\treeview\checkbox.css" />
+    <Content Include="Content\treeview\checkbox.min.css" />
+    <Content Include="Content\treeview\core.css" />
+    <Content Include="Content\treeview\core.min.css" />
+    <Content Include="Content\treeview\tree.css" />
+    <Content Include="Content\treeview\tree.min.css" />
+    <Content Include="Content\zTree.css" />
+    <Content Include="Content\zTree.min.css" />
+    <Content Include="Content\zTree.theme.metro.css" />
+    <Content Include="Content\zTree.theme.metro.min.css" />
     <Content Include="NotOutReport.html" />
     <Content Include="Scripts\jquery.md5.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\jquery.ztree.all-3.5.js" />
+    <Content Include="Scripts\jquery.ztree.all-3.5.min.js" />
+    <Content Include="Scripts\jquery.ztree.dropdown.js" />
     <Content Include="Scripts\message_zh.js" />
     <Content Include="Scripts\pace.js" />
     <Content Include="Scripts\pace.min.js" />
@@ -688,8 +723,19 @@
     <Content Include="Content\js\webuploader\webuploader.withoutimage.js" />
     <Content Include="Content\js\webuploader\webuploader.withoutimage.min.js" />
     <Content Include="Content\css\wizard.css" />
+    <Content Include="Scripts\treeview\checkbox.js" />
+    <Content Include="Scripts\treeview\checkbox.min.js" />
+    <Content Include="Scripts\treeview\core.js" />
+    <Content Include="Scripts\treeview\core.min.js" />
+    <Content Include="Scripts\treeview\draggable.js" />
+    <Content Include="Scripts\treeview\draggable.min.js" />
+    <Content Include="Scripts\treeview\droppable.js" />
+    <Content Include="Scripts\treeview\droppable.min.js" />
+    <Content Include="Scripts\treeview\tree.js" />
+    <Content Include="Scripts\treeview\tree.min.js" />
     <Content Include="Scripts\wizard.js" />
     <Content Include="Content\css\zoom.css" />
+    <Content Include="Scripts\select7.js" />
     <Content Include="Scripts\zoom.js" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\themes\base\accordion.css" />
@@ -1581,8 +1627,6 @@
     <Content Include="Scripts\jquery.validate.bootstrap.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\jqueryui-editable\js\jqueryui-editable.js" />
     <Content Include="Scripts\jqueryui-editable\js\jqueryui-editable.min.js" />
     <Content Include="Scripts\laydate.js" />
@@ -1771,6 +1815,7 @@
     <Content Include="Scripts\jquery.qrcode.min.js.map" />
     <Content Include="Scripts\tinymce\skins\ui\oxide\fonts\tinymce-mobile.woff" />
     <Content Include="Scripts\tinymce\langs\readme.md" />
+    <Content Include="Views\Shared\_My.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -1802,7 +1847,7 @@
     <Content Include="Views\Shared\_Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\Menu\Index.cshtml" />
+    <Content Include="Areas\SystemManage\Views\Resource\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\SystemManage\Views\Dic\Index.cshtml" />

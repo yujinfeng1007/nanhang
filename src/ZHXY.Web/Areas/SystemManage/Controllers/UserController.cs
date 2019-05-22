@@ -5,6 +5,7 @@ using ZHXY.Common;
 using ZHXY.Application.DormServices.Gates;
 using System.IO;
 using System;
+using System.Configuration;
 
 namespace ZHXY.Web.SystemManage.Controllers
 {
@@ -97,7 +98,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         {
             var filepath = string.Empty;
             var existen = string.Empty;
-            var mapPath = Configs.GetValue("MapPath") + DateTime.Now.ToString("yyyyMMdd") + "/";
+            var mapPath = ConfigurationManager.AppSettings["MapPath"] + DateTime.Now.ToString("yyyyMMdd") + "/";
             var basePath = Server.MapPath(mapPath);
             var files = System.Web.HttpContext.Current.Request.Files;
             if (files.Count > 0)
@@ -131,7 +132,6 @@ namespace ZHXY.Web.SystemManage.Controllers
             App.SetRole(userId, roleId);
             return Result.Success();
         }
-
 
         [HttpGet]
         public ActionResult GetUserData()
