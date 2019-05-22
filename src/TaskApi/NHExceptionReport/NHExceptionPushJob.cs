@@ -18,7 +18,7 @@ namespace TaskApi.NHExceptionReport
         private ILog Logger { get; } = LogManager.GetLogger(typeof(NHExceptionPushJob));
         public void Execute(IJobExecutionContext context)
         {
-            Console.WriteLine("进入方法！");
+            Console.WriteLine("开始推送异常消息：" + DateTime.Now);
             //new PushAppMessage().PushReportMessage("48038@nchu.edu.cn", "Test Message", "");
             //DateTime Time = Convert.ToDateTime("2019-05-16 08:00:00");
             DateTime Time = DateTime.Now;
