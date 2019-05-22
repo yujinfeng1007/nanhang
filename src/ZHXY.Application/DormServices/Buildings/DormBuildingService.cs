@@ -111,6 +111,7 @@ namespace ZHXY.Application
         {
             var usersIds = Read<Relevance>(p => p.Name.Equals(Relation.BuildingUser) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
             var list = Read<User>(p => !usersIds.Contains(p.Id) && p.OrganId == "473059e8a7a0754ca8f05eb2cd346e1d").ToList();
+            //var list = Read<User>(p => !usersIds.Contains(p.Id) && p.DutyId.Contains("dormitory") ).ToList();  //后续更新为通过岗位来区分宿管
             return list;
         }
 

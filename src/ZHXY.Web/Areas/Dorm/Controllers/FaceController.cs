@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Configuration;
 using System.IO;
 using System.Web.Mvc;
 using ZHXY.Application;
@@ -21,7 +22,7 @@ namespace ZHXY.Web.Dorm.Controllers
         {
             var approveFilepath = string.Empty;//审批后的头像
             var existen = string.Empty;
-            var mapPath = Configs.GetValue("MapPath") + DateTime.Now.ToString("yyyyMMdd") + "/";
+            var mapPath = ConfigurationManager.AppSettings["MapPath"] + DateTime.Now.ToString("yyyyMMdd") + "/";
             var basePath = Server.MapPath(mapPath);
             var files = System.Web.HttpContext.Current.Request.Files;
             if (files.Count > 0)
@@ -55,8 +56,7 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpGet]
         public ActionResult GetList(GetFaceApprovalListDto input) {
           // input.CurrentUserId =  Operator.Current.Id;
-            var data = App.GetFaceApprovalList(input);
-          //  return Resultaat.Success(data);
+            var data = App.GetFaceApprovalList(input);          
             return Result.PagingRst(data, input.Records, input.Total);
 
 
@@ -64,8 +64,7 @@ namespace ZHXY.Web.Dorm.Controllers
         /// <summary>
         /// 获取头像审批详情
         /// </summary>
-        [HttpGet]
-        // public ActionResult Get([Required(ErrorMessage = "申请Id不能为空!")]string id) => Resultaat.Success(App.GetFaceApprovalDetail(id, Operator.Current.Id));
+        [HttpGet]       
         public ActionResult Get(string appId, string currentUserId)
         {
             var data = App.GetFaceApprovalDetail(appId, currentUserId);

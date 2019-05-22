@@ -14,8 +14,15 @@ namespace ZHXY.Application
     /// </summary>
     public class RoleService : AppService
     {
+        public RelevanceService RelevanceApp { get; }
+
         public RoleService(IZhxyRepository r) : base(r)
         {
+        }
+
+        public RoleService(IZhxyRepository r, RelevanceService relevanceApp) : base(r)
+        {
+            RelevanceApp = relevanceApp;
         }
 
         public List<Role> GetList(string keyword = null)
@@ -49,24 +56,13 @@ namespace ZHXY.Application
             var users = Read<Relevance>(p => p.Name.Equals(Relation.UserRole) && p.SecondKey.Equals(roleId)).Select(p => p.FirstKey).ToArrayAsync().Result;
             return Read<User>(p => users.Contains(p.Id)).ToListAsync().Result;
         }
-
-        public string[] GetRoleUsersId(string roleId)
-        {
-            return Read<Relevance>(p => p.Name.Equals(Relation.UserRole) && p.SecondKey.Equals(roleId)).Select(p => p.FirstKey).ToArrayAsync().Result;
-        }
-
-        public string[] GetRoleMenusId(string roleId)
-        {
-            return Read<Relevance>(p => p.Name.Equals(Relation.RolePower) && p.FirstKey.Equals(roleId)&&p.ThirdKey.Equals(SYS_CONSTS.DbNull)).Select(p => p.SecondKey).Distinct().ToArrayAsync().Result;
-        }
+       
 
         public dynamic GetRoleMenus(string roleId)
         {
-            var menus = GetRoleMenusId(roleId);
+            var menus = RelevanceApp.GetRoleMenu(roleId);
             return Read<Menu>(p => menus.Contains(p.Id)).ToArrayAsync().Result;
         }
-
-
 
         public void AddRoleFunc(string roleId,  string[] funcs)
         {
@@ -101,14 +97,10 @@ namespace ZHXY.Application
         }
 
 
-        public string[] GetRoleFuncsId(string roleId)
-        {
-            return Read<Relevance>(p => p.Name.Equals(Relation.RolePower) && p.FirstKey.Equals(roleId)).Select(p => p.ThirdKey).ToArrayAsync().Result;
-        }
 
         public dynamic GetRoleFuncs(string roleId)
         {
-            var buttons = GetRoleFuncsId(roleId);
+            var buttons = RelevanceApp.GetRoleFunc(roleId);
             return Read<Function>(p => buttons.Contains(p.Id)).ToArrayAsync().Result;
         }
 
@@ -127,7 +119,7 @@ namespace ZHXY.Application
 
         public void AddRoleUser(string roleId, string[] userIds)
         {
-            var existingUsers = GetRoleUsersId(roleId);
+            var existingUsers = RelevanceApp.GetRoleUser(roleId);
             var addUsers = userIds.Except(existingUsers);
             foreach (var item in addUsers)
             {

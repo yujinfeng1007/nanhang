@@ -32,6 +32,10 @@
         /// </summary>
         public static string RolePower { get; } = $"{nameof(Role)}{Separator}{nameof(Function)}";
 
+        /// <summary>
+        /// 用户资源
+        /// </summary>
+        public static string RoleResource { get; } = $"{nameof(Role).ToLower()}{Separator}{nameof(Function).ToLower()}";
 
     }
 }

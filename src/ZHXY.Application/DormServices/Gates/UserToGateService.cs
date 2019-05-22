@@ -152,7 +152,7 @@ namespace ZHXY.Application.DormServices.Gates
                     var ssdata = Query<DormStudent>(p => p.StudentId == stu.Id).FirstOrDefault();
                     person.dormitoryRoom = ssdata?.DormInfo?.Title;
                     person.dormitoryCode = ssdata?.DormInfo?.FloorNumber;
-                    var ldid = ssdata?.DormInfo?.UnitNumber;
+                    var ldid = ssdata?.DormInfo?.BuildingId;
                     // 闸机Id列表
                     var zjids = Read<Relevance>(p => p.SecondKey == ldid && p.Name == "Gate_Building").Select(p => p.FirstKey).ToList();
                     // 楼栋Id列表

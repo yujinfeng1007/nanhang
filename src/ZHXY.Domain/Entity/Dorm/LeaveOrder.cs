@@ -67,22 +67,7 @@ namespace ZHXY.Domain
 
         public string Opinion { get; set; }
 
-        /// <summary>
-        /// 班主任
-        /// </summary>
-        public virtual User HeadTeacher { get; set; }
-
-        /// <summary>
-        /// 请假人
-        /// </summary>
-        public virtual User Leaveer { get; set; }
-
-        /// <summary>
-        /// 申请人
-        /// </summary>
-        public virtual User Applicant { get; set; }
+      
         public string AttachmentsPath { get; set; }
-
-        public DateTime TempTime { get; set; }
     }
 }

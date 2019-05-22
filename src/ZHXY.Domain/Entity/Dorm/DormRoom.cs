@@ -15,21 +15,15 @@ namespace ZHXY.Domain
 
 
         /// <summary>
-        /// 楼编号
-        /// </summary>
-        public string BuildingId { get; set; }
-
-
-        /// <summary>
         /// 楼层号
         /// </summary>
         public string FloorNumber { get; set; }
         
               
         /// <summary>
-        /// 单元号
+        /// 楼栋Id
         /// </summary>
-        public string UnitNumber{ get; set; }
+        public string BuildingId{ get; set; }
         
               
         /// <summary>

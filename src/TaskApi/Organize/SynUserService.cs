@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Linq;
 using ZHXY.Common;
 
@@ -9,8 +10,8 @@ namespace TaskApi
     public class SynUserService
     {
         protected WebHelper WebHelp { get { return new WebHelper(); } }
-        private readonly string CallUrlAdd = Configs.GetValue("CallUrlAdd");
-        protected string AppId { get { return Configs.GetValue("appid"); } }
+        private readonly string CallUrlAdd = ConfigurationManager.AppSettings["CallUrlAdd"];
+        protected string AppId { get { return ConfigurationManager.AppSettings["appid"]; } }
         private string SchoolCode { get; }
 
         public SynUserService(string schoolCode) => SchoolCode = schoolCode;
