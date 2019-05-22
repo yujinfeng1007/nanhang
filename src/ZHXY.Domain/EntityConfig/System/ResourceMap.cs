@@ -21,6 +21,7 @@ namespace ZHXY.Domain
             Property(p => p.BelongSys).HasColumnName("belong_sys");
             Property(p => p.Type).HasColumnName("type");
             Property(p => p.Description).HasColumnName("description");
+            Property(p => p.SortCode).HasColumnName("sort_code");
 
         }
     }
