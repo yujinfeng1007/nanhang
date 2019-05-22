@@ -62,6 +62,7 @@
     <Compile Include="Entity\Dorm\LeaveLimit.cs" />
     <Compile Include="Entity\Dorm\LeaveOrder.cs" />
     <Compile Include="Entity\Dorm\StuFaceOrder.cs" />
+    <Compile Include="Entity\Dorm\VisitApprove.cs" />
     <Compile Include="Entity\System\AppVersion.cs" />
     <Compile Include="Entity\System\Duty.cs" />
     <Compile Include="Entity\System\Resource.cs" />
