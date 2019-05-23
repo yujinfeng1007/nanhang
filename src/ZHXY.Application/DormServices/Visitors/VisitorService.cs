@@ -110,10 +110,13 @@ namespace ZHXY.Application
             visitorListViews = query.Select(p => new VisitorListView
             {
                 Id = p.Id,
+                ApplicantName = p.Student.Name,
                 VisitorGender = p.VisitorGender,
                 VisitorIDCard = p.VisitorIDCard,
                 VisitorName = p.VisitorName,
                 VisitReason = p.VisitReason,
+                VisitType = p.VisitType,
+                Relationship = p.Relationship,
                 VisitStartTime = p.VisitStartTime,
                 VisitEndTime = p.VisitEndTime,                
                 ApprovalStatus = p.Status,
@@ -125,25 +128,49 @@ namespace ZHXY.Application
         /// <summary>
         /// 学生、宿管获取访客审批详情
         /// </summary>
-        public FaceListView GetFaceApprovalDetail(string appId, string currentUserId)
+        public VisitorListView GetVisitorApprovalDetail(string visitId, string currentUserId)
         {
             //获取审批结果和意见（随机取一条即可）
-            var approveInfo = Read<FaceApprove>(p => p.OrderId.Equals(appId)).FirstOrDefaultAsync().Result;
+            var approveInfo = Read<VisitorApprove>(p => p.VisitId.Equals(visitId)).FirstOrDefaultAsync().Result;
 
 
-            var face = Get<StuFaceOrder>(appId);
-            var view = new FaceListView
+            var visitor = Get<VisitorApply>(visitId);
+            var view = new VisitorListView
             {
-                Id = face.Id,
-                ApplierName = face.Applicant.Name,
-                SubmitImg = face.SubmitImg,
-                ApproveImg = face.ApproveImg,
-                ApprovalStatus = face.Status,
-                Result = approveInfo.Result,
+                Id = visitor.Id,
+                ApplicantName = visitor.Student.Name,
+                VisitorGender = visitor.VisitorGender,
+                VisitorIDCard = visitor.VisitorIDCard,
+                VisitorName = visitor.VisitorName,
+                VisitReason = visitor.VisitReason,
+                VisitType = visitor.VisitType,
+                Relationship = visitor.Relationship,
+                VisitStartTime = visitor.VisitStartTime,
+                VisitEndTime = visitor.VisitEndTime,                
+                ApprovalStatus = visitor.Status,
+                Result = approveInfo.ApproveResult,
                 Opinion = approveInfo.Opinion,
-                CreatedTime = face.CreatedTime
+                CreatedTime = visitor.CreatedTime
             };
             return view;
+        }
+
+
+        /// <summary>
+        /// 访客审批
+        /// </summary>
+        public void Approval(VisitorApprovalDto input)
+        {
+            var visitor = Get<VisitorApply>(input.VisitId);           
+            var visitorApprovers = Query<VisitorApprove>(p => p.VisitId.Equals(visitor.Id)).ToListAsync().Result;
+            foreach (var visitorApprover in visitorApprovers)
+            {
+                visitorApprover.ApproveResult = input.IsAgreed ? "1" : "-1";
+                visitorApprover.Opinion = input.Opinion;
+            }
+            visitor.Status = "1";
+            SaveChanges();           
+
         }
 
 
@@ -228,7 +255,8 @@ namespace ZHXY.Application
             }            
             visit.DormId = dormid;
             visit.BuildingId = buildingId;
-            AddAndSave(visit);
+            Add(visit);
+            SaveChanges();
         }
 
     }
