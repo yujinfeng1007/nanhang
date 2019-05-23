@@ -28,7 +28,7 @@
         /// <summary>
         /// 请假天数
         /// </summary>
-        public string LeaveDays { get; set; }
+        public decimal LeaveDays { get; set; }
 
         /// <summary>
         /// 请假事由

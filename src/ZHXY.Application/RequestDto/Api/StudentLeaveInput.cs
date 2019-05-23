@@ -30,7 +30,7 @@ namespace ZHXY.Application.RequestDto.Api
         /// <summary>
         /// 请假天数
         /// </summary>
-        public string F_LeaveDays { get; set; }
+        public decimal F_LeaveDays { get; set; }
 
         /// <summary>
         /// 请假类型

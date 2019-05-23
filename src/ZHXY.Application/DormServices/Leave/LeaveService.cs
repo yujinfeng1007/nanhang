@@ -218,7 +218,7 @@ namespace ZHXY.Application
             .ForEach(item =>
             {
                 SetOrderStatus(item);
-                if (!input.IsAgreed) MinusLimit(item.LeaveerId, Convert.ToDecimal(item.LeaveDays));
+                if (!input.IsAgreed) MinusLimit(item.LeaveerId, item.LeaveDays);
             });
             SaveChanges();
         }
@@ -236,7 +236,7 @@ namespace ZHXY.Application
             leaveApprove.Result = input.IsAgreed ? 1 : -1;
             leaveApprove.Opinion = input.Opinion;
             SetOrderStatus(leave);
-            if (!input.IsAgreed) MinusLimit(leave.LeaveerId, Convert.ToDecimal(leave.LeaveDays));
+            if (!input.IsAgreed) MinusLimit(leave.LeaveerId,leave.LeaveDays);
             SaveChanges();
 
 
@@ -503,7 +503,7 @@ namespace ZHXY.Application
             var cancelHoliday = input.MapTo<CancelHoliday>();
             var order = Read<LeaveOrder>(p => p.Id.Equals(input.OrderId)).FirstOrDefaultAsync().Result;
             if (null == order) throw new Exception($"未找到请假单! leaveId:{input.OrderId}");
-            if (input.Days > decimal.Parse(order.LeaveDays)) throw new Exception("销假天数不能大于请假天数!");
+            if (input.Days > order.LeaveDays) throw new Exception("销假天数不能大于请假天数!");
             AddAndSave(cancelHoliday);
         }
 

@@ -41,7 +41,7 @@ namespace ZHXY.Domain
         /// <summary>
         /// 请假天数
         /// </summary>
-        public string LeaveDays { get; set; }
+        public decimal LeaveDays { get; set; }
 
         [NotMapped]
         public decimal Days { get { return Convert.ToDecimal(LeaveDays); } }

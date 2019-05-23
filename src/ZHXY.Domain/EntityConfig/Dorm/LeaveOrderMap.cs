@@ -20,7 +20,7 @@ namespace ZHXY.Domain
             Property(p => p.EndOfTime).HasColumnName("end_time").HasColumnType("varchar").HasMaxLength(50);
             Property(p => p.LeaveerId).HasColumnName("leaveer_id").HasColumnType("varchar").HasMaxLength(50);
             Property(p => p.HeadTeacherId).HasColumnName("head_teacher_id").HasColumnType("varchar").HasMaxLength(50);
-            Property(p => p.LeaveDays).HasColumnName("days").HasColumnType("varchar").HasMaxLength(50);
+            Property(p => p.LeaveDays).HasColumnName("days").HasColumnType("decimal");
             Property(p => p.LeaveType).HasColumnName("type").HasColumnType("varchar");
             Property(p => p.Reason).HasColumnName("reason").HasColumnType("varchar");
             Property(p => p.Status).HasColumnName("status").HasColumnType("varchar");
