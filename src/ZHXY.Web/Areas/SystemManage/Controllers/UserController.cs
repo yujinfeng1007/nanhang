@@ -1,11 +1,13 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.IO;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using ZHXY.Application;
 using ZHXY.Common;
-using ZHXY.Application.DormServices.Gates;
-using System.IO;
-using System;
-using System.Configuration;
+using ZHXY.Domain;
+using ZHXY.Domain.Entity;
 
 namespace ZHXY.Web.SystemManage.Controllers
 {
@@ -18,147 +20,152 @@ namespace ZHXY.Web.SystemManage.Controllers
         private UserService App { get; }
 
         public UserController(UserService app) => App = app;
-
         #region view
 
         [HttpGet]
         public ActionResult Info() => View();
-        [HttpGet]
-        public ActionResult RevisePassword() => View();
-        public ActionResult Role() => View();
+
         #endregion view
 
         [HttpGet]
-        public ActionResult Load(Pagination pag,string orgId, string keyword)
+
+        public ActionResult GetGridJson(Pagination pagination, string keyword, string F_DepartmentId, string F_DutyId, string F_CreatorTime_Start, string F_CreatorTime_Stop, string F_Contains)
         {
-            var rows = App.GetList(pag, orgId,keyword);
-            return Result.PagingRst(rows, pag.Records, pag.Total);
+            var data = new
+            {
+                rows = App.GetList(pagination, keyword, F_DepartmentId, F_DutyId, F_CreatorTime_Start, F_CreatorTime_Stop),
+                total = pagination.Total,
+                page = pagination.Page,
+                records = pagination.Records
+            };
+            return Content(data.ToJson());
         }
 
         [HttpGet]
-        public ActionResult Get(string id)
-        {
-            var data = App.GetById(id);
-            return Result.Success(data);
-        }
 
-        [HttpPost]
-        public ActionResult Add(AddUserDto dto)
+        public ActionResult GetList(Pagination pagination, string keyword, string F_DepartmentId, string F_DutyId, string F_CreatorTime_Start, string F_CreatorTime_Stop, string F_Contains)
         {
-            App.Add(dto);
-            return Result.Success();
-        }
-
-        [HttpPost]
-        public ActionResult Update(UpdateUserDto dto)
-        {
-            App.Update(dto);
-            return Result.Success();
-        }
-
-        [HttpPost]
-        public ActionResult Delete(string id)
-        {
-            if (!string.IsNullOrWhiteSpace(id))
+            var data = new
             {
-                App.Delete(id.Split(','));
-            }
-            return Result.Success();
+                rows = App.GetList(pagination, keyword, F_DepartmentId, F_DutyId, F_CreatorTime_Start, F_CreatorTime_Stop),
+                total = pagination.Total,
+                page = pagination.Page,
+                records = pagination.Records
+            };
+            return Content(data.ToJson());
+        }
+
+        [HttpGet]
+
+        public ActionResult GetFormJsonByOrg(string F_DutyId)
+        {
+            var data = App.GetByOrg(F_DutyId);
+            return Content(data.ToJson());
+        }
+
+        public ActionResult GetListByOrg(string orgId)
+        {
+            var data = App.GetByOrg(orgId);
+            return Content(data.ToJson());
+        }
+
+        [HttpGet]
+
+        public ActionResult GetFormJson(string keyValue)
+        {
+            var data = App.GetById(keyValue);
+            return Content(data.ToJson());
         }
 
         [HttpPost]
-        public ActionResult RevisePassword(string userPassword, string keyValue)
+
+        [ValidateAntiForgeryToken]
+        public ActionResult SubmitForm(User userEntity,string F_RoleId, string keyValue)
+        {
+            App.Submit(userEntity, F_RoleId, keyValue);
+            return Result.Success();
+        }
+
+        //[HttpPost]
+
+        //[ValidateAntiForgeryToken]
+        //public ActionResult UpdateForm(User userEntity, string keyValue)
+        //{
+        //    userEntity.F_Id = keyValue;
+        //    if (userEntity.F_EnabledMark == null)
+        //        userEntity.F_EnabledMark = true;
+        //    App.Update(userEntity);
+        //    return Result.Success();
+        //}
+
+        //[HttpPost]
+
+        //public ActionResult SubmitSetUp(User userEntity)
+        //{
+        //    App.SubmitSetUp(userEntity);
+        //    return Result.Success();
+        //}
+
+        [HttpPost]
+        [HandlerAuthorize]
+
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteForm(string keyValue)
+        {
+            App.Delete(keyValue.Split('|'));
+            return Result.Success();
+        }
+
+        [HttpGet]
+        public ActionResult RevisePassword() => View();
+
+        [HttpPost]
+
+        public ActionResult SubmitRevisePassword(string userPassword, string keyValue)
         {
             App.RevisePassword(userPassword, keyValue);
-            return Result.Success(); 
-        }
-
-        [HttpPost]
-        public ActionResult Disable(string id)
-        {
-            App.Disable(id);
             return Result.Success();
+            
         }
 
-        [HttpPost]
-        public ActionResult Enable(string id)
+        //[HttpPost]
+
+        //[HandlerAuthorize]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DisabledAccount(string keyValue)
+        //{
+        //    var F_Id = keyValue.Split('|');
+        //    for (var i = 0; i < F_Id.Length - 1; i++)
+        //    {
+        //        var userEntity = new SysUser { F_Id = F_Id[i], F_EnabledMark = false };
+        //        App.Update(userEntity);
+        //    }
+        //    return Result.Success();
+        //}
+
+        //[HttpPost]
+
+        //[HandlerAuthorize]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult EnabledAccount(string keyValue)
+        //{
+        //    var F_Id = keyValue.Split('|');
+        //    for (var i = 0; i < F_Id.Length - 1; i++)
+        //    {
+        //        var userEntity = new SysUser { F_Id = F_Id[i], F_EnabledMark = true };
+        //        App.Update(userEntity);
+        //    }
+        //    return Result.Success();
+        //}
+
+        public JsonResult GetUserPassword(string userid, string password)
         {
-            App.Enable(id);
-            return Result.Success();
-        }
-
-        /// <summary>
-        /// 获取机构下的用户
-        /// </summary>
-        [HttpGet]
-        public async Task<ActionResult> GetOrgUsers(string orgId, string keyword) => await Task.Run(() => Result.Success(App.GetByOrg(orgId, keyword)));
-
-
-        public JsonResult UpdIco(string userId)
-        {
-            var filepath = string.Empty;
-            var existen = string.Empty;
-            var mapPath = ConfigurationManager.AppSettings["MapPath"] + DateTime.Now.ToString("yyyyMMdd") + "/";
-            var basePath = Server.MapPath(mapPath);
-            var files = System.Web.HttpContext.Current.Request.Files;
-            if (files.Count > 0)
-            {
-                if (!Directory.Exists(basePath)) Directory.CreateDirectory(basePath);
-                var random = RandomHelper.GetRandom();
-                var todayStr = DateTime.Now.ToString("yyyyMMddHHmmss");
-                for (var i = 0; i < files.Count; i++)
-                {
-                    var strRandom = random.Next(1000, 10000).ToString(); //生成编号
-                    var uploadName = $"{todayStr}{strRandom}";
-                    existen = files[i].FileName.Substring(files[i].FileName.LastIndexOf('.') + 1);
-                  
-                    var fullPath = $"{basePath}{uploadName}.{existen}";
-                    files[i].SaveAs(fullPath);
-                    filepath = $"http://{Request.Url.Host}:{Request.Url.Port}{mapPath}{uploadName}.{existen}";
-                }
-            }
-            if(!string.IsNullOrEmpty( filepath))
-            {
-                App.UpdIco(userId,filepath);
-                new UserToGateService().SendUserHeadIco(new string[] { userId });
-            }
-            return Json(new { state=ResultState.Success, userId, message = "上传成功！", url = filepath});
-
-        }
-
-        [HttpPost]
-        public ActionResult SetRole(string userId,string[] roleId)
-        {
-            App.SetRole(userId, roleId);
-            return Result.Success();
-        }
-
-        [HttpGet]
-        public ActionResult GetUserData()
-        {
-            return Result.Success(App.GetUserData(Operator.GetCurrent()));
+            var IsOk = App.VerifyPwd(userid, password);
+            return Json(IsOk);
         }
 
 
-        public ActionResult GetUserRoles(string userId)
-        {
-            return Result.Success(App.GetUserRoles(userId));
-        }
-
-        public ActionResult GetExcludeRoles(string userId)
-        {
-            return Result.Success(App.GetRolesExcludeUser(userId));
-        }
-
-        public ActionResult AddRole(string userId,string[] roleId)
-        {
-            App.AddRole(userId, roleId);
-            return Result.Success();
-        }
-        public ActionResult RemoveRole(string userId, string roleId)
-        {
-            App.RemoveRole(userId, new[] { roleId });
-            return Result.Success();
-        }
+        //[HttpGet]
+        //public async Task<ActionResult> GetByOrg(string orgId, string keyword) => await Task.Run(() =>   Result.Success(App.GetUserByOrg(orgId, keyword)));
     }
 }
