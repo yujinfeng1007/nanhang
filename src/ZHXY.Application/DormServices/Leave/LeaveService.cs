@@ -373,7 +373,7 @@ namespace ZHXY.Application
         /// <param name="leave"></param>
         private void SetOrderStatus(LeaveOrder order)
         {
-            if (order.Days <= 3)
+            if (order.LeaveDays <= 3)
             {
                 order.Status = "1";
                 return;
