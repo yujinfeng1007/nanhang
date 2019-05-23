@@ -1,6 +1,8 @@
 ﻿using ZHXY.Domain;
 using System;
 using ZHXY.Common;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace ZHXY.Application
 {
@@ -23,6 +25,62 @@ namespace ZHXY.Application
 
 
         }
+
+        /// <summary>
+        /// 首页-数据面板-图表
+        /// </summary>
+        public dynamic GetDefaultData()
+        {
+            // 考勤总人数
+            var totalQty = Read<DormStudent>().Count();
+
+            // 在寝人数
+            var noOutQty = Read<NoOutReport>().Count();
+
+            // 外出人数
+            var noReturnQty = Read<NoReturnReport>().Count();
+
+            // 请假人数
+            var leaveQty = Read<LeaveOrder>().Count();
+
+            // 已签到人数
+            var signedQty = Read<DormStudent>().Count();
+
+            // 晚归人数
+            var laterReturnQty = Read<LateReturnReport>().Count();
+
+            // 请假待审批记录
+            var leaveList = Read<LeaveOrder>(t => t.Status == "0").ToList();
+
+
+            return new
+            {
+                TotalQty = totalQty,
+                NoOutQty = noOutQty,
+                InQty = noOutQty,
+                OutQty = noReturnQty,
+                LeaveQty = leaveQty,
+                LeftPieChart = new List<ChartsDataItemDto> {
+                    new ChartsDataItemDto { Name="已签到",Value=signedQty},
+                    new ChartsDataItemDto { Name="请假",Value=leaveQty},
+                },
+                RightPieChartData = new List<ChartsDataItemDto>
+                { new ChartsDataItemDto { Name="其他异常",Value=signedQty},
+                    new ChartsDataItemDto { Name="晚归",Value=laterReturnQty},
+                    new ChartsDataItemDto { Name="未归",Value=noReturnQty},
+                    new ChartsDataItemDto { Name="未出",Value=noOutQty},
+                },
+                LeavesData =leaveList
+            };
+
+        }
+    }
+
+    public class ChartsDataItemDto
+    {
+        public string Name { get; set; }
+
+        public decimal Value { get; set; }
     }
 
     /// <summary>
