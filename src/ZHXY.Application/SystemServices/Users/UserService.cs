@@ -29,7 +29,44 @@ namespace ZHXY.Application
             return query.Paging(pag).ToListAsync().Result.MapToList<UserView>();
         }
 
-        public dynamic GetById(string id) => Read<User>(p => p.Id.Equals(id)).FirstOrDefaultAsync().Result;
+        public List<User> GetList(Pagination pagination, string keyword, string F_DepartmentId, string F_DutyId, string F_CreatorTime_Start, string F_CreatorTime_Stop)
+        {
+            var query = Read<User>(p => p.Account != "admin");
+            query = string.IsNullOrWhiteSpace(keyword) ? query : query.Where(p => p.Account.Contains(keyword) || p.Name.Contains(keyword) || p.MobilePhone.Contains(keyword));
+            query = string.IsNullOrWhiteSpace(F_DutyId) ? query : query.Where(p => p.DutyId.Equals(F_DutyId));
+            //if (!string.IsNullOrEmpty(F_CreatorTime_Start))
+            //{
+            //    var time = Convert.ToDateTime(F_CreatorTime_Start + " 00:00:00");
+            //    query = query.Where(p => p.F_CreatorTime >= time);
+            //}
+            //if (!string.IsNullOrEmpty(F_CreatorTime_Stop))
+            //{
+            //    var time = Convert.ToDateTime(F_CreatorTime_Stop + " 23:59:59");
+            //    query = query.Where(p => p.F_CreatorTime <= time);
+            //}
+            if (!string.IsNullOrEmpty(F_DepartmentId))
+            {
+                query = query.Where(p => p.OrganId.Equals(F_DepartmentId));
+            }
+                //if (!string.IsNullOrEmpty(F_DepartmentId))
+                //{
+                //    var orgs = OrgApp.GetListByParentId(F_DepartmentId);
+                //    if (orgs != null && orgs.Count != 0)
+                //    {
+                //        var deps = orgs.Select(p => p.F_Id).ToArray();
+                //        query = query.Where(p => deps.Contains(p.F_DepartmentId) || p.F_DepartmentId.Equals(F_DepartmentId));
+                //    }
+                //    else
+                //    {
+                //        query = query.Where(p => p.F_DepartmentId.Equals(F_DepartmentId));
+                //    }
+                //}
+                pagination.Records = query.CountAsync().Result;
+            query = query.OrderBy(pagination.Sidx).Skip(pagination.Rows * (pagination.Page - 1)).Take(pagination.Rows);
+            return query.ToListAsync().Result;
+        }
+
+        public User GetById(string id) => Read<User>(p => p.Id.Equals(id)).FirstOrDefaultAsync().Result;
 
         public void Update(UpdateUserDto dto)
         {
@@ -45,6 +82,43 @@ namespace ZHXY.Application
             SaveChanges();
         }
 
+       public void  Submit(User userEntity,string F_RoleId, string keyValue)
+        {
+            if (!string.IsNullOrEmpty(userEntity.Account))
+            {
+                var u = Read<User>().FirstOrDefault(t => t.Account == userEntity.Account);
+                if (!u.IsEmpty())
+                {
+                    if (string.IsNullOrEmpty(keyValue) || (!keyValue.Equals(u.Id)))
+                    {
+                        throw new Exception("该用户已存在");
+                    }
+                }
+            }
+
+            if (!string.IsNullOrEmpty(keyValue))
+            {
+                var user = Get<User>(keyValue);
+                userEntity.MapTo(user);
+                user.Id = keyValue;
+            }
+            else
+            {
+                var user = userEntity.MapTo<User>();
+                Add(user);
+            }
+        
+            var userRoles = new List<SysUserRole>();
+            if (!string.IsNullOrEmpty(F_RoleId))
+            {
+                var roles = F_RoleId.Split(',');
+                userRoles.AddRange(from r in roles where !r.IsEmpty() select new SysUserRole { F_Id = Guid.NewGuid().ToString("N").ToUpper(), F_Role = r, F_User = keyValue });
+            }
+            Del<SysUserRole>(t => t.F_User == keyValue);
+            Add<SysUserRole>(userRoles);
+
+            SaveChanges();
+        }
         public void Delete(string[] id)
         {
             var users = Query<User>(p => id.Contains(p.Id)).ToList();
@@ -73,6 +147,11 @@ namespace ZHXY.Application
             cuser.Ip = Net.Ip;
             cuser.IpLocation = Net.GetLocation(cuser.Ip);
             cuser.Roles = RelevanceApp.GetUserRole(user.Id);
+            if (cuser.Account == "admin")
+            {
+                cuser.DutyId = "admin";
+                cuser.IsSystem = true;
+            }
             return cuser;
         }
 

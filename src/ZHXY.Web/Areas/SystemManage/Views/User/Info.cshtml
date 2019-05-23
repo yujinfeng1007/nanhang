@@ -1,0 +1,311 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<link rel="stylesheet" type="text/css" href="~/Content/css/framework-custom-webuploader.css" />
+<script type="text/javascript" src="~/Content/js/webuploader/webuploader.js"></script>
+<script type="text/javascript" src="~/Content/js/Fileupload.js"></script>
+<script src="~/Content/js/md5/jquery.md5.js"></script>
+<script src="~/Content/js/validate/jquery.validate.min.js"></script>
+@*<script type="text/javascript" src="~/Content/js/Fileupload.js"></script>*@
+<style>
+  .required label:after {
+    content: '*';
+    color: red;
+  }
+  .fileUpload {
+    float: left;
+  }
+  .wrapper .pop-list li span.error-msg {
+    line-height: 20px;
+    margin-left: 10px;
+  }
+ .fileUpload .start-upload {display: block; margin: 10px auto}
+ .fileUpload .webuploader-container {margin-top: 10px;position:relative}
+ .fileUpload .webuploader-container .webuploader-pick + div {width: 100%!important;height:100%!important;left:0!important;top:0!important;right:0!important;}
+ .fileUpload .fa-close {display: inline-block; margin-left: 5px;}
+ .fileUpload ul {list-style: none;margin: 0;padding: 0}
+ .fileUpload ul li {display: inline-block; text-align: center;padding: 10px;border: 1px solid #dcdcdc;border-radius: 5px;padding: 10px;margin-left: 5px;}
+ .fileUpload ul li img {width: 75px;}
+</style>
+<script>
+    var keyValue = '@ZHXY.Common.OperatorProvider.Current.UserId';
+    $(function () {
+        $('.wrapper').height($(window).height() - 11);
+        initControl();
+        if (!!keyValue) {
+            $.ajax({
+                url: "/SystemManage/User/GetFormJson",
+                data: { keyValue: keyValue },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    $("#form1").formSerialize(data);
+                    if (data.F_Gender) {
+                        $("#F_Gender").val('男');
+                    }
+                    else $("#F_Gender").val('女');
+                    if (top.clients.role[data.F_RoleId]) {
+                        $('#F_RoleId').val(top.clients.role[data.F_RoleId].fullname)
+                    } else {
+                        $('#F_RoleId').val(data.F_RoleId)
+                    }
+                }
+            });
+        }
+        
+    })
+    function initControl() {
+        $.ajax({
+            url: "/SystemManage/Organize/GetFormJson",
+            data: { keyValue: $("#F_OrganizeId").val() },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                $("#F_OrganizeId").val(data.F_FullName);
+            }
+        });
+        $.ajax({
+            url: "/SystemManage/Organize/GetFormJson",
+            data: { keyValue: $("#F_DepartmentId").val() },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                $("#F_DepartmentId").val(data.F_FullName);
+            }
+        });
+        $.ajax({
+            url: "/SystemManage/Role/GetFormJson",
+            data: { keyValue: $("#F_RoleId").val() },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                $("#F_RoleId").val(data.F_FullName);
+            }
+        });
+        $.ajax({
+            url: "/SystemManage/Duty/GetFormJson",
+            data: { keyValue: $("#F_DutyId").val() },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                $("#F_DutyId").val(data.F_FullName);
+            }
+        });
+        $.simpleUploader($('.fileUpload'))
+    }
+    function submitForm() {
+        $("#form1").validate({
+            rules: {
+                F_MobilePhone: {
+                    required: true,
+                    CheckPhone: true
+                },
+                F_Email: {
+                    required: true,
+                    CheckEmail: true
+                }
+            },
+            messages: {
+                F_MobilePhone: {
+                    required: "必填字段"
+                },
+                F_Email: {
+                    required: "必填字段"
+                }
+            },
+            success: function (label, element) {
+                var $li = $(element).parents('li')
+                $li.find('.error-msg').remove()
+                $li.removeClass('has-error')
+            },
+            errorPlacement: function (error, element) {
+                var $li = $(element).parents('li')
+                console.log($li)
+                var $errCon = $li.find('.error-msg')
+                $li.addClass('has-error')
+                if ($errCon.length) {
+                    $errCon.html(error[0].innerHTML)
+                } else {
+                    $li.append('<span class="error-msg" style="color:red">' + error[0].innerHTML + '</span>')
+                }
+            }
+
+        });
+        if (!$('#form1').formValid()) {
+            return false;
+        }
+        var postData = {};
+        postData["__RequestVerificationToken"] = $("#form1").formSerialize().__RequestVerificationToken;
+        postData["F_MobilePhone"] = $("#F_MobilePhone").val();
+        postData["F_Email"] = $("#F_Email").val();
+        postData["F_WeChat"] = $("#F_WeChat").val();
+        postData["F_Description"] = $("#F_Description").val();
+        postData["F_HeadIcon"] = $("#F_HeadIcon").val();
+        $.submitForm({
+            url: "/SystemManage/User/UpdateForm?keyValue=" + keyValue,
+            param: postData,
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+
+    function submitPwdForm() {
+        if ($("#F_UserPassword").val() != "") {
+            $.ajax({
+                url: "/SystemManage/User/GetUserPassword",
+                data: { userid: keyValue, password: $.md5($("#F_UserPassword").val()) },
+                type: "post",
+                dataType: "json",
+                success: function (IsOk) {
+                    if (!IsOk) {
+                        top.layer.alert("原密码不正确，请重新输入！", { icon: "fa-times-circle", title: "系统提示", btn: ["确认"], btnclass: ["btn btn-primary"] });
+                        return false;
+                    }
+                    else {
+                        if ($("#Password_New").val() != "") {
+                            if ($("#Password_New").val() == $("#Password_New_Confirm").val() && $("#Password_New").val() != "") {
+                                var postData = {};
+                                postData["__RequestVerificationToken"] = $("#form1").formSerialize().__RequestVerificationToken;
+                                postData["userPassword"] = $("#Password_New").val();
+                                postData["keyValue"] = keyValue;
+                                $.submitForm({
+                                    url: "/SystemManage/User/SubmitRevisePassword",
+                                    param: postData,
+                                    success: function () {
+                                        $.loading(false)
+                                    }
+                                })
+                            }
+                            else {
+                                top.layer.alert("确认密码与新密码不一致！", { icon: "fa-times-circle", title: "系统提示", btn: ["确认"], btnclass: ["btn btn-primary"] });
+                                return false;
+                            }
+                        }
+                        else {
+                            top.layer.alert("新密码不能为空！", { icon: "fa-times-circle", title: "系统提示", btn: ["确认"], btnclass: ["btn btn-primary"] });
+                            return false;
+                        }
+                    }
+                }
+            });
+        }
+
+    }
+    function btn_import() {
+        var title = 'Image';
+        var extensions = 'gif,jpg,jpeg,bmp,png';
+        var mimeTypes = 'image/*';
+        $.modalOpen({
+            id: "Form",
+            title: "上传头像",
+            url: "/Home/Import?title=" + title + "&extensions=" + extensions + "&mimeTypes=" + mimeTypes + "&fileName=",
+            width: "500px",
+            height: "300px",
+            callBack: function (iframeId) {
+                var src = top.frames[iframeId].submitForm();
+                $("#HeadIcon").attr("src", src);
+                $("#F_HeadIcon").val(src);
+            }
+        });
+    }
+</script>
+<form id="form1">
+    <div class="wrapper">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#a" data-toggle="tab">基本信息</a></li>
+            <li><a href="#b" data-toggle="tab">修改密码</a></li>
+        </ul>
+        <div class="tab-content" style="padding-top: 5px;">
+            <div id="a" class="tab-pane active" style="padding: 15px;">
+                <ul class="pop-list">
+                    <li>
+                        <label>账户</label>
+                        <input id="F_Account" name="F_Account" type="text" class="form-control" disabled />
+                    </li>
+                    <li>
+                        <label>姓名</label>
+                        <input id="F_RealName" name="F_RealName" type="text" class="form-control" disabled />
+                    </li>
+                    <li>
+                        <label>性别</label>
+                        <input id="F_Gender" name="F_Gender" type="text" class="form-control" disabled />
+                    </li>
+                    <li>
+                        <label>出生</label>
+                        <input id="F_Birthday" name="F_Birthday" type="text" class="form-control" disabled />
+                    </li>
+                    <li>
+                        <label>公司</label>
+                        <input id="F_OrganizeId" name="F_OrganizeId" type="text" class="form-control" disabled />
+                    </li>
+                    <li>
+                        <label>部门</label>
+                        <input id="F_DepartmentId" name="F_DepartmentId" type="text" class="form-control" disabled />
+                    </li>
+                    <li>
+                        <label>角色</label>
+                        <input id="F_RoleId" name="F_RoleId" type="text" class="form-control" disabled />
+                    </li>
+                    <li>
+                        <label>岗位</label>
+                        <input id="F_DutyId" name="F_DutyId" type="text" class="form-control" disabled />
+                    </li>
+                    <li>
+                        <label>自我介绍</label>
+                        <textarea id="F_Description" name="F_Description" class="form-control" style="height: 60px;"></textarea>
+                    </li>
+                    <li class="required">
+                        <label>头像</label>
+                        <div id="F_HeadIcon" class="fileUpload required">
+                        </div>
+                    </li>
+                    <li class="line">
+                        <h5><span>联系方式</span></h5>
+                    </li>
+                    <li>
+                        <label>手机号码</label>
+                        <input id="F_MobilePhone" name="F_MobilePhone" type="text" class="form-control" />
+                    </li>
+                    <li>
+                        <label>电子邮箱</label>
+                        <input id="F_Email" name="F_Email" type="text" class="form-control" />
+                    </li>
+                    <li>
+                        <label>微信号</label>
+                        <input id="F_WeChat" name="F_WeChat" type="text" class="form-control" />
+                    </li>
+                    <li>
+                        <div style="padding-left: 115px;">
+                            <a class="btn btn-primary" onclick="submitForm()"><i class="fa fa-save" style="margin-right:5px;"></i>确认修改</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div id="b" class="tab-pane" style="padding: 15px;">
+                <ul class="pop-list">
+                    <li class="line">
+                        <h5><span>重置密码</span></h5>
+                    </li>
+                    <li>
+                        <label>原密码</label>
+                        <input id="F_UserPassword" name="F_UserPassword" type="text" class="form-control" />
+                    </li>
+                    <li>
+                        <label>新密码</label>
+                        <input id="Password_New" name="Password_New" type="password" class="form-control" />
+                    </li>
+                    <li>
+                        <label>确认新密码</label>
+                        <input id="Password_New_Confirm" name="Password_New_Confirm" type="password" class="form-control" />
+                    </li>
+                    <li>
+                        <div style="padding-left: 115px;">
+                            <a class="btn btn-primary" onclick="submitPwdForm()"><i class="fa fa-save" style="margin-right:5px;"></i>确认修改</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</form>

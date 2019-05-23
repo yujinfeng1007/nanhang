@@ -16,13 +16,13 @@ namespace ZHXY.Web.Controllers
 
     public class LoginController : Controller
     {
-        private DutyService DutyApp { get; }
+        //private DutyService DutyApp { get; }
         private UserService UserApp { get; }
         public RelevanceService RelevanceApp { get; }
 
-        public LoginController(DutyService app, UserService userApp, RelevanceService relevanceApp)
+        public LoginController( UserService userApp, RelevanceService relevanceApp)
         {
-            DutyApp = app;
+            //DutyApp = app;
             UserApp = userApp;
             RelevanceApp = relevanceApp;
         }
@@ -148,7 +148,7 @@ namespace ZHXY.Web.Controllers
                     }
                     else
                     {
-                        duty = DutyApp.GetCode(userEntity.DutyId);
+                        duty = userEntity.DutyId;// DutyApp.GetCode(userEntity.DutyId);
                         operatorModel.IsSystem = false;
                     }
 
