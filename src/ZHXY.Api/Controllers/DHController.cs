@@ -118,12 +118,11 @@ namespace ZHXY.Api.Controllers
         /// </summary>
         /// <param name="type">开门的动作（int类型，必填）：1-开门，2关门，3-常开门，4常关门</param>  
         /// <param name="channelId">开门的通道Id(String类型，必填)</param>
-        /// <param name="sequens">请求的序列（long类型，非必填）</param>
         /// <returns></returns>
         [HttpGet]
-        public string OpenDoor(int type, string channelId, long sequens = 236576575657)
+        public string OpenDoor(int type, string channelId)
         {
-            return DHAccount.OpenDoor(type, channelId, sequens);
+            return DHAccount.OpenDoor(type, channelId);
         }
 
 

@@ -143,23 +143,23 @@
       <recover>false</recover>
     </job>-->
 
-    <!--<job>
+    <job>
       <name>DHMigrateJob</name>
       <group>DHMigrate</group>
       <description>南航项目同步闸机流水信息</description>
       <job-type>TaskApi.DH.DHMigrateJob,TaskApi</job-type>
       <durable>true</durable>
       <recover>false</recover>
-    </job>-->
+    </job>
 
-    <!-- <job>
+     <job>
      <name>UpdateTokenJob</name>
       <group>UpdateToken</group>
       <description>南航项目-大华Token保活定时任务</description>
       <job-type>TaskApi.DH.UpdateTokenJob,TaskApi</job-type>
       <durable>true</durable>
       <recover>false</recover>
-    </job>-->
+    </job>
     <!--
     <job>
       <name>DHCreateDormJob</name>
@@ -179,14 +179,14 @@
       <recover>false</recover>
     </job>
 
-      <!--<job>
+      <job>
       <name>NHExceptionPushJob</name>
       <group>NHExceptionPush</group>
       <description>南航项目-异常报表处理（推送）</description>
       <job-type>TaskApi.NHExceptionReport.NHExceptionPushJob, TaskApi</job-type>
       <durable>true</durable>
       <recover>false</recover>
-    </job>-->
+    </job>
 
     <!--<trigger>
       <cron>
@@ -209,16 +209,16 @@
       </cron>
     </trigger>-->
 
-    <!--<trigger>
+    <trigger>
       <cron>
         <name>DHMigrateJobTrigger</name>
         <group>DHMigrate</group>
         <job-name>DHMigrateJob</job-name>
         <job-group>DHMigrate</job-group>
-         --><!--每3秒启动一次定时任务--><!-- 
+         <!--每3秒启动一次定时任务--> 
         <cron-expression>0/8 * * * * ?</cron-expression>
       </cron>
-    </trigger>-->
+    </trigger>
     
     <!--<trigger>
       <cron>
@@ -242,7 +242,7 @@
         <cron-expression>0 0 2 ? * *</cron-expression>
       </cron>
     </trigger>
-    <!--
+    
     <trigger>
       <cron>
         <name>NHExceptionPushJobTrigger</name>
@@ -251,7 +251,7 @@
         <job-group>NHExceptionPush</job-group>
         <cron-expression>0 0 8 ? * *</cron-expression>
       </cron>
-    </trigger>-->
+    </trigger>
     
     <!--<trigger>
       <cron>
@@ -274,16 +274,16 @@
     </trigger>-->
  
 
-    <!--<trigger>
+    <trigger>
       <cron>
         <name>UpdateTokenJobTrigger</name>
         <group>UpdateToken</group>
         <job-name>UpdateTokenJob</job-name>
         <job-group>UpdateToken</job-group>
-         --><!--每10秒启动一次定时任务--><!-- 
+         <!--每10秒启动一次定时任务--> 
         <cron-expression>0/10 * * * * ?</cron-expression>
       </cron>
-    </trigger>-->
+    </trigger>
     
     <!--<trigger>
       <cron>
