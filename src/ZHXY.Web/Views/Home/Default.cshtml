@@ -3,3 +3,10 @@
     Layout = "~/Views/Shared/_Index.cshtml";
 }
 <h4>  欢迎登录-智慧校园运营管理系统! </h4>
+
+<script>
+    // for test
+    $.getJSON('/Home/GetDefaultDataView', {}, function (resp) {
+        console.log(resp);
+    })
+</script>
