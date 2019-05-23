@@ -12,6 +12,10 @@ namespace ZHXY.Application
         /// </summary>
         public string Id { get; set; }
         /// <summary>
+        /// 申请人名称
+        /// </summary>
+        public string ApplicantName { get; set; }
+        /// <summary>
         /// 访客性别
         /// </summary>
         public string VisitorGender { get; set; }

@@ -2055,7 +2055,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ZHXY.Application\ZHXY.Application.csproj">
-      <Project>{f2035ee2-b73d-4fb8-a433-cab465de6a2a}</Project>
+      <Project>{F2035EE2-B73D-4FB8-A433-CAB465DE6A2A}</Project>
       <Name>ZHXY.Application</Name>
     </ProjectReference>
     <ProjectReference Include="..\ZHXY.Common\ZHXY.Common.csproj">
@@ -2098,7 +2098,7 @@
           <DevelopmentServerPort>51910</DevelopmentServerPort>
           <DevelopmentServerVPath>
           </DevelopmentServerVPath>
-          <IISUrl>http://localhost:51910/</IISUrl>
+          <IISUrl>http://localhost:8081/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

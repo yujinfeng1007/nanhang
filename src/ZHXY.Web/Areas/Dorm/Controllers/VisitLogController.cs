@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using ZHXY.Application;
 using ZHXY.Common;
 
@@ -47,17 +46,49 @@ namespace ZHXY.Web.Dorm.Controllers
             return Result.Success(data);
         }
 
+
+        /// <summary>
+        /// 提交访客信息
+        /// </summary>
+        [HttpPost]
+        public ActionResult SubmitVisitor(VisitorApplySubmitDto input)
+        {
+            App.Submit(input);
+            return Result.Success();
+        }
+
         /// <summary>
         ///  宿管查询所审批访客，学生查询所提交访客
         /// </summary>
-        public ActionResult GetList(VisitorApprovalListDto input)
+        [HttpGet]
+        public ActionResult GetVisitorList(VisitorApprovalListDto input)
         {
-             input.CurrentUserId = Operator.GetCurrent().Id;
+            input.CurrentUserId = Operator.GetCurrent().Id;
             var data = App.GetVisitorApprovalList(input);
             return Result.PagingRst(data, input.Records, input.Total);            
 
         }
 
+        /// <summary>
+        /// 获取访客审批详情
+        /// </summary>
+        [HttpGet]
+        public ActionResult GetVisitor(string visitId)
+        {             
+            var data = App.GetVisitorApprovalDetail(visitId, Operator.GetCurrent().Id);
+            return Result.Success(data);
+        }
+
+        /// <summary>
+        /// 访客审批
+        /// </summary>
+        [HttpPost]
+        public ActionResult ApprovalVisitor(VisitorApprovalDto input)
+        {
+            input.CurrentUserId = Operator.GetCurrent().Id;
+            App.Approval(input);
+            return Result.Success();
+        }
 
 
         /// <summary>
@@ -114,15 +145,7 @@ namespace ZHXY.Web.Dorm.Controllers
             return Content(data.ToJson());
         }
 
-        /// <summary>
-        /// 提交访客信息
-        /// </summary>
-        [HttpPost]
-        public ActionResult Submit(VisitorApplySubmitDto input)
-        {
-            App.Submit(input);
-            return Result.Success();
-        }
+       
 
         /// <summary>
         /// 审批
