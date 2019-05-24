@@ -50,7 +50,7 @@ namespace ZHXY.Application
             var leaveQty = Read<LeaveOrder>(t=>t.StartTime<=now && t.EndOfTime>=now).Count();
 
             // 已签到人数
-            var signedQty =Convert.ToInt32(SqlHelper.ExecuteScalar(string.Format("SELECT COUNT(0) FROM dbo.[DHFLOW_{0}] WHERE date>={0} AND date<={1} AND in_out='0' GROUP BY personId ", tableName, startTime, endTime)));
+            var signedQty =Convert.ToInt32(SqlHelper.ExecuteScalar(string.Format("SELECT COUNT(0) FROM dbo.[DHFLOW_{0}] WHERE date>='{1}' AND date<='{2}' AND inOut='0' GROUP BY personId ", tableName, startTime, endTime)));
 
             // 晚归人数
             var laterReturnQty = Read<LateReturnReport>().Count();
@@ -71,7 +71,7 @@ namespace ZHXY.Application
                     new ChartsDataItemDto { Name="请假",Value=leaveQty},
                 },
                 RightPieChartData = new List<ChartsDataItemDto>
-                { new ChartsDataItemDto { Name="其他异常",Value=signedQty},
+                { new ChartsDataItemDto { Name="其他异常",Value=0},
                     new ChartsDataItemDto { Name="晚归",Value=laterReturnQty},
                     new ChartsDataItemDto { Name="未归",Value=noReturnQty},
                     new ChartsDataItemDto { Name="未出",Value=noOutQty},
