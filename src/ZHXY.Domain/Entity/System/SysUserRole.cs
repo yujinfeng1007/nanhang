@@ -7,7 +7,7 @@ namespace ZHXY.Domain
     /// </summary>
     public class SysUserRole :IEntity
     {
-        public string F_Id { get; set; }
+        public string F_Id { get; set; } = Guid.NewGuid().ToString("N").ToUpper();
         /// <summary>
         /// 用户Id
         /// </summary>
