@@ -1,0 +1,231 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+
+    $(function () {
+        $('#layout').layout({
+            west__resizable: true,
+        }).sizePane("west", "18%");
+
+        westGrid();
+        centerGrid();
+
+        $("#btn_search").click(() => {
+            let rowId = $("#treeGrid").jqGrid("getGridParam", "selrow");
+            reloadGrid(rowId)
+        });
+
+        $("#btnAddRole").click(() => {
+            let rowId = $("#centerGrid").jqGrid('getGridParam', 'selrow');
+            $.modalOpen({
+                id: "Form",
+                title: "修改",
+                url: `/systemmanage/user/Role?userId=${rowId}`,
+                width: "600px",
+                height: "600px",
+                callBack: function (iframeId) {
+                    top.frames[iframeId].addRole();
+                }
+            });
+        })
+    })
+
+    
+    function removeRole(userId, roleId, gridId) {
+        $.post('/systemmanage/user/removerole', { userId: userId, roleId: roleId }, function (r) {
+            $(`#${gridId}`).jqGrid().trigger('reloadGrid');
+        })
+    }
+
+    function westGrid() {
+        $("#westGrid").jqGrid({
+            styleUI: "Bootstrap",
+            treeGrid: true,
+            url: "/SystemManage/Organize/GetSubOrg",
+            treeGridModel: "adjacency",
+            datatype: "json",
+            gridview: true,
+            rowNum: -1,
+            shrinkToFit: true,
+            multiselect: false,
+            height: window.innerHeight * 0.9,
+            width: window.innerWidth * 0.2,
+            ExpandColumn: 'name',
+            ExpandColClick: false,
+            onSelectRow: function (rowId) {
+                $("#centerGrid").jqGrid('setGridParam', { url: `/SystemManage/User/Load`,postData: { orgId: rowId } }).trigger('reloadGrid');
+            },
+            jsonReader: {
+                root: function (r) { return r.data; }
+            },
+            colModel: [
+                { label: '机构名称', name: 'name', width: 100, align: 'left', sortable: false },
+                { label: '主键', name: "id", width: 150, align: 'left', key: true, hidden: true },
+                { label: 'level', name: "level", hidden: true },
+            ],
+        });
+    }
+
+    function showChildGrid(parentRow, parentRowKey) {
+        let childGrid = parentRow + "_table";
+        $('#' + parentRow).append('<table class="table-striped" id=' + childGrid + '></table>');
+        $("#" + childGrid).jqGrid({
+            url: `/systemmanage/user/getuserroles?userId=${parentRowKey}`,
+            mtype: "GET",
+            datatype: "json",
+            autoGridWidth: true,
+            width: window.innerWidth * 0.76,
+            height: window.innerHeight * 0.3,
+            footerrow: true,
+            userDataOnFooter: true,
+            rownumbers: true,
+            styleUI: 'Bootstrap',
+            rowNum: -1,
+            sortname: 'createTime',
+            sortorder: 'desc',
+            jsonReader: {
+                root: function (r) { return r.data },
+            },
+            colModel: [
+                { name: "id", key: true, hidden: true },
+                { label: "角色名称", name: "name" },
+                {
+                    label: '操作',
+                    formatter: function (cell, options, rowObj) {
+                        let rowId = rowObj["id"];
+                        return `<button onclick=removeRole('${parentRowKey}','${rowId}','${childGrid}')>移除</button>`;
+                    }
+                }
+            ],
+
+        });
+    }
+
+
+
+
+
+    function centerGrid() {
+        $("#centerGrid").jqGrid({
+            styleUI: "Bootstrap",
+            height: window.innerHeight * 0.8,
+            width: window.innerWidth * 0.7,
+            datatype: 'json',
+            
+            multiselect: true,
+            loadonce: false,
+            viewrecords: true,
+            pager: "#centerPager",
+            toppager: true,
+            rowNum: 30,
+            rowList: [30, 50, 100, 500, 1000],
+            colModel: [
+                { label: "主键", name: "id", hidden: true, key: true },
+                { label: '姓名', name: 'name', "editable": true },
+                {
+                    label: '账户', name: 'account', "editable": true,
+                    editrules: { edithidden: true }
+                },
+                { label: '昵称', name: 'nickName', "editable": true },
+                {
+                    label: '岗位', name: 'dutyId', "editable": true,
+                    formatter: function (cv) {
+                        return dutyList[cv] == null ? "" : dutyList[cv];
+                    },
+                    edittype: "select",
+                    editoptions: { value: dutyList },
+                },
+                {
+                    label: '隶属机构', name: 'organId', "editable": true,
+                    formatter: function (cv) {
+                        return orgList[cv] == null ? "" : orgList[cv];
+                    },
+                    //edittype: "select",
+                    //editoptions: { value: orgList },
+                    edittype: 'custom', editoptions: {
+                        custom_element: function (value, options) {
+                            let el = document.createElement("select");
+                            el.className = "FormElement form-control";
+                            for (let k in orgList) {
+                                let op = document.createElement("option");
+                                op.value = k;
+                                op.text = orgList[k];
+                                el.appendChild(op);
+                            }
+                            el.onclick = function () { el.focus(); };
+                            return el;
+                        },
+                        custom_value: function (elem, operation, value) {
+                            if (operation === 'get') {
+                                return $(elem).val();
+                            } else if (operation === 'set') {
+                                $(elem).val(value);
+                            }
+                        }
+                    }
+
+                },
+                { label: '头像', name: 'headIcon', "editable": true },
+                {
+                    label: '生日', name: 'birthday', "editable": true,
+
+                },
+                { label: '手机号码', name: 'mobilePhone', "editable": true },
+            ],
+            subGrid: true,
+            subGridRowExpanded: showChildGrid
+        });
+
+
+        $("#centerGrid").jqGrid('navGrid', '#centerPager',
+            {
+                edit: true,
+                add: true,
+                del: true,
+                search: false,
+                refresh: true,
+                view: true,
+                cloneToTop: true,
+            },
+            {
+                url: "update",
+                top: 200,
+                left: 200,
+                drag: true,
+                resize: false,
+                closeOnEscape: true,
+            },
+            {
+                url: "add",
+                drag: true,
+                resize: false,
+                closeOnEscape: true,
+            },
+            {
+                url: "delete",
+                drag: true,
+                resize: false,
+                closeOnEscape: true,
+            },
+        );
+    }
+</script>
+<div class="ui-layout" id="layout" style="height: 100%; width: 100%;">
+    <div class="ui-layout-west">
+        <table id="westGrid"></table>
+    </div>
+    <div class="ui-layout-center">
+        <form class="form-inline topPanel" autocomplete="off">
+            <button type="button" class="btn btn-default" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></button>
+            <input type="text" class="form-control" id="keyword" placeholder="关键字">
+            <button type="button" id="btn_search" class="btn btn-default"><i class="fa fa-search"></i></button>
+            <button type="button" id="btnAddRole" class="btn btn-default">添加用户角色</button>
+        </form>
+        <table id="centerGrid"></table>
+        <div id="centerPager"></div>
+    </div>
+</div>
+
+

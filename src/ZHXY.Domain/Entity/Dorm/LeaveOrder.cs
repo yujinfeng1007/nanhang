@@ -21,12 +21,12 @@ namespace ZHXY.Domain
         /// <summary>
         /// 开始时间
         /// </summary>
-        public string StartTime { get; set; }
+        public DateTime StartTime { get; set; }
 
         /// <summary>
         /// 结束时间
         /// </summary>
-        public string EndOfTime { get; set; }
+        public DateTime EndOfTime { get; set; }
 
         /// <summary>
         /// 请假学生的id
@@ -41,10 +41,7 @@ namespace ZHXY.Domain
         /// <summary>
         /// 请假天数
         /// </summary>
-        public string LeaveDays { get; set; }
-
-        [NotMapped]
-        public decimal Days { get { return Convert.ToDecimal(LeaveDays); } }
+        public decimal? LeaveDays { get; set; }        
 
         /// <summary>
         /// 请假类型
@@ -69,5 +66,6 @@ namespace ZHXY.Domain
 
       
         public string AttachmentsPath { get; set; }
+        public virtual Student Student { get; set; }
     }
 }

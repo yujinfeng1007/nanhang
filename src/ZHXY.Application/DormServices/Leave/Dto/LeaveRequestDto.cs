@@ -1,4 +1,6 @@
-﻿namespace ZHXY.Application
+﻿using System;
+
+namespace ZHXY.Application
 {
     /// <summary>
     /// 请假申请Dto
@@ -18,17 +20,17 @@
         /// <summary>
         /// 开始时间
         /// </summary>
-        public string StartTime { get; set; }
+        public DateTime StartTime { get; set; }
 
         /// <summary>
         /// 结束时间
         /// </summary>
-        public string EndOfTime { get; set; }
+        public DateTime EndOfTime { get; set; }
 
         /// <summary>
         /// 请假天数
         /// </summary>
-        public string LeaveDays { get; set; }
+        public decimal LeaveDays { get; set; }
 
         /// <summary>
         /// 请假事由

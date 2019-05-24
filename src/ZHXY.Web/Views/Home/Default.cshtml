@@ -1,5 +1,419 @@
 ﻿@{
-    
-    Layout = "~/Views/Shared/_Index.cshtml";
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h4>  欢迎登录-智慧校园运营管理系统! </h4>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="~/Scripts/echarts/echarts.min.js"></script>
+<style>
+
+
+    .wrap {
+        width: 100%;
+        padding: 0 8px;
+    }
+
+    .row {
+        margin: 8px 0;
+    }
+
+    .content {
+        margin: 8px auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .item {
+        width: 20%;
+        height: 64px;
+        opacity: 0.8;
+        border-radius: 3px;
+        color: #fff;
+        font-size: 16px;
+        line-height: 64px;
+        text-align: center;
+    }
+
+
+    .item2 {
+        display: inline-block;
+        width: 46%;
+        background: #fff;
+        border-radius: 3px 3px 0 0;
+        box-shadow: 0 0 1px .2px;
+    }
+
+
+
+    /* .cardx-content  */
+    .cardx-title {
+        display: flex;
+    }
+
+    .cardx-title {
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px;
+        box-shadow: 0 0 1px 0;
+    }
+
+    .item-title {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .item-after img {
+        width: 16px;
+        height: 16px;
+    }
+
+    .cardx-content {
+        justify-content: space-around;
+    }
+
+
+    .circle_blue {
+        border: 1px solid #347AF6;
+    }
+
+    .circle_purple {
+        border: 1px solid #F6C343;
+    }
+
+    .text {
+        width: 48px;
+        display: inline-block;
+        text-align-last: justify;
+    }
+
+    /* 表单 */
+    .table {
+        margin-bottom: 0;
+        text-align: center;
+    }
+
+    .cardx-footer {
+        padding: 5px 0;
+    }
+
+    /* 分页 */
+    .c-pagination {
+        text-align: center;
+        position: relative;
+    }
+
+        .c-pagination .prefix,
+        .c-pagination .next,
+        .c-pagination .page,
+        .pagination-tips .pagination-rows {
+            display: inline-block;
+            user-select: none;
+            cursor: pointer;
+        }
+
+    .pagination-tips {
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+</style>
+
+<div class="wrap" style="width:100%;">
+    <!-- 渐变区 -->
+    <div class="row">
+        <div class="content">
+            <div class="item"
+                 style="background: linear-gradient(90deg, rgba(93, 74, 203, 1) 0%, rgba(138, 99, 248, 1) 100%);">
+                总人数:<span id="totalQty">180</span>人
+            </div>
+            <div class="item"
+                 style="background:linear-gradient(90deg,rgba(27,188,155,1) 0%,rgba(91,218,121,1) 100%);">
+                在寝:<span id="inQty">110</span>人
+            </div>
+            <div class="item"
+                 style="background:linear-gradient(90deg,rgba(76,140,236,1) 0%,rgba(43,184,245,1) 100%);">
+                外出:<span id="outQty">110</span>人
+            </div>
+            <div class="item"
+                 style="background:linear-gradient(90deg,rgba(203,160,93,1) 0%,rgba(235,200,146,1) 100%);">
+                请假:<span id="leaveQty">110</span>人
+            </div>
+
+        </div>
+    </div>
+    <!-- 饼形图 -->
+    <div class="row">
+        <div class="content2">
+            <div class="item2">
+                <div class="cardx">
+                    <div class="cardx-title">
+                        <div class="item-title">归寝数据</div>
+                        <div class="item-after">
+                            <span><img src="~/Scripts/echarts/refresh@2X.png" alt=""></span>
+                            <a data-toggle="collapse" href="#test" aria-expanded="true" aria-controls="test">
+                                <img src="~/Scripts/echarts/close@2X.png" alt="">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="collapse in" id="test">
+                        <div id="backDor" style="height:176px"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="item2" style="float: right;margin-bottom: 4px">
+                <div class="cardx">
+                    <div class="cardx-title">
+                        <div class="item-title">异常数据</div>
+                        <div class="item-after">
+                            <span><img src="~/Scripts/echarts/refresh@2X.png" alt=""></span>
+                            <span data-toggle="collapse" href="#errContent" aria-expanded="true"
+                                  aria-controls="errContent"><img src="~/Scripts/echarts/close@2X.png" alt=""></span>
+                        </div>
+                    </div>
+                    <div class="collapse in" id="errContent">
+                        <div id="errData" style="height:176px"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 数据列表 -->
+    <div class="row">
+
+        <div class="cardx" style="background: #fff">
+            <div class="cardx-title" id="headingOne">
+                <div class="item-title">待审批(<span id="dataListQty"></span>)</div>
+                <div class="item-after">
+                    <span data-toggle="collapse" data-target="#table" aria-expanded="false"
+                          aria-controls="table"><img src="~/Scripts/echarts/close@2X.png" alt=""></span>
+                </div>
+            </div>
+            <div class="collapse in" id="table">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th>请假人</th>
+                            <th>请假开始时间</th>
+                            <th>请假结束时间</th>
+                            <th>申请时间</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dataList">
+
+                    </tbody>
+                    @*<tr>
+                        <td>1</td>
+                        <td><input type="checkbox" name="group"></td>
+                        <td>a</td>
+                        <td>b</td>
+                        <td>b</td>
+                        <td>b</td>
+                        <td>b</td>
+                        <td>c</td>
+                    </tr>*@
+                </table>
+            </div>
+            <div class="cardx-footer">
+                <div class="c-pagination">
+                    <div class="prefix">大返回</div>
+                    <div class="prefix">小返回</div>
+                    <div class="page">
+                        第<span>numer</span>页
+                    </div>
+                    <div class="page">
+                        共<span>numer</span>页
+                    </div>
+                    <div class="next">小前进</div>
+                    <div class="next">大前进</div>
+                    <div class="pagination-tips">
+                        <div class="pagination-rows">
+                            第<span>xx</span>到第<span>yy</span>条
+                        </div>
+                        <div class="pagination-rows">
+                            共<span>z</span>条
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+<script>
+    const errData = echarts.init(document.querySelector('#errData'))
+    const backDor = echarts.init(document.querySelector('#backDor'))
+
+
+    var signedQty = 0;
+    var leaveQty = 0;
+
+    $.getJSON('/Home/GetDefaultDataView', {}, function (resp) {
+        if (resp.state == "success") {
+
+            $('#totalQty').html(resp.data.totalQty);
+            $('#inQty').html(resp.data.inQty);
+            $('#outQty').html(resp.data.outQty);
+            $('#leaveQty').html(resp.data.leaveQty);
+
+            const echartsReader = {
+                name: '归宿',
+                data: resp.data.leftPieChartData,
+                colors: ['#347AF6', '#F6C343'],
+                startAngle: -90
+
+            }
+            //2.载入数据
+            backDor.setOption(getOptions(echartsReader))
+
+            //不使用echartsReader载入
+            errData.setOption({
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{b}: {c} ({d}%)"
+                },
+                legend: {
+                    orient: 'vertical',
+                    x: 'right',
+                    data: ['其他异常', '晚归', '未归', '未出']
+                },
+                series: [
+                    {
+                        name: '异常数据',
+                        type: 'pie',
+                        radius: ['30%', '70%'],
+                        startAngle: 180,
+                        avoidLabelOverlap: false,
+                        color: function (params) {
+                            let colors = ['#347AF6', '#CB444B', '#F6C343', '#52A450']
+                            return colors[params.dataIndex]
+                        },
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'outside'
+                            },
+                            emphasis: {
+                                show: true,
+                                textStyle: {
+                                    fontSize: '20',
+                                    // fontWeight: 'bold'
+                                }
+                            }
+                        },
+                        labelLine: {
+                            normal: {
+                                show: true
+                            }
+                        },
+                        data: resp.data.rightPieChartData
+                    }
+                ]
+            })
+
+
+            var htmlStr = "";
+
+            $.each(resp.data.leavesData, function (i, k) {
+                htmlStr += "<tr>"
+                    + "<td></td>"
+                    + "<td>"+k.student.name+"</td>"
+                    + "<td>"+k.startTime+"</td>"
+                    + "<td>"+k.endOfTime+"</td>"
+                    + "<td>"+k.createdTime+"</td>"
+                    + "</tr>";
+            });
+
+            $('#dataListQty').html(resp.data.leavesData.length);
+
+            $('#dataList').append(htmlStr);
+        }
+        console.log(resp);
+    })
+    // echarts饼图数据结构 一元JSON组 data = [{value:'455',name:'已签到'},{value:'522',name:'请假'}]。
+    //1.简单配置echartsReader data,colors配色 ['#347AF6', '#F6C343'] + ['#347AF6','#CB444B','#F6C343','#52A450'] startAngle：初始角度 归寝 -90 异常 180
+
+
+
+
+
+    //共用配置
+    function getOptions(echartsReader) {
+        let a = echartsReader.data.map((item) => item = item.name)
+        let option = {
+            tooltip: {
+                trigger: 'item',
+                formatter: "{b}: {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                x: 'right',
+                data: a
+            },
+            series: [
+                {
+                    name: name,
+                    type: 'pie',
+                    radius: ['30%', '70%'],
+                    startAngle: echartsReader.startAngle,
+                    itemStyle: {
+                        normal: {
+                            color: function (params) {
+                                return echartsReader.colors[params.dataIndex]
+                            }
+                        }
+                    },
+                    avoidLabelOverlap: false,
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'outside',
+                            verticalAlign: 'top'
+                        }
+
+
+                    },
+                    labelLine: {
+                        normal: {
+                            show: true,
+                            length: 50,
+                            length2: 30
+                        }
+                    },
+                    data: echartsReader.data
+                }
+            ]
+        }
+        return option;
+
+    }
+
+    //解析JSON
+    let js = { a: 'ddd', b: 'kkk' }
+    function getTdByJson(obj) {
+        str = '<td></td>';
+        for (k in obj) {
+            str += '<td>' + obj[k] + '</td>'
+        }
+        return str;
+    }
+    console.log(getTdByJson(js))
+</script>
+
+<script>
+    // for test
+
+</script>

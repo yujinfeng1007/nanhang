@@ -34,13 +34,13 @@ namespace TaskApi.NHExceptionReport
             Console.WriteLine("南航项目：开始统计请假学生列表 --> " + DateTime.Now.ToLocalTime());
             //过滤：请假的人员
             var EndTime = QuartzTime.Date.AddDays(-1).AddHours(12);
-            var ListLeave = db.Set<LeaveOrder>().Where(p => p.EndOfTime.Contains("AM")).Select(p => new
+            var ListLeave = db.Set<LeaveOrder>().Where(p => Ext.ToDateTimeString(p.EndOfTime,false).Contains("AM")).Select(p => new
             {
                 p.Id,
                 p.CreatedTime,
                 p.LeaveerId,
                 p.EndOfTime,
-                TempTime = p.EndOfTime.Replace("AM", "")
+                TempTime = Ext.ToDateTimeString(p.EndOfTime, false).Replace("AM", "")
             }).ToList();
             var LeaveListId = ListLeave.Where(p => Convert.ToDateTime(p.TempTime) > EndTime).Select(p => p.LeaveerId).ToList();
             Console.WriteLine("南航项目：开始统计未归报表 --> " + DateTime.Now.ToLocalTime());

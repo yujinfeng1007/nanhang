@@ -10,13 +10,16 @@ namespace ZHXY.Web.SystemManage.Controllers
     {
         private StudentService studentService { get; }
         private TeacherService App { get; }
-        private OrgService orgService { get;  }
+
+        private UserService userService { get; }
+        private OrgService orgService { get;  }        
         public CurrentUserController(TeacherService app
-            , OrgService org,StudentService student)
+            , OrgService org,StudentService student, UserService user)
         {
             orgService = org;
             studentService = student;
             App = app;
+            userService = user;
         }
 
         [HttpGet]
@@ -31,10 +34,13 @@ namespace ZHXY.Web.SystemManage.Controllers
             var classes = App.GetBindClass(user.Id);
             user.Classes = classes.Select(p=>(object)p).ToList();
             var orgName = orgService.GetById(user.OrganId)?.Name;
+            //缓存原因，重新取用户最新头像
+            var userLatest = userService.GetById(user.Id);
             return Content(new
             {
                 Duty= user.DutyId,
-                user.HeadIcon,
+                //user.HeadIcon,
+                userLatest?.HeadIcon,
                 user.Id,
                 user.IsSystem,
                 LoginIPAddress= user.Ip,

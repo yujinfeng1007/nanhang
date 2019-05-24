@@ -1,4 +1,5 @@
-﻿using ZHXY.Domain;
+﻿using System;
+using ZHXY.Domain;
 
 namespace ZHXY.Application.RequestDto.Api
 {
@@ -15,12 +16,12 @@ namespace ZHXY.Application.RequestDto.Api
         /// <summary>
         /// 开始时间
         /// </summary>
-        public string F_StartTime { get; set; }
+        public DateTime F_StartTime { get; set; }
 
         /// <summary>
         /// 结束时间
         /// </summary>
-        public string F_EndTime { get; set; }
+        public DateTime F_EndTime { get; set; }
 
         /// <summary>
         /// 学生ID
@@ -30,7 +31,7 @@ namespace ZHXY.Application.RequestDto.Api
         /// <summary>
         /// 请假天数
         /// </summary>
-        public string F_LeaveDays { get; set; }
+        public decimal F_LeaveDays { get; set; }
 
         /// <summary>
         /// 请假类型

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ZHXY.Application
 {
@@ -9,9 +10,9 @@ namespace ZHXY.Application
     {
         public string Id { get; set; }
         public string LeaveerName { get; set; }
-        public string StartTime { get; set; }
-        public string EndOfTime { get; set; }
-        public string LeaveDays { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndOfTime { get; set; }
+        public decimal? LeaveDays { get; set; }
         public string LeaveType { get; set; }
         public string ReasonForLeave { get; set; }
         public string Status { get; set; }

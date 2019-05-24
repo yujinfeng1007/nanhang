@@ -29,7 +29,7 @@ namespace ZHXY.Application
         /// <summary>
         /// 搜索模式 0:未审批  1:已审批 
         /// </summary>
-        public int SearchPattern { get; set; }
+        public string Status { get; set; }
 
     }
 }
