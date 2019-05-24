@@ -24,7 +24,7 @@ namespace TaskApi.NHExceptionReport
         public void Execute(IJobExecutionContext context)
         {
             // 测试用时间点   
-            //DateTime QuartzTime = Convert.ToDateTime("2019-05-22 02:00:00");
+            //DateTime QuartzTime = Convert.ToDateTime("2019-05-24 02:00:00");
             DateTime QuartzTime = DateTime.Now;
             string TableName = "DHFLOW_" + QuartzTime.Year + QuartzTime.Month.ToString().PadLeft(2, '0');
             ZhxyDbContext db = new ZhxyDbContext();
@@ -33,16 +33,8 @@ namespace TaskApi.NHExceptionReport
 
             Console.WriteLine("南航项目：开始统计请假学生列表 --> " + DateTime.Now.ToLocalTime());
             //过滤：请假的人员
-            var EndTime = QuartzTime.Date.AddDays(-1).AddHours(12);
-            var ListLeave = db.Set<LeaveOrder>().Where(p => Ext.ToDateTimeString(p.EndOfTime,false).Contains("AM")).Select(p => new
-            {
-                p.Id,
-                p.CreatedTime,
-                p.LeaveerId,
-                p.EndOfTime,
-                TempTime = Ext.ToDateTimeString(p.EndOfTime, false).Replace("AM", "")
-            }).ToList();
-            var LeaveListId = ListLeave.Where(p => Convert.ToDateTime(p.TempTime) > EndTime).Select(p => p.LeaveerId).ToList();
+            var EndTime = QuartzTime.Date.AddDays(-1).AddHours(23);
+            var LeaveListId = db.Set<LeaveOrder>().Where(p => p.EndOfTime > EndTime).Select(p => p.LeaveerId).ToList();
             Console.WriteLine("南航项目：开始统计未归报表 --> " + DateTime.Now.ToLocalTime());
             //Step1  统计未归报表
             ProcessNoReturnException(QuartzTime, TableName, LeaveListId, db);
@@ -82,7 +74,7 @@ namespace TaskApi.NHExceptionReport
                 if(IdAndClass == null){continue;}
                 NoReturnReport report = new NoReturnReport();
                 report.Id = Guid.NewGuid().ToString().Replace("-", "");
-                report.CreatedTime = DateTime.Now;
+                report.CreatedTime = QuartzTime.AddDays(-1).Date;
                 report.College = "root";
                 report.Account = noReturn.code;
                 report.OutTime = DateHelper.GetTime(noReturn.swipDate);
@@ -125,7 +117,7 @@ namespace TaskApi.NHExceptionReport
                 if(null == IDClassId) {continue; }
                 LateReturnReport r = new LateReturnReport();
                 r.Id = Guid.NewGuid().ToString().Replace("-", "");
-                r.CreatedTime = DateTime.Now;
+                r.CreatedTime = QuartzTime.AddDays(-1).Date;
                 r.College = "root";
                 r.Account = p.code;
                 r.InTime = DateHelper.GetTime(p.swipDate);
@@ -165,7 +157,7 @@ namespace TaskApi.NHExceptionReport
 
                 NoOutReport report = new NoOutReport();
                 report.Id = Guid.NewGuid().ToString().Replace("-", "");
-                report.CreatedTime = DateTime.Now;
+                report.CreatedTime = QuartzTime.AddDays(-1).Date;
                 report.College = "root";
                 report.Account = noOut.code;
                 report.InTime = DateHelper.GetTime(noOut.swipDate);
