@@ -10,7 +10,6 @@ namespace ZHXY.Domain
             ToTable("zhxy_dorm");
             HasKey(t => t.Id);
 
-
             Property(p => p.Id).HasColumnName("id");
             Property(p => p.Area).HasColumnName("area");
             Property(p => p.BuildingId).HasColumnName("building_id");
@@ -25,6 +24,8 @@ namespace ZHXY.Domain
             Property(p => p.Title).HasColumnName("title");
             Property(p => p.ManagerId).HasColumnName("manager_id");
             Property(p => p.AdminstratorId).HasColumnName("adminstrator_id");
+
+            HasRequired(p => p.Building).WithMany().HasForeignKey(p => p.BuildingId).WillCascadeOnDelete(false);
         }
     }
 }

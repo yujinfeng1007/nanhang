@@ -18,13 +18,13 @@
 
     public class SurveyMoudle
     {
-        public string[] channelId { get; set; }
-        public string code { get; set; }
-        public string name { get; set; }
+        public string[] channelId { get; set; } //通道列表
+        public string code { get; set; } //学工号 （非必填）
+        public string name { get; set; }  //姓名
         public int sex { get; set; } //性别 1男 2女
-        public string idCode { get; set; }
-        public string photoBase64 { get; set; }
-        public string initialTime { get; set; }
-        public string expireTime { get; set; }
+        public string idCode { get; set; }  //身份证号
+        public string photoBase64 { get; set; } //Base64图片
+        public string initialTime { get; set; }  //有效日期
+        public string expireTime { get; set; } //失效日期
     }
 }
