@@ -92,8 +92,8 @@ namespace ZHXY.Application
             var noReturnQty = Read<NoReturnReport>(p => p.StudentId.Equals(userId) && p.OutTime >= st && p.OutTime <= et).Count();
             //晚归次数
             var laterReturnQty = Read<LateReturnReport>(p => p.StudentId.Equals(userId) && p.CreatedTime >= st && p.CreatedTime <= et).Count();
-            //请假天数   请假开始时间  and 请假结束时间  between startTime和endTime  
-            var leaveDay = Read<LeaveOrder>(p => p.ApplicantId.Equals(userId) && ((p.StartTime >= st && p.StartTime <= et) || (p.StartTime >= st && p.StartTime <= et))).Sum(p => p.LeaveDays);
+            //请假天数(已审批通过)   请假开始时间  and 请假结束时间  between startTime和endTime  
+            var leaveDay = Read<LeaveOrder>(p => p.ApplicantId.Equals(userId) && p.Status.Equals("1") &&((p.StartTime >= st && p.StartTime <= et) || (p.StartTime >= st && p.StartTime <= et))).Sum(p => p.LeaveDays);
 
 
             return new
@@ -159,24 +159,23 @@ namespace ZHXY.Application
             int leaveQty = 0;
 
            //sql写法
-           var leaveSql = new StringBuilder("select count(1) from zhxy_leave_order leave join zhxy_student stu on leave.leaveer_id = stu.id where ");
+           var leaveSql = new StringBuilder("select count(1) from zhxy_leave_order leave join zhxy_student stu on leave.leaveer_id = stu.id where leave.status = '1' ");
             if (category.Equals("Division"))
             {
-                leaveSql = leaveSql.Append("stu.divis_id = '"+ orgId + "'");
+                leaveSql = leaveSql.Append(" and stu.divis_id = '"+ orgId + "'");
             }
             else if (category.Equals("Grade"))
             {
-                leaveSql = leaveSql.Append("stu.grade_id = '" + orgId + "'");
+                leaveSql = leaveSql.Append(" and stu.grade_id = '" + orgId + "'");
             }
             else if (category.Equals("Class"))
             {
-                leaveSql = leaveSql.Append("stu.class_id = '" + orgId + "'");
+                leaveSql = leaveSql.Append(" and stu.class_id = '" + orgId + "'");
             }
 
              leaveQty = R.Db.Database.SqlQuery<int>(leaveSql.ToString()).First();           
 
-            //linq写法            
-
+           
             return new
             {
                 totalQty = totalQty,

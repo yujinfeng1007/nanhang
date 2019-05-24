@@ -236,7 +236,7 @@ namespace ZHXY.Application
             leaveApprove.Result = input.IsAgreed ? 1 : -1;
             leaveApprove.Opinion = input.Opinion;
             SetOrderStatus(leave);
-            if (!input.IsAgreed) MinusLimit(leave.LeaveerId,leave.LeaveDays);
+            if (!input.IsAgreed) MinusLimit(leave.LeaveerId, leave.LeaveDays);
             SaveChanges();
 
 
@@ -249,7 +249,7 @@ namespace ZHXY.Application
         public dynamic GetLeaveHistory(GetLeaveHistoryDto input)
         {
             var query = Read<LeaveOrder>(p => p.LeaveerId.Equals(input.UserId));
-            query = string.IsNullOrEmpty(input.Status) ? query : query.Where(p => p.Status.Equals(input.Status));
+            query = string.IsNullOrEmpty(input.Status) || input.Status.Equals("-1") ? query : query.Where(p => p.Status.Equals(input.Status));
             query = string.IsNullOrEmpty(input.Keyword) ? query : query.Where(p => p.Reason.Contains(input.Keyword));
             query=query.Paging(input);
             var list = query.Join(Read<User>(),a=>a.LeaveerId,a=>a.Id,(a,b)=>new { a,b}).Select(j => new LeaveListView
@@ -297,12 +297,12 @@ namespace ZHXY.Application
         /// 获取审批列表
         /// </summary>
         public dynamic GetApprovalList(GetApprovalListDto input)
-        {
+        {                    
             var leaveIds = Read<LeaveApprove>(p => p.ApproverId.Equals(input.CurrentUserId)).Select(p => p.OrderId).ToListAsync().Result;
             var query = Read<LeaveOrder>(p => leaveIds.Contains(p.Id));
-            query = input.SearchPattern == 0
+            query = string.IsNullOrEmpty(input.Status) || input.Status.Equals("-1")
                 ? query
-                : query.Where(p => p.Status.Equals(input.SearchPattern));
+                : query.Where(p => p.Status.Equals(input.Status));
 
             query = string.IsNullOrEmpty(input.Keyword)
                 ? query
