@@ -50,11 +50,11 @@ namespace ZHXY.Application
         /// <summary>
         /// 审批不通过时减去学生假期使用天数
         /// </summary>
-        private void MinusLimit(string studentId, decimal days)
+        private void MinusLimit(string studentId, decimal? days)
         {
             var currentSemesterId = GetCurrentSemesterId();
             var limit = Query<LeaveLimit>(p => p.StudentId.Equals(studentId) && p.SemesterId.Equals(currentSemesterId)).FirstOrDefault();
-            limit.UsedDays -= days;
+            limit.UsedDays -= days.Value;
         }
 
         /// <summary>
@@ -263,7 +263,7 @@ namespace ZHXY.Application
                 ApprovalStatus = j.a.Status,
                 ReasonForLeave = j.a.Reason,
                 CreatedTime = j.a.CreatedTime
-            }).ToListAsync().Result;
+            }).OrderByDescending(p => p.CreatedTime).ToListAsync().Result;
 
             foreach (var item in list)
             {
@@ -319,7 +319,7 @@ namespace ZHXY.Application
                 ApprovalStatus = p.a.Status,
                 ReasonForLeave = p.a.Reason,
                 CreatedTime = p.a.CreatedTime
-            }).ToListAsync().Result;
+            }).OrderByDescending(p => p.CreatedTime).ToListAsync().Result;
             SetViewStatus(input.CurrentUserId, ref list);
             return list;
         }
@@ -489,7 +489,7 @@ namespace ZHXY.Application
                  ReasonForLeave = p.Reason,
                  LeaveType = p.LeaveType
              }).ToListAsync()
-             .Result.Where(p => DateTime.Parse(p.EndOfTime).Date >= DateTime.Now.Date);
+             .Result.Where(p => p.EndOfTime >= DateTime.Now.Date);
             var list= query.AsQueryable().Paging(input).ToListAsync().Result;
             list.ForEach(item => item.ApplicantName = Read<User>(p => p.Id.Equals(item.ApplicantId)).Select(p => p.Name).FirstOrDefault());
             return list;
