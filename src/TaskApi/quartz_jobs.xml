@@ -143,32 +143,23 @@
       <recover>false</recover>
     </job>-->
 
-    <!--<job>
+    <job>
       <name>DHMigrateJob</name>
       <group>DHMigrate</group>
       <description>南航项目同步闸机流水信息</description>
       <job-type>TaskApi.DH.DHMigrateJob,TaskApi</job-type>
       <durable>true</durable>
       <recover>false</recover>
-    </job>-->
+    </job>
 
-     <!--<job>
+     <job>
      <name>UpdateTokenJob</name>
       <group>UpdateToken</group>
       <description>南航项目-大华Token保活定时任务</description>
       <job-type>TaskApi.DH.UpdateTokenJob,TaskApi</job-type>
       <durable>true</durable>
       <recover>false</recover>
-    </job>-->
-    <!--
-    <job>
-      <name>DHCreateDormJob</name>
-      <group>DHCreateDorm</group>
-      <description>南航项目-大华创建宿舍相关</description>
-      <job-type>TaskApi.DH.DHCreateDormJob, TaskApi</job-type>
-      <durable>true</durable>
-      <recover>false</recover>
-    </job>-->
+    </job>
 
    <job>
       <name>NHExceptionJob</name>
@@ -187,7 +178,50 @@
       <durable>true</durable>
       <recover>false</recover>
     </job>
+    
+    <!-- **************** *********************** *******       trigger      ***** ************************* *******************-->
+    <trigger>
+      <cron>
+        <name>DHMigrateJobTrigger</name>
+        <group>DHMigrate</group>
+        <job-name>DHMigrateJob</job-name>
+        <job-group>DHMigrate</job-group>
+        <!--每3秒启动一次定时任务-->
+        <cron-expression>0/8 * * * * ?</cron-expression>
+      </cron>
+    </trigger>
+    
+    <trigger>
+      <cron>
+        <name>UpdateTokenJobTrigger</name>
+        <group>UpdateToken</group>
+        <job-name>UpdateTokenJob</job-name>
+        <job-group>UpdateToken</job-group>
+        <!--每10秒启动一次定时任务-->
+        <cron-expression>0/10 * * * * ?</cron-expression>
+      </cron>
+    </trigger>
+    
+    <trigger>
+      <cron>
+        <name>NHExceptionJobTrigger</name>
+        <group>NHException</group>
+        <job-name>NHExceptionJob</job-name>
+        <job-group>NHException</job-group>
+        <cron-expression>0 0 2 ? * *</cron-expression>
+      </cron>
+    </trigger>
 
+    <trigger>
+      <cron>
+        <name>NHExceptionPushJobTrigger</name>
+        <group>NHExceptionPush</group>
+        <job-name>NHExceptionPushJob</job-name>
+        <job-group>NHExceptionPush</job-group>
+        <cron-expression>0 0 8 ? * *</cron-expression>
+      </cron>
+    </trigger>
+   
     <!--<trigger>
       <cron>
         <name>SendJpushTrigger</name>
@@ -209,16 +243,6 @@
       </cron>
     </trigger>-->
 
-    <!--<trigger>
-      <cron>
-        <name>DHMigrateJobTrigger</name>
-        <group>DHMigrate</group>
-        <job-name>DHMigrateJob</job-name>
-        <job-group>DHMigrate</job-group>
-         --><!--每3秒启动一次定时任务--><!-- 
-        <cron-expression>0/8 * * * * ?</cron-expression>
-      </cron>
-    </trigger>-->
     
     <!--<trigger>
       <cron>
@@ -226,32 +250,14 @@
         <group>NanHang</group>
         <job-name>NanHangJob</job-name>
         <job-group>NanHang</job-group>
-         --><!--每日凌晨2点启动定时任务--><!--
+         -->
+    <!--每日凌晨2点启动定时任务-->
+    <!--
         <cron-expression>0 30 2 ? * *</cron-expression>
       </cron>
     </trigger>-->
 
-    
-      <trigger>
-      <cron>
-        <name>NHExceptionJobTrigger</name>
-        <group>NHException</group>
-        <job-name>NHExceptionJob</job-name>
-        <job-group>NHException</job-group>
-        <cron-expression>0 0 2 ? * *</cron-expression>
-      </cron>
-    </trigger>
-    
-    <trigger>
-      <cron>
-        <name>NHExceptionPushJobTrigger</name>
-        <group>NHExceptionPush</group>
-        <job-name>NHExceptionPushJob</job-name>
-        <job-group>NHExceptionPush</job-group>
-        <cron-expression>0 0 8 ? * *</cron-expression>
-      </cron>
-    </trigger>
-    
+
     <!--<trigger>
       <cron>
         <name>ReportMessageJobTrigger</name>
@@ -273,27 +279,7 @@
     </trigger>-->
  
 
-    <!--<trigger>
-      <cron>
-        <name>UpdateTokenJobTrigger</name>
-        <group>UpdateToken</group>
-        <job-name>UpdateTokenJob</job-name>
-        <job-group>UpdateToken</job-group>
-         --><!--每10秒启动一次定时任务--><!-- 
-        <cron-expression>0/10 * * * * ?</cron-expression>
-      </cron>
-    </trigger>-->
-    
-    <!--<trigger>
-      <cron>
-        <name>DHCreateDormJobTrigger</name>
-        <group>DHCreateDorm</group>
-        <job-name>DHCreateDormJob</job-name>
-        <job-group>DHCreateDorm</job-group>
-        --><!-- 每天9点启动一次定时任务 --><!--
-        <cron-expression>0 5 18 ? * *</cron-expression>
-      </cron>
-    </trigger>-->
+   
     
     <!--<trigger>
       <cron>
