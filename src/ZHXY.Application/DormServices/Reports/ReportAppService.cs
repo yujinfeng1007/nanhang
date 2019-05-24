@@ -32,8 +32,13 @@ namespace ZHXY.Application
         /// </summary>
         public dynamic GetDefaultData()
         {
+            var now = DateTime.Now;
+            var startTime = DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00";
+            var endTime = DateTime.Now.ToString("yyyy-MM-dd") + " 23:59:59";
+            var tableName = DateTime.Now.ToString("yyyyMM");
+
             // 考勤总人数
-            var totalQty = Read<Student>().Count();
+            var totalQty = Read<Student>(t => !string.IsNullOrEmpty(t.InOut)).Count();
 
             // 在寝人数
             var noOutQty = Read<Student>(t=>t.InOut=="0").Count();
@@ -42,10 +47,10 @@ namespace ZHXY.Application
             var noReturnQty = Read<Student>(t=>t.InOut=="1").Count();
 
             // 请假人数
-            var leaveQty = Read<LeaveOrder>().Count();
+            var leaveQty = Read<LeaveOrder>(t=>t.StartTime<=now && t.EndOfTime>=now).Count();
 
             // 已签到人数
-            var signedQty = Read<Student>().Count();
+            var signedQty =Convert.ToInt32(SqlHelper.ExecuteScalar(string.Format("SELECT COUNT(0) FROM dbo.[DHFLOW_{0}] WHERE date>='{1}' AND date<='{2}' AND inOut='0' GROUP BY personId ", tableName, startTime, endTime)));
 
             // 晚归人数
             var laterReturnQty = Read<LateReturnReport>().Count();
@@ -61,12 +66,12 @@ namespace ZHXY.Application
                 InQty = noOutQty,
                 OutQty = noReturnQty,
                 LeaveQty = leaveQty,
-                LeftPieChart = new List<ChartsDataItemDto> {
+                LeftPieChartData = new List<ChartsDataItemDto> {
                     new ChartsDataItemDto { Name="已签到",Value=signedQty},
                     new ChartsDataItemDto { Name="请假",Value=leaveQty},
                 },
                 RightPieChartData = new List<ChartsDataItemDto>
-                { new ChartsDataItemDto { Name="其他异常",Value=signedQty},
+                { new ChartsDataItemDto { Name="其他异常",Value=0},
                     new ChartsDataItemDto { Name="晚归",Value=laterReturnQty},
                     new ChartsDataItemDto { Name="未归",Value=noReturnQty},
                     new ChartsDataItemDto { Name="未出",Value=noOutQty},
