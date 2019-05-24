@@ -40,17 +40,21 @@ namespace ZHXY.Application
             // 考勤总人数
             var totalQty = Read<Student>(t => !string.IsNullOrEmpty(t.InOut)).Count();
 
+
             // 在寝人数
-            var noOutQty = Read<Student>(t=>t.InOut=="0").Count();
+            var inQty = Read<Student>(t => t.InOut == "0").Count();
 
             // 外出人数
-            var noReturnQty = Read<Student>(t=>t.InOut=="1").Count();
+            var outQty = Read<Student>(t=>t.InOut=="1").Count();
 
             // 请假人数
-            var leaveQty = Read<LeaveOrder>(t=>t.StartTime<=now && t.EndOfTime>=now).Count();
+            var leaveQty = Read<LeaveOrder>(t => t.StartTime <= now && t.EndOfTime >= now && t.Status=="1").Count();
 
-            // 已签到人数
-            var signedQty =Convert.ToInt32(SqlHelper.ExecuteScalar(string.Format("SELECT COUNT(0) FROM dbo.[DHFLOW_{0}] WHERE date>='{1}' AND date<='{2}' AND inOut='0' GROUP BY personId ", tableName, startTime, endTime)));
+            // 未出人数
+            var noOutQty = Read<NoOutReport>().Count();
+
+            // 未归人数
+            var noReturnQty = Read<NoReturnReport>().Count();
 
             // 晚归人数
             var laterReturnQty = Read<LateReturnReport>().Count();
@@ -62,13 +66,12 @@ namespace ZHXY.Application
             return new
             {
                 TotalQty = totalQty,
-                NoOutQty = noOutQty,
-                InQty = noOutQty,
-                OutQty = noReturnQty,
-                LeaveQty = leaveQty,
+                LeaveQty = noOutQty,
+                InQty = inQty,
+                OutQty = outQty,
                 LeftPieChartData = new List<ChartsDataItemDto> {
-                    new ChartsDataItemDto { Name="已签到",Value=signedQty},
-                    new ChartsDataItemDto { Name="请假",Value=leaveQty},
+                    new ChartsDataItemDto { Name="在寝",Value=inQty},
+                    new ChartsDataItemDto { Name="外出",Value=outQty},
                 },
                 RightPieChartData = new List<ChartsDataItemDto>
                 { new ChartsDataItemDto { Name="其他异常",Value=0},
