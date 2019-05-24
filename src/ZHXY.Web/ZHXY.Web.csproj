@@ -496,6 +496,11 @@
     <Content Include="Content\js\index.js" />
     <Content Include="Content\js\loading\pace.min.js" />
     <Content Include="Content\js\lodash\lodash.js" />
+    <Content Include="Scripts\echarts\close%402x.png" />
+    <Content Include="Scripts\echarts\close.png" />
+    <Content Include="Scripts\echarts\echarts.min.js" />
+    <Content Include="Scripts\echarts\refresh%402x.png" />
+    <Content Include="Scripts\echarts\refresh.png" />
     <Content Include="Views\Page\AddMenuForm.cshtml" />
     <Content Include="Views\Page\AddFuncForm.cshtml" />
     <Content Include="Areas\SystemManage\Views\ModuleButton\CloneButton.cshtml" />
