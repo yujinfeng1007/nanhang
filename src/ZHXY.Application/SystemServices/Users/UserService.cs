@@ -134,7 +134,7 @@ namespace ZHXY.Application
 
         public CurrentUser CheckLogin(string username, string password)
         {
-            var user = Query<User>(p => p.Account.Equals(username)).FirstOrDefaultAsync().Result;
+            var user = Query<User>(p => p.Account.Equals(username)).FirstOrDefaultAsync()?.Result;
             if (user == null) throw new Exception("账户不存在，请重新输入");
             var dbPassword = Md5EncryptHelper.Encrypt(DESEncryptHelper.Encrypt(password.ToLower(), user.Secretkey).ToLower(), 32).ToLower();
             if (dbPassword != user.Password) throw new Exception("密码不正确，请重新输入");
