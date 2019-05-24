@@ -183,7 +183,7 @@
 
         <div class="cardx" style="background: #fff">
             <div class="cardx-title" id="headingOne">
-                <div class="item-title">待审批(<span>7</span>)</div>
+                <div class="item-title">待审批(<span id="dataListQty"></span>)</div>
                 <div class="item-after">
                     <span data-toggle="collapse" data-target="#table" aria-expanded="false"
                           aria-controls="table"><img src="~/Scripts/echarts/close@2X.png" alt=""></span>
@@ -324,17 +324,20 @@
                 ]
             })
 
+
             var htmlStr = "";
 
             $.each(resp.data.leavesData, function (i, k) {
                 htmlStr += "<tr>"
                     + "<td></td>"
-                    + "<td></td>"
-                    + "<td></td>"
-                    + "<td></td>"
-                    + "<td></td>"
+                    + "<td>"+k.student.name+"</td>"
+                    + "<td>"+k.startTime+"</td>"
+                    + "<td>"+k.endOfTime+"</td>"
+                    + "<td>"+k.createdTime+"</td>"
                     + "</tr>";
             });
+
+            $('#dataListQty').html(resp.data.leavesData.length);
 
             $('#dataList').append(htmlStr);
         }
