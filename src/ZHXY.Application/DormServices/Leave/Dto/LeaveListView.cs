@@ -48,6 +48,11 @@ namespace ZHXY.Application
         public string ReasonForLeave { get; set; }
 
         public DateTime? CreatedTime { get; set; }
+
+        /// <summary>
+        /// 审批人
+        /// </summary>
+        public string[] Approver { get; set; }
     }
 
     public class LeaveView: LeaveListView

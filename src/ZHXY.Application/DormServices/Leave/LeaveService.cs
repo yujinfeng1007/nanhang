@@ -252,43 +252,73 @@ namespace ZHXY.Application
             query = string.IsNullOrEmpty(input.Status) || input.Status.Equals("-1") ? query : query.Where(p => p.Status.Equals(input.Status));
             query = string.IsNullOrEmpty(input.Keyword) ? query : query.Where(p => p.Reason.Contains(input.Keyword));
             query=query.Paging(input);
-            var list = query.Join(Read<User>(),a=>a.LeaveerId,a=>a.Id,(a,b)=>new { a,b}).Select(j => new LeaveListView
+            var list = query.Join(Read<User>(), a => a.LeaveerId, a => a.Id, (a, b) => new LeaveListView
             {
-                Id = j.a.Id,
-                LeaveerName = j.b.Name,
-                StartTime = j.a.StartTime,
-                EndOfTime = j.a.EndOfTime,
-                LeaveDays = j.a.LeaveDays,
-                LeaveType = j.a.LeaveType,
-                ApprovalStatus = j.a.Status,
-                ReasonForLeave = j.a.Reason,
-                CreatedTime = j.a.CreatedTime
+                Id = a.Id,
+                LeaveerName = b.Name,
+                StartTime = a.StartTime,
+                EndOfTime = a.EndOfTime,
+                LeaveDays = a.LeaveDays,
+                LeaveType = a.LeaveType,
+                ApprovalStatus = a.Status,
+                ReasonForLeave = a.Reason,
+                CreatedTime = a.CreatedTime
             }).OrderByDescending(p => p.CreatedTime).ToListAsync().Result;
+           
 
             foreach (var item in list)
-            {
+            {   //审批结果Result  0:未审批  1:同意  -1:拒绝   
+                //获取所有审批人
+                var approvers = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id)).Select(p => p.Approver.Name).ToArray();
+
                 if (Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result == -1).Any())
                 {
                     item.ApprovalStatus = "已审批";
                     continue;
                 }
-                if (Convert.ToDecimal(item.LeaveDays) <= 3)
+                if (item.LeaveDays <= 3)
                 {
                     item.ApprovalStatus = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result != 0).Any() ? "已审批" : "未审批";
+                    if (item.ApprovalStatus == "未审批") item.Approver = approvers;
                     continue;
                 }
-                if (Convert.ToDecimal(item.LeaveDays) > 3)
+                if (item.LeaveDays > 3)
                 {
                     if (Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.ApproveLevel == 2).Any())
                     {
                         item.ApprovalStatus = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result != 0 && p.ApproveLevel == 2).Any() ? "已审批" : "未审批";
+                        if (item.ApprovalStatus == "未审批") item.Approver = approvers;
                     }
                     else
                     {
                         item.ApprovalStatus = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result != 0).Any() ? "已审批" : "未审批";
+                        if (item.ApprovalStatus == "未审批") item.Approver = approvers;
                     }
                     continue;
                 }
+
+                //if (Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result == -1).Any())
+                //{
+                //    item.ApprovalStatus = "已审批";
+                //    continue;
+                //}               
+                //if (Convert.ToDecimal(item.LeaveDays) <= 3)
+                //{
+                //    item.ApprovalStatus = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result != 0).Any() ? "已审批" : "未审批";
+                //    continue;
+                //}
+                //if (Convert.ToDecimal(item.LeaveDays) > 3)
+                //{
+                //    if (Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.ApproveLevel == 2).Any())
+                //    {
+                //        item.ApprovalStatus = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result != 0 && p.ApproveLevel == 2).Any() ? "已审批" : "未审批";
+                //    }
+                //    else
+                //    {
+                //        item.ApprovalStatus = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result != 0).Any() ? "已审批" : "未审批";
+                //    }
+                //    continue;
+                //}
             }
             return list;
         }
