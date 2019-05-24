@@ -25,6 +25,9 @@ namespace ZHXY.Domain
             Property(p => p.Reason).HasColumnName("reason");
             Property(p => p.Status).HasColumnName("status");
             Property(p => p.Opinion).HasColumnName("opinion");
+
+            // 导航属性
+            HasOptional(p => p.Student).WithMany().HasForeignKey(p => p.ApplicantId);
         }
     }
 }

@@ -65,7 +65,7 @@ namespace ZHXY.Application
             var leaveDays = Convert.ToDecimal(input.LeaveDays);
             if (leaveDays > 15) throw new Exception("请假天数不能大于15天!");
             if (!input.Approvers.Any()) throw new Exception("请先选择审批人!");
-            if (input.Approvers.Length < 2) throw new Exception("必须选择班主任和辅导员,缺一不可!");
+            //if (input.Approvers.Length < 2) throw new Exception("必须选择班主任和辅导员,缺一不可!");
             var currentSemesterId = GetCurrentSemesterId();
             if (string.IsNullOrEmpty(currentSemesterId)) throw new Exception("当前学期未设置,请联系管理员!");
             var limit = Query<LeaveLimit>(p => p.SemesterId.Equals(currentSemesterId) && p.StudentId.Equals(input.LeaveerId)).FirstOrDefaultAsync().Result;
