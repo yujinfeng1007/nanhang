@@ -63,7 +63,7 @@ namespace ZHXY.Application
                 var fieldItem = new FieldItem();
                 fieldItem.encode = item.F_ItemCode;
                 fieldItem.fullname = item.F_ItemName;
-                dictionary.Add(item.F_Id, fieldItem);
+                dictionary.Add(item.F_ItemCode, fieldItem);
             }
             return dictionary;
         }
