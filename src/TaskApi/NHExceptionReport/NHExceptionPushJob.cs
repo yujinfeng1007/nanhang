@@ -82,11 +82,11 @@ namespace TaskApi.NHExceptionReport
                     Dictionary<string, object> NotOutDic = new Dictionary<string, object>();
                     Dictionary<string, object> DataDic = new Dictionary<string, object>();
                     NoReturnDic.Add("未归人员数量：", NoReturnCount + "人");
-                    NoReturnDic.Add("URI", ConfigurationManager.AppSettings["NoReturnReport"] + "?OrgId=" + leader.OrgId + "&ReportDate=" + Yeatday.Date.ToString().Replace("/", "-"));
+                    NoReturnDic.Add("URI", ConfigurationManager.AppSettings["NoReturnReport"] + "?OrgId=" + leader.OrgId + "&ReportDate=" + Yeatday.Date.ToString("yyyy-MM-dd"));
                     LateReturnDic.Add("晚归人员数量：", LateReturnCount + "人");
-                    LateReturnDic.Add("URI", ConfigurationManager.AppSettings["LaterReturnReport"] + "?OrgId=" + leader.OrgId + "&ReportDate=" + Yeatday.Date.ToString().Replace("/", "-"));
+                    LateReturnDic.Add("URI", ConfigurationManager.AppSettings["LaterReturnReport"] + "?OrgId=" + leader.OrgId + "&ReportDate=" + Yeatday.Date.ToString("yyyy-MM-dd"));
                     NotOutDic.Add("长时间未出人员数量：", NoOutCount + "人");
-                    NotOutDic.Add("URI", ConfigurationManager.AppSettings["NotOutReport"] + "?OrgId=" + leader.OrgId + "&ReportDate=" + Yeatday.Date.ToString().Replace("/", "-"));
+                    NotOutDic.Add("URI", ConfigurationManager.AppSettings["NotOutReport"] + "?OrgId=" + leader.OrgId + "&ReportDate=" + Yeatday.Date.ToString("yyyy-MM-dd"));
                     DataDic.Add("date", Yeatday.Date);
                     DataDic.Add("to", userName);
                     DataList.Add(NoReturnDic);
