@@ -30,12 +30,10 @@ namespace ZHXY.Application
         /// <returns></returns>
         public object GetLateReturnReport(string OrgId, string ReportDate)
         {
-            DateTime Time = Convert.ToDateTime(ReportDate);
-            DateTime StartTime = Time.AddDays(1).AddHours(2);
-            DateTime EndTime = Time.AddDays(2).AddHours(2);
+            var ReportTime = Convert.ToDateTime(ReportDate);
             List<string> OrgList = new List<string> { OrgId };
             this.GetChildOrg(OrgId, OrgList);
-            var LateReturnList = Read<LateReturnReport>(p => p.CreatedTime > StartTime && p.CreatedTime < EndTime && OrgList.Contains(p.Class)).ToList();
+            var LateReturnList = Read<LateReturnReport>(p => ReportTime == p.CreatedTime && OrgList.Contains(p.Class)).ToList();
             return LateReturnList.ToJson();
         }
 
@@ -47,12 +45,10 @@ namespace ZHXY.Application
         /// <returns></returns>
         public object GetNotReturnReport(string OrgId, string ReportDate)
         {
-            DateTime Time = Convert.ToDateTime(ReportDate);
-            DateTime StartTime = Time.AddDays(1).AddHours(2);
-            DateTime EndTime = Time.AddDays(2).AddHours(2);
+            var ReportTime = Convert.ToDateTime(ReportDate);
             List<string> OrgList = new List<string> { OrgId };
             this.GetChildOrg(OrgId, OrgList);
-            var NoReturnList = Read<NoReturnReport>(p => p.CreatedTime > StartTime && p.CreatedTime < EndTime && OrgList.Contains(p.ClassId)).ToList();
+            var NoReturnList = Read<NoReturnReport>(p => p.CreatedTime == ReportTime && OrgList.Contains(p.ClassId)).ToList();
             return NoReturnList.ToJson();
         }
 
@@ -64,12 +60,10 @@ namespace ZHXY.Application
         /// <returns></returns>
         public object GetNotOutReport(string OrgId, string ReportDate)
         {
-            DateTime Time = Convert.ToDateTime(ReportDate);
-            DateTime StartTime = Time.AddDays(1).AddHours(2);
-            DateTime EndTime = Time.AddDays(2).AddHours(2);
+            var ReportTime = Convert.ToDateTime(ReportDate);
             List<string> OrgList = new List<string> { OrgId };
             this.GetChildOrg(OrgId, OrgList);
-            var NoOutList = Read<NoOutReport>(p => p.CreatedTime > StartTime && p.CreatedTime < EndTime && OrgList.Contains(p.ClassId)).ToList();
+            var NoOutList = Read<NoOutReport>(p => p.CreatedTime == ReportTime && OrgList.Contains(p.ClassId)).ToList();
             return NoOutList.ToJson();
         }
     }

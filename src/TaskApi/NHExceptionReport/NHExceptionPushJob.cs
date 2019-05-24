@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ZHXY.Common;
 using ZHXY.Domain;
+using ZHXY.Domain.Entity.Dorm.Report;
 using ZHXY.Dorm.Device.NH;
 
 namespace TaskApi.NHExceptionReport
@@ -20,10 +21,11 @@ namespace TaskApi.NHExceptionReport
         {
             Console.WriteLine("开始推送异常消息：" + DateTime.Now);
             //new PushAppMessage().PushReportMessage("48038@nchu.edu.cn", "Test Message", "");
-            //DateTime Time = Convert.ToDateTime("2019-05-16 08:00:00");
+            //DateTime Time = Convert.ToDateTime("2019-05-24 08:00:00");
             DateTime Time = DateTime.Now;
             ZhxyDbContext dbContext = new ZhxyDbContext();
             var leaderList = dbContext.Set<OrgLeader>().ToList();
+            var PushList = new List<ZhxyPush>();
             foreach (var leader in leaderList)
             {
                 HashSet<string> Ids = new HashSet<string>(); //当前组织机构下属所有组织机构的ID集合
@@ -69,11 +71,11 @@ namespace TaskApi.NHExceptionReport
                 if (null != Ids && Ids.Count() != 0)
                 {
                     List<Dictionary<string, object>> DataList = new List<Dictionary<string, object>>();
-                    DateTime Yeatday = Time.Date.AddDays(-1).AddHours(2);
+                    DateTime Yeatday = Time.Date.AddDays(-1).Date;
                     string userName = dbContext.Set<User>().Where(p => p.Id.Equals(leader.UserId)).Select(p => p.Account).FirstOrDefault();
-                    var NoReturnCount = dbContext.Set<NoReturnReport>().Where(p => Yeatday < p.CreatedTime && Ids.Contains(p.ClassId)).ToList().Count();
-                    var LateReturnCount = dbContext.Set<LateReturnReport>().Where(p => Yeatday < p.CreatedTime && Ids.Contains(p.Class)).ToList().Count();
-                    var NoOutCount = dbContext.Set<NoOutReport>().Where(p => Yeatday < p.CreatedTime && Ids.Contains(p.ClassId)).ToList().Count();
+                    var NoReturnCount = dbContext.Set<NoReturnReport>().Where(p => Yeatday.Equals(p.CreatedTime) && Ids.Contains(p.ClassId)).ToList().Count();
+                    var LateReturnCount = dbContext.Set<LateReturnReport>().Where(p => Yeatday == p.CreatedTime && Ids.Contains(p.Class)).ToList().Count();
+                    var NoOutCount = dbContext.Set<NoOutReport>().Where(p => Yeatday == p.CreatedTime && Ids.Contains(p.ClassId)).ToList().Count();
 
                     Dictionary<string, object> NoReturnDic = new Dictionary<string, object>();
                     Dictionary<string, object> LateReturnDic = new Dictionary<string, object>();
@@ -85,17 +87,27 @@ namespace TaskApi.NHExceptionReport
                     LateReturnDic.Add("URI", ConfigurationManager.AppSettings["LaterReturnReport"] + "?OrgId=" + leader.OrgId + "&ReportDate=" + Yeatday.Date.ToString().Replace("/", "-"));
                     NotOutDic.Add("长时间未出人员数量：", NoOutCount + "人");
                     NotOutDic.Add("URI", ConfigurationManager.AppSettings["NotOutReport"] + "?OrgId=" + leader.OrgId + "&ReportDate=" + Yeatday.Date.ToString().Replace("/", "-"));
-                    DataDic.Add("data", DateTime.Now);
+                    DataDic.Add("date", Yeatday.Date);
                     DataDic.Add("to", userName);
                     DataList.Add(NoReturnDic);
                     DataList.Add(LateReturnDic);
                     DataList.Add(NotOutDic);
                     DataList.Add(DataDic);
                     new PushAppMessage().PushReportMessage(userName, DataList.ToJson(), "");
+                    PushList.Add(new ZhxyPush()
+                    {
+                        Account = userName,
+                        Content = DataList.ToJson(),
+                        CreateTime = DateTime.Now,
+                        ReportDate = Yeatday.Date
+                    });
                     Console.WriteLine("NHExceptionPush 推送成功：" + userName  + " : " + DataList.ToJson());
                 }
             }
+            dbContext.Set<ZhxyPush>().AddRange(PushList);
+            dbContext.SaveChanges();
             Console.WriteLine("  ********* NHExceptionPush 全部推送成功 ");
+            dbContext.Dispose();
         }
     }
 }
