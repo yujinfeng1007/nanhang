@@ -35,7 +35,7 @@ namespace ZHXY.Domain
         /// <summary>
         /// 性别
         /// </summary>
-        public bool? Gender { get; set; }
+        public bool Gender { get; set; }
 
         /// <summary>
         /// 生日
