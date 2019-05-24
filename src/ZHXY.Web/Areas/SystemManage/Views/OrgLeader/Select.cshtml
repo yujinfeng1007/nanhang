@@ -33,30 +33,42 @@
 
     function gridList() {
         $("#gridList").jqGrid({
+            height: window.innerHeight * 0.9,
+            width: window.innerWidth * 0.48,
             styleUI: 'Bootstrap',
             url: GRID_URL,
             datatype: "json",
-            height: window.innerHeight * 0.9,
-            width: window.innerWidth * 0.48,
-            jsonReader: {
-                root: function (r) {  return r.data;  }
-            },
-            colModel: [
-                { label: "主键", name: "id", hidden: true, key: true },
-                { label: '姓名', name: 'name', sortable: false },
-            ],
-            autoGridWidth: true,
             multiselect: true,
-            loadonce: false,
-            viewrecords: true,
-            rowNum: -1,
+            url: "/SystemManage/User/GetGridJson",
+            rowNum: 15,
+            colModel: [
+                { label: '主键', name: 'Id', key: true, hidden: true },
+                { label: '帐户', name: 'Account', width: 80, align: 'left' },
+                { label: '姓名', name: 'Name', width: 80, align: 'left' },
+                {
+                    label: '岗位', name: 'DutyId', width: 80, align: 'left',
+                    formatter: function (cellvalue, options, rowObject) {
+                        return top.clients.duty[cellvalue] == null ? "" : top.clients.duty[cellvalue].fullname;
+                    }
+                },
+                {
+                    label: '隶属机构', name: 'OrganId', width: 80, align: 'left',
+                    formatter: function (cellvalue, options, rowObject) {
+                        return top.clients.organize[cellvalue] == null ? "" : top.clients.organize[cellvalue].fullname;
+                    }
+                },
+                { label: '手机号码', name: 'MobilePhone', width: 80, align: 'left' }
+            ],
+            pager: "#gridPager",
+            sortname: 'Id desc',
+            viewrecords: true
         });
     }
 
     function reloadGrid(rowId) {
         $("#gridList").jqGrid('setGridParam', {
             postData: {
-                orgId: rowId,
+                F_DepartmentId: rowId,
                 keyword: $("#keyword").val()
             },
         }).trigger('reloadGrid');
