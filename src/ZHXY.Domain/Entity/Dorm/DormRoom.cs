@@ -83,9 +83,7 @@ namespace ZHXY.Domain
         /// 宿管ID
         /// </summary>
         public string AdminstratorId { get; set; }
-        
               
-       
-        
+        public virtual Building Building { get; set; }
     }
 }

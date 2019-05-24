@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Web.Http;
-using TaskApi.NanHang;
 using ZHXY.Common;
 using ZHXY.Dorm.Device.DH;
 using ZHXY.Dorm.Device.tools;
@@ -96,8 +95,8 @@ namespace ZHXY.Api.Controllers
             survey.sex =1;
             survey.idCode = idCode;
             survey.photoBase64 = GetImageBase64Str.ImageBase64Str(PicUrl); ;
-            survey.initialTime = "2019-05-22 00:00:00";
-            survey.expireTime = "2019-05-22 23:59:59";
+            survey.initialTime = "2019-05-24 00:00:00";
+            survey.expireTime = "2019-05-24 23:59:59";
             return DHAccount.TempSurvey(survey);
         }
 
@@ -126,29 +125,29 @@ namespace ZHXY.Api.Controllers
         }
 
 
-        public static void process()
-        {
-            //批量同步11栋和12栋学生数据，到12栋1楼101室
-            var model = new NHModel();
-            var stuList = model.StudentInfoes.Where(p => p.studentBuildingId.Contains("12栋") || p.studentBuildingId.Contains("11栋")).Select(p => new PersonMoudle
-            {
-                orgId = "org001",
-                code = p.studentNo,
-                idCode = p.certificateNo,
-                name = p.studentName,
-                roleId = "student001", //teacher001
-                sex = 0,
-                colleageCode = "55f67dcc42a5426fb0670d58dda22a5b", //默认分院
-                dormitoryCode = "fe8a5225be5f43478d0dd0c85da5dd1d",//楼栋  例如： 11栋
-                dormitoryFloor = "8e447843bc8c4e92b9ffdf777047d20d", //楼层  例如：3楼
-                dormitoryRoom = "20c70f65b54b4f96851e26343678c4ec", //宿舍号  例如：312
-                photoUrl = p.ImgUri
-            }).ToList();
+        //public static void process()
+        //{
+        //    //批量同步11栋和12栋学生数据，到12栋1楼101室
+        //    var model = new NHModel();
+        //    var stuList = model.StudentInfoes.Where(p => p.studentBuildingId.Contains("12栋") || p.studentBuildingId.Contains("11栋")).Select(p => new PersonMoudle
+        //    {
+        //        orgId = "org001",
+        //        code = p.studentNo,
+        //        idCode = p.certificateNo,
+        //        name = p.studentName,
+        //        roleId = "student001", //teacher001
+        //        sex = 0,
+        //        colleageCode = "55f67dcc42a5426fb0670d58dda22a5b", //默认分院
+        //        dormitoryCode = "fe8a5225be5f43478d0dd0c85da5dd1d",//楼栋  例如： 11栋
+        //        dormitoryFloor = "8e447843bc8c4e92b9ffdf777047d20d", //楼层  例如：3楼
+        //        dormitoryRoom = "20c70f65b54b4f96851e26343678c4ec", //宿舍号  例如：312
+        //        photoUrl = p.ImgUri
+        //    }).ToList();
 
-            foreach (var person in stuList)
-            {
-                DHAccount.PUSH_DH_ADD_PERSON(person);
-            }
-        }
+        //    foreach (var person in stuList)
+        //    {
+        //        DHAccount.PUSH_DH_ADD_PERSON(person);
+        //    }
+        //}
     }
 }
