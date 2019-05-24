@@ -45,9 +45,27 @@ namespace ZHXY.Application
             if (count > 0)
                 throw new Exception("编号重复");
 
-   
+            if (!string.IsNullOrEmpty(keyValue))
+            {
+                var old = Get(keyValue);
+                roleEntity.MapTo(old);
+                old.F_Id = keyValue;
+                UpdroleAuthorizeEntitys(permissionIds2, permissionIds3, permissionIds4, old.F_Id);
+            }
+            else
+            {
+                roleEntity.F_Id = Guid.NewGuid().ToString("N").ToUpper();
+                roleEntity.F_EnCode = roleEntity.F_Id;
+                Add(roleEntity);
+                UpdroleAuthorizeEntitys(permissionIds2,permissionIds3,permissionIds4, roleEntity.F_Id);
+            }
+          
+            SaveChanges();
+        }
 
-            var moduledata =Read<SysModule>().ToList();
+        private void UpdroleAuthorizeEntitys(string[] permissionIds2, string[] permissionIds3, string[] permissionIds4, string keyValue)
+        {
+            var moduledata = Read<SysModule>().ToList();
             var buttondata = Read<SysButton>().ToList();
             var roleAuthorizeEntitys = new List<SysRoleAuthorize>();
             foreach (var itemId in permissionIds2)
@@ -55,7 +73,7 @@ namespace ZHXY.Application
                 var roleAuthorizeEntity = new SysRoleAuthorize();
                 roleAuthorizeEntity.F_Id = Guid.NewGuid().ToString("N").ToUpper();
                 roleAuthorizeEntity.F_ObjectType = 1;
-                roleAuthorizeEntity.F_ObjectId = roleEntity.F_Id;
+                roleAuthorizeEntity.F_ObjectId = keyValue;
                 roleAuthorizeEntity.F_ItemId = itemId;
                 if (moduledata.Find(t => t.F_Id == itemId) != null)
                 {
@@ -72,7 +90,7 @@ namespace ZHXY.Application
                 var roleAuthorizeEntity = new SysRoleAuthorize();
                 roleAuthorizeEntity.F_Id = Guid.NewGuid().ToString("N").ToUpper();
                 roleAuthorizeEntity.F_ObjectType = 1;
-                roleAuthorizeEntity.F_ObjectId = roleEntity.F_Id;
+                roleAuthorizeEntity.F_ObjectId = keyValue;
                 roleAuthorizeEntity.F_ItemId = itemId;
                 if (moduledata.Find(t => t.F_Id == itemId) != null)
                 {
@@ -89,7 +107,7 @@ namespace ZHXY.Application
                 var roleAuthorizeEntity = new SysRoleAuthorize();
                 roleAuthorizeEntity.F_Id = Guid.NewGuid().ToString("N").ToUpper();
                 roleAuthorizeEntity.F_ObjectType = 1;
-                roleAuthorizeEntity.F_ObjectId = roleEntity.F_Id;
+                roleAuthorizeEntity.F_ObjectId = keyValue;
                 roleAuthorizeEntity.F_ItemId = itemId;
                 if (moduledata.Find(t => t.F_Id == itemId) != null)
                 {
@@ -102,23 +120,8 @@ namespace ZHXY.Application
                 roleAuthorizeEntitys.Add(roleAuthorizeEntity);
             }
 
-
-            if (!string.IsNullOrEmpty(keyValue))
-            {
-                var old = Get(keyValue);
-                roleEntity.MapTo(old);
-                old.F_Id = keyValue;
-
-            }
-            else
-            {
-                roleEntity.F_Id = Guid.NewGuid().ToString("N").ToUpper();
-                roleEntity.F_EnCode = roleEntity.F_Id;
-                Add(roleEntity);
-            }
-            Del<SysRoleAuthorize>(t => t.F_ObjectId == roleEntity.F_Id);
+            Del<SysRoleAuthorize>(t => t.F_ObjectId == keyValue);
             Add<SysRoleAuthorize>(roleAuthorizeEntitys);
-            SaveChanges();
         }
 
         public List<SysRole> GetListByRoleId(string roleId)
