@@ -50,6 +50,7 @@
     <Compile Include="EntityConfig\Dorm\LDJCLSMap.cs" />
     <Compile Include="EntityConfig\Dorm\LeaveLimitMap.cs" />
     <Compile Include="EntityConfig\Dorm\LeaveOrderMap.cs" />
+    <Compile Include="EntityConfig\Dorm\Report\ZhxyPushMap.cs" />
     <Compile Include="EntityConfig\Dorm\StuFaceOrderMap.cs" />
     <Compile Include="EntityConfig\Dorm\VisitorApproveMap.cs" />
     <Compile Include="EntityConfig\System\AppVersionMap.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="Entity\Dorm\Holiday.cs" />
     <Compile Include="Entity\Dorm\LeaveLimit.cs" />
     <Compile Include="Entity\Dorm\LeaveOrder.cs" />
+    <Compile Include="Entity\Dorm\Report\ZhxyPush.cs" />
     <Compile Include="Entity\Dorm\StuFaceOrder.cs" />
     <Compile Include="Entity\Dorm\VisitorApprove.cs" />
     <Compile Include="Entity\System\AppVersion.cs" />

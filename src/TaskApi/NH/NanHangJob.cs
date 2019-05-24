@@ -46,9 +46,12 @@ namespace TaskApi.Job
             ///---------      Step2: 更新 Sys_User 表数据      ---------///
             ProcessSchoolStudentSysUser(db, newDb);
             Console.WriteLine(" *** 同步 Sys_User 结束 。");
-            ///---------      Step5: 更新 Dorm_Dorm 表数据      ---------///
+            ///---------      Step3: 更新 Dorm_Dorm 表数据      ---------///
             ProcessSchoolStudentDormInfo(db, newDb);
             Console.WriteLine(" *** 同步 宿舍相关的表 结束 。");
+            ///---------      Step5: 更新 Dorm_Dorm 表数据      ---------///
+            ProcessStudentSysUserRole(db, newDb);
+            Console.WriteLine(" *** 同步 用户角色表 结束 。");
             //newDb.BulkDelete(newDb.StudentInfoes.ToList()); //批量删除中间表的所有数据
             newDb.Dispose();
             db.Dispose();
@@ -70,6 +73,8 @@ namespace TaskApi.Job
             ProcessSchoolTeacherInfo(db, newDb);
             ///---------      Step2: 更新 Sys_User 表数据      ---------///
             ProcessSchoolTeacherSysUser(db, newDb);
+            ///---------      Step3: 更新 Sys_User_Role 表数据      ---------///
+            ProcessSchoolTeacherSysUserRole(db, newDb);
             //newDb.BulkDelete(newDb.TeacherInfoes.ToList()); //删除中间表的所有教师数据
             newDb.Dispose();
             sw.Stop();
@@ -325,6 +330,31 @@ namespace TaskApi.Job
         }
 
         /// <summary>
+        ///  教师角色表
+        /// </summary>
+        /// <param name="db"></param>
+        /// <param name="newDb"></param>
+        public void ProcessSchoolTeacherSysUserRole(ZhxyDbContext db, NHModel newDb)
+        {
+            var newData = newDb.Set<TeacherInfo>().AsNoTracking().Select(p => p.teacherId).ToList();
+            var oldData = db.Set<SysUserRole>().AsNoTracking().Select(p => p.F_User).ToList();
+            var AddData = newData.Except(oldData).ToList();
+            var ListData = new List<SysUserRole>();
+            if(null != AddData && AddData.Count() > 0)
+            {
+                foreach(var s in AddData)
+                {
+                    SysUserRole r = new SysUserRole();
+                    r.F_User = s;
+                    r.F_Role = "teacher";
+                    ListData.Add(r);
+                }
+            }
+            db.Set<SysUserRole>().AddRange(ListData);
+            db.SaveChanges();
+        }
+
+        /// <summary>
         /// 简化程序（把学生数据分为六张表，分为六个方法进行） School_Students
         /// </summary>
         /// <param name="oldDb"></param>
@@ -550,6 +580,31 @@ namespace TaskApi.Job
                 }
             }
             db.Set<DormStudent>().AddRange(FinalAddList);
+            db.SaveChanges();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="db"></param>
+        /// <param name="newDb"></param>
+        public void ProcessStudentSysUserRole(ZhxyDbContext db, NHModel newDb)
+        {
+            var newData = newDb.Set<StudentInfo>().AsNoTracking().Select(p => p.studentId).ToList();
+            var oldData = db.Set<SysUserRole>().AsNoTracking().Select(p => p.F_User).ToList();
+            var AddData = newData.Except(oldData).ToList();
+            var ListData = new List<SysUserRole>();
+            if (null != AddData && AddData.Count() > 0)
+            {
+                foreach (var s in AddData)
+                {
+                    SysUserRole r = new SysUserRole();
+                    r.F_User = s;
+                    r.F_Role = "student";
+                    ListData.Add(r);
+                }
+            }
+            db.Set<SysUserRole>().AddRange(ListData);
             db.SaveChanges();
         }
 

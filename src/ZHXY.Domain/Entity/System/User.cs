@@ -83,7 +83,7 @@ namespace ZHXY.Domain
         /// <summary>
         /// 登录总次数
         /// </summary>
-        public int LoginCount { get; set; }
+        public int? LoginCount { get; set; }
 
     }
 }
