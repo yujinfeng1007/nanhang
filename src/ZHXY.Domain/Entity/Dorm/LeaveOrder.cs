@@ -21,12 +21,12 @@ namespace ZHXY.Domain
         /// <summary>
         /// 开始时间
         /// </summary>
-        public DateTime? StartTime { get; set; }
+        public DateTime StartTime { get; set; }
 
         /// <summary>
         /// 结束时间
         /// </summary>
-        public DateTime? EndOfTime { get; set; }
+        public DateTime EndOfTime { get; set; }
 
         /// <summary>
         /// 请假学生的id
@@ -41,7 +41,7 @@ namespace ZHXY.Domain
         /// <summary>
         /// 请假天数
         /// </summary>
-        public decimal LeaveDays { get; set; }        
+        public decimal? LeaveDays { get; set; }        
 
         /// <summary>
         /// 请假类型
