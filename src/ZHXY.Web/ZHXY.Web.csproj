@@ -230,19 +230,20 @@
     <Compile Include="Areas\Dorm\Controllers\VisitLimitController.cs" />
     <Compile Include="Areas\Dorm\Controllers\VisitLogController.cs" />
     <Compile Include="Areas\Dorm\DormAreaRegistration.cs" />
-    <Compile Include="Areas\SystemManage\Controllers\DicController.cs" />
-    <Compile Include="Areas\SystemManage\Controllers\DutyController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\CurrentUserController.cs" />
+    <Compile Include="Areas\SystemManage\Controllers\ItemsDataController.cs" />
+    <Compile Include="Areas\SystemManage\Controllers\ItemsTypeController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\LogController.cs" />
+    <Compile Include="Areas\SystemManage\Controllers\ModuleButtonController.cs" />
+    <Compile Include="Areas\SystemManage\Controllers\ModuleController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\ResourceController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\OrganizeController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\OrgLeaderController.cs" />
+    <Compile Include="Areas\SystemManage\Controllers\RoleAuthorizeController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\RoleController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\UserController.cs" />
     <Compile Include="Areas\SystemManage\SystemManageAreaRegistration.cs" />
     <Compile Include="Controllers\ClientDataController.cs" />
-    <Compile Include="Controllers\DataController.cs" />
-    <Compile Include="Controllers\MobileDataViewController.cs" />
     <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Controllers\SelectController.cs" />
     <Compile Include="Controllers\FileController.cs" />
@@ -256,40 +257,10 @@
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Content Include="Content\bootstrap-editable\css\bootstrap-editable.css" />
-    <Content Include="Content\bootstrap-editable\img\clear.png" />
-    <Content Include="Content\bootstrap-editable\img\loading.gif" />
-    <Content Include="Content\bootstrap-fileinput\css\fileinput-rtl.css" />
-    <Content Include="Content\bootstrap-fileinput\css\fileinput-rtl.min.css" />
-    <Content Include="Content\bootstrap-fileinput\css\fileinput.css" />
-    <Content Include="Content\bootstrap-fileinput\css\fileinput.min.css" />
-    <Content Include="Content\bootstrap-fileinput\img\loading-sm.gif" />
-    <Content Include="Content\bootstrap-fileinput\img\loading.gif" />
-    <Content Include="Content\bootstrap-fileinput\themes\explorer-fas\theme.css" />
-    <Content Include="Content\bootstrap-fileinput\themes\explorer-fas\theme.js" />
-    <Content Include="Content\bootstrap-fileinput\themes\explorer-fas\theme.min.css" />
-    <Content Include="Content\bootstrap-fileinput\themes\explorer-fas\theme.min.js" />
-    <Content Include="Content\bootstrap-fileinput\themes\explorer-fa\theme.css" />
-    <Content Include="Content\bootstrap-fileinput\themes\explorer-fa\theme.js" />
-    <Content Include="Content\bootstrap-fileinput\themes\explorer-fa\theme.min.css" />
-    <Content Include="Content\bootstrap-fileinput\themes\explorer-fa\theme.min.js" />
-    <Content Include="Content\bootstrap-fileinput\themes\explorer\theme.css" />
-    <Content Include="Content\bootstrap-fileinput\themes\explorer\theme.js" />
-    <Content Include="Content\bootstrap-fileinput\themes\explorer\theme.min.css" />
-    <Content Include="Content\bootstrap-fileinput\themes\explorer\theme.min.js" />
-    <Content Include="Content\bootstrap-fileinput\themes\fas\theme.js" />
-    <Content Include="Content\bootstrap-fileinput\themes\fas\theme.min.js" />
-    <Content Include="Content\bootstrap-fileinput\themes\fa\theme.js" />
-    <Content Include="Content\bootstrap-fileinput\themes\fa\theme.min.js" />
-    <Content Include="Content\bootstrap-fileinput\themes\gly\theme.js" />
-    <Content Include="Content\bootstrap-fileinput\themes\gly\theme.min.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\bootstrap3-editable\css\bootstrap-editable.css" />
-    <Content Include="Content\bootstrap3-editable\img\clear.png" />
-    <Content Include="Content\bootstrap3-editable\img\loading.gif" />
     <Content Include="Content\css\framework-font.css" />
     <Content Include="Content\css\framework-ui.css" />
     <Content Include="Content\css\framework-login.css" />
@@ -356,35 +327,6 @@
     <Content Include="Content\img\wechat.jpg" />
     <Content Include="Content\img\zTreeStandard.gif" />
     <Content Include="Content\img\zTreeStandard.png" />
-    <Content Include="Content\inputs-ext\address\address.css" />
-    <Content Include="Content\inputs-ext\typeaheadjs\lib\typeahead.js-bootstrap.css" />
-    <Content Include="Content\inputs-ext\wysihtml5\bootstrap-wysihtml5-0.0.2\bootstrap-wysihtml5-0.0.2.css" />
-    <Content Include="Content\inputs-ext\wysihtml5\bootstrap-wysihtml5-0.0.2\wysiwyg-color.css" />
-    <Content Include="Content\jquery-editable\css\jquery-editable.css" />
-    <Content Include="Content\jquery-editable\img\clear.png" />
-    <Content Include="Content\jquery-editable\img\loading.gif" />
-    <Content Include="Content\jquery-editable\jquery-ui-datepicker\css\redmond\images\animated-overlay.gif" />
-    <Content Include="Content\jquery-editable\jquery-ui-datepicker\css\redmond\images\ui-bg_flat_0_aaaaaa_40x100.png" />
-    <Content Include="Content\jquery-editable\jquery-ui-datepicker\css\redmond\images\ui-bg_flat_55_fbec88_40x100.png" />
-    <Content Include="Content\jquery-editable\jquery-ui-datepicker\css\redmond\images\ui-bg_glass_75_d0e5f5_1x400.png" />
-    <Content Include="Content\jquery-editable\jquery-ui-datepicker\css\redmond\images\ui-bg_glass_85_dfeffc_1x400.png" />
-    <Content Include="Content\jquery-editable\jquery-ui-datepicker\css\redmond\images\ui-bg_glass_95_fef1ec_1x400.png" />
-    <Content Include="Content\jquery-editable\jquery-ui-datepicker\css\redmond\images\ui-bg_gloss-wave_55_5c9ccc_500x100.png" />
-    <Content Include="Content\jquery-editable\jquery-ui-datepicker\css\redmond\images\ui-bg_inset-hard_100_f5f8f9_1x100.png" />
-    <Content Include="Content\jquery-editable\jquery-ui-datepicker\css\redmond\images\ui-bg_inset-hard_100_fcfdfd_1x100.png" />
-    <Content Include="Content\jquery-editable\jquery-ui-datepicker\css\redmond\images\ui-icons_217bc0_256x240.png" />
-    <Content Include="Content\jquery-editable\jquery-ui-datepicker\css\redmond\images\ui-icons_2e83ff_256x240.png" />
-    <Content Include="Content\jquery-editable\jquery-ui-datepicker\css\redmond\images\ui-icons_469bdd_256x240.png" />
-    <Content Include="Content\jquery-editable\jquery-ui-datepicker\css\redmond\images\ui-icons_6da8d5_256x240.png" />
-    <Content Include="Content\jquery-editable\jquery-ui-datepicker\css\redmond\images\ui-icons_cd0a0a_256x240.png" />
-    <Content Include="Content\jquery-editable\jquery-ui-datepicker\css\redmond\images\ui-icons_d8e7f3_256x240.png" />
-    <Content Include="Content\jquery-editable\jquery-ui-datepicker\css\redmond\images\ui-icons_f9bd01_256x240.png" />
-    <Content Include="Content\jquery-editable\jquery-ui-datepicker\css\redmond\jquery-ui-1.10.3.custom.css" />
-    <Content Include="Content\jquery-editable\jquery-ui-datepicker\css\redmond\jquery-ui-1.10.3.custom.min.css" />
-    <Content Include="Content\jquery.layout-1.4.3.css" />
-    <Content Include="Content\jqueryui-editable\css\jqueryui-editable.css" />
-    <Content Include="Content\jqueryui-editable\img\clear.png" />
-    <Content Include="Content\jqueryui-editable\img\loading.gif" />
     <Content Include="Content\js\bootstrap-fileinput-master\css\fileinput-rtl.css" />
     <Content Include="Content\js\bootstrap-fileinput-master\css\fileinput-rtl.min.css" />
     <Content Include="Content\js\bootstrap-fileinput-master\css\fileinput.css" />
@@ -511,16 +453,8 @@
     <Content Include="Areas\Dorm\Views\Teacher\Index.cshtml" />
     <Content Include="Areas\Dorm\Views\XFTX\SBYH.cshtml" />
     <Content Include="Areas\Dorm\Views\DormBuilding\BindUsers.cshtml" />
-    <Content Include="Content\bootstrap.min.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
-    <Content Include="Content\bootstrap-theme.min.css.map" />
-    <Content Include="Content\bootstrap-theme.css.map" />
-    <Content Include="Content\bootstrap-fileinput\scss\themes\explorer\theme.scss" />
-    <Content Include="Content\bootstrap-fileinput\scss\themes\explorer-fa\theme.scss" />
-    <Content Include="Content\bootstrap-fileinput\scss\themes\explorer-fas\theme.scss" />
-    <Content Include="Content\bootstrap-fileinput\scss\fileinput.scss" />
-    <Content Include="Content\bootstrap-fileinput\scss\fileinput-rtl.scss" />
-    <Content Include="Content\bootstrap-fileinput\sass\fileinput.scss" />
+    <Content Include="Content\js\bootstrap\bootstrap.js" />
+    <Content Include="Content\js\bootstrap\bootstrap.min.css" />
     <Content Include="Content\js\charts\Chart.js" />
     <Content Include="Content\js\charts\Chart.min.js" />
     <Content Include="Content\js\datepicker\calendar.js" />
@@ -555,14 +489,37 @@
     <Content Include="Areas\Dorm\Views\Holiday\Index.cshtml" />
     <Content Include="Areas\SystemManage\Views\Log\Index.cshtml" />
     <Content Include="Areas\SystemManage\Views\Log\LoginHis.cshtml" />
-    <Content Include="Areas\SystemManage\Views\Dic\Index.cshtml" />
-    <Content Include="Areas\SystemManage\Views\Role\Power.cshtml" />
-    <Content Include="Areas\SystemManage\Views\Role\Menu.cshtml" />
     <Content Include="Content\fonts\gijgo-material.woff" />
     <Content Include="Content\fonts\gijgo-material.ttf" />
     <Content Include="Content\fonts\gijgo-material.eot" />
+    <Content Include="Content\js\framework-clientdata.js" />
+    <Content Include="Content\js\index.js" />
+    <Content Include="Content\js\loading\pace.min.js" />
+    <Content Include="Content\js\lodash\lodash.js" />
     <Content Include="Views\Page\AddMenuForm.cshtml" />
     <Content Include="Views\Page\AddFuncForm.cshtml" />
+    <Content Include="Areas\SystemManage\Views\ModuleButton\CloneButton.cshtml" />
+    <Content Include="Areas\SystemManage\Views\ModuleButton\Details.cshtml" />
+    <Content Include="Areas\SystemManage\Views\ModuleButton\Form.cshtml" />
+    <Content Include="Areas\SystemManage\Views\ModuleButton\Index.cshtml" />
+    <Content Include="Areas\SystemManage\Views\Module\Details.cshtml" />
+    <Content Include="Areas\SystemManage\Views\Module\Form.cshtml" />
+    <Content Include="Areas\SystemManage\Views\Module\Index.cshtml" />
+    <Content Include="Content\js\bootstrap\bootstrap.min.css.bak" />
+    <Content Include="Areas\SystemManage\Views\Role\Details.cshtml" />
+    <Content Include="Areas\SystemManage\Views\Role\Form.cshtml" />
+    <Content Include="Areas\SystemManage\Views\Role\Index.cshtml" />
+    <Content Include="Areas\SystemManage\Views\ItemsData\Details.cshtml" />
+    <Content Include="Areas\SystemManage\Views\ItemsData\Form.cshtml" />
+    <Content Include="Areas\SystemManage\Views\ItemsData\Index.cshtml" />
+    <Content Include="Areas\SystemManage\Views\ItemsType\Details.cshtml" />
+    <Content Include="Areas\SystemManage\Views\ItemsType\Form.cshtml" />
+    <Content Include="Areas\SystemManage\Views\ItemsType\Index.cshtml" />
+    <Content Include="Areas\SystemManage\Views\User\Details.cshtml" />
+    <Content Include="Areas\SystemManage\Views\User\Form.cshtml" />
+    <Content Include="Areas\SystemManage\Views\User\Index.cshtml" />
+    <Content Include="Areas\SystemManage\Views\User\Info.cshtml" />
+    <Content Include="Areas\SystemManage\Views\User\RevisePassword.cshtml" />
     <None Include="Content\js\dialog\dialog.css.bak" />
     <Content Include="Content\js\dialog\dialog.css" />
     <Content Include="Content\js\dialog\dialog.js" />
@@ -613,22 +570,7 @@
     <Content Include="Content\treeview\core.min.css" />
     <Content Include="Content\treeview\tree.css" />
     <Content Include="Content\treeview\tree.min.css" />
-    <Content Include="Content\zTree.css" />
-    <Content Include="Content\zTree.min.css" />
-    <Content Include="Content\zTree.theme.metro.css" />
-    <Content Include="Content\zTree.theme.metro.min.css" />
     <Content Include="NotOutReport.html" />
-    <Content Include="Scripts\jquery.md5.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\jquery.ztree.all-3.5.js" />
-    <Content Include="Scripts\jquery.ztree.all-3.5.min.js" />
-    <Content Include="Scripts\jquery.ztree.dropdown.js" />
-    <Content Include="Scripts\message_zh.js" />
-    <Content Include="Scripts\pace.js" />
-    <Content Include="Scripts\pace.min.js" />
-    <Content Include="Scripts\pageConfig.js" />
-    <Content Include="Scripts\jquery.resizeend.js" />
     <Content Include="Content\js\simditor\css\simditor.css" />
     <Content Include="Content\js\simditor\js\hotkeys.js" />
     <Content Include="Content\js\simditor\js\hotkeys.min.js" />
@@ -727,21 +669,6 @@
     <Content Include="Content\js\webuploader\webuploader.nolog.min.js" />
     <Content Include="Content\js\webuploader\webuploader.withoutimage.js" />
     <Content Include="Content\js\webuploader\webuploader.withoutimage.min.js" />
-    <Content Include="Content\css\wizard.css" />
-    <Content Include="Scripts\treeview\checkbox.js" />
-    <Content Include="Scripts\treeview\checkbox.min.js" />
-    <Content Include="Scripts\treeview\core.js" />
-    <Content Include="Scripts\treeview\core.min.js" />
-    <Content Include="Scripts\treeview\draggable.js" />
-    <Content Include="Scripts\treeview\draggable.min.js" />
-    <Content Include="Scripts\treeview\droppable.js" />
-    <Content Include="Scripts\treeview\droppable.min.js" />
-    <Content Include="Scripts\treeview\tree.js" />
-    <Content Include="Scripts\treeview\tree.min.js" />
-    <Content Include="Scripts\wizard.js" />
-    <Content Include="Content\css\zoom.css" />
-    <Content Include="Scripts\select7.js" />
-    <Content Include="Scripts\zoom.js" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
@@ -784,8 +711,6 @@
     <Content Include="Content\themes\base\tabs.css" />
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
-    <Content Include="Content\ui.jqgrid.css" />
-    <Content Include="Content\ui.jqgrid.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -813,16 +738,8 @@
     <Content Include="Content\img\login-bg.png" />
     <Content Include="Content\img\logo.jpg" />
     <Content Include="Content\img\up_02.png" />
-    <Content Include="Scripts\bootstrap-editable\js\bootstrap-editable.js" />
-    <Content Include="Scripts\bootstrap-editable\js\bootstrap-editable.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\bootstrap3-editable\js\bootstrap-editable.js" />
-    <Content Include="Scripts\bootstrap3-editable\js\bootstrap-editable.min.js" />
-    <Content Include="Scripts\core.js" />
-    <Content Include="Scripts\core.min.js" />
-    <Content Include="Scripts\fileinput.js" />
-    <Content Include="Scripts\fileinput.min.js" />
     <Content Include="Scripts\highcharts\6.2.0\css\highcharts.css" />
     <Content Include="Scripts\highcharts\6.2.0\css\themes\dark-unica.css" />
     <Content Include="Scripts\highcharts\6.2.0\css\themes\grid-light.css" />
@@ -1478,7 +1395,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\ui.jqgrid.min.css.map" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Scripts\i18n\af.js" />
     <Content Include="Scripts\i18n\ar.js" />
@@ -1539,14 +1455,6 @@
     <Content Include="Scripts\i18n\vi.js" />
     <Content Include="Scripts\i18n\zh-CN.js" />
     <Content Include="Scripts\i18n\zh-TW.js" />
-    <Content Include="Scripts\inputs-ext\address\address.js" />
-    <Content Include="Scripts\inputs-ext\typeaheadjs\lib\typeahead.js" />
-    <Content Include="Scripts\inputs-ext\typeaheadjs\typeaheadjs.js" />
-    <Content Include="Scripts\inputs-ext\wysihtml5\bootstrap-wysihtml5-0.0.2\bootstrap-wysihtml5-0.0.2.js" />
-    <Content Include="Scripts\inputs-ext\wysihtml5\bootstrap-wysihtml5-0.0.2\bootstrap-wysihtml5-0.0.2.min.js" />
-    <Content Include="Scripts\inputs-ext\wysihtml5\bootstrap-wysihtml5-0.0.2\wysihtml5-0.3.0.js" />
-    <Content Include="Scripts\inputs-ext\wysihtml5\bootstrap-wysihtml5-0.0.2\wysihtml5-0.3.0.min.js" />
-    <Content Include="Scripts\inputs-ext\wysihtml5\wysihtml5.js" />
     <Content Include="Scripts\jquery-2.1.1.min.map" />
     <Content Include="Scripts\free-jqGrid\plugins\min\ui.multiselect.js.map" />
     <Content Include="Scripts\free-jqGrid\plugins\min\jquery.jqgrid.showhidecolumnmenu.js.map" />
@@ -1617,198 +1525,11 @@
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
-    <Content Include="Scripts\jquery-editable\jquery-ui-datepicker\js\jquery-ui-1.10.3.custom.js" />
-    <Content Include="Scripts\jquery-editable\jquery-ui-datepicker\js\jquery-ui-1.10.3.custom.min.js" />
-    <Content Include="Scripts\jquery-editable\js\jquery-editable-poshytip.js" />
-    <Content Include="Scripts\jquery-editable\js\jquery-editable-poshytip.min.js" />
-    <Content Include="Scripts\jquery-ui-1.12.1.js" />
-    <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
     <Content Include="Scripts\jquery.cookie-1.4.1.min.js" />
     <Content Include="Scripts\jquery.cookie.js" />
-    <Content Include="Scripts\jquery.layout-1.4.3.js" />
-    <Content Include="Scripts\jquery.qrcode.js" />
-    <Content Include="Scripts\jquery.qrcode.min.js" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.validate.bootstrap.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jqueryui-editable\js\jqueryui-editable.js" />
-    <Content Include="Scripts\jqueryui-editable\js\jqueryui-editable.min.js" />
     <Content Include="Scripts\laydate.js" />
-    <Content Include="Scripts\locales\ar.js" />
-    <Content Include="Scripts\locales\az.js" />
-    <Content Include="Scripts\locales\bg.js" />
-    <Content Include="Scripts\locales\ca.js" />
-    <Content Include="Scripts\locales\cr.js" />
-    <Content Include="Scripts\locales\cs.js" />
-    <Content Include="Scripts\locales\da.js" />
-    <Content Include="Scripts\locales\de.js" />
-    <Content Include="Scripts\locales\el.js" />
-    <Content Include="Scripts\locales\es.js" />
-    <Content Include="Scripts\locales\et.js" />
-    <Content Include="Scripts\locales\fa.js" />
-    <Content Include="Scripts\locales\fi.js" />
-    <Content Include="Scripts\locales\fr.js" />
-    <Content Include="Scripts\locales\gl.js" />
-    <Content Include="Scripts\locales\he.js" />
-    <Content Include="Scripts\locales\hu.js" />
-    <Content Include="Scripts\locales\id.js" />
-    <Content Include="Scripts\locales\it.js" />
-    <Content Include="Scripts\locales\ja.js" />
-    <Content Include="Scripts\locales\ka.js" />
-    <Content Include="Scripts\locales\kr.js" />
-    <Content Include="Scripts\locales\kz.js" />
-    <Content Include="Scripts\locales\LANG.js" />
-    <Content Include="Scripts\locales\lt.js" />
-    <Content Include="Scripts\locales\nl.js" />
-    <Content Include="Scripts\locales\no.js" />
-    <Content Include="Scripts\locales\pl.js" />
-    <Content Include="Scripts\locales\pt-BR.js" />
-    <Content Include="Scripts\locales\pt.js" />
-    <Content Include="Scripts\locales\ro.js" />
-    <Content Include="Scripts\locales\ru.js" />
-    <Content Include="Scripts\locales\sk.js" />
-    <Content Include="Scripts\locales\sl.js" />
-    <Content Include="Scripts\locales\sv.js" />
-    <Content Include="Scripts\locales\th.js" />
-    <Content Include="Scripts\locales\tr.js" />
-    <Content Include="Scripts\locales\uk.js" />
-    <Content Include="Scripts\locales\uz.js" />
-    <Content Include="Scripts\locales\vi.js" />
-    <Content Include="Scripts\locales\zh-TW.js" />
-    <Content Include="Scripts\locales\zh.js" />
-    <Content Include="Scripts\lodash.js" />
-    <Content Include="Scripts\lodash.min.js" />
-    <Content Include="Scripts\plugins\canvas-to-blob.js" />
-    <Content Include="Scripts\plugins\canvas-to-blob.min.js" />
-    <Content Include="Scripts\plugins\piexif.js" />
-    <Content Include="Scripts\plugins\piexif.min.js" />
-    <Content Include="Scripts\plugins\purify.js" />
-    <Content Include="Scripts\plugins\purify.min.js" />
-    <Content Include="Scripts\plugins\sortable.js" />
-    <Content Include="Scripts\plugins\sortable.min.js" />
-    <Content Include="Scripts\qrcode.js" />
-    <Content Include="Scripts\qrcode.min.js" />
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
-    <Content Include="Scripts\tinymce\jquery.tinymce.min.js" />
-    <Content Include="Scripts\tinymce\license.txt" />
-    <Content Include="Scripts\tinymce\plugins\advlist\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\advlist\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\anchor\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\anchor\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\autolink\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\autolink\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\autoresize\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\autoresize\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\autosave\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\autosave\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\bbcode\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\bbcode\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\charmap\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\charmap\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\codesample\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\codesample\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\code\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\code\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\colorpicker\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\colorpicker\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\contextmenu\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\contextmenu\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\directionality\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\directionality\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\emoticons\js\emojis.js" />
-    <Content Include="Scripts\tinymce\plugins\emoticons\js\emojis.min.js" />
-    <Content Include="Scripts\tinymce\plugins\emoticons\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\emoticons\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\fullpage\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\fullpage\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\fullscreen\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\fullscreen\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\help\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\help\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\hr\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\hr\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\imagetools\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\imagetools\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\image\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\image\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\importcss\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\importcss\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\insertdatetime\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\insertdatetime\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\legacyoutput\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\legacyoutput\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\link\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\link\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\lists\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\lists\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\media\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\media\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\nonbreaking\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\nonbreaking\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\noneditable\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\noneditable\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\pagebreak\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\pagebreak\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\paste\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\paste\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\preview\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\preview\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\print\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\print\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\quickbars\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\quickbars\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\save\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\save\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\searchreplace\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\searchreplace\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\spellchecker\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\spellchecker\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\tabfocus\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\tabfocus\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\table\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\table\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\template\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\template\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\textcolor\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\textcolor\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\textpattern\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\textpattern\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\toc\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\toc\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\visualblocks\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\visualblocks\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\visualchars\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\visualchars\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\wordcount\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\wordcount\plugin.min.js" />
-    <Content Include="Scripts\tinymce\skins\content\default\content.css" />
-    <Content Include="Scripts\tinymce\skins\content\default\content.min.css" />
-    <Content Include="Scripts\tinymce\skins\content\document\content.css" />
-    <Content Include="Scripts\tinymce\skins\content\document\content.min.css" />
-    <Content Include="Scripts\tinymce\skins\content\writer\content.css" />
-    <Content Include="Scripts\tinymce\skins\content\writer\content.min.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide-dark\content.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide-dark\content.inline.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide-dark\content.inline.min.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide-dark\content.min.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide-dark\skin.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide-dark\skin.min.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide\content.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide\content.inline.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide\content.inline.min.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide\content.min.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide\content.mobile.min.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide\skin.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide\skin.min.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide\skin.mobile.min.css" />
-    <Content Include="Scripts\tinymce\themes\mobile\theme.js" />
-    <Content Include="Scripts\tinymce\themes\mobile\theme.min.js" />
-    <Content Include="Scripts\tinymce\themes\silver\theme.js" />
-    <Content Include="Scripts\tinymce\themes\silver\theme.min.js" />
-    <Content Include="Scripts\tinymce\tinymce.js" />
-    <Content Include="Scripts\tinymce\tinymce.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1816,10 +1537,6 @@
     <Content Include="Areas\SystemManage\Views\OrgLeader\Index.cshtml" />
     <Content Include="Views\Shared\_Index_Heads.cshtml" />
     <Content Include="Views\Shared\_Layout_Heads.cshtml" />
-    <Content Include="Scripts\qrcode.min.js.map" />
-    <Content Include="Scripts\jquery.qrcode.min.js.map" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide\fonts\tinymce-mobile.woff" />
-    <Content Include="Scripts\tinymce\langs\readme.md" />
     <Content Include="Views\Shared\_My.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1858,22 +1575,10 @@
     <Content Include="Areas\SystemManage\Views\Resource\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\Dic\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Areas\SystemManage\Views\Organize\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\SystemManage\Views\Organize\Form.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\Role\Form.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\Role\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\User\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\fonts\fontawesome-webfont.eot" />
@@ -1881,12 +1586,6 @@
     <Content Include="Content\fonts\fontawesome-webfont.woff" />
     <Content Include="Content\fonts\fontawesome-webfont.woff2" />
     <Content Include="Content\fonts\FontAwesome.otf" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\Duty\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\SystemManage\Views\Duty\Form.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Default.cshtml" />
@@ -2094,12 +1793,12 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>51910</DevelopmentServerPort>
           <DevelopmentServerVPath>
           </DevelopmentServerVPath>
-          <IISUrl>http://192.168.1.146:8082/</IISUrl>
+          <IISUrl>http://localhost:8081/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

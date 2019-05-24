@@ -15,9 +15,9 @@ namespace ZHXY.Web.SystemManage.Controllers
     {
         private OrgService App { get; }
         private UserService UserApp { get; }
-        private RoleService RoleApp { get; }
+        private SysRoleAppService RoleApp { get; }
 
-        public OrganizeController(OrgService app, UserService userApp, RoleService roleApp)
+        public OrganizeController(OrgService app, UserService userApp, SysRoleAppService roleApp)
         {
             App = app;
             UserApp = UserApp;
@@ -89,16 +89,16 @@ namespace ZHXY.Web.SystemManage.Controllers
         {
             var data = App.GetList();
             var data_deeps = "";
-            var role = RoleApp.GetById(keyword);
+            var role = RoleApp.Get(keyword);
             if (!role.IsEmpty())
             {
-                data_deeps = role.DataDeps;
+                data_deeps = role.F_Data_Deps;
             }
             else
             {
                 var user = UserApp.GetById(keyword);
-                if (!user.IsEmpty())
-                    data_deeps = user.DataDeps;
+                //if (!user.IsEmpty())
+                //    data_deeps = user.DataDeps;
             }
 
             var treeList = new List<TreeViewModel>();

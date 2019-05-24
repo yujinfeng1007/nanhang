@@ -3,7 +3,6 @@
     Layout = "~/Views/Shared/_Index.cshtml";
 }
 <script>
-    let orgList = JSON.parse(localStorage.getItem("orgList"));
 
     $(function () {
         gridList();
@@ -19,23 +18,23 @@
                 { label: '姓名', name: 'name', width: 150, align: 'left' },
                 {
                     label: '年级', name: 'departmentId', width: 200, align: 'left',                   
-                     formatter: function (cv) {
-                        return orgList[cv] == null ? "" : orgList[cv];
-                    },
+                     formatter: function (cellvalue, options, rowObject) {
+                        return top.clients.organize[cellvalue] == null ? "" : top.clients.organize[cellvalue].fullname;
+                    }
                     
                 },
                 {
                     label: '院系', name: 'gradeId', width: 200, align: 'left',
-                    formatter: function (cv) {
-                        return orgList[cv] == null ? "" : orgList[cv];
-                    },
+                    formatter: function (cellvalue, options, rowObject) {
+                        return top.clients.organize[cellvalue] == null ? "" : top.clients.organize[cellvalue].fullname;
+                    }
 
                 },
                 {
                     label: '班级', name: 'classId', width: 200, align: 'left',
-                    formatter: function (cv) {
-                        return orgList[cv] == null ? "" : orgList[cv];
-                    },
+                    formatter: function (cellvalue, options, rowObject) {
+                        return top.clients.organize[cellvalue] == null ? "" : top.clients.organize[cellvalue].fullname;
+                    }
 
                 },
                 

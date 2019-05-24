@@ -4,8 +4,6 @@
 }
 <script>
     
-    let dic = JSON.parse(localStorage.getItem("OrganizeCategory"));
-
     $(function () {
         gridList();
     })
@@ -23,8 +21,8 @@
                 { label: "主键", name: "Id", align: 'left', key: true, hidden: true },
                 {
                     label: '分类', name: 'CategoryId', width: 80, align: 'left',
-                    formatter: function (cv) {
-                        return dic[cv] == null ? "" : dic[cv];
+                    formatter: function (cellvalue) {
+                        return top.clients.dataItems["OrganizeCategory"][cellvalue] == null ? "" : top.clients.dataItems["OrganizeCategory"][cellvalue];
                     }
                 },
             ]

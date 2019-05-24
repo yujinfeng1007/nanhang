@@ -1,233 +1,307 @@
-﻿
-@{
+﻿@{
+    
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <script>
-    let dutyList = JSON.parse(localStorage.getItem("dutyList"));
-    let roleList = JSON.parse(localStorage.getItem("roleList"));
-    let orgList = JSON.parse(localStorage.getItem("orgList"));
+    var F_DepartmentId = "";
     $(function () {
         $('#layout').layout({
-            west__resizable: true,
-        }).sizePane("west", "18%");
-
-        westGrid();
-        centerGrid();
-
-        $("#btn_search").click(() => {
-            let rowId = $("#treeGrid").jqGrid("getGridParam", "selrow");
-            reloadGrid(rowId)
+            west: { size: '25%' }
         });
-
-        $("#btnAddRole").click(() => {
-            let rowId = $("#centerGrid").jqGrid('getGridParam', 'selrow');
-            $.modalOpen({
-                id: "Form",
-                title: "修改",
-                url: `/systemmanage/user/Role?userId=${rowId}`,
-                width: "600px",
-                height: "600px",
-                callBack: function (iframeId) {
-                    top.frames[iframeId].addRole();
-                }
-            });
-        })
+        treeView();
+        gridList();
+        //$("#F_DepartmentId").bindSelect({
+        //    url: "/SystemManage/Organize/GetTreeSelectJson",
+        //    displayBlank: false
+        //});
+        //$("#F_SysAreaId").bindSelect({
+        //    url: "/SystemManage/Area/GetTreeSelectJson",
+        //});
+        //$("#F_Gender").bindSelect({
+        //  dictionary: '104'
+        //})
+        $("#F_DutyId").bindSelect({
+            dictionary: "Duty"
+        });
+      
     })
+    function treeView() {
+        let $gridList = $("#table_gridList");
+        $gridList.dataGrid({
+            treeGrid: true,
+            treeGridModel: "adjacency",
+            ExpandColumn: "EnCode",
+            url: "/SystemManage/Organize/GetTreeGridJson",
+            height: $(window).height(),
+            autoGridHeight: function () {
+                return $(window).height()
+            },
+            colModel: [
+                { label: '机构名称', name: 'Name', width: 100, align: 'left' },
+                { label: '编号', name: 'EnCode', width: 150, align: 'left', hidden: true },
+                { label: "主键", name: "Id", width: 150, align: 'left', key: true, hidden: true },
+                { label: '名称', name: 'Name', width: 200, align: 'left', hidden: true },
+            ],
+            onCustomSelectRow: DispalyGrid,
+            multiselect: false,
+            rowNum: -1,
 
-    
-    function removeRole(userId, roleId, gridId) {
-        $.post('/systemmanage/user/removerole', { userId: userId, roleId: roleId }, function (r) {
-            $(`#${gridId}`).jqGrid().trigger('reloadGrid');
+        });
+    }
+
+    function DispalyGrid(rowid) {
+        F_DepartmentId = rowid;
+        $('#btn_search').trigger("click");
+    }
+    function gridList() {
+        let $gridList = $("#gridList");
+        //console.log($('.gridPanel'))
+        $gridList.dataGrid({
+            url: "/SystemManage/User/GetGridJson",
+            height: $(window).height(),
+            autoGridHeight: function () {
+                return $(window).height() - 225
+            },
+            colModel: [
+                { label: '主键', name: 'Id', hidden: true },
+                { label: '帐户', name: 'Account', width: 80, align: 'left' },
+                { label: '姓名', name: 'Name', width: 80, align: 'left' },
+                {
+                    label: '岗位', name: 'DutyId', width: 80, align: 'left',
+                    formatter: function (cellvalue, options, rowObject) {
+                        return top.clients.duty[cellvalue] == null ? "" : top.clients.duty[cellvalue].fullname;
+                    }
+                },
+                {
+                    label: '隶属机构', name: 'OrganId', width: 80, align: 'left',
+                    formatter: function (cellvalue, options, rowObject) {
+                        return top.clients.organize[cellvalue] == null ? "" : top.clients.organize[cellvalue].fullname;
+                    }
+                },
+                { label: '手机号码', name: 'MobilePhone', width: 80, align: 'left' }
+            ],
+            pager: "#gridPager",
+            sortname: 'Id desc',
+            viewrecords: true
+        });
+        $("#btn_search").click(function () {
+            $gridList.jqGrid('setGridParam', {
+                postData: { keyword: $("#txt_keyword").val(), F_DepartmentId: F_DepartmentId, F_DutyId: $("#F_DutyId").val() }//, F_CreatorTime_Start: $("#F_CreatorTime_Start").val(), F_CreatorTime_Stop: $("#F_CreatorTime_Stop").val() },
+            }).trigger('reloadGrid');
+        });
+    }
+    function btn_add() {
+        $.modalOpen({
+            id: "Form",
+            title: "新增用户",
+            url: "/SystemManage/User/Form",
+            width: "700px",
+            height: "610px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm();
+            }
+        });
+    }
+    function btn_edit() {
+        var keyValue = ($("#gridList").jqGridRowValue('Id'))[0];
+        $.modalOpen({
+            id: "Form",
+            title: "修改用户",
+            url: "/SystemManage/User/Form?keyValue=" + keyValue,
+            width: "700px",
+            height: "610px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm();
+            }
+        });
+    }
+    function btn_delete() {
+        var deleteid = $('#gridList').jqGridRowValue('Id');
+        var keyValue = "";
+        for (var i = 0; i < deleteid.length; i++) {
+            keyValue += deleteid[i] + "|";
+        }
+        $.deleteForm({
+            url: "/SystemManage/User/DeleteForm",
+            param: { keyValue: keyValue },
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
         })
     }
+    function btn_details() {
+        var keyValue = ($("#gridList").jqGridRowValue('Id'))[0];
+        $.modalOpen({
+            id: "Details",
+            title: "查看用户",
+            url: "/SystemManage/User/Details?keyValue=" + keyValue,
+            width: "700px",
+            height: "550px",
+            btn: null,
+        });
+    }
+    function btn_revisepassword() {
+        var keyValue = ($("#gridList").jqGridRowValue('Id'))[0];
+        var Account = ($("#gridList").jqGridRowValue('F_Account'))[0];
+        var RealName = ($("#gridList").jqGridRowValue('F_RealName'))[0];
+        $.modalOpen({
+            id: "RevisePassword",
+            title: '重置密码',
+            url: '/SystemManage/User/RevisePassword?keyValue=' + keyValue + "&account=" + escape(Account) + '&realName=' + escape(RealName),
+            width: "450px",
+            height: "260px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitForm();
+            }
+        });
+    }
+    function btn_disabled() {
+        //var keyValue = $("#gridList").jqGridRowValue('F_Id')
 
-    function westGrid() {
-        $("#westGrid").jqGrid({
-            styleUI: "Bootstrap",
-            treeGrid: true,
-            url: "/SystemManage/Organize/GetSubOrg",
-            treeGridModel: "adjacency",
-            datatype: "json",
-            gridview: true,
-            rowNum: -1,
-            shrinkToFit: true,
-            multiselect: false,
-            height: window.innerHeight * 0.9,
-            width: window.innerWidth * 0.2,
-            ExpandColumn: 'name',
-            ExpandColClick: false,
-            onSelectRow: function (rowId) {
-                $("#centerGrid").jqGrid('setGridParam', { url: `/SystemManage/User/Load`,postData: { orgId: rowId } }).trigger('reloadGrid');
-            },
-            jsonReader: {
-                root: function (r) { return r.data; }
-            },
-            colModel: [
-                { label: '机构名称', name: 'name', width: 100, align: 'left', sortable: false },
-                { label: '主键', name: "id", width: 150, align: 'left', key: true, hidden: true },
-                { label: 'level', name: "level", hidden: true },
-            ],
+        var disabledid = $('#gridList').jqGridRowValue('Id');
+        var keyValue = "";
+        for (var i = 0; i < disabledid.length; i++) {
+            keyValue += disabledid[i] + "|";
+        }
+        console.log(keyValue);
+        $.modalConfirm("注：您确定要【禁用】该项账户吗？", function (r) {
+            if (r) {
+                $.submitForm({
+                    url: "/SystemManage/User/DisabledAccount",
+                    param: { keyValue: keyValue },
+                    success: function () {
+                        $.currentWindow().$("#gridList").trigger("reloadGrid");
+                    }
+                })
+            }
+        });
+    }
+    function btn_enabled() {
+        var enabledid = $("#gridList").jqGridRowValue('Id')
+        var keyValue = "";
+        for (var i = 0; i < enabledid.length; i++) {
+            keyValue += enabledid[i] + "|";
+        }
+        console.log(keyValue);
+        $.modalConfirm("注：您确定要【启用】该项账户吗？", function (r) {
+            if (r) {
+                $.submitForm({
+                    url: "/SystemManage/User/EnabledAccount",
+                    param: { keyValue: keyValue },
+                    success: function () {
+                        $.currentWindow().$("#gridList").trigger("reloadGrid");
+                    }
+                })
+            }
         });
     }
 
-    function showChildGrid(parentRow, parentRowKey) {
-        let childGrid = parentRow + "_table";
-        $('#' + parentRow).append('<table class="table-striped" id=' + childGrid + '></table>');
-        $("#" + childGrid).jqGrid({
-            url: `/systemmanage/user/getuserroles?userId=${parentRowKey}`,
-            mtype: "GET",
-            datatype: "json",
-            autoGridWidth: true,
-            width: window.innerWidth * 0.76,
-            height: window.innerHeight * 0.3,
-            footerrow: true,
-            userDataOnFooter: true,
-            rownumbers: true,
-            styleUI: 'Bootstrap',
-            rowNum: -1,
-            sortname: 'createTime',
-            sortorder: 'desc',
-            jsonReader: {
-                root: function (r) { return r.data },
-            },
-            colModel: [
-                { name: "id", key: true, hidden: true },
-                { label: "角色名称", name: "name" },
-                {
-                    label: '操作',
-                    formatter: function (cell, options, rowObj) {
-                        let rowId = rowObj["id"];
-                        return `<button onclick=removeRole('${parentRowKey}','${rowId}','${childGrid}')>移除</button>`;
-                    }
-                }
-            ],
+    function btn_export() {
+        var F_DutyId = $("#F_DutyId").val();
+        var F_CreatorTime_Start = $("#F_CreatorTime_Start").val();
+        var F_CreatorTime_Stop = $("#F_CreatorTime_Stop").val();
 
+        var keyword = $("#txt_keyword").val();
+        //if (keyValue != null)
+        //    keyValue = "?keyword=" + keyValue;
+
+        document.location = "/SystemManage/User/export?keyword=" + keyword + "&F_DutyId=" + F_DutyId + "&F_CreatorTime_Start=" + F_CreatorTime_Start + "&F_CreatorTime_Stop=" + F_CreatorTime_Stop + "";
+    }
+
+    function btn_import() {
+        var title = 'Excel';
+        var extensions = 'xls,xlsx';
+        var mimeTypes = 'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+        $.modalOpen({
+            id: "Form",
+            title: "导入用户",
+            url: "/Home/Import?title=" + title + "&extensions=" + extensions + "&mimeTypes=" + mimeTypes + "&fileName=用户模版.xls",
+            width: "500px",
+            height: "300px",
+            callBack: function (iframeId) {
+                var filePath = top.frames[iframeId].submitForm();
+                importAcrion(filePath);
+            }
         });
     }
 
-
-
-
-
-    function centerGrid() {
-        $("#centerGrid").jqGrid({
-            styleUI: "Bootstrap",
-            height: window.innerHeight * 0.8,
-            width: window.innerWidth * 0.7,
-            datatype: 'json',
-            
-            multiselect: true,
-            loadonce: false,
-            viewrecords: true,
-            pager: "#centerPager",
-            toppager: true,
-            rowNum: 30,
-            rowList: [30, 50, 100, 500, 1000],
-            colModel: [
-                { label: "主键", name: "id", hidden: true, key: true },
-                { label: '姓名', name: 'name', "editable": true },
-                {
-                    label: '账户', name: 'account', "editable": true,
-                    editrules: { edithidden: true }
-                },
-                { label: '昵称', name: 'nickName', "editable": true },
-                {
-                    label: '岗位', name: 'dutyId', "editable": true,
-                    formatter: function (cv) {
-                        return dutyList[cv] == null ? "" : dutyList[cv];
-                    },
-                    edittype: "select",
-                    editoptions: { value: dutyList },
-                },
-                {
-                    label: '隶属机构', name: 'organId', "editable": true,
-                    formatter: function (cv) {
-                        return orgList[cv] == null ? "" : orgList[cv];
-                    },
-                    //edittype: "select",
-                    //editoptions: { value: orgList },
-                    edittype: 'custom', editoptions: {
-                        custom_element: function (value, options) {
-                            let el = document.createElement("select");
-                            el.className = "FormElement form-control";
-                            for (let k in orgList) {
-                                let op = document.createElement("option");
-                                op.value = k;
-                                op.text = orgList[k];
-                                el.appendChild(op);
-                            }
-                            el.onclick = function () { el.focus(); };
-                            return el;
-                        },
-                        custom_value: function (elem, operation, value) {
-                            if (operation === 'get') {
-                                return $(elem).val();
-                            } else if (operation === 'set') {
-                                $(elem).val(value);
-                            }
-                        }
-                    }
-
-                },
-                { label: '头像', name: 'headIcon', "editable": true },
-                {
-                    label: '生日', name: 'birthday', "editable": true,
-
-                },
-                { label: '手机号码', name: 'mobilePhone', "editable": true },
-            ],
-            subGrid: true,
-            subGridRowExpanded: showChildGrid
-        });
-
-
-        $("#centerGrid").jqGrid('navGrid', '#centerPager',
-            {
-                edit: true,
-                add: true,
-                del: true,
-                search: false,
-                refresh: true,
-                view: true,
-                cloneToTop: true,
-            },
-            {
-                url: "update",
-                top: 200,
-                left: 200,
-                drag: true,
-                resize: false,
-                closeOnEscape: true,
-            },
-            {
-                url: "add",
-                drag: true,
-                resize: false,
-                closeOnEscape: true,
-            },
-            {
-                url: "delete",
-                drag: true,
-                resize: false,
-                closeOnEscape: true,
-            },
-        );
+    function importAcrion(filePath) {
+        $.submitForm({
+            url: "/SystemManage/User/import",
+            param: { filePath: filePath },
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
     }
 </script>
 <div class="ui-layout" id="layout" style="height: 100%; width: 100%;">
     <div class="ui-layout-west">
-        <table id="westGrid"></table>
+        <div class="gridPanel">
+            <table id="table_gridList"></table>
+        </div>
     </div>
+
     <div class="ui-layout-center">
-        <form class="form-inline topPanel" autocomplete="off">
-            <button type="button" class="btn btn-default" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></button>
-            <input type="text" class="form-control" id="keyword" placeholder="关键字">
-            <button type="button" id="btn_search" class="btn btn-default"><i class="fa fa-search"></i></button>
-            <button type="button" id="btnAddRole" class="btn btn-default">添加用户角色</button>
-        </form>
-        <table id="centerGrid"></table>
-        <div id="centerPager"></div>
+        <div class="topPanel">
+            <div class="toolbar">
+                <div class="btn-group">
+                    <a class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
+                </div>
+                <div class="btn-group"> <a id="NF-add" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_add()"><i class="fa fa-plus"></i>新建用户</a> </div>
+                @*<div class="btn-group"><a id="NF-export" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_export()"><i class="fa fa-arrow-down"></i>导出用户</a></div>
+                <div class="btn-group"><a id="NF-import" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_import()"><i class="fa fa-arrow-up"></i>导入用户</a></div>*@
+                <div class="operate">
+                    <ul class="nav nav-pills">
+                        <li class="first">已选中<span>1</span>项</li>
+                        <li><a id="NF-edit" authorize="yes" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>修改用户</a></li>
+                        <li><a class="multi-edit" id="NF-delete" authorize="yes" onclick="btn_delete()"><i class="fa fa-trash-o"></i>删除用户</a></li>
+                        <li><a id="NF-Details" authorize="yes" onclick="btn_details()"><i class="fa fa-search-plus"></i>查看用户</a></li>
+                        <li class="split"></li>
+                        <li><a id="NF-revisepassword" authorize="yes" onclick="btn_revisepassword()"><i class="fa fa-key"></i>密码重置</a></li>
+                        @*<li class="split"></li>
+                        <li><a class="multi-edit" id="NF-disabled" authorize="yes" onclick="btn_disabled()"><i class="fa fa-stop-circle"></i>禁用</a></li>
+                        <li><a class="multi-edit" id="NF-enabled" authorize="yes" onclick="btn_enabled()"><i class="fa fa-play-circle"></i>启用</a></li>*@
+                    </ul>
+                    <a href="javascript:;" class="close"></a>
+                </div>
+                @*<script>$('.toolbar').authorizeButton()</script>*@
+            </div>
+            <div class="search">
+                <ul>
+                    <li class="formTitle">搜索：</li>
+                    @*<li>
+                        <div class="input-group" style="margin-top:1px">
+                            <input id="F_CreatorTime_Start" name="F_CreatorTime_Start" type="text" class="form-control input-wdatepicker" onfocus="WdatePicker()" placeholder="创建时间开始" />
+                        </div>
+                    </li>
+                    <li><div class="input-group" style="width:10px">--</div></li>
+                    <li>
+                        <div class="input-group" style="margin-right:10px;margin-top:1px">
+                            <input id="F_CreatorTime_Stop" name="F_CreatorTime_Stop" type="text" class="form-control input-wdatepicker" onfocus="WdatePicker()" placeholder="创建时间结束" />
+                        </div>
+                    </li>*@
+                    <li>
+                        <div class="input-group" style="margin-right:10px;width:170px;">
+                            <select id="F_DutyId" name="F_DutyId" class="form-control">
+                                <option value="">选择岗位</option>
+                            </select>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="input-group">
+                            <input id="txt_keyword" type="text" class="form-control" placeholder="账户/姓名/手机" style="width: 150px;">
+                            <span class="input-group-btn">
+                                <button id="btn_search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
+                            </span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="gridPanel">
+            <table id="gridList"></table>
+            <div id="gridPager"></div>
+        </div>
     </div>
 </div>
-
-

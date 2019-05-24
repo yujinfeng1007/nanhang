@@ -18,7 +18,7 @@
                     isFinal = res.data.isFinal;
                     $("#approveForm").formSerialize(res.data);
 
-                    $("#leaveType").val(localStorage.dataItems["LeaveType"] == "undefine" ? "" : top.clients.dataItems['LeaveType'][res.data.leaveType]);
+                    $("#leaveType").val(top.clients.dataItems["LeaveType"] == null ? "" : top.clients.dataItems['LeaveType'][res.data.leaveType]);
                     if (!isFinal) {
                         $(".need").removeClass("hidden");
                     }

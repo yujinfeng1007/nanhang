@@ -7,6 +7,7 @@ using System.Data.Entity;
 using ZHXY.Application;
 using ZHXY.Domain;
 using ZHXY.Common;
+using System.Linq;
 
 namespace ZHXY.Web.Controllers
 {
@@ -16,15 +17,15 @@ namespace ZHXY.Web.Controllers
 
     public class LoginController : Controller
     {
-        private DutyService DutyApp { get; }
+        //private DutyService DutyApp { get; }
         private UserService UserApp { get; }
-        public RelevanceService RelevanceApp { get; }
+        public SysUserRoleAppService userRoleAppService { get; }
 
-        public LoginController(DutyService app, UserService userApp, RelevanceService relevanceApp)
+        public LoginController( UserService userApp, SysUserRoleAppService userRoleService)
         {
-            DutyApp = app;
+            //DutyApp = app;
             UserApp = userApp;
-            RelevanceApp = relevanceApp;
+            userRoleAppService = userRoleService;
         }
 
         #region view
@@ -148,11 +149,11 @@ namespace ZHXY.Web.Controllers
                     }
                     else
                     {
-                        duty = DutyApp.GetCode(userEntity.DutyId);
+                        duty = userEntity.DutyId;// DutyApp.GetCode(userEntity.DutyId);
                         operatorModel.IsSystem = false;
                     }
 
-                    operatorModel.Roles = RelevanceApp.GetUserRole(userEntity.Id);
+                    operatorModel.Roles =userRoleAppService.GetListByUserId(userEntity.Id).Select(t=>t.F_Role).ToArray();
                     operatorModel.DutyId = userEntity.DutyId;
                     Operator.Set(operatorModel);
                     logEntity.Account = userEntity.Account;

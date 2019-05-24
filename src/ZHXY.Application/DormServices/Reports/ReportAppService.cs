@@ -33,19 +33,19 @@ namespace ZHXY.Application
         public dynamic GetDefaultData()
         {
             // 考勤总人数
-            var totalQty = Read<DormStudent>().Count();
+            var totalQty = Read<Student>().Count();
 
             // 在寝人数
-            var noOutQty = Read<NoOutReport>().Count();
+            var noOutQty = Read<Student>(t=>t.InOut=="0").Count();
 
             // 外出人数
-            var noReturnQty = Read<NoReturnReport>().Count();
+            var noReturnQty = Read<Student>(t=>t.InOut=="1").Count();
 
             // 请假人数
             var leaveQty = Read<LeaveOrder>().Count();
 
             // 已签到人数
-            var signedQty = Read<DormStudent>().Count();
+            var signedQty = Read<Student>().Count();
 
             // 晚归人数
             var laterReturnQty = Read<LateReturnReport>().Count();
