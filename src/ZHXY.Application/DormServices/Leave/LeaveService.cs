@@ -269,7 +269,7 @@ namespace ZHXY.Application
             foreach (var item in list)
             {   //审批结果Result  0:未审批  1:同意  -1:拒绝   
                 //获取所有审批人
-                var approvers = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id)).Select(p => p.Approver.Name).ToArray();
+                //var approvers = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result == 0).Select(p => p.Approver.Name).ToArray();
 
                 if (Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result == -1).Any())
                 {
@@ -279,7 +279,7 @@ namespace ZHXY.Application
                 if (item.LeaveDays <= 3)
                 {
                     item.ApprovalStatus = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result != 0).Any() ? "已审批" : "未审批";
-                    if (item.ApprovalStatus == "未审批") item.Approver = approvers;
+                    if (item.ApprovalStatus == "未审批") item.Approver = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result == 0 && p.ApproveLevel ==1 ).Select(p => p.Approver.Name).ToArray();
                     continue;
                 }
                 if (item.LeaveDays > 3)
@@ -287,38 +287,15 @@ namespace ZHXY.Application
                     if (Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.ApproveLevel == 2).Any())
                     {
                         item.ApprovalStatus = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result != 0 && p.ApproveLevel == 2).Any() ? "已审批" : "未审批";
-                        if (item.ApprovalStatus == "未审批") item.Approver = approvers;
+                        if (item.ApprovalStatus == "未审批") item.Approver = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result == 0 && p.ApproveLevel == 2).Select(p => p.Approver.Name).ToArray();
                     }
                     else
                     {
                         item.ApprovalStatus = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result != 0).Any() ? "已审批" : "未审批";
-                        if (item.ApprovalStatus == "未审批") item.Approver = approvers;
+                        if (item.ApprovalStatus == "未审批") item.Approver = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result == 0 && p.ApproveLevel == 1).Select(p => p.Approver.Name).ToArray();
                     }
                     continue;
-                }
-
-                //if (Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result == -1).Any())
-                //{
-                //    item.ApprovalStatus = "已审批";
-                //    continue;
-                //}               
-                //if (Convert.ToDecimal(item.LeaveDays) <= 3)
-                //{
-                //    item.ApprovalStatus = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result != 0).Any() ? "已审批" : "未审批";
-                //    continue;
-                //}
-                //if (Convert.ToDecimal(item.LeaveDays) > 3)
-                //{
-                //    if (Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.ApproveLevel == 2).Any())
-                //    {
-                //        item.ApprovalStatus = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result != 0 && p.ApproveLevel == 2).Any() ? "已审批" : "未审批";
-                //    }
-                //    else
-                //    {
-                //        item.ApprovalStatus = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result != 0).Any() ? "已审批" : "未审批";
-                //    }
-                //    continue;
-                //}
+                }                
             }
             return list;
         }
