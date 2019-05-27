@@ -387,7 +387,8 @@ namespace ZHXY.Application
             }
             var currentUserId = Operator.GetCurrent().Id;
             var approve = Read<LeaveApprove>(p => p.OrderId.Equals(order.Id) && p.ApproverId.Equals(currentUserId)).FirstOrDefaultAsync().Result;
-            if (approve.ApproveLevel == 2) order.Status = "1";
+            //if (approve.ApproveLevel == 2)  多级审批，只要有一个人审批通过，就算通过 
+                order.Status = "1";
         }
 
         #region 不计考勤请假

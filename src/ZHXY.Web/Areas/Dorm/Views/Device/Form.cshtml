@@ -1,0 +1,74 @@
+﻿@{
+                /**/
+
+                Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script>
+    const GET_URL = `/Dorm/Device/Get`;
+    const UPDATE_URL = `/Dorm/Device/SubmitForm`;
+    let id = $.request("id");
+    $(function () {
+        initControl();
+        if (!!id) {
+            $.ajax({
+                url: GET_URL,
+                data: { id: id },
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    $("#form1").formSerialize(result.data)
+                }
+            });
+        }
+    });
+    function initControl() {
+		$.addRequired('#form1')
+    }
+    function submitForm() {
+        if (!$('#form1').formValid()) {
+            return false;
+        }
+        $.submitForm({
+            url: UPDATE_URL,
+            param: $("#form1").formSerialize(),
+            success: function (r) {
+                console.log(r)
+                if (r.state === 'success') {
+                    $.currentWindow().$("#gridList").trigger("reloadGrid");
+                    $.modalMsg('操作成功', 'success');
+                } else {
+                    $.modalMsg(r.message, 'error');
+                }
+
+
+            }
+        })
+    }
+
+</script>
+<form id="form1">
+    <div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#">基本信息</a></li>
+
+        </ul>
+        <div style="padding-top: 20px; margin-right: 30px;">
+            <input name="id" type="hidden" />
+            <table class="form">
+                <tr>
+                    <th class="formTitle">设备序列号</th>
+                    <td class="formValue">
+                        <input name="sn" type="text" class="form-control required" placeholder="" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">设备名称</th>
+                    <td class="formValue">
+                        <input name="name" type="text" class="form-control required" placeholder="" />
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+</form>
