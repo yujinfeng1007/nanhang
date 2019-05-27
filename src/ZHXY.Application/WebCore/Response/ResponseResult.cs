@@ -34,7 +34,7 @@ namespace ZHXY.Application
     {
         public static ActionResult Success(object data = null)
         {
-            return new ContentResult { Content = new { state = ResultState.Success,data }.ToCamelJson(), ContentEncoding = Encoding.UTF8, ContentType = "application/json" };
+            return new ContentResult { Content = new { state = ResultState.Success,data, message="操作成功" }.ToCamelJson(), ContentEncoding = Encoding.UTF8, ContentType = "application/json" };
         }
 
         public static ActionResult PagingRst(this object rows, int records, int total)

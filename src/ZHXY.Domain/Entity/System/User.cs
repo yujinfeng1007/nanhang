@@ -35,7 +35,7 @@ namespace ZHXY.Domain
         /// <summary>
         /// 性别
         /// </summary>
-        public bool? Gender { get; set; }
+        public bool Gender { get; set; }
 
         /// <summary>
         /// 生日
@@ -83,7 +83,7 @@ namespace ZHXY.Domain
         /// <summary>
         /// 登录总次数
         /// </summary>
-        public int LoginCount { get; set; }
+        public int? LoginCount { get; set; }
 
     }
 }
