@@ -9,6 +9,12 @@
         /// </summary>
         public static string GateBuilding { get; } = $"{nameof(Gate)}{Separator}{nameof(Building)}";
 
+        
+        /// <summary>
+        /// 大屏和楼栋的关系
+        /// </summary>
+        public static string DeviceBuilding { get;} = $"{nameof(Device)}{Separator}{nameof(Building)}";
+
 
         /// <summary>
         /// 楼栋和用户的关系

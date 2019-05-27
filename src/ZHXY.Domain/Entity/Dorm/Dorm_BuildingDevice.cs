@@ -5,7 +5,7 @@ namespace ZHXY.Domain
     /// <summary>
     /// 大屏设备
     /// </summary>
-    public partial class Dorm_BuildingDevice: IEntity
+    public partial class Device: IEntity
     {
         public string Id { get; set; }
 
@@ -14,7 +14,12 @@ namespace ZHXY.Domain
         /// </summary>
         public string Sn { get; set; }
 
-        
+        /// <summary>
+        /// 设备名称
+        /// </summary>
+        public string Name { get; set; }
+
+
         /// <summary>
         /// 创建时间
         /// </summary>
