@@ -79,7 +79,7 @@ namespace ZHXY.Application
                 }
                 var ressb = new StringBuilder();
                 ressb.Append("select top "+pagination.Rows+" *");
-                ressb.Append(" from(select row_number() over(order by "+nameof(OriginalReport.Date)+" asc) as rownumber,*");
+                ressb.Append(" from(select row_number() over(order by "+nameof(OriginalReport.Date)+" desc) as rownumber,*");
                 ressb.Append(" from(" + sb.ToString() + ") as a) temp_row");
                 ressb.Append(" where rownumber>(("+pagination.Page+"-1)*"+pagination.Rows+ ") order by " + nameof(OriginalReport.Date) + " desc");
                 var data = GetDataTable(ressb.ToString(), new DbParameter[] { });                
@@ -91,14 +91,14 @@ namespace ZHXY.Application
                 var count = countData.TableToList<Pagination>();
                 pagination.Records = count.FirstOrDefault().Records;
             }
-            else
+            else 
             {
                 var now = DateTime.Now;
                 string tablePart = now.ToString("yyyyMM");
                 var sb = new StringBuilder();
                 sb.Append(" select top "+pagination.Rows+" *");
                 sb.Append(" from(select row_number()");
-                sb.Append(" over(order by "+nameof(OriginalReport.Date)+" asc) as rownumber, *");
+                sb.Append(" over(order by "+nameof(OriginalReport.Date)+" desc) as rownumber, *");
                 sb.Append(" from dhflow_" + tablePart);
                 var countsb = new StringBuilder();
                 countsb.Append("select COUNT(*) "+nameof(Pagination.Records)+" from DHFLOW_");
