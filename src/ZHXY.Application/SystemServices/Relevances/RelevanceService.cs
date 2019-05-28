@@ -38,7 +38,7 @@ namespace ZHXY.Application
             var items = resources.Except(GetRoleResource(roleId));
             foreach (var item in items)
             {
-                Add(new Relevance { Name = Relation.RoleResource, FirstKey = roleId, SecondKey = item });
+                AddAndSave(new Relevance { Name = Relation.RoleResource, FirstKey = roleId, SecondKey = item });
             }
             SaveChanges();
         }

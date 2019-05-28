@@ -36,14 +36,14 @@ namespace ZHXY.Application
             };
             foreach (var item in input.Approvers)
             {
-                Add(new LeaveApprove
+                AddAndSave(new LeaveApprove
                 {
                     ApproverId = item,
                     OrderId = leave.Id,
                     ApproveLevel = 1
                 });
             }
-            Add(leave);
+            AddAndSave(leave);
             SaveChanges();
         }
 

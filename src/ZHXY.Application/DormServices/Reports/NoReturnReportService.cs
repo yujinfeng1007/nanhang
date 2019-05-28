@@ -32,7 +32,7 @@ namespace ZHXY.Application
                 var end = Convert.ToDateTime(endTime + " 23:59:59");
                 expression = expression.And(p => p.CreatedTime <= end);
             }
-            return Read(expression).OrderBy($"{pag.Sidx} {pag.Sord}").Skip(pag.Skip).Take(pag.Rows).ToListAsync().Result;
+            return Read(expression).Paging(pag).ToListAsync().Result;
         }
         public List<NoReturnReport> GetList(string startTime, string endTime)
         {

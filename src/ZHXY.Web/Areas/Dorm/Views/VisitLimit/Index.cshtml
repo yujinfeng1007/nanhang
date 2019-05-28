@@ -7,7 +7,7 @@
 
     $(function () {
 
-        var _BuildName = null;
+        var _BuildId = null;
         $("#F_Building").select2({
             allowClear: true,
             placeholder: "请选择宿舍楼",
@@ -21,7 +21,7 @@
                 },
                 processResults: function (data) {
                     return {
-                        results: data
+                        results: data.data
                     };
                 },
                 delay: 100
@@ -29,7 +29,7 @@
         });
 
         $("#F_Building").on('change' ,function () {
-            _BuildName = $("#F_Building").val();
+            _BuildId = $("#F_Building").val();
         });
 
         $("#F_Floor").select2({
@@ -40,12 +40,12 @@
                 dataType: "json",
                 data: function (param) {
                     return {
-                        BuildingName: _BuildName
+                        BuildingId: _BuildId
                     }
                 },
                 processResults: function (data) {
                     return {
-                        results: data
+                        results: data.data
                     };
                 },
                 delay: 100
@@ -113,8 +113,8 @@
         <div class="btn-group">
             <a id="NF-add" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_add()"><i class="fa fa-plus"></i>新建</a>
         </div>
-        <div class="btn-group"><a id="NF-export" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_export()"><i class="fa fa-arrow-down"></i>导出</a></div>
-        <div class="btn-group"><a id="NF-import" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_import()"><i class="fa fa-arrow-up"></i>导入</a></div>
+        @*<div class="btn-group"><a id="NF-export" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_export()"><i class="fa fa-arrow-down"></i>导出</a></div>*@
+        @*<div class="btn-group"><a id="NF-import" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_import()"><i class="fa fa-arrow-up"></i>导入</a></div>*@
         <div class="operate">
             <ul class="nav nav-pills">
                 <li class="first">已选中<span>1</span>项</li>

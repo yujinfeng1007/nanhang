@@ -22,7 +22,7 @@ namespace ZHXY.Application
         public async Task<DormBuildingView> AddAsync(CreateDormBuildingDto input)
         {
             Building entity = input;            
-            Add(entity);
+            AddAndSave(entity);
             await SaveChangesAsync();
             return entity;
         }
@@ -47,7 +47,7 @@ namespace ZHXY.Application
             query = string.IsNullOrEmpty(keyword) ? query : query.Where(p => p.BuildingNo.Contains(keyword));
             pagination.Records = query.CountAsync().Result;
             pagination.GetOrdering<Building>();
-            query = string.Equals("false", pagination.Sidx, StringComparison.CurrentCultureIgnoreCase) ? query.OrderBy(p => p.BuildingNo) : query.OrderBy(pagination.Sidx);
+            query = string.Equals("false", pagination.Sidx, StringComparison.CurrentCultureIgnoreCase) ? query.OrderBy(p => p.BuildingNo) : query.Paging(pagination);
             query = query.Skip(pagination.Skip).Take(pagination.Rows);
             return query.ToListAsync().Result.MapToList<DormBuildingView>();
         }
@@ -78,7 +78,7 @@ namespace ZHXY.Application
                     FirstKey = id,
                     SecondKey = user
                 };
-                Add(rel);
+                AddAndSave(rel);
             }
             SaveChanges();
         }

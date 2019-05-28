@@ -38,14 +38,14 @@ namespace ZHXY.Application
             if (null == Approvers) throw new Exception("请先绑定宿管!");
             foreach (var item in Approvers)
             {
-                Add(new FaceApprove
+                AddAndSave(new FaceApprove
                 {
                     ApproverId = item,
                     OrderId = face.Id,
                     ApproveLevel = 1
                 });
             }
-            Add(face);
+            AddAndSave(face);
             SaveChanges();
         }
 

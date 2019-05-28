@@ -66,7 +66,7 @@ namespace ZHXY.Application
                 moduleButtonEntity.F_Id = Guid.NewGuid().ToString("N").ToUpper();
                 moduleButtonEntity.F_ModuleId = moduleId;
                 //entitys.Add(moduleButtonEntity);
-                Add<SysButton>(moduleButtonEntity);
+                AddAndSave<SysButton>(moduleButtonEntity);
             }
             SaveChanges();
             //Repository.SubmitCloneButton(entitys);

@@ -1,0 +1,237 @@
+﻿@{
+    
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<style>
+    #imgFile {
+        position: relative;
+        background-color: #b32b1b;
+        border: 1px solid #ddd;
+        width: 68px;
+        height: 25px;
+        display: inline-block;
+        text-decoration: none;
+        text-indent: 0;
+        line-height: 25px;
+        font-size: 14px;
+        color: #fff;
+        margin: 0 auto;
+        cursor: pointer;
+        text-align: center;
+        border: none;
+        border-radius: 3px;
+    }
+
+
+    #imgFile input {
+        position: absolute;
+        top: 0;
+        left: -2px;
+        opacity: 0;
+        width: 10px;
+    }
+</style>
+<script>
+    $(function () {
+        initControl();
+        $("#F_Student").select2({
+            allowClear: true,
+            placeholder: "请输入学生姓名或学号",
+            ajax: {
+                url: "/Dorm/VisitLog/SearchStudent",
+                dataType: "json",
+                data: function (param) {
+                    return {
+                        KeyWords: param.term
+                    }
+                },
+                processResults: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        let item = data[i];
+                        $("#F_Student").data(item.id, item.limit);
+                    }
+                    return {
+                        results: data
+                    };
+                },
+                delay: 100
+            }
+        });
+
+        $("#F_Student").on('change', function (e) {
+            let currentId = $(e.target).val();
+            $("#Residue_Amount").val($("#F_Student").data(currentId));
+        });
+
+        //选择文件
+        $("#imgFile").on("change", function () {
+            var filePath = $(this).val();
+            //设置上传文件类型
+            if (filePath.indexOf(".png") == -1) {
+                alert("请上传.png文件");
+            } else {
+                var formData = new FormData();
+                formData.append("file", document.getElementById("imgFile").files[0])
+                $.ajax({
+                    url: '/Dorm/VisitLog/UploadFile',//处理程序路径
+                    data: formData,
+                    contentType: false,
+                    method: 'post',
+                    processData: false,
+                    dataType: 'json',
+                    success: function (data) {
+                        $("#filePath").val(data.path);
+                        alert("Upload ImgFile Success!");
+                    },
+                    error: function (data, status, e) {
+                        alert("Upload ImgFile Fail!");
+                    }
+                });
+            }
+        });
+    });
+    function initControl() {
+        $("#F_SemesterId").bindSelect({
+            url: "/SchoolManage/School_Semester/GetGridSelect",
+            id: "F_Id",
+            text: "F_Name"
+        });
+        $("#F_Year").bindSelect({
+            dictionary: 'F_Year',
+            displayBlank: false
+        });
+        $("#F_Divis_ID").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Division",
+        });
+
+        $("#F_Divis_ID").change(function () {
+            changeDivis();
+        });
+
+        $("#F_GradeId").change(function () {
+            changeClass();
+        });
+
+		$.addRequired('#form1')
+    }
+    function submitForm() {
+        if (!$('#form1').formValid()) {
+            return false;
+        }
+        $.submitForm({
+            url: "/Dorm/VisitLog/SubmitForm",
+            param: $("#form1").formSerialize(),
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+    
+     function changeDivis() {
+        $("#F_GradeId").find("option").remove();
+        $("#F_GradeId").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Grade&parentId=" + $("#F_Divis_ID").val(),
+        });
+        changeClass();
+    }
+
+    function changeClass() {
+        $("#F_ClassId").find("option").remove();
+        $("#F_ClassId").bindSelect({
+            url: "/SystemManage/Organize/GetSelectJsonByCategoryId?keyword=Class&parentId=" + $("#F_GradeId").val(),
+        });
+    }
+</script>
+<form id="form1">
+    <div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#">基本信息</a></li>
+         
+        </ul>
+        <div style="padding-top: 20px; margin-right: 30px;">
+            <table class="form">
+
+                <tr>
+                    <th class="formTitle">探访对象</th>
+                    <td class="formValue">
+                        <div class="input-group" style="margin-right:10px;width:200px;">
+                            <select id="F_Student" name="F_Student" class="form-control">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </td>
+
+                    <th class="formTitle"> 剩余被访问额度</th>
+	                <td class="formValue">
+                        <div class="input-group" style="margin-left:10px;margin-right:10px; width:20px;">
+                           <input id="Residue_Amount" name="Residue_Amount" type="text" disabled />
+                        </div>
+	                </td>
+                    </tr>
+
+                <tr>
+                    <th class="formTitle">访客姓名</th>
+                    <td class="formValue">
+                        <div class="input-group" style="margin-left:10px;margin-right:10px; width:20px;">
+                            <input id="Visit_Name" name="Visit_Name" type="text" />
+                        </div>
+                    </td>
+                    <th class="formTitle">身份证号码</th>
+                    <td class="formValue">
+                        <div class="input-group" style="margin-left:10px;margin-right:10px; width:20px;">
+                            <input id="Card_Num" name="Card_Num" type="text" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">访问类型</th>
+                    <td class="formValue">
+                        <select id="Visit_Type" name="Visit_Type" class="form-control">
+                            <option value="0">校内人员</option>
+                            <option value="1">校外人员</option>
+                        </select>
+                    </td>
+                    <th class="formTitle">访问原因</th>
+                    <td class="formValue">
+                        <input type="text" name="Visit_Reason" id="Visit_Reason" placeholder="" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">开始时间</th>
+                    <td>
+                        <input id="startTime" name="startTime" type="text" class="form-control input-wdatepicker" placeholder="开始时间" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss' })" />
+                    </td>
+
+
+                    <th class="formTitle">结束时间</th>
+                    <td>
+                        <input id="endTime" name="endTime" type="text" class="form-control input-wdatepicker" placeholder="结束时间" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss' })" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">关系</th>
+                    <td class="formValue">
+                        <select id="Rela_Type" name="Rela_Type" class="form-control">
+                            <option value="0">家属</option>
+                            <option value="1" selected>朋友</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">请上传头像文件</th>
+                    <td class="formValue">
+                        <input type="file" id="imgFile" name="imgFile" value="" />
+                        <input  type="text" style="display: none" name="filePath" id="filePath" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">审批人</th>
+                    <td class="formValue">
+                        <input type="text" id="supervisorDorm" name="supervisorDorm" disabled />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</form>

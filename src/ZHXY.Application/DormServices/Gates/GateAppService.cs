@@ -75,7 +75,7 @@ namespace ZHXY.Application
                     FirstKey = id,
                     SecondKey = item
                 };
-                Add(rel);
+                AddAndSave(rel);
             }
             SaveChanges();
 

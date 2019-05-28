@@ -175,8 +175,7 @@ namespace ZHXY.Domain
             var query = DbContext.Set<T>().AsNoTracking().AsQueryable();
             if (predicate != null) query = query.Where(predicate);
             pagination.Records = query.Count();
-            return query.OrderBy(pagination.Sidx).Skip(pagination.Rows * (pagination.Page - 1)).Take(pagination.Rows)
-                .ToList();
+            return query.Paging(pagination).ToList();
         }
 
 

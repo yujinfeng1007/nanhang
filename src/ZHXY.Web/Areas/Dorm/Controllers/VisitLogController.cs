@@ -66,7 +66,6 @@ namespace ZHXY.Web.Dorm.Controllers
             input.CurrentUserId = Operator.GetCurrent().Id;
             var data = App.GetVisitorApprovalList(input);
             return Result.PagingRst(data, input.Records, input.Total);            
-
         }
 
         /// <summary>
@@ -113,7 +112,7 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpGet]
         public ActionResult SearchStudent(string KeyWords)
         {
-            return Result.Success(App.SearchStudents(KeyWords).ToJson());
+            return Content(App.SearchStudents(KeyWords).ToJson());
         }
 
         /// <summary>

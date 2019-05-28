@@ -26,7 +26,7 @@ namespace ZHXY.Application
             var users= input.Users.Except(already);
             foreach (var item in users)
             {
-                Add(new OrgLeader { UserId = item, OrgId = input.OrgId });
+                AddAndSave(new OrgLeader { UserId = item, OrgId = input.OrgId });
             }
             SaveChanges();
         }

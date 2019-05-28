@@ -1,0 +1,82 @@
+﻿@{
+    
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<script>
+    $(function () {
+        gridList();
+
+       
+    });
+    function btn_enabled() {
+        var keyValue = ($("#gridList").jqGridRowValue('F_Id'));
+        $.post("/Dorm/VisitApproval/ApprovalList", { ids: keyValue, pass: 1 }, function (r) {
+            if (r.state == "success") {
+                $.modalMsg("操作成功", "success");
+                $("#gridList").jqGrid().trigger("reloadGrid");
+            } else {
+                $.modalMsg(r.message, "warning");
+            }
+        })
+    }
+    function btn_disabled() {
+        var keyValue = ($("#gridList").jqGridRowValue('F_Id'));
+        $.post("/Dorm/VisitApproval/ApprovalList", { ids: keyValue, pass: -1 }, function (r) {
+            if (r.state == "success") {
+                $.modalMsg("操作成功", "success");
+                $("#gridList").jqGrid().trigger("reloadGrid");
+            } else {
+                $.modalMsg(r.message, "warning");
+            }
+        })
+    }
+    function gridList() {
+        var $gridList = $("#gridList");
+        $gridList.dataGrid({
+            url: "/Dorm/VisitApproval/GetGridJson",
+            height: $(window).height() - 128,
+            colModel: [
+                { label: "F_Id", name: "F_Id", width: 150, align: 'left', key: true, hidden: true },
+                { label: '探访对象', name: 'F_Visit_Object', width: 80, align: 'left' },
+                { label: '访客姓名', name: 'F_Visitor_Name', width: 80, align: 'left' },
+                { label: '访客证件号', name: 'F_Visitor_Card', width: 80, align: 'left' },
+                { label: '探访事由', name: 'F_Visit_Reason', width: 80, align: 'left' },
+                {
+                    label: '入住性别', name: 'F_Sex', width: 80, align: 'left',
+                    formatter: function (cellvalue, options, rowObject) {
+                        if (cellvalue == 1) {
+                            return '男';
+                        } else if (cellvalue == 0) {
+                            return '女';
+                        }
+                    }},
+                { label: '宿舍名称', name: 'F_Classroom_ID', width: 80, align: 'left' },
+            ],
+            pager: "#gridPager",
+            sortname: 'created_time desc',
+            viewrecords: true
+        });
+    }
+</script>
+
+<div class="topPanel">
+    <div class="toolbar">
+        <div class="btn-group">
+            <a class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
+        </div>
+
+        <div class="operate">
+            <ul class="nav nav-pills">
+                <li class="first">已选中<span>1</span>项</li>
+                <li><a class="multi-edit" id="NF-disabled" authorize="yes" onclick="btn_enabled()"><i class="fa fa-stop-circle"></i>通过</a></li>
+                <li><a class="multi-edit" id="NF-enabled" authorize="yes" onclick="btn_disabled()"><i class="fa fa-play-circle"></i>不通过</a></li>
+            </ul>
+            <a href="javascript:;" class="close"></a>
+        </div>
+    </div>
+</div>
+<div class="gridPanel">
+    <table id="gridList"></table>
+    <div id="gridPager"></div>
+</div>

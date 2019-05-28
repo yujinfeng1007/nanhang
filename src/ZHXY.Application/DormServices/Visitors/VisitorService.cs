@@ -7,6 +7,7 @@ using System;
 using System.Text;
 using ZHXY.Common.IsNumeric;
 using System.Data.Entity;
+using EntityFramework.Extensions;
 
 namespace ZHXY.Application
 {
@@ -19,47 +20,85 @@ namespace ZHXY.Application
         {
         }
 
-        public List<VisitorApply> GetList(Pagination pagination, string F_Building, int Time_Type, string startTime, string endTime)
+        public object GetList(Pagination pagination, string F_Building, int Time_Type, string startTime, string endTime)
         {
-            ////获取记录数
-            var CountSql = new StringBuilder("select COUNT(1) from Dorm_VisitLog visit left join Dorm_Dorm dorm on dorm.F_Id=visit.F_Building_ID where visit.F_CreatorTime > '" + startTime + "' and visit.F_CreatorTime < '" + endTime + "'");
-            if (F_Building != null && F_Building.Trim().Length != 0)
+            DateTime StartTime = Convert.ToDateTime(startTime);
+            DateTime EndTime = Convert.ToDateTime(endTime);
+            return Read<VisitorApply>(p => p.VisitStartTime > StartTime && p.VisitStartTime < EndTime)
+                .Paging(pagination).Join(Read<Student>(), p => p.ApplicantId, s => s.Id, (apply, stu) => new
             {
-                CountSql.Append(" and visit.F_Building_Id = '" + F_Building + "'");
-            }
-            pagination.Records = R.Db.Database.SqlQuery<int>(CountSql.ToString()).First();
-            if (pagination.Page * pagination.Rows > pagination.Records)
-            {
-                pagination.Rows = pagination.Records % pagination.Rows;
-            }
-            var sqlStr = new StringBuilder("select top " + pagination.Rows + " * from (select top " + pagination.Page * pagination.Rows);
-            sqlStr.Append(" visit.* from Dorm_VisitLog visit left join Dorm_Dorm dorm on dorm.F_Id=visit.F_Building_ID where visit.F_CreatorTime > '" + startTime + "' and visit.F_CreatorTime < '" + endTime + "'");
-            if (F_Building != null && F_Building.Trim().Length != 0)
-            {
-                sqlStr.Append(" and visit.F_Building_Id = '" + F_Building + "'");
-            }
-            sqlStr.Append(" order by " + pagination.Sidx + ") w order by w.F_Id");
-            var ListData = R.Db.Database.SqlQuery<VisitorApply>(sqlStr.ToString()).ToList();
-            foreach(var visit in ListData)
-            {
-                visit.DormId = R.Db.Set<DormStudent>().Where(p => p.StudentId == visit.ApplicantId).Select(p => p.Description).FirstOrDefault();
-                visit.ApplicantId = R.Db.Set<Student>().Where(p => p.Id == visit.ApplicantId).Select(p => p.Name).FirstOrDefault();
-            }
-            return ListData;
+                apply.Id,
+                stu.Name,
+                apply.VisitorName,
+                apply.VisitorIDCard,
+                apply.VisitReason,
+                apply.VisitorGender,
+                apply.ApplicantId,
+                apply.DormId,
+                apply.Status
+            }).Join(Read<DormRoom>(), p => p.DormId, s => s.Id, (temp, dorm) => new {
+                F_Id = temp.Id,
+                F_Visit_Object = temp.Name,
+                F_Visitor_Name = temp.VisitorName,
+                F_Visitor_Card = temp.VisitorIDCard,
+                F_Visit_Reason = temp.VisitReason,
+                F_Sex = temp.VisitorGender,
+                temp.ApplicantId,
+                F_Classroom_ID = dorm.Title,
+                F_EnabledMark = temp.Status
+            }).ToList();
+
+
+            //////获取记录数
+            //var CountSql = new StringBuilder("select COUNT(1) from Dorm_VisitLog visit left join Dorm_Dorm dorm on dorm.F_Id=visit.F_Building_ID where visit.F_CreatorTime > '" + startTime + "' and visit.F_CreatorTime < '" + endTime + "'");
+            //if (F_Building != null && F_Building.Trim().Length != 0)
+            //{
+            //    CountSql.Append(" and visit.F_Building_Id = '" + F_Building + "'");
+            //}
+            //pagination.Records = R.Db.Database.SqlQuery<int>(CountSql.ToString()).First();
+            //if (pagination.Page * pagination.Rows > pagination.Records)
+            //{
+            //    pagination.Rows = pagination.Records % pagination.Rows;
+            //}
+            //var sqlStr = new StringBuilder("select top " + pagination.Rows + " * from (select top " + pagination.Page * pagination.Rows);
+            //sqlStr.Append(" visit.* from Dorm_VisitLog visit left join Dorm_Dorm dorm on dorm.F_Id=visit.F_Building_ID where visit.F_CreatorTime > '" + startTime + "' and visit.F_CreatorTime < '" + endTime + "'");
+            //if (F_Building != null && F_Building.Trim().Length != 0)
+            //{
+            //    sqlStr.Append(" and visit.F_Building_Id = '" + F_Building + "'");
+            //}
+            //sqlStr.Append(" order by " + pagination.Sidx + ") w order by w.F_Id");
+            //var ListData = R.Db.Database.SqlQuery<VisitorApply>(sqlStr.ToString()).ToList();
+            //foreach(var visit in ListData)
+            //{
+            //    visit.DormId = R.Db.Set<DormStudent>().Where(p => p.StudentId == visit.ApplicantId).Select(p => p.Description).FirstOrDefault();
+            //    visit.ApplicantId = R.Db.Set<Student>().Where(p => p.Id == visit.ApplicantId).Select(p => p.Name).FirstOrDefault();
+            //}
+            //return ListData;
         }
 
         public object GetBuilding(string KeyWords)
         {
-            var SqlStr = new StringBuilder("SELECT  DISTINCT F_Building_No FROM [dbo].[Dorm_Dorm]  ");
-            if(KeyWords != null && KeyWords.Length != 0)
+            //var SqlStr = new StringBuilder("SELECT  DISTINCT F_Building_No FROM [dbo].[Dorm_Dorm]  ");
+            //if(KeyWords != null && KeyWords.Length != 0)
+            //{
+            //    SqlStr.Append(" WHERE F_Building_No LIKE '%" + KeyWords + "%'");
+            //}
+            //SqlStr.Append(" ORDER BY F_Building_No ASC ");
+            //return R.Db.Database.SqlQuery<string>(SqlStr.ToString()).Select(p => new
+            //{
+            //    id = p,
+            //    text = p
+            //}).ToList();
+
+            var query = R.Db.Set<Building>();
+            if(null != KeyWords && KeyWords.Length > 0)
             {
-                SqlStr.Append(" WHERE F_Building_No LIKE '%" + KeyWords + "%'");
+                query.Where(p => p.BuildingNo.Contains(KeyWords));
             }
-            SqlStr.Append(" ORDER BY F_Building_No ASC ");
-            return R.Db.Database.SqlQuery<string>(SqlStr.ToString()).Select(p => new
+            return query.Select(p => new
             {
-                id = p,
-                text = p
+                id = p.Id,
+                text = p.BuildingNo
             }).ToList();
         }
 
@@ -213,7 +252,27 @@ namespace ZHXY.Application
             v.ApprovedTime = DateTime.Now;
             SaveChanges();
         }
-
+        /// <summary>
+        /// 批量审批
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="pass"></param>
+        public void ApprovalList(string[] ids, int pass)
+        {
+            var VisitList = Read<VisitorApply>().Where(p => ids.Contains(p.Id)).Update(s => new VisitorApply {
+                Status = pass.ToString(),
+                ApprovedTime = DateTime.Now
+            });
+            string UserId = Operator.GetCurrent().Id;
+            Add(ids.Select(p => new VisitorApprove
+            {
+                VisitId = p,
+                ApproverId = UserId,
+                ApproveResult = pass.ToString(),
+                Opinion = pass == 1 ? "通过" : "不通过"
+            }).ToList());
+            SaveChanges();
+        }
 
         /// <summary>
         /// 提交申请
@@ -246,7 +305,7 @@ namespace ZHXY.Application
             var Approvers = Read<Relevance>(p => p.FirstKey.Equals(buildingId)).Select(p => p.SecondKey).ToListAsync().Result;
             if (null == Approvers) throw new Exception("请先绑定宿管!");
             foreach (var approver in Approvers) {
-                Add(new VisitorApprove {
+                AddAndSave(new VisitorApprove {
                     ApproverId = approver,
                     VisitId = visit.Id,
                     ApproveLevel = 1
@@ -255,11 +314,33 @@ namespace ZHXY.Application
             }            
             visit.DormId = dormid;
             visit.BuildingId = buildingId;
-            Add(visit);
+            AddAndSave(visit);
             SaveChanges();
         }
 
+        public object NotCheckApply(Pagination pagination)
+        {
+            return Read<VisitorApply>(p => p.Status.Equals("0")).Paging(pagination).Join(Read<Student>(), p => p.ApplicantId, s => s.Id, (apply, stu) => new
+                 {
+                     apply.Id,
+                     stu.Name,
+                     apply.VisitorName,
+                     apply.VisitorIDCard,
+                     apply.VisitReason,
+                     apply.VisitorGender,
+                     apply.ApplicantId,
+                     apply.DormId
+                 }).Join(Read<DormRoom>(), p => p.DormId, s => s.Id, (temp, dorm) => new {
+                     F_Id = temp.Id,
+                     F_Visit_Object = temp.Name,
+                     F_Visitor_Name = temp.VisitorName,
+                     F_Visitor_Card = temp.VisitorIDCard,
+                     F_Visit_Reason = temp.VisitReason,
+                     F_Sex = temp.VisitorGender,
+                     temp.ApplicantId,
+                     F_Classroom_ID = dorm.Title
+                 }).ToList();
+        }
     }
-
 }
 
