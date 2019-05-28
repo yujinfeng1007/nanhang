@@ -368,7 +368,10 @@ namespace ZHXY.Application
         {
             string SuperId = Operator.GetCurrent().Id;
             var BuildingIds = Read<Relevance>(p => p.SecondKey.Equals(SuperId) && p.Name.Equals("Building_User")).Select(p => p.FirstKey).ToList();
-            return Read<Building>(p => BuildingIds.Contains(p.Id)).ToList();
+            return Read<Building>(p => BuildingIds.Contains(p.Id)).Select(p => new {
+                id = p.Id,
+                buildingNo = p.BuildingNo
+            }).ToList();
         }
 
 
