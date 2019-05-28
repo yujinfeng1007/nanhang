@@ -92,7 +92,7 @@ namespace ZHXY.Application
             var st = Convert.ToDateTime(startTime + " 00:00:00");
             var et = Convert.ToDateTime(endTime + " 23:59:59");
             // 未归次数            
-            var noReturnQty = Read<NoReturnReport>(p => p.StudentId.Equals(userId) && p.OutTime >= st && p.OutTime <= et).Count();
+            var noReturnQty = Read<NoReturnReport>(p => p.StudentId.Equals(userId) && p.CreatedTime >= st && p.CreatedTime <= et).Count();
             //晚归次数
             var laterReturnQty = Read<LateReturnReport>(p => p.StudentId.Equals(userId) && p.CreatedTime >= st && p.CreatedTime <= et).Count();
             //请假天数(已审批通过)   请假开始时间  and 请假结束时间  between startTime和endTime  
@@ -176,9 +176,18 @@ namespace ZHXY.Application
                 leaveSql = leaveSql.Append(" and stu.class_id = '" + orgId + "'");
             }
 
-             leaveQty = R.Db.Database.SqlQuery<int>(leaveSql.ToString()).First();           
+             leaveQty = R.Db.Database.SqlQuery<int>(leaveSql.ToString()).First();
+            //linq写法            
+            //var sql = (from leave in Read<LeaveOrder>()
+            //           join stu in Read<Student>() on leave.LeaveerId equals stu.Id
+            //           where leave.Status == "1" && stu.ClassId ==""   
+                      
+            //           orderby leave.Id descending
+            //           select leave.Id              
+            //          ).Count();
 
-           
+
+
             return new
             {
                 totalQty = totalQty,
