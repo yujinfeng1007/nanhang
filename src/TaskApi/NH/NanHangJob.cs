@@ -292,7 +292,7 @@ namespace TaskApi.Job
                 OrganId = p.OrganId,
                 MobilePhone = p.MobilePhone,
                 HeadIcon = p.HeadIcon,
-                Gender = p.Gender ? "1" : "0"
+                Gender = p.Gender==true ? "1" : "0"
             }).ToList();
             var addList = newData.Except(oldData).ToList();
             var Ids = oldData.Select(p => p.Id).ToList();

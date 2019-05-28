@@ -29,5 +29,7 @@ namespace ZHXY.Application
         /// </summary>
         public string Status { get; set; }
 
+        
+
     }
 }

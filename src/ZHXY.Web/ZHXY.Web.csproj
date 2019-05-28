@@ -37,7 +37,7 @@
     <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE;DEBUG;NH</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>3</WarningLevel>
+    <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <DocumentationFile>bin\ZHXY.Web.xml</DocumentationFile>
@@ -216,6 +216,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Areas\Dorm\Controllers\DeviceController.cs" />
     <Compile Include="Areas\Dorm\Controllers\FaceController.cs" />
     <Compile Include="Areas\Dorm\Controllers\HolidayController.cs" />
     <Compile Include="Areas\Dorm\Controllers\NHExceptionPushController.cs" />
@@ -243,7 +244,6 @@
     <Compile Include="Areas\SystemManage\Controllers\LogController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\ModuleButtonController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\ModuleController.cs" />
-    <Compile Include="Areas\SystemManage\Controllers\ResourceController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\OrganizeController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\OrgLeaderController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\RoleAuthorizeController.cs" />
@@ -533,11 +533,12 @@
     <Content Include="Areas\SystemManage\Views\User\Index.cshtml" />
     <Content Include="Areas\SystemManage\Views\User\Info.cshtml" />
     <Content Include="Areas\SystemManage\Views\User\RevisePassword.cshtml" />
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="Web.config"><SubType>Designer</SubType></Content>
     <Content Include="Areas\Dorm\Views\VisitApproval\Form.cshtml" />
     <Content Include="Areas\Dorm\Views\VisitApproval\Index.cshtml" />
+    <Content Include="Areas\Dorm\Views\Device\Index.cshtml" />
+    <Content Include="Areas\Dorm\Views\Device\Form.cshtml" />
+    <Content Include="Areas\Dorm\Views\Device\Buildings.cshtml" />
     <None Include="Content\js\dialog\dialog.css.bak" />
     <Content Include="Content\js\dialog\dialog.css" />
     <Content Include="Content\js\dialog\dialog.js" />

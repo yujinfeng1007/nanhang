@@ -118,26 +118,26 @@ namespace ZHXY.Application
                }).ToListAsync().Result;
         }
 
-        /// <summary>
-        /// 获取菜单树
-        /// </summary>
-        public static string GetMenuJson(List<Resource> data, string parentId=null)
-        {
-            var sbJson = new StringBuilder();
-            sbJson.Append("[");
-            var entitys = data.FindAll(t => t.ParentId==parentId);
-            if (entitys.Any())
-            {
-                foreach (var item in entitys)
-                {
-                    var strJson = item.ToCamelJson();
-                    strJson = strJson.Insert(strJson.Length - 1, $",\"childNodes\":{GetMenuJson(data, item.Id)}{string.Empty}");
-                    sbJson.Append(strJson + ",");
-                }
-                sbJson = sbJson.Remove(sbJson.Length - 1, 1);
-            }
-            sbJson.Append("]");
-            return sbJson.ToString();
-        }
+        ///// <summary>
+        ///// 获取菜单树
+        ///// </summary>
+        //public static string GetMenuJson(List<Resource> data, string parentId=null)
+        //{
+        //    var sbJson = new StringBuilder();
+        //    sbJson.Append("[");
+        //    var entitys = data.FindAll(t => t.ParentId==parentId);
+        //    if (entitys.Any())
+        //    {
+        //        foreach (var item in entitys)
+        //        {
+        //            var strJson = item.ToCamelJson();
+        //            strJson = strJson.Insert(strJson.Length - 1, $",\"childNodes\":{GetMenuJson(data, item.Id)}{string.Empty}");
+        //            sbJson.Append(strJson + ",");
+        //        }
+        //        sbJson = sbJson.Remove(sbJson.Length - 1, 1);
+        //    }
+        //    sbJson.Append("]");
+        //    return sbJson.ToString();
+        //}
     }
 }

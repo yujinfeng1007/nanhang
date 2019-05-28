@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity;
 using System.Linq;
+using ZHXY.Common;
 using ZHXY.Domain;
 
 namespace ZHXY.Application
@@ -12,6 +14,71 @@ namespace ZHXY.Application
     public class DeviceService : AppService
     {
         public DeviceService(IZhxyRepository r) : base(r) { }
+
+
+        public List<Device> GetList(Pagination pagination, string keyword = "")
+        {
+            var query = Read<Device>();
+            query = string.IsNullOrEmpty(keyword) ? query : query.Where(p => p.Sn.Contains(keyword));
+            pagination.Records = query.CountAsync().Result;
+            return query.OrderBy(t => t.CreatorTime).Skip(pagination.Skip).Take(pagination.Rows).ToListAsync().Result;
+        }
+
+        public void SubmitForm(Device entity)
+        {
+            var newEntity = Get<Device>(entity.Id) ?? new Device();
+
+            if (string.IsNullOrEmpty(newEntity.Id))
+            {
+                newEntity.Id = Guid.NewGuid().ToString();
+                newEntity.CreatorTime = DateTime.Now;
+            }
+            newEntity.Name = entity.Name;
+            newEntity.Sn = entity.Sn;
+
+            AddAndSave(newEntity);
+        }
+
+        /// <summary>
+        /// 获取大屏设备已经绑定的楼栋
+        /// </summary>
+        /// <param name="id"></param>
+        public List<Building> GetBoundBuildings(string id)
+        {
+            var buildingIds = Read<Relevance>(p => p.Name.Equals(Relation.DeviceBuilding) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
+            var list = Read<Building>(p => buildingIds.Contains(p.Id)).ToList();
+            return list;
+        }
+
+        public List<Building> GetNotBoundBuildings(string id)
+        {
+            var buildingIds = Read<Relevance>(p => p.Name.Equals(Relation.DeviceBuilding) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
+            var list = Read<Building>(p => !buildingIds.Contains(p.Id)).OrderBy(t => t.BuildingNo).ToList();
+            return list;
+        }
+
+        public void BindBuilding(string id, string[] buildings)
+        {
+            foreach (var item in buildings)
+            {
+
+                var rel = new Relevance
+                {
+                    Name = Relation.DeviceBuilding,
+                    FirstKey = id,
+                    SecondKey = item
+                };
+                Add(rel);
+            }
+            SaveChanges();
+
+        }
+
+        public void UnbindBuilding(string id, string buildingId)
+        {
+            var obj = Query<Relevance>(p => p.Name.Equals(Relation.DeviceBuilding) && p.FirstKey.Equals(id) && p.SecondKey.Equals(buildingId)).FirstOrDefault();
+            DelAndSave(obj);
+        }
 
         /// <summary>
         /// 根据大屏设备号获取绑定的楼栋列表
@@ -231,15 +298,15 @@ namespace ZHXY.Application
 
             var inSql = string.Format(" SELECT CONVERT(VARCHAR,COUNT(0)) AS F_Num,DATEPART(HH,DATEADD(SS,Convert(INT, swipDate),'1970-1-1 08:00:00')) AS F_Hour  FROM [dbo].[DHFLOW_{0}{1}] "
              + " WHERE DATEADD(SS,Convert(INT, swipDate),'1970-1-1 08:00:00') >='{2}' AND inOut=0 "
-             + " AND idNum IN ('" + string.Join("','", dormStudents) +"') "
+             + " AND idNum IN ('" + string.Join("','", dormStudents) + "') "
              + " GROUP BY DATEPART(HH,DATEADD(SS,Convert(INT, swipDate),'1970-1-1 08:00:00')) "
-             + " ORDER BY F_Hour ", year, month,today);
+             + " ORDER BY F_Hour ", year, month, today);
 
             var outSql = string.Format(" SELECT CONVERT(VARCHAR,COUNT(0)) AS F_Num,DATEPART(HH,DATEADD(SS,Convert(INT, swipDate),'1970-1-1 08:00:00')) AS F_Hour  FROM [dbo].[DHFLOW_{0}{1}] "
              + " WHERE DATEADD(SS,Convert(INT, swipDate),'1970-1-1 08:00:00') >='{2}' AND inOut=1 "
              + " AND idNum IN ('" + string.Join("','", dormStudents) + "') "
              + " GROUP BY DATEPART(HH,DATEADD(SS,Convert(INT, swipDate),'1970-1-1 08:00:00')) "
-             + " ORDER BY F_Hour ", year, month,today);
+             + " ORDER BY F_Hour ", year, month, today);
 
             // 时间轴，1-24小时，如果数据中未包含此时段的数据，人工补0
             var inDt = GetDataTable(inSql, new System.Data.Common.DbParameter[] { });
