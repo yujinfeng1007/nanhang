@@ -58,7 +58,6 @@
     <Compile Include="EntityConfig\System\ItemsMap.cs" />
     <Compile Include="EntityConfig\System\ModuleButtonMap.cs" />
     <Compile Include="EntityConfig\System\ModuleMap.cs" />
-    <Compile Include="EntityConfig\System\ResourceMap.cs" />
     <Compile Include="EntityConfig\System\RoleAuthorizeMap.cs" />
     <Compile Include="EntityConfig\System\RoleMap.cs" />
     <Compile Include="EntityConfig\System\UserRoleMap.cs" />
@@ -71,14 +70,12 @@
     <Compile Include="Entity\Dorm\StuFaceOrder.cs" />
     <Compile Include="Entity\Dorm\VisitorApprove.cs" />
     <Compile Include="Entity\System\AppVersion.cs" />
-    <Compile Include="Entity\System\Resource.cs" />
     <Compile Include="Entity\System\SysButton.cs" />
     <Compile Include="Entity\System\SysDic.cs" />
     <Compile Include="Entity\System\SysDicItem.cs" />
     <Compile Include="Entity\System\SysModule.cs" />
     <Compile Include="Entity\System\SysRole.cs" />
     <Compile Include="Entity\System\SysRoleAuthorize.cs" />
-    <Compile Include="Entity\System\SysUser.cs" />
     <Compile Include="Entity\System\SysUserRole.cs" />
     <Compile Include="Relation.cs" />
     <Compile Include="SYS_CONSTS.cs" />
@@ -136,7 +133,6 @@
     <Compile Include="Entity\Dorm\Teacher.cs" />
     <Compile Include="Entity\System\Area.cs" />
     <Compile Include="Entity\System\Organ.cs" />
-    <Compile Include="Entity\System\Role.cs" />
     <Compile Include="Entity\System\User.cs" />
     <Compile Include="Entity\System\DbBackup.cs" />
     <Compile Include="Entity\System\FilterIp.cs" />

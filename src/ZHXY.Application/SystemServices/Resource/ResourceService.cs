@@ -88,11 +88,11 @@ namespace ZHXY.Application
                 }).ToList();
         }
 
-        public dynamic GetUserMenu(string userId)
-        {
-            var userMenus = RelevanceApp.GetUserRosource(userId);
-            return Read<Resource>(p => userMenus.Contains(p.Id) && p.Type.Equals(SYS_CONSTS.Menu)).ToListAsync().Result;
-        }
+        //public dynamic GetUserMenu(string userId)
+        //{
+        //    var userMenus = RelevanceApp.GetUserRosource(userId);
+        //    return Read<Resource>(p => userMenus.Contains(p.Id) && p.Type.Equals(SYS_CONSTS.Menu)).ToListAsync().Result;
+        //}
 
         public dynamic GetAllMenu()
         {
