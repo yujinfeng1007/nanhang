@@ -1,4 +1,7 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Configuration;
+using System.IO;
+using System.Web.Mvc;
 using ZHXY.Application;
 using ZHXY.Common;
 
@@ -44,6 +47,34 @@ namespace ZHXY.Web.Dorm.Controllers
         {
             var data = App.VisivorByStudent(pag,Operator.GetCurrent().Id, status);
             return Result.Success(data);
+        }
+
+        [HttpPost]
+        public ActionResult UploadImg()
+        {
+            var approveFilepath = string.Empty;//审批后的头像
+            var existen = string.Empty;
+            var mapPath = ConfigurationManager.AppSettings["MapPath"] + DateTime.Now.ToString("yyyyMMdd") + "/";
+            var basePath = Server.MapPath(mapPath);
+            var files = System.Web.HttpContext.Current.Request.Files;
+            if (files.Count > 0)
+            {
+                if (!Directory.Exists(basePath)) Directory.CreateDirectory(basePath);
+                var random = RandomHelper.GetRandom();
+                var todayStr = DateTime.Now.ToString("yyyyMMddHHmmss");
+                for (var i = 0; i < files.Count; i++)
+                {
+                    var strRandom = random.Next(1000, 10000).ToString(); //生成编号
+                    var uploadName = $"{todayStr}{strRandom}";
+                    existen = files[i].FileName.Substring(files[i].FileName.LastIndexOf('.') + 1);
+
+                    var fullPath = $"{basePath}{uploadName}.{existen}";
+                    files[i].SaveAs(fullPath);
+                    approveFilepath = $"http://{Request.Url.Host}:{Request.Url.Port}{mapPath}{uploadName}.{existen}";
+                    // approveFilepath = $"{mapPath}{uploadName}.{existen}";
+                }
+            }
+            return Result.Success(approveFilepath);
         }
 
 

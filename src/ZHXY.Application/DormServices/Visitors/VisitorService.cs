@@ -8,6 +8,8 @@ using System.Text;
 using ZHXY.Common.IsNumeric;
 using System.Data.Entity;
 using EntityFramework.Extensions;
+using System.Configuration;
+using System.IO;
 
 namespace ZHXY.Application
 {
@@ -109,7 +111,7 @@ namespace ZHXY.Application
             {
                 query = IsNumeric.isNumeric(KeyWords) ? query.Where(p => p.b.StudentNumber.Equals(KeyWords)) : query.Where(p => p.b.Name.Contains(KeyWords));
             }
-            return query.Select(p => new { id = p.b.Id, text = p.b.Name, limit = p.a.UsableLimit }).OrderBy(p => p.id).Take(20).ToList();
+            return query.Select(p => new { id = p.b.Id, text = p.b.Name, limit = p.a.UsableLimit, ImgUri = p.b.FacePic }).OrderBy(p => p.id).Take(20).ToList();
         }
 
         public object GetForm(string keyValue) => throw new NotImplementedException();
@@ -259,19 +261,27 @@ namespace ZHXY.Application
         /// <param name="pass"></param>
         public void ApprovalList(string[] ids, int pass)
         {
-            var VisitList = Read<VisitorApply>().Where(p => ids.Contains(p.Id)).Update(s => new VisitorApply {
+            var ApplyIds = Query<VisitorApprove>(p => ids.Contains(p.Id)).Select(p => p.VisitId).ToList();
+            var VisitList = Read<VisitorApply>(p => ApplyIds.Contains(p.Id)).Update(s => new VisitorApply {
                 Status = pass.ToString(),
                 ApprovedTime = DateTime.Now
             });
             string UserId = Operator.GetCurrent().Id;
-            Add(ids.Select(p => new VisitorApprove
+            //Add(ids.Select(p => new VisitorApprove
+            //{
+            //    VisitId = p,
+            //    ApproverId = UserId,
+            //    ApproveResult = pass.ToString(),
+            //    Opinion = pass == 1 ? "通过" : "不通过"
+            //}).ToList());
+            //SaveChanges();
+
+            Query<VisitorApprove>(p => ids.Contains(p.Id)).Update(s => new VisitorApprove
             {
-                VisitId = p,
                 ApproverId = UserId,
                 ApproveResult = pass.ToString(),
                 Opinion = pass == 1 ? "通过" : "不通过"
-            }).ToList());
-            SaveChanges();
+            });
         }
 
         /// <summary>
@@ -295,32 +305,42 @@ namespace ZHXY.Application
                 Relationship = input.Relationship,
                 Status = "0"
             };
-            visit.ApplicantId = currentUserId;
-            
             //获取学生所在的dormid
             var dormid = Read<DormStudent>(p => p.StudentId.Equals(currentUserId)).Select(p => p.DormId).FirstOrDefault();
             //获取dorm对应的楼栋Id
             var buildingId = Read<DormRoom>(p => p.Id.Equals(dormid)).Select(p => p.BuildingId).FirstOrDefault();
             //获取楼栋对应的宿管
-            var Approvers = Read<Relevance>(p => p.FirstKey.Equals(buildingId)).Select(p => p.SecondKey).ToListAsync().Result;
+            var Approvers = Read<Relevance>(p => p.Name.Equals("Building_User") && p.FirstKey.Equals(buildingId)).Select(p => p.SecondKey).ToListAsync().Result;
             if (null == Approvers) throw new Exception("请先绑定宿管!");
-            foreach (var approver in Approvers) {
-                AddAndSave(new VisitorApprove {
-                    ApproverId = approver,
-                    VisitId = visit.Id,
-                    ApproveLevel = 1
+            AddAndSave(new VisitorApprove
+            {
+                ApproverId = Approvers.ToJson(),
+                VisitId = visit.Id,
+                ApproveLevel = 1,
+                ApproveResult = "0"
+            });
 
-                });
-            }            
             visit.DormId = dormid;
             visit.BuildingId = buildingId;
+            visit.ImgUri = input.ImgUri;
             AddAndSave(visit);
             SaveChanges();
         }
 
         public object NotCheckApply(Pagination pagination)
         {
-            return Read<VisitorApply>(p => p.Status.Equals("0")).Paging(pagination).Join(Read<Student>(), p => p.ApplicantId, s => s.Id, (apply, stu) => new
+            string UserId = Operator.GetCurrent().Id;
+            return 
+                Read<VisitorApprove>(p => p.ApproveResult.Equals("0") && p.ApproverId.Contains(UserId)).Paging(pagination)
+                .Join(Read<VisitorApply>(p => p.Status.Equals("0")), p => p.VisitId, s=>s.Id, (approve, apply) => new {
+                    approve.Id,
+                    apply.ApplicantId,
+                    apply.VisitorName,
+                    apply.VisitorIDCard,
+                    apply.VisitReason,
+                    apply.VisitorGender,
+                    apply.DormId
+                }).Join(Read<Student>(), p => p.ApplicantId, s => s.Id, (apply, stu) => new
                  {
                      apply.Id,
                      stu.Name,
@@ -340,6 +360,34 @@ namespace ZHXY.Application
                      temp.ApplicantId,
                      F_Classroom_ID = dorm.Title
                  }).ToList();
+        }
+
+
+        ////////////////////////////////                 宿管相关                 //////////////////////////////////////
+        public object GetDorm()
+        {
+            string SuperId = Operator.GetCurrent().Id;
+            var BuildingIds = Read<Relevance>(p => p.SecondKey.Equals(SuperId) && p.Name.Equals("Building_User")).Select(p => p.FirstKey).ToList();
+            return Read<Building>(p => BuildingIds.Contains(p.Id)).ToList();
+        }
+
+
+        public string StatisticsByBuild(string BuildingId)
+        {
+            var Total = Read<DormRoom>(p => p.BuildingId.Equals(BuildingId)).Join(Read<DormStudent>(), s => s.Id, p => p.DormId, (dormRoom, dormStu) => new
+            {
+                dormStu.StudentId
+            }).Join(Read<Student>(), p => p.StudentId, s => s.Id, (temp, stu) => new {
+                stu.InOut
+            }).ToList();
+        
+            var OutCount = Total.Count(p => string.IsNullOrEmpty(p.InOut) || p.InOut.Equals("1"));
+            var InCount = Total.Count(p => !string.IsNullOrEmpty(p.InOut) && p.InOut.Equals("0"));
+            Dictionary<string, int> ResultDic = new Dictionary<string, int>();
+            ResultDic.Add("TotalCount", Total.Count());
+            ResultDic.Add("OutCount", OutCount);
+            ResultDic.Add("InCount", InCount);
+            return ResultDic.ToJson();
         }
     }
 }

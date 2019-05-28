@@ -66,6 +66,11 @@ namespace ZHXY.Domain
         public string Status { get; set; }
 
         /// <summary>
+        /// 访客头像（校外访客）
+        /// </summary>
+        public string ImgUri { get; set; }
+
+        /// <summary>
         /// 学生基础信息
         /// </summary>
         public virtual Student Student {get;set;}

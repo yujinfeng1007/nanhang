@@ -59,19 +59,19 @@ namespace ZHXY.Application
 
         public void BindBuilding(string id, string[] buildings)
         {
+            List<Relevance> ReleList = new List<Relevance>();
             foreach (var item in buildings)
             {
-
                 var rel = new Relevance
                 {
                     Name = Relation.DeviceBuilding,
                     FirstKey = id,
                     SecondKey = item
                 };
-                Add(rel);
+                ReleList.Add(rel);
             }
+            Add(ReleList);
             SaveChanges();
-
         }
 
         public void UnbindBuilding(string id, string buildingId)
