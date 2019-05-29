@@ -290,7 +290,8 @@ namespace ZHXY.Application
         /// <param name="input"></param>
         public void Submit(VisitorApplySubmitDto input)
         {
-            var currentUserId = Operator.GetCurrent().Id;
+            //var currentUserId = Operator.GetCurrent().Id;
+            var currentUserId = "ADE4D67891CC43C9982B0A22EF517147";
            // var visit = input.MapTo<VisitApply>();//映射到数据库中对应的表
             var visit = new VisitorApply
             {

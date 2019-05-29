@@ -105,7 +105,7 @@ namespace ZHXY.Application
             List<FaceListView> faceListViews = new List<FaceListView>();
             //判断登陆用户是学生，还是宿管   若是学生获取所有提交的申请，若是老师则查看所有审批的申请
             var dutyId = Read<User>(p => p.Id.Equals(input.CurrentUserId)).Select(p => p.DutyId).FirstOrDefaultAsync().Result;
-            if (dutyId.Equals("teacherDuty"))
+            if (dutyId.Equals("teacherDuty") || dutyId.Equals("suguanDuty"))
             {
                 //获取当前用户所审批的审批单据
                 var faceIds = Read<FaceApprove>(p => p.ApproverId.Equals(input.CurrentUserId)).Select(p => p.OrderId).ToListAsync().Result;
@@ -177,17 +177,11 @@ namespace ZHXY.Application
             SaveChanges();
             //审批同意则更新头像并下发
             if (input.IsAgreed) {
-
                 new UserService(new ZhxyRepository()).UpdIco(face.ApplicantId, face.ApproveImg);
                 new StudentService(new ZhxyRepository()).UpdIco(face.ApplicantId, face.ApproveImg);                
                 new UserToGateService().SendUserHeadIco(new string[] { face.ApplicantId });
+                Console.WriteLine();
             }
-           
-
-
         }
-
-
-
     }
 }
