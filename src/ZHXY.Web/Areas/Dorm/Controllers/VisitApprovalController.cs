@@ -23,42 +23,6 @@ namespace ZHXY.Web.Dorm.Controllers
             return Content(data.ToJson());
         }
 
-        /// <summary>
-        /// 访客审批
-        /// </summary>
-        [HttpPost]
-        public ActionResult ApprovalVisitor(VisitorApprovalDto input)
-        {
-            input.CurrentUserId = Operator.GetCurrent().Id;
-            App.Approval(input);
-            return Result.Success();
-        }
-
-
-        /// <summary>
-        /// 审批类型：  1=通过，2=不通过
-        /// </summary>
-        /// <param name="VisitLogId"></param>
-        /// <param name="UserId"></param>
-        /// <param name="CheckType"></param>
-        /// <returns></returns>
-        [HttpGet]
-        public ActionResult CheckVisitor(string VisitLogId, string UserId, int CheckType)
-        {
-            App.CheckVisitor(UserId, CheckType, VisitLogId);
-            return Result.Success();
-        }
-
-        /// <summary>
-        /// 审批
-        /// </summary>
-        [HttpPost]
-        public ActionResult Approval(string id, bool pass)
-        {
-            App.Approval(id, pass);
-            return Result.Success();
-        }
-
         [HttpPost]
         public ActionResult ApprovalList(string[] ids, int pass)
         {

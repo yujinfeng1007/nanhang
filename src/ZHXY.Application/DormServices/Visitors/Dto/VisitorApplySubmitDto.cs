@@ -21,7 +21,7 @@ namespace ZHXY.Application
         /// </summary>
         public string VisitReason { get; set; }
         /// <summary>
-        /// 访客类型
+        /// 访客类型  0=校内，1=校外
         /// </summary>
         public string VisitType { get; set; }
         /// <summary>
@@ -37,6 +37,15 @@ namespace ZHXY.Application
         /// </summary>
         public string Relationship { get; set; }
 
+        /// <summary>
+        /// 头像地址（校外访客）
+        /// </summary>
+        public string ImgUri { get; set; }
+
+        /// <summary>
+        /// 校内互访 （访客ID 对应 User表的主键ID）
+        /// </summary>
+        public string VisitorId { get; set; }
 
     }
 
