@@ -30,7 +30,7 @@ namespace ZHXY.Application
 
             if (string.IsNullOrEmpty(newEntity.Id))
             {
-                newEntity.Id = Guid.NewGuid().ToString();
+                newEntity.Id = newEntity.Sn;
                 newEntity.CreatorTime = DateTime.Now;
             }
             newEntity.Name = entity.Name;
@@ -45,14 +45,14 @@ namespace ZHXY.Application
         /// <param name="id"></param>
         public List<Building> GetBoundBuildings(string id)
         {
-            var buildingIds = Read<Relevance>(p => p.Name.Equals(Relation.DeviceBuilding) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
+            var buildingIds = Read<Relevance>(p => p.Name.Equals(Relation.DeviceBuilding) && p.FirstKey.Equals(id)).Select(p => p.SecondKey)?.FirstOrDefault().Split(',');
             var list = Read<Building>(p => buildingIds.Contains(p.Id)).ToList();
             return list;
         }
 
         public List<Building> GetNotBoundBuildings(string id)
         {
-            var buildingIds = Read<Relevance>(p => p.Name.Equals(Relation.DeviceBuilding) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
+            var buildingIds = Read<Relevance>(p => p.Name.Equals(Relation.DeviceBuilding) && p.FirstKey.Equals(id)).Select(p => p.SecondKey)?.FirstOrDefault().Split(',');
             var list = Read<Building>(p => !buildingIds.Contains(p.Id)).OrderBy(t => t.BuildingNo).ToList();
             return list;
         }
@@ -261,7 +261,7 @@ namespace ZHXY.Application
  + "(SELECT COUNT(0) FROM [zhxy_late_return_report] WHERE F_Dorm IN ('" + string.Join("','", dorms.ToArray()) + "' )) AS F_Num "
  + " UNION "
  + " SELECT '1' AS F_Status ,'请假' AS F_StatusName,"
- + "(SELECT COUNT(0) FROM [zhxy_leave_order] WHERE Applicant_Id IN ('" + string.Join("','", dormStudents.ToArray()) + "' ) AND CONVERT(VARCHAR(10),StartTime,120)< GETDATE() AND CONVERT(VARCHAR(10),EndTime,120)> GETDATE()  ) AS F_Num "
+ + "(SELECT COUNT(0) FROM [zhxy_leave_order] WHERE Applicant_Id IN ('" + string.Join("','", dormStudents.ToArray()) + "' ) AND CONVERT(VARCHAR(10),Start_Time,120)< GETDATE() AND CONVERT(VARCHAR(10),End_Time,120)> GETDATE()  ) AS F_Num "
  + " UNION "
  + " SELECT '5' AS F_Status, '其他异常' AS F_StatusName,0 AS F_Num ";
 
