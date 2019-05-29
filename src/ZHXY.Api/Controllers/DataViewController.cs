@@ -33,7 +33,7 @@ namespace ZHXY.Api.Controllers
 
                 var json = new
                 {
-                    F_Is_Binded = relevance == null?false:true,
+                    F_Is_Binded = relevance!=null?true:false,
                     F_Buildings = buildings.Select(t=>new { F_BuildingId= t.Id,F_BuildingName=t.BuildingNo}),
                 };
                 return Success(json);
