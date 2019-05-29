@@ -144,15 +144,17 @@ namespace ZHXY.Application
             ids.ForEach(item =>
             {
                 var dorms = Read<DormRoom>(t => t.BuildingId == item).Select(t => t.Id).ToList();
-
                 // 根据宿舍查找学生宿舍对应表
-                var students = Read<DormStudent>(t => dorms.Contains(t.DormId)).Select(t => t.StudentId).ToList();
-
+                //var students = Read<DormStudent>(t => dorms.Contains(t.DormId)).Select(t => t.StudentId).ToList();
+                var Total = Read<DormStudent>(t => dorms.Contains(t.DormId)).Join(Read<Student>(), s => s.StudentId, p => p.Id, (temp, stu) => new
+                {
+                    stu.InOut
+                }).ToList() ;
                 // 在寝人数
-                var ins = Read<Student>(t => students.Contains(t.Id) && t.InOut == "0").Count();
-
-                var outs = Read<Student>(t => students.Contains(t.Id) && t.InOut == "1").Count();
-
+                //var ins = Read<Student>(t => students.Contains(t.Id) && t.InOut == "0").Count();
+                //var outs = Read<Student>(t => students.Contains(t.Id) && t.InOut == "1").Count();
+                var outs = Total.Count(p => string.IsNullOrEmpty(p.InOut) || p.InOut.Equals("1"));
+                var ins = Total.Count(p => !string.IsNullOrEmpty(p.InOut) && p.InOut.Equals("0"));
                 list.Add(new
                 {
                     F_BuildId = item,

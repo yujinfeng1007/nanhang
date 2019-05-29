@@ -191,11 +191,11 @@ namespace ZHXY.Application
                 ApprovalStatus = visitor.Status,
                 Result = approveInfo.ApproveResult,
                 Opinion = approveInfo.Opinion,
-                CreatedTime = visitor.CreatedTime
+                CreatedTime = visitor.CreatedTime,
+                ImgUrl = visitor.ImgUri
             };
             return view;
         }
-
 
         /// <summary>
         /// 访客审批
@@ -290,9 +290,8 @@ namespace ZHXY.Application
         /// <param name="input"></param>
         public void Submit(VisitorApplySubmitDto input)
         {
-            //var currentUserId = Operator.GetCurrent().Id;
-            var currentUserId = "ADE4D67891CC43C9982B0A22EF517147";
-           // var visit = input.MapTo<VisitApply>();//映射到数据库中对应的表
+            var currentUserId = Operator.GetCurrent().Id;
+            // var visit = input.MapTo<VisitApply>();//映射到数据库中对应的表
             var visit = new VisitorApply
             {
                 ApplicantId = currentUserId,
@@ -313,14 +312,27 @@ namespace ZHXY.Application
             //获取楼栋对应的宿管
             var Approvers = Read<Relevance>(p => p.Name.Equals("Building_User") && p.FirstKey.Equals(buildingId)).Select(p => p.SecondKey).ToListAsync().Result;
             if (null == Approvers) throw new Exception("请先绑定宿管!");
-            AddAndSave(new VisitorApprove
+            if (visit.VisitType.Equals("0"))
             {
-                ApproverId = Approvers.ToJson(),
-                VisitId = visit.Id,
-                ApproveLevel = 1,
-                ApproveResult = "0"
-            });
-
+                visit.Status = "1";
+                AddAndSave(new VisitorApprove
+                {
+                    ApproverId = Approvers.ToJson(),
+                    VisitId = visit.Id,
+                    ApproveLevel = 1,
+                    ApproveResult = "1"
+                });
+            }
+            else
+            {
+                AddAndSave(new VisitorApprove
+                {
+                    ApproverId = Approvers.ToJson(),
+                    VisitId = visit.Id,
+                    ApproveLevel = 1,
+                    ApproveResult = "0"
+                });
+            }
             visit.DormId = dormid;
             visit.BuildingId = buildingId;
             visit.ImgUri = input.ImgUri;
