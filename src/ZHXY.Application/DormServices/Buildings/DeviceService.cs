@@ -217,9 +217,9 @@ namespace ZHXY.Application
                 var students = Read<DormStudent>(t => dorms.Contains(t.DormId)).Select(t => t.StudentId).ToList();
 
                 // 获取最近一次进入的记录，需要从大华原始表里去查
-                var inSql = string.Format(" SELECT TOP 1 A.firstName AS F_Name,CASE A.gender WHEN 0 THEN '女' ELSE '男' END AS F_Sex,A.date AS F_Time,A.idNum AS F_StuNum,B.face_pic AS F_Avater,A.picture1 as F_SnapAvater FROM [dbo].[DHFLOW_{0}{1}] A LEFT JOIN [dbo].[zhxy_student] B ON A.personId =B.student_number WHERE A.inOut=0 ORDER BY A.date DESC ", year, month);
+                var inSql = string.Format(" SELECT TOP 1 A.firstName AS F_Name,CASE A.gender WHEN 0 THEN '女' ELSE '男' END AS F_Sex,A.date AS F_Time,A.idNum AS F_StuNum,B.face_pic AS F_Avater,A.picture1 as F_SnapAvater FROM [dbo].[DHFLOW_{0}{1}] A LEFT JOIN [dbo].[zhxy_student] B ON A.personId =B.student_number WHERE A.inOut=0 AND B.id IN (SELECT student_id FROM [dbo].[zhxy_dorm_student] WHERE dorm_id IN (SELECT id FROM [dbo].[zhxy_dorm] WHERE building_id ='{2}') ) ORDER BY A.date DESC ", year, month,item);
                 // 获取最近一次出去的记录，需要从大华原始表里去查
-                var outSql = string.Format(" SELECT TOP 1 A.firstName AS F_Name,CASE A.gender WHEN 0 THEN '女' ELSE '男' END AS F_Sex,A.date AS F_Time,A.idNum AS F_StuNum,B.face_pic AS F_Avater,A.picture1 as F_SnapAvater FROM [dbo].[DHFLOW_{0}{1}] A LEFT JOIN [dbo].[zhxy_student] B ON A.personId =B.student_number WHERE A.inOut=1 ORDER BY A.date DESC ", year, month);
+                var outSql = string.Format(" SELECT TOP 1 A.firstName AS F_Name,CASE A.gender WHEN 0 THEN '女' ELSE '男' END AS F_Sex,A.date AS F_Time,A.idNum AS F_StuNum,B.face_pic AS F_Avater,A.picture1 as F_SnapAvater FROM [dbo].[DHFLOW_{0}{1}] A LEFT JOIN [dbo].[zhxy_student] B ON A.personId =B.student_number WHERE A.inOut=1 AND B.id IN (SELECT student_id FROM [dbo].[zhxy_dorm_student] WHERE dorm_id IN (SELECT id FROM [dbo].[zhxy_dorm] WHERE building_id ='{2}') ) ORDER BY A.date DESC ", year, month,item);
 
                 list.Add(new
                 {
