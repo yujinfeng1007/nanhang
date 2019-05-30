@@ -213,7 +213,7 @@ namespace ZHXY.Application
 
                 if(visitorApprover.ApproveResult=="1")
                 {
-                    PushVisitor(visitor.ApplicantId, visitor.BuildingId, visitor.VisitEndTime);
+                    PushVisitor("", visitor.ImgUri, visitor.VisitorName, visitor.VisitorIDCard, visitor.BuildingId, visitor.VisitEndTime);
                 }
             }
             visitor.Status = "1";
@@ -222,21 +222,20 @@ namespace ZHXY.Application
         }
 
         // 推送访客至闸机
-        private void PushVisitor(string studentId,string buildingId,DateTime endTime)
+        private void PushVisitor(string studentNum,string img,string name,string idCode, string buildingId,DateTime endTime)
         {
             // 闸机Id列表
             var zjids = Read<Relevance>(p => p.SecondKey == buildingId && p.Name == Relation.GateBuilding).Select(p => p.FirstKey).ToList();
             var channelIds= Read<Gate>(t=>zjids.Contains(t.Id)).Select(p=>p.DeviceNumber).ToArray();
-            // 学生信息
-            var student = Get<Student>(studentId);
-            TempSurvey(channelIds,student.FacePic,student.StudentNumber,student.Name, endTime);
+  
+            TempSurvey(channelIds,img,studentNum,name,idCode, endTime);
         }
-        private string TempSurvey(string[] channelIds, string PicUrl, string idCode, string name,DateTime endTime)
+        private string TempSurvey(string[] channelIds, string PicUrl, string num, string name,string idCode, DateTime endTime)
         {
             //string[] str = { "1000004$7$0$0", "1000009$7$0$0", "1000013$7$0$0", "1000002$7$0$0", "1000010$7$0$0", "1000000$7$0$0", "1000012$7$0$0", "1000008$7$0$0", "1000011$7$0$0", "1000003$7$0$0" };
             SurveyMoudle survey = new SurveyMoudle();
             survey.channelId = channelIds;
-            survey.code = "";
+            survey.code = num;
             survey.name = name;
             survey.sex = 1;
             survey.idCode = idCode;
