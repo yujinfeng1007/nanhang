@@ -176,13 +176,13 @@ namespace ZHXY.Application
             // 根据楼栋ID，查找所有宿舍信息
             var ids = buildingIds.Split(',').ToList();
 
-            var dorms = Read<DormRoom>(t => ids.Contains(t.BuildingId)).Select(t => t.Id).ToList();
+            //var dorms = Read<DormRoom>(t => ids.Contains(t.BuildingId)).Select(t => t.Id).ToList();
 
             // 根据宿舍查找学生宿舍对应表
-            var dormStudents = Read<DormStudent>(t => dorms.Contains(t.DormId)).Select(t => t.StudentId).ToList();
+            //var dormStudents = Read<DormStudent>(t => dorms.Contains(t.DormId)).Select(t => t.StudentId).ToList();
 
             // 获取到访记录名单
-            var vistors = Read<VisitorApply>(t => dormStudents.Contains(t.ApplicantId)).OrderByDescending(t => t.VisitStartTime).Select(t => new
+            var vistors = Read<VisitorApply>(t => ids.Contains(t.BuildingId)).OrderByDescending(t => t.VisitStartTime).Select(t => new
             {
                 F_Name = t.Student.Name,
                 F_Dorm = t.DormRoom.Title,
