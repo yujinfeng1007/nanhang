@@ -53,7 +53,11 @@ namespace ZHXY.Application
         {
             var expression = ExtLinq.True<NoReturnReport>();
             if (!string.IsNullOrEmpty(classId))
-                expression = expression.And(p => p.ClassId.Equals(classId));
+            {
+                List<string> OrgList = new List<string> { classId };
+                this.GetChildOrg(classId, OrgList);
+                expression = expression.And(p => OrgList.Contains(p.ClassId));
+            }
             if (!string.IsNullOrEmpty(keyboard))
             {
                 expression = expression.And(p => p.Name.Contains(keyboard));
