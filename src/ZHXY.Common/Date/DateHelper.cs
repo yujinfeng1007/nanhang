@@ -253,8 +253,8 @@ namespace ZHXY.Common
             string startTime = null, endTime = null;
             switch (TimeType)
             {
-                case 0: startTime = DateTime.Today.ToString(); endTime = DateTime.Now.ToString(); break;
-                case 1: startTime = DateTime.Today.ToString(); endTime = DateTime.Now.ToString(); break;
+                case 0: startTime = DateTime.Today.ToString(); endTime = DateTime.Now.AddDays(1).Date.ToString(); break;
+                case 1: startTime = DateTime.Today.ToString(); endTime = DateTime.Now.AddDays(1).Date.ToString(); break;
                 case 2: startTime = DateTime.Today.AddDays(-1).ToString(); endTime = DateTime.Today.AddSeconds(-1).ToString(); break;
                 case 3: startTime = DateTime.Today.AddDays(-(int)DateTime.Now.Date.DayOfWeek + 1).ToString(); endTime = DateTime.Today.AddDays(-(int)DateTime.Now.Date.DayOfWeek + 8).AddSeconds(-1).ToString(); break;
                 case 4: startTime = DateTime.Today.AddDays(-(int)DateTime.Now.Date.Day + 1).ToString(); endTime = DateTime.Today.AddDays(-(int)DateTime.Now.Day + 1).AddMonths(1).AddSeconds(-1).ToString(); break;

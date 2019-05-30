@@ -52,8 +52,8 @@ namespace ZHXY.Application
             if (null == user) return null;
             var departmentName = Read<Organ>(p => p.Id.Equals(user.OrganId)).Select(p => p.Name).FirstOrDefaultAsync().Result;
             var query = Read<SysLog>(p => p.Type == "Login" && p.UserId.Equals(input.UserId) && p.Result == true && p.CreateTime >= input.StartTime && p.CreateTime <= input.EndOfTime);
-            var ordering = input.GetOrdering<SysLog>();
-            return query.OrderBy(ordering)
+            //var ordering = input.GetOrdering<SysLog>();
+            return query.Paging(input)
               .Select(p => new LoginDetailView
               {
                   Name = user.Name,

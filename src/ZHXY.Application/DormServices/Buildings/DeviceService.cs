@@ -30,7 +30,7 @@ namespace ZHXY.Application
 
             if (string.IsNullOrEmpty(newEntity.Id))
             {
-                newEntity.Id = Guid.NewGuid().ToString();
+                newEntity.Id = newEntity.Sn;
                 newEntity.CreatorTime = DateTime.Now;
             }
             newEntity.Name = entity.Name;
@@ -45,33 +45,33 @@ namespace ZHXY.Application
         /// <param name="id"></param>
         public List<Building> GetBoundBuildings(string id)
         {
-            var buildingIds = Read<Relevance>(p => p.Name.Equals(Relation.DeviceBuilding) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
+            var buildingIds = Read<Relevance>(p => p.Name.Equals(Relation.DeviceBuilding) && p.FirstKey.Equals(id)).Select(p => p.SecondKey)?.FirstOrDefault().Split(',');
             var list = Read<Building>(p => buildingIds.Contains(p.Id)).ToList();
             return list;
         }
 
         public List<Building> GetNotBoundBuildings(string id)
         {
-            var buildingIds = Read<Relevance>(p => p.Name.Equals(Relation.DeviceBuilding) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
+            var buildingIds = Read<Relevance>(p => p.Name.Equals(Relation.DeviceBuilding) && p.FirstKey.Equals(id)).Select(p => p.SecondKey)?.FirstOrDefault().Split(',');
             var list = Read<Building>(p => !buildingIds.Contains(p.Id)).OrderBy(t => t.BuildingNo).ToList();
             return list;
         }
 
         public void BindBuilding(string id, string[] buildings)
         {
+            List<Relevance> ReleList = new List<Relevance>();
             foreach (var item in buildings)
             {
-
                 var rel = new Relevance
                 {
                     Name = Relation.DeviceBuilding,
                     FirstKey = id,
                     SecondKey = item
                 };
-                Add(rel);
+                ReleList.Add(rel);
             }
+            Add(ReleList);
             SaveChanges();
-
         }
 
         public void UnbindBuilding(string id, string buildingId)
@@ -144,15 +144,17 @@ namespace ZHXY.Application
             ids.ForEach(item =>
             {
                 var dorms = Read<DormRoom>(t => t.BuildingId == item).Select(t => t.Id).ToList();
-
                 // 根据宿舍查找学生宿舍对应表
-                var students = Read<DormStudent>(t => dorms.Contains(t.DormId)).Select(t => t.StudentId).ToList();
-
+                //var students = Read<DormStudent>(t => dorms.Contains(t.DormId)).Select(t => t.StudentId).ToList();
+                var Total = Read<DormStudent>(t => dorms.Contains(t.DormId)).Join(Read<Student>(), s => s.StudentId, p => p.Id, (temp, stu) => new
+                {
+                    stu.InOut
+                }).ToList() ;
                 // 在寝人数
-                var ins = Read<Student>(t => students.Contains(t.Id) && t.InOut == "0").Count();
-
-                var outs = Read<Student>(t => students.Contains(t.Id) && t.InOut == "1").Count();
-
+                //var ins = Read<Student>(t => students.Contains(t.Id) && t.InOut == "0").Count();
+                //var outs = Read<Student>(t => students.Contains(t.Id) && t.InOut == "1").Count();
+                var outs = Total.Count(p => string.IsNullOrEmpty(p.InOut) || p.InOut.Equals("1"));
+                var ins = Total.Count(p => !string.IsNullOrEmpty(p.InOut) && p.InOut.Equals("0"));
                 list.Add(new
                 {
                     F_BuildId = item,
@@ -215,9 +217,9 @@ namespace ZHXY.Application
                 var students = Read<DormStudent>(t => dorms.Contains(t.DormId)).Select(t => t.StudentId).ToList();
 
                 // 获取最近一次进入的记录，需要从大华原始表里去查
-                var inSql = string.Format(" SELECT TOP 1 firstName AS F_Name,CASE gender WHEN 0 THEN '女' ELSE '男' END AS F_Sex,date AS F_Time,idNum AS F_StuNum,pictureUrl AS F_Avater,picture1 as F_SnapAvater FROM [dbo].[DHFLOW_{0}{1}] WHERE inOut=0 ORDER BY date DESC ", year, month);
+                var inSql = string.Format(" SELECT TOP 1 A.firstName AS F_Name,CASE A.gender WHEN 0 THEN '女' ELSE '男' END AS F_Sex,A.date AS F_Time,A.idNum AS F_StuNum,B.face_pic AS F_Avater,A.picture1 as F_SnapAvater FROM [dbo].[DHFLOW_{0}{1}] A LEFT JOIN [dbo].[zhxy_student] B ON A.personId =B.student_number WHERE A.inOut=0 ORDER BY A.date DESC ", year, month);
                 // 获取最近一次出去的记录，需要从大华原始表里去查
-                var outSql = string.Format(" SELECT TOP 1 firstName AS F_Name,CASE gender WHEN 0 THEN '女' ELSE '男' END AS F_Sex,date AS F_Time,idNum AS F_StuNum,pictureUrl AS F_Avater,picture1 as F_SnapAvater  FROM [dbo].[DHFLOW_{0}{1}] WHERE inOut=1 ORDER BY date DESC ", year, month);
+                var outSql = string.Format(" SELECT TOP 1 A.firstName AS F_Name,CASE A.gender WHEN 0 THEN '女' ELSE '男' END AS F_Sex,A.date AS F_Time,A.idNum AS F_StuNum,B.face_pic AS F_Avater,A.picture1 as F_SnapAvater FROM [dbo].[DHFLOW_{0}{1}] A LEFT JOIN [dbo].[zhxy_student] B ON A.personId =B.student_number WHERE A.inOut=1 ORDER BY A.date DESC ", year, month);
 
                 list.Add(new
                 {
@@ -261,7 +263,7 @@ namespace ZHXY.Application
  + "(SELECT COUNT(0) FROM [zhxy_late_return_report] WHERE F_Dorm IN ('" + string.Join("','", dorms.ToArray()) + "' )) AS F_Num "
  + " UNION "
  + " SELECT '1' AS F_Status ,'请假' AS F_StatusName,"
- + "(SELECT COUNT(0) FROM [zhxy_leave_order] WHERE Applicant_Id IN ('" + string.Join("','", dormStudents.ToArray()) + "' ) AND CONVERT(VARCHAR(10),StartTime,120)< GETDATE() AND CONVERT(VARCHAR(10),EndTime,120)> GETDATE()  ) AS F_Num "
+ + "(SELECT COUNT(0) FROM [zhxy_leave_order] WHERE Applicant_Id IN ('" + string.Join("','", dormStudents.ToArray()) + "' ) AND CONVERT(VARCHAR(10),Start_Time,120)< GETDATE() AND CONVERT(VARCHAR(10),End_Time,120)> GETDATE()  ) AS F_Num "
  + " UNION "
  + " SELECT '5' AS F_Status, '其他异常' AS F_StatusName,0 AS F_Num ";
 

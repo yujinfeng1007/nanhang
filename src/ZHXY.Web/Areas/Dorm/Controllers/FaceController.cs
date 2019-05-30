@@ -41,11 +41,7 @@ namespace ZHXY.Web.Dorm.Controllers
                    // approveFilepath = $"{mapPath}{uploadName}.{existen}";
                 }
             }
-
             App.Request(input, approveFilepath);
-
-
-
             return Result.Success();
         }
 
@@ -54,11 +50,9 @@ namespace ZHXY.Web.Dorm.Controllers
         /// </summary>
         [HttpGet]
         public ActionResult GetList(GetFaceApprovalListDto input) {
-          // input.CurrentUserId =  Operator.Current.Id;
+            //input.CurrentUserId = Operator.GetCurrent().Id;
             var data = App.GetFaceApprovalList(input);          
             return Result.PagingRst(data, input.Records, input.Total);
-
-
         }
         /// <summary>
         /// 获取头像审批详情
@@ -81,9 +75,5 @@ namespace ZHXY.Web.Dorm.Controllers
             App.Approval(input);
             return Result.Success();
         }
-
-       
-
-
     }
 }

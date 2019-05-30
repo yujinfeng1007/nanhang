@@ -56,7 +56,7 @@ namespace ZHXY.Application
             {
                 roleEntity.F_Id = Guid.NewGuid().ToString("N").ToUpper();
                 roleEntity.F_EnCode = roleEntity.F_Id;
-                Add(roleEntity);
+                AddAndSave(roleEntity);
                 UpdroleAuthorizeEntitys(permissionIds2,permissionIds3,permissionIds4, roleEntity.F_Id);
             }
           

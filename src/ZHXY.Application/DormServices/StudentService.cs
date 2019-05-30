@@ -37,7 +37,43 @@ namespace ZHXY.Application
         {
             var query = Read<Student>();
             query = string.IsNullOrWhiteSpace(keyword) ? query : query.Where(p => p.Name.Contains(keyword));
-            return query.Paging(pagination).ToListAsync().Result;            
+            return query.Paging(pagination).Join(Read<Organ>(), p => p.GradeId, s=> s.Id, (stu, organ) => new {
+                id = stu.Id,
+                facePic = stu.FacePic,
+                name = stu.Name,
+                gender = stu.Gender,
+                studentNumber = stu.StudentNumber,
+                credType = stu.CredType,
+                credNumber = stu.CredNumber,
+                grade = organ.Name,
+                mobilePhone = stu.MobilePhone,
+                stu.ClassId,
+                stu.DivisId
+            }).Join(Read<Organ>(), p => p.ClassId, s=> s.Id, (temp, organ) => new {
+                temp.id,
+                temp.facePic,
+                temp.name,
+                temp.gender,
+                temp.studentNumber,
+                temp.credType,
+                temp.credNumber,
+                temp.grade,
+                temp.mobilePhone,
+                classId = organ.Name,
+                temp.DivisId
+            }).Join(Read<Organ>(), p => p.DivisId, s => s.Id, (temp, organ) => new {
+                temp.id,
+                temp.facePic,
+                temp.name,
+                temp.gender,
+                temp.studentNumber,
+                temp.credType,
+                temp.credNumber,
+                temp.grade,
+                temp.mobilePhone,
+                temp.classId,
+                divis = organ.Name
+            }).ToListAsync().Result;
         }       
 
 

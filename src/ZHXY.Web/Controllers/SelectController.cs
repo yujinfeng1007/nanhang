@@ -91,7 +91,7 @@ namespace ZHXY.Web.Controllers
                 query = query.Where(p => p.Name.Contains(keyword));
             }
             pagination.Records = query.Count();
-            query = string.IsNullOrEmpty(pagination.Sidx) ? query.OrderByDescending(p => p.Id) : query.OrderBy($"{pagination.Sidx} {pagination.Sord}");
+            query = string.IsNullOrEmpty(pagination.Sidx) ? query.OrderByDescending(p => p.Id) : query.Paging(pagination);
             query = query.Skip(pagination.Skip).Take(pagination.Rows);
             var list = (from user in query
                         join org in App.Read<Organ>() on user.OrganId equals org.Id into orgJoin

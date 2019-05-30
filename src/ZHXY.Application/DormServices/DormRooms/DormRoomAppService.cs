@@ -19,7 +19,7 @@ namespace ZHXY.Application
 
         public List<DormRoom> Load(Pagination p)
         {
-            return Read<DormRoom>().OrderBy($"{p.Sidx} {p.Sord}").Skip(p.Skip).Take(p.Rows).ToListAsync().Result;
+            return Read<DormRoom>().Paging(p).ToListAsync().Result;
         }
 
         public object GetById(string id) => throw new NotImplementedException();
