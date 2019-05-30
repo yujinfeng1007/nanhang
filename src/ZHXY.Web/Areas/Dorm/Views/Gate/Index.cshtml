@@ -29,7 +29,7 @@
                 {
                     label: '设备状态', name: 'status', width: 80, align: 'left',
                     formatter: function (cellvalue) {
-                        return cellvalue == "1" ? "常开" : "常闭";
+                        return cellvalue == "3" ? "常开" : "常闭";
                     }
                 }],
             pager: "#gridPager",
@@ -53,7 +53,7 @@
             if (r) {
                 $.submitForm({
                     url: SET_STATUS_URL,
-                    param: { ids: ids, status: "1" },
+                    param: { ids: ids, status: "3" },
                     success: function () {
                         $.currentWindow().$("#gridList").trigger("reloadGrid");
                     }
@@ -68,7 +68,7 @@
             if (r) {
                 $.submitForm({
                     url: SET_STATUS_URL,
-                    param: { ids: ids, status: "0" },
+                    param: { ids: ids, status: "4" },
                     success: function () {
                         $.currentWindow().$("#gridList").trigger("reloadGrid");
                     }
