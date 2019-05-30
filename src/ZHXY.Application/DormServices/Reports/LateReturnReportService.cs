@@ -55,7 +55,11 @@ namespace ZHXY.Application
         {
             var expression = ExtLinq.True<LateReturnReport>();
             if (!string.IsNullOrEmpty(classId))
-                expression = expression.And(p => p.Class.Equals(classId));
+            {
+                List<string> OrgList = new List<string> { classId };
+                this.GetChildOrg(classId, OrgList);
+                expression = expression.And(p => OrgList.Contains(p.Class));
+            }
             if (!string.IsNullOrEmpty(startTime))
             {
                 var start = Convert.ToDateTime(startTime + " 00:00:00");

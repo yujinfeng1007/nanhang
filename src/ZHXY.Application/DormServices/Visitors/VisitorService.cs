@@ -7,6 +7,8 @@ using System;
 using System.Text;
 using ZHXY.Common.IsNumeric;
 using System.Data.Entity;
+using ZHXY.Dorm.Device.tools;
+using ZHXY.Dorm.Device.DH;
 using EntityFramework.Extensions;
 using System.Configuration;
 using System.IO;
@@ -111,7 +113,9 @@ namespace ZHXY.Application
             {
                 query = IsNumeric.isNumeric(KeyWords) ? query.Where(p => p.b.StudentNumber.Equals(KeyWords)) : query.Where(p => p.b.Name.Contains(KeyWords));
             }
-            return query.Select(p => new { id = p.b.Id, text = p.b.Name, limit = p.a.UsableLimit, ImgUri = p.b.FacePic }).OrderBy(p => p.id).Take(20).ToList();
+            var result = query.Select(p => new { id = p.b.Id, text = p.b.Name, limit = p.a.UsableLimit, ImgUri = p.b.FacePic }).OrderBy(p => p.id).Take(20).ToList();
+
+            return result;
         }
 
         public object GetForm(string keyValue) => throw new NotImplementedException();
@@ -130,10 +134,10 @@ namespace ZHXY.Application
             List<VisitorListView> visitorListViews = new List<VisitorListView>();
             //判断登陆用户是学生，还是宿管   若是学生获取所有提交的申请，若是老师则查看所有审批的申请
             var dutyId = Read<User>(p => p.Id.Equals(input.CurrentUserId)).Select(p => p.DutyId).FirstOrDefaultAsync().Result;
-            if (dutyId.Equals("teacherDuty"))
+            if (dutyId.Equals("teacherDuty") || dutyId.Equals("suguanDuty"))
             {
                 //获取当前用户所审批的审批单据
-                var visitIds = Read<VisitorApprove>(p => p.ApproverId.Equals(input.CurrentUserId)).Select(p => p.VisitId).ToListAsync().Result;
+                var visitIds = Read<VisitorApprove>(p => p.ApproverId.Contains(input.CurrentUserId)).Select(p => p.VisitId).ToListAsync().Result;
                 //根据审批单据获取访客详细信息
                 query = Read<VisitorApply>(p => visitIds.Contains(p.Id));
             }
@@ -208,13 +212,40 @@ namespace ZHXY.Application
             {
                 visitorApprover.ApproveResult = input.IsAgreed ? "1" : "-1";
                 visitorApprover.Opinion = input.Opinion;
+
+                if(visitorApprover.ApproveResult=="1")
+                {
+                    PushVisitor("",Convert.ToInt32( visitor.VisitorGender), visitor.ImgUri, visitor.VisitorName, visitor.VisitorIDCard, visitor.BuildingId, visitor.VisitEndTime);
+                }
             }
             visitor.Status = "1";
             SaveChanges();           
 
         }
 
-
+        // 推送访客至闸机
+        private void PushVisitor(string studentNum,int sex, string img,string name,string idCode, string buildingId,DateTime endTime)
+        {
+            // 闸机Id列表
+            var zjids = Read<Relevance>(p => p.SecondKey == buildingId && p.Name == Relation.GateBuilding).Select(p => p.FirstKey).ToList();
+            var channelIds= Read<Gate>(t=>zjids.Contains(t.Id)).Select(p=>p.DeviceNumber).ToArray();
+  
+            TempSurvey(channelIds,sex, img,studentNum,name,idCode, endTime);
+        }
+        private string TempSurvey(string[] channelIds,int sex, string PicUrl, string num, string name,string idCode, DateTime endTime)
+        {
+            //string[] str = { "1000004$7$0$0", "1000009$7$0$0", "1000013$7$0$0", "1000002$7$0$0", "1000010$7$0$0", "1000000$7$0$0", "1000012$7$0$0", "1000008$7$0$0", "1000011$7$0$0", "1000003$7$0$0" };
+            SurveyMoudle survey = new SurveyMoudle();
+            survey.channelId = channelIds;
+            survey.code = num;
+            survey.name = name;
+            survey.sex = sex;
+            survey.idCode = idCode;
+            survey.photoBase64 = GetImageBase64Str.ImageBase64Str(PicUrl); ;
+            survey.initialTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            survey.expireTime = endTime.ToString("yyyy-MM-dd HH:mm:ss");
+            return DHAccount.TempSurvey(survey);
+        }
 
         public object VisivorByStudent(Pagination pag, string userId, int status)
         {
@@ -266,16 +297,35 @@ namespace ZHXY.Application
                 Status = pass.ToString(),
                 ApprovedTime = DateTime.Now
             });
-            string UserId = Operator.GetCurrent().Id;
-            //Add(ids.Select(p => new VisitorApprove
-            //{
-            //    VisitId = p,
-            //    ApproverId = UserId,
-            //    ApproveResult = pass.ToString(),
-            //    Opinion = pass == 1 ? "通过" : "不通过"
-            //}).ToList());
-            //SaveChanges();
+           
 
+            //审批通过之后，把当前学生的访问额度 -1
+            if(pass == 1)
+            {
+                var listLimit = Query<VisitorApprove>(p => ids.Contains(p.Id)).Join(Query<VisitorApply>(), p => p.VisitId, s => s.Id, (app, visit) => new VisitorApply
+                {
+                    VisitorGender = visit.VisitorGender,
+                    ImgUri = visit.ImgUri,
+                    VisitorName = visit.VisitorName,
+                    VisitorIDCard = visit.VisitorIDCard,
+                    BuildingId = visit.BuildingId,
+                    VisitEndTime = visit.VisitEndTime,
+                    VisitStartTime = visit.VisitStartTime,
+                    
+                }).ToList();
+                var ListStuId = Query<VisitorApprove>(p => ids.Contains(p.Id)).Join(Query<VisitorApply>(), p => p.VisitId, s => s.Id, (app, visit) => app.ApproverId).ToList();
+                Query<DormVisitLimit>().Where(p => ListStuId.Contains(p.StudentId)).Update(p => new DormVisitLimit
+                {
+                    UsableLimit = p.UsableLimit-1
+                });
+
+                foreach(var visitor in listLimit)
+                {
+                    PushVisitor("", Convert.ToInt32(visitor.VisitorGender), visitor.ImgUri, visitor.VisitorName, visitor.VisitorIDCard, visitor.BuildingId, visitor.VisitEndTime);
+                }
+            }
+
+            string UserId = Operator.GetCurrent().Id;
             Query<VisitorApprove>(p => ids.Contains(p.Id)).Update(s => new VisitorApprove
             {
                 ApproverId = UserId,
@@ -288,9 +338,14 @@ namespace ZHXY.Application
         /// 提交申请
         /// </summary>
         /// <param name="input"></param>
-        public void Submit(VisitorApplySubmitDto input)
+        public string Submit(VisitorApplySubmitDto input)
         {
             var currentUserId = Operator.GetCurrent().Id;
+            var LimitCount = Read<DormVisitLimit>(p => p.StudentId.Equals(currentUserId)).Select(p => p.UsableLimit).FirstOrDefault();
+            if(LimitCount == 0)
+            {
+                return "当前学生被访额度为0";
+            }
             // var visit = input.MapTo<VisitApply>();//映射到数据库中对应的表
             var visit = new VisitorApply
             {
@@ -338,6 +393,7 @@ namespace ZHXY.Application
             visit.ImgUri = input.ImgUri;
             AddAndSave(visit);
             SaveChanges();
+            return "提交成功";
         }
 
         public object NotCheckApply(Pagination pagination)

@@ -71,7 +71,6 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpPost]
         public ActionResult Approval(FaceApprovalDto input)
         {
-            //input.CurrentUserId = Operator.Current.Id;
             App.Approval(input);
             return Result.Success();
         }

@@ -154,7 +154,7 @@ namespace ZHXY.Application.DormServices.Gates
                     person.dormitoryCode = ssdata?.DormInfo?.FloorNumber;
                     var ldid = ssdata?.DormInfo?.BuildingId;
                     // 闸机Id列表
-                    var zjids = Read<Relevance>(p => p.SecondKey == ldid && p.Name == "Gate_Building").Select(p => p.FirstKey).ToList();
+                    var zjids = Read<Relevance>(p => p.SecondKey == ldid && p.Name == Relation.GateBuilding).Select(p => p.FirstKey).ToList();
                     // 楼栋Id列表
                     var lds = Read<Relevance>(p => p.Name == "Gate_Building" && zjids.Contains(p.FirstKey)).Select(p => p.SecondKey).ToList();
 

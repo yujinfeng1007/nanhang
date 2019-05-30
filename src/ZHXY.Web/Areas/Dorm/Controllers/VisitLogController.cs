@@ -84,8 +84,7 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpPost]
         public ActionResult SubmitVisitor(VisitorApplySubmitDto input)
         {
-            App.Submit(input);
-            return Result.Success();
+            return Result.Success(App.Submit(input));
         }
 
         /// <summary>
