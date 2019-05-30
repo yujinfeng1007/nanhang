@@ -7,6 +7,8 @@ using System;
 using System.Text;
 using ZHXY.Common.IsNumeric;
 using System.Data.Entity;
+using ZHXY.Dorm.Device.tools;
+using ZHXY.Dorm.Device.DH;
 
 namespace ZHXY.Application
 {
@@ -167,13 +169,41 @@ namespace ZHXY.Application
             {
                 visitorApprover.ApproveResult = input.IsAgreed ? "1" : "-1";
                 visitorApprover.Opinion = input.Opinion;
+
+                if(visitorApprover.ApproveResult=="1")
+                {
+                    PushVisitor(visitor.ApplicantId, visitor.BuildingId, visitor.VisitEndTime);
+                }
             }
             visitor.Status = "1";
             SaveChanges();           
 
         }
 
-
+        // 推送访客至闸机
+        private void PushVisitor(string studentId,string buildingId,DateTime endTime)
+        {
+            // 闸机Id列表
+            var zjids = Read<Relevance>(p => p.SecondKey == buildingId && p.Name == Relation.GateBuilding).Select(p => p.FirstKey).ToList();
+            var channelIds= Read<Gate>(t=>zjids.Contains(t.Id)).Select(p=>p.DeviceNumber).ToArray();
+            // 学生信息
+            var student = Get<Student>(studentId);
+            TempSurvey(channelIds,student.FacePic,student.StudentNumber,student.Name, endTime);
+        }
+        private string TempSurvey(string[] channelIds, string PicUrl, string idCode, string name,DateTime endTime)
+        {
+            //string[] str = { "1000004$7$0$0", "1000009$7$0$0", "1000013$7$0$0", "1000002$7$0$0", "1000010$7$0$0", "1000000$7$0$0", "1000012$7$0$0", "1000008$7$0$0", "1000011$7$0$0", "1000003$7$0$0" };
+            SurveyMoudle survey = new SurveyMoudle();
+            survey.channelId = channelIds;
+            survey.code = "";
+            survey.name = name;
+            survey.sex = 1;
+            survey.idCode = idCode;
+            survey.photoBase64 = GetImageBase64Str.ImageBase64Str(PicUrl); ;
+            survey.initialTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            survey.expireTime = endTime.ToString("yyyy-MM-dd HH:mm:ss");
+            return DHAccount.TempSurvey(survey);
+        }
 
         public object VisivorByStudent(Pagination pag, string userId, int status)
         {
