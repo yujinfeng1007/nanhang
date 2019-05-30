@@ -297,13 +297,7 @@ namespace ZHXY.Application
                 Status = pass.ToString(),
                 ApprovedTime = DateTime.Now
             });
-            string UserId = Operator.GetCurrent().Id;
-            Query<VisitorApprove>(p => ids.Contains(p.Id)).Update(s => new VisitorApprove
-            {
-                ApproverId = UserId,
-                ApproveResult = pass.ToString(),
-                Opinion = pass == 1 ? "通过" : "不通过"
-            });
+           
 
             //审批通过之后，把当前学生的访问额度 -1
             if(pass == 1)
@@ -313,7 +307,20 @@ namespace ZHXY.Application
                 {
                     UsableLimit = p.UsableLimit-1
                 });
+
+                if (visitorApprover.ApproveResult == "1")
+                {
+                    PushVisitor("", Convert.ToInt32(visitor.VisitorGender), visitor.ImgUri, visitor.VisitorName, visitor.VisitorIDCard, visitor.BuildingId, visitor.VisitEndTime);
+                }
             }
+
+            string UserId = Operator.GetCurrent().Id;
+            Query<VisitorApprove>(p => ids.Contains(p.Id)).Update(s => new VisitorApprove
+            {
+                ApproverId = UserId,
+                ApproveResult = pass.ToString(),
+                Opinion = pass == 1 ? "通过" : "不通过"
+            });
         }
 
         /// <summary>
