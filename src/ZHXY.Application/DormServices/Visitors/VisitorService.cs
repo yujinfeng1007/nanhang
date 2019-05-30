@@ -302,13 +302,24 @@ namespace ZHXY.Application
             //审批通过之后，把当前学生的访问额度 -1
             if(pass == 1)
             {
-                var listLimit = Query<VisitorApprove>(p => ids.Contains(p.Id)).Join(Query<VisitorApply>(), p => p.VisitId, s => s.Id, (app, visit) => visit.ApplicantId).ToList();
-                Query<DormVisitLimit>().Where(p => listLimit.Contains(p.StudentId)).Update(p => new DormVisitLimit
+                var listLimit = Query<VisitorApprove>(p => ids.Contains(p.Id)).Join(Query<VisitorApply>(), p => p.VisitId, s => s.Id, (app, visit) => new VisitorApply
+                {
+                    VisitorGender = visit.VisitorGender,
+                    ImgUri = visit.ImgUri,
+                    VisitorName = visit.VisitorName,
+                    VisitorIDCard = visit.VisitorIDCard,
+                    BuildingId = visit.BuildingId,
+                    VisitEndTime = visit.VisitEndTime,
+                    VisitStartTime = visit.VisitStartTime,
+                    
+                }).ToList();
+                var ListStuId = Query<VisitorApprove>(p => ids.Contains(p.Id)).Join(Query<VisitorApply>(), p => p.VisitId, s => s.Id, (app, visit) => app.ApproverId).ToList();
+                Query<DormVisitLimit>().Where(p => ListStuId.Contains(p.StudentId)).Update(p => new DormVisitLimit
                 {
                     UsableLimit = p.UsableLimit-1
                 });
 
-                if (visitorApprover.ApproveResult == "1")
+                foreach(var visitor in listLimit)
                 {
                     PushVisitor("", Convert.ToInt32(visitor.VisitorGender), visitor.ImgUri, visitor.VisitorName, visitor.VisitorIDCard, visitor.BuildingId, visitor.VisitEndTime);
                 }
