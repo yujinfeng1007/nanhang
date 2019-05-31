@@ -26,5 +26,6 @@
         public string photoBase64 { get; set; } //Base64图片
         public string initialTime { get; set; }  //有效日期
         public string expireTime { get; set; } //失效日期
+        public int personId { get; set; } //人员ID
     }
 }

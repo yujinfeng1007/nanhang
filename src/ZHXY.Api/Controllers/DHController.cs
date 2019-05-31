@@ -95,8 +95,8 @@ namespace ZHXY.Api.Controllers
             survey.sex =1;
             survey.idCode = idCode;
             survey.photoBase64 = GetImageBase64Str.ImageBase64Str(PicUrl); ;
-            survey.initialTime = "2019-05-24 00:00:00";
-            survey.expireTime = "2019-05-24 23:59:59";
+            survey.initialTime = "2019-05-30 00:00:00";
+            survey.expireTime = "2019-05-30 23:59:59";
             return DHAccount.TempSurvey(survey);
         }
 

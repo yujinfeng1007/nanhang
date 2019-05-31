@@ -4,6 +4,8 @@ using System.IO;
 using System.Web.Mvc;
 using ZHXY.Application;
 using ZHXY.Common;
+using System.Drawing;
+using System.DrawingCore;
 
 namespace ZHXY.Web.Dorm.Controllers
 {
@@ -67,11 +69,13 @@ namespace ZHXY.Web.Dorm.Controllers
                     var strRandom = random.Next(1000, 10000).ToString(); //生成编号
                     var uploadName = $"{todayStr}{strRandom}";
                     existen = files[i].FileName.Substring(files[i].FileName.LastIndexOf('.') + 1);
-
                     var fullPath = $"{basePath}{uploadName}.{existen}";
                     files[i].SaveAs(fullPath);
+                    //var img = Image.FromFile(@fullPath);
+                    //var thumbnail = img.GetThumbnailImage(220, 220, null, IntPtr.Zero);
+                    //img.Dispose();
+                    //thumbnail.Save(@fullPath);
                     approveFilepath = $"http://{Request.Url.Host}:{Request.Url.Port}{mapPath}{uploadName}.{existen}";
-                    // approveFilepath = $"{mapPath}{uploadName}.{existen}";
                 }
             }
             return Result.Success(approveFilepath);
@@ -115,8 +119,7 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult ApprovalVisitor(VisitorApprovalDto input)
         {
             input.CurrentUserId = Operator.GetCurrent().Id;
-            App.Approval(input);
-            return Result.Success();
+            return Result.Success(App.Approval(input));
         }
 
 

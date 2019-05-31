@@ -216,6 +216,16 @@ namespace ZHXY.Dorm.Device.DH
         }
 
         /// <summary>
+        /// 闸机布控（人员已添加，校内互访）
+        /// </summary>
+        /// <returns></returns>
+        public static string Survey(SurveyMoudle surveyMoudle)
+        {
+            X_SUBJECT_TOKEN = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL).StringGet(REDIS_TOKEN_SET_KEY);
+            return HttpHelper.ExecutePost(Constants.ADD_VISIT_SURVEY_URL_SCHOOL, JsonConvert.SerializeObject(surveyMoudle), X_SUBJECT_TOKEN);
+        }
+
+        /// <summary>
         /// 闸机撤控（访客）
         /// </summary>
         /// <param name="channelId"></param>
