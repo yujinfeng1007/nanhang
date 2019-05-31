@@ -204,10 +204,11 @@ namespace ZHXY.Application
         /// <summary>
         /// 访客审批
         /// </summary>
-        public void Approval(VisitorApprovalDto input)
+        public string Approval(VisitorApprovalDto input)
         {
             var visitor = Get<VisitorApply>(input.VisitId);           
             var visitorApprovers = Query<VisitorApprove>(p => p.VisitId.Equals(visitor.Id)).ToListAsync().Result;
+            var DHMessage = "";
             foreach (var visitorApprover in visitorApprovers)
             {
                 visitorApprover.ApproveResult = input.IsAgreed ? "1" : "-1";
@@ -215,33 +216,27 @@ namespace ZHXY.Application
 
                 if(visitorApprover.ApproveResult=="1")
                 {
-                    PushVisitor("",Convert.ToInt32( visitor.VisitorGender), visitor.ImgUri, visitor.VisitorName, visitor.VisitorIDCard, visitor.BuildingId, visitor.VisitEndTime);
+                   DHMessage =  PushVisitor("",Convert.ToInt32( visitor.VisitorGender), visitor.ImgUri, visitor.VisitorName, visitor.VisitorIDCard, visitor.BuildingId, visitor.VisitEndTime);
                 }
             }
             visitor.Status = "1";
-            SaveChanges();           
-
+            SaveChanges();
+            return DHMessage;
         }
-
+        
         // 推送访客至闸机
-        private void PushVisitor(string studentNum,int sex, string img,string name,string idCode, string buildingId,DateTime endTime)
+        private string PushVisitor(string studentNum,int sex, string img,string name,string idCode, string buildingId,DateTime endTime)
         {
             // 闸机Id列表
             var zjids = Read<Relevance>(p => p.SecondKey == buildingId && p.Name == Relation.GateBuilding).Select(p => p.FirstKey).ToList();
             var channelIds= Read<Gate>(t=>zjids.Contains(t.Id)).Select(p=>p.DeviceNumber).ToArray();
-  
-            TempSurvey(channelIds,sex, img,studentNum,name,idCode, endTime);
-        }
-        private string TempSurvey(string[] channelIds,int sex, string PicUrl, string num, string name,string idCode, DateTime endTime)
-        {
-            //string[] str = { "1000004$7$0$0", "1000009$7$0$0", "1000013$7$0$0", "1000002$7$0$0", "1000010$7$0$0", "1000000$7$0$0", "1000012$7$0$0", "1000008$7$0$0", "1000011$7$0$0", "1000003$7$0$0" };
             SurveyMoudle survey = new SurveyMoudle();
-            survey.channelId = channelIds;
-            survey.code = num;
+            survey.channelId = channelIds.Select(p => p + "$7$0$0").ToArray();
+            survey.code = studentNum;
             survey.name = name;
             survey.sex = sex;
             survey.idCode = idCode;
-            survey.photoBase64 = GetImageBase64Str.ImageBase64Str(PicUrl); ;
+            survey.photoBase64 = GetImageBase64Str.ImageBase64Str(img);
             survey.initialTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             survey.expireTime = endTime.ToString("yyyy-MM-dd HH:mm:ss");
             return DHAccount.TempSurvey(survey);
@@ -341,6 +336,7 @@ namespace ZHXY.Application
         public string Submit(VisitorApplySubmitDto input)
         {
             var currentUserId = Operator.GetCurrent().Id;
+            var MSG = "";
             var LimitCount = Read<DormVisitLimit>(p => p.StudentId.Equals(currentUserId)).Select(p => p.UsableLimit).FirstOrDefault();
             if(LimitCount == 0)
             {
@@ -358,7 +354,8 @@ namespace ZHXY.Application
                 VisitStartTime = input.VisitStartTime,
                 VisitEndTime = input.VisitEndTime,
                 Relationship = input.Relationship,
-                Status = "0"
+                Status = "0",
+                ImgUri = input.ImgUri
             };
             //获取学生所在的dormid
             var dormid = Read<DormStudent>(p => p.StudentId.Equals(currentUserId)).Select(p => p.DormId).FirstOrDefault();
@@ -369,7 +366,10 @@ namespace ZHXY.Application
             if (null == Approvers) throw new Exception("请先绑定宿管!");
             if (visit.VisitType.Equals("0"))
             {
+                Student stu = Read<Student>(p => p.Id.Equals(input.VisitorId)).FirstOrDefault();
                 visit.Status = "1";
+                visit.VisitorIDCard = stu.CredNumber;
+                visit.VisitorGender = stu.Gender;
                 AddAndSave(new VisitorApprove
                 {
                     ApproverId = Approvers.ToJson(),
@@ -377,6 +377,8 @@ namespace ZHXY.Application
                     ApproveLevel = 1,
                     ApproveResult = "1"
                 });
+                MSG = PushVisitorSchool(input.VisitorId, buildingId, visit.VisitEndTime);
+                //PushVisitor("", Convert.ToInt32(visit.VisitorGender), visit.ImgUri, visit.VisitorName, visit.VisitorIDCard, buildingId, visit.VisitEndTime);
             }
             else
             {
@@ -393,7 +395,31 @@ namespace ZHXY.Application
             visit.ImgUri = input.ImgUri;
             AddAndSave(visit);
             SaveChanges();
-            return "提交成功";
+            return MSG;
+        }
+
+        /// <summary>
+        /// 用于同学互访
+        /// </summary>
+        /// <param name="VisitorId"></param>
+        /// <param name="buildingId"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
+        private string PushVisitorSchool(string VisitorId, string buildingId, DateTime endTime)
+        {
+            //人员在大华的ID
+            string code = Read<Student>(p => p.Id.Equals(VisitorId)).Select(p => p.StudentNumber).FirstOrDefault();
+            var dhUserstr =  DHAccount.SELECT_DH_PERSON(new PersonMoudle() { code = code });
+            var ResultList = (List<object>)dhUserstr.ToString().ToJObject()["data"]["list"].ToObject(typeof(List<object>));
+            // 闸机Id列表
+            var zjids = Read<Relevance>(p => p.SecondKey == buildingId && p.Name == Relation.GateBuilding).Select(p => p.FirstKey).ToList();
+            var channelIds = Read<Gate>(t => zjids.Contains(t.Id)).Select(p => p.DeviceNumber).ToArray();
+            SurveyMoudle survey = new SurveyMoudle();
+            survey.channelId = channelIds.Select(p => p + "$7$0$0").ToArray();
+            survey.initialTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            survey.expireTime = endTime.ToString("yyyy-MM-dd HH:mm:ss");
+            survey.personId = ResultList.First().ToString().ToJObject().Value<int>("id");
+            return DHAccount.Survey(survey);
         }
 
         public object NotCheckApply(Pagination pagination)
