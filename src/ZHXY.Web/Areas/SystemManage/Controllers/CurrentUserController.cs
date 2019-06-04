@@ -31,8 +31,7 @@ namespace ZHXY.Web.SystemManage.Controllers
             if (user != null && user.IsSystem)
                 user.DutyId = "admin";
             //老师用户绑定班级
-            var classes = App.GetBindClass(user.Id);
-            user.Classes = classes.Select(p=>(object)p).ToList();
+            var classes = App.GetBindClass(user.Id);            
             var orgName = orgService.GetById(user.OrganId)?.Name;
             //缓存原因，重新取用户最新头像
             var userLatest = userService.GetById(user.Id);
@@ -53,7 +52,13 @@ namespace ZHXY.Web.SystemManage.Controllers
                 user.SetUp,
                 UserCode=  user.Account,
                 UserName= user.Name,
-                user.Classes,
+                //user.Classes,
+                Classes = classes.Select(p => new {
+                    Id = p.Id,
+                    CategoryId = p.CategoryId,
+                    Name = p.Name,
+                    ParentName = p.Parent.Name
+                }).ToList(),
                 UserId = user.Id,
                 OrgName = orgName,//机构名称
                 Num = getNum(user.DutyId,user.Id)//学工号

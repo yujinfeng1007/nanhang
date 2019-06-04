@@ -184,10 +184,10 @@ namespace ZHXY.Application
             // 获取到访记录名单
             var vistors = Read<VisitorApply>(t => ids.Contains(t.BuildingId)).OrderByDescending(t => t.VisitStartTime).Select(t => new
             {
-                F_Name = t.Student.Name,
+                F_Name = t.VisitorName, // 前端取错了，临时改
                 F_Dorm = t.DormRoom.Title,
                 F_Avatar = t.Student.FacePic,
-                F_VisitedName = t.VisitorName,
+                F_VisitedName = t.Student.Name, // 前端取错了，临时改
                 F_InTime = t.VisitStartTime
             }).Take(lastNum).ToList();
 
