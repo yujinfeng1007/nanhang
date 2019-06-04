@@ -71,10 +71,6 @@ namespace ZHXY.Web.Dorm.Controllers
                     existen = files[i].FileName.Substring(files[i].FileName.LastIndexOf('.') + 1);
                     var fullPath = $"{basePath}{uploadName}.{existen}";
                     files[i].SaveAs(fullPath);
-                    //var img = Image.FromFile(@fullPath);
-                    //var thumbnail = img.GetThumbnailImage(220, 220, null, IntPtr.Zero);
-                    //img.Dispose();
-                    //thumbnail.Save(@fullPath);
                     approveFilepath = $"http://{Request.Url.Host}:{Request.Url.Port}{mapPath}{uploadName}.{existen}";
                 }
             }

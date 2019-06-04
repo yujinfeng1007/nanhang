@@ -12,6 +12,7 @@ using ZHXY.Dorm.Device.DH;
 using EntityFramework.Extensions;
 using System.Configuration;
 using System.IO;
+using Newtonsoft.Json.Linq;
 
 namespace ZHXY.Application
 {
@@ -151,7 +152,7 @@ namespace ZHXY.Application
             }
             query = string.IsNullOrEmpty(input.ApprovalStatus) ? query : query.Where(p => p.Status.Equals(input.ApprovalStatus));
             query = string.IsNullOrEmpty(input.Keyword) ? query : query.Where(p => p.Student.Name.Contains(input.Keyword));            
-            query = query.Paging(input);
+            //query = query.Paging(input);
             visitorListViews = query.Select(p => new VisitorListView
             {
                 Id = p.Id,
@@ -206,7 +207,8 @@ namespace ZHXY.Application
         /// </summary>
         public string Approval(VisitorApprovalDto input)
         {
-            var visitor = Get<VisitorApply>(input.VisitId);           
+            var visitor = Get<VisitorApply>(input.VisitId);
+            visitor.ImgUri = "http://210.35.32.29:8100/UpLoad/20190603/201906031328171282.jpg";
             var visitorApprovers = Query<VisitorApprove>(p => p.VisitId.Equals(visitor.Id)).ToListAsync().Result;
             var DHMessage = "";
             foreach (var visitorApprover in visitorApprovers)
@@ -217,8 +219,18 @@ namespace ZHXY.Application
                 if(visitorApprover.ApproveResult=="1")
                 {
                    DHMessage =  PushVisitor("",Convert.ToInt32( visitor.VisitorGender), visitor.ImgUri, visitor.VisitorName, visitor.VisitorIDCard, visitor.BuildingId, visitor.VisitEndTime);
+
+                    if(DHMessage != null)
+                    {
+                        JObject jo = Json.ToJObject(DHMessage);
+                        if (jo.Value<bool>("success"))
+                        {
+                            visitor.DhId = jo.Value<JObject>("data").Value<string>("personId");
+                        }
+                    }
                 }
             }
+
             visitor.Status = "1";
             SaveChanges();
             return DHMessage;
@@ -316,6 +328,7 @@ namespace ZHXY.Application
 
                 foreach(var visitor in listLimit)
                 {
+                    visitor.ImgUri = "http://210.35.32.29:8100/UpLoad/20190603/201906031328171282.jpg";
                     PushVisitor("", Convert.ToInt32(visitor.VisitorGender), visitor.ImgUri, visitor.VisitorName, visitor.VisitorIDCard, visitor.BuildingId, visitor.VisitEndTime);
                 }
             }
@@ -335,6 +348,7 @@ namespace ZHXY.Application
         /// <param name="input"></param>
         public string Submit(VisitorApplySubmitDto input)
         {
+            input.ImgUri = "http://210.35.32.29:8100/UpLoad/20190603/201906031328171282.jpg";
             var currentUserId = Operator.GetCurrent().Id;
             var MSG = "";
             var LimitCount = Read<DormVisitLimit>(p => p.StudentId.Equals(currentUserId)).Select(p => p.UsableLimit).FirstOrDefault();
@@ -378,7 +392,6 @@ namespace ZHXY.Application
                     ApproveResult = "1"
                 });
                 MSG = PushVisitorSchool(input.VisitorId, buildingId, visit.VisitEndTime);
-                //PushVisitor("", Convert.ToInt32(visit.VisitorGender), visit.ImgUri, visit.VisitorName, visit.VisitorIDCard, buildingId, visit.VisitEndTime);
             }
             else
             {

@@ -78,6 +78,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DH\DHCancelSurveyJob.cs" />
     <Compile Include="DH\LineRecordMoudle.cs" />
     <Compile Include="DH\DHMigrateJob.cs" />
     <Compile Include="DH\RedisCacheHelper.cs" />

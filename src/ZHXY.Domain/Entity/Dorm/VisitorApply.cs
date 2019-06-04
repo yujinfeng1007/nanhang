@@ -70,6 +70,8 @@ namespace ZHXY.Domain
         /// </summary>
         public string ImgUri { get; set; }
 
+        public string DhId { get; set; }
+
         /// <summary>
         /// 学生基础信息
         /// </summary>
