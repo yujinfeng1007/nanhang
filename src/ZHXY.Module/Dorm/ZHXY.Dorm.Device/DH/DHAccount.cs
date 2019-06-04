@@ -222,7 +222,7 @@ namespace ZHXY.Dorm.Device.DH
         public static string Survey(SurveyMoudle surveyMoudle)
         {
             X_SUBJECT_TOKEN = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL).StringGet(REDIS_TOKEN_SET_KEY);
-            return HttpHelper.ExecutePost(Constants.ADD_VISIT_SURVEY_URL_SCHOOL, JsonConvert.SerializeObject(surveyMoudle), X_SUBJECT_TOKEN);
+            return HttpHelper.ExecutePostMachineInfo(Constants.ADD_VISIT_SURVEY_URL_SCHOOL, JsonConvert.SerializeObject(surveyMoudle), X_SUBJECT_TOKEN);
         }
 
         /// <summary>

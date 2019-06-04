@@ -69,11 +69,19 @@ namespace ZHXY.Api.Controllers
         }
 
         [HttpGet]
-        public object FindPerson(int code)
+        public object DeletePerson()
+        {
+            return DHAccount.PUSH_DH_DELETE_PERSON(new string[] { "133447", "133427" });
+        }
+
+        [HttpGet]
+        public object FindPerson(string idCode)
         {
             //查询人员信息  大华
             PersonMoudle personMoudleTest = new PersonMoudle();
-            personMoudleTest.code = code + "";
+            personMoudleTest.idCode = idCode;
+            personMoudleTest.roleId = "temp";
+            personMoudleTest.code = null;
             return DHAccount.SELECT_DH_PERSON(personMoudleTest);
         }
 

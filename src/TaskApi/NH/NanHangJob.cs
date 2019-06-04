@@ -374,7 +374,7 @@ namespace TaskApi.Job
                 FacePic = p.ImgUri,
                 MobilePhone = p.studentPhone
             }).ToList();
-            var oldData = oldDb.Set<Student>().AsNoTracking().Select(p => new StudentMoudle
+            var oldData = oldDb.Set<Student>().Select(p => new StudentMoudle
             {
                 Id = p.Id,
                 Name = p.Name,
@@ -390,30 +390,85 @@ namespace TaskApi.Job
             var Ids = oldData.Select(p => p.Id).ToList();
             var DataList = newData.Except(oldData).ToList();
             var insertList = new List<Student>();
+            var SqlUpdateList = oldDb.Set<Student>().ToList();
+            var ProUpdateList = DataList.Where(p => Ids.Contains(p.Id)).ToList();
+            int i = 0;
+            foreach (var student in SqlUpdateList)
+            {
+                i++;
+                var stu = ProUpdateList.Where(s => s.Id.Equals(student.Id)).FirstOrDefault();
+                if(stu == null)
+                {
+                    continue;
+                }
+                var bbb = i;
+                student.Id = stu.Id;
+                student.Name = stu.Name;
+                student.UserId = stu.UserId;
+                student.StudentNumber = stu.StudentNumber;
+                student.ClassId = stu.ClassId;
+                student.Gender = stu.Gender;
+                student.CredType = stu.CredType;
+                student.CredNumber = stu.CredNumber;
+                student.MobilePhone = stu.MobilePhone;
+                student.GradeId = oldDb.Set<Organ>().AsNoTracking().Where(p => p.Id.Equals(stu.ClassId)).Select(p => p.ParentId).FirstOrDefault();
+                student.DivisId = oldDb.Set<Organ>().AsNoTracking().Where(p => p.Id.Equals(stu.GradeId)).Select(p => p.ParentId).FirstOrDefault();
+            }
+            oldDb.SaveChanges();
+            DataList = DataList.Where(p => !Ids.Contains(p.Id)).ToList();
             foreach (var stu in DataList)
             {
-                stu.GradeId = oldDb.Set<Organ>().AsNoTracking().Where(p => p.Id.Equals(stu.ClassId)).Select(p => p.ParentId).ToList().FirstOrDefault();
-                stu.DivisId = oldDb.Set<Organ>().AsNoTracking().Where(p => p.Id.Equals(stu.GradeId)).Select(p => p.ParentId).ToList().FirstOrDefault();
-                if (Ids.Contains(stu.Id))
-                {
-                    oldDb.Set<Student>().Where(p => p.Id.Equals(stu.Id)).Update(p => new Student
-                    {
-                        Id = stu.Id,
-                        Name = stu.Name,
-                        UserId = stu.UserId,
-                        StudentNumber = stu.StudentNumber,
-                        ClassId = stu.ClassId,
-                        Gender = stu.Gender,
-                        CredType = stu.CredType,
-                        CredNumber = stu.CredNumber,
-                        MobilePhone = stu.MobilePhone,
-                        GradeId = stu.GradeId,
-                        DivisId = stu.DivisId
-                    });
-                    //oldDb.Set<Student>().Where(p => p.Id.Equals(stu.Id)).
-                }
-                else
-                {
+                //if (Ids.Contains(stu.Id))
+                //{
+                //    stu.GradeId = oldDb.Set<Organ>().AsNoTracking().Where(p => p.Id.Equals(stu.ClassId)).Select(p => p.ParentId).ToList().FirstOrDefault();
+                //    stu.DivisId = oldDb.Set<Organ>().AsNoTracking().Where(p => p.Id.Equals(stu.GradeId)).Select(p => p.ParentId).ToList().FirstOrDefault();
+                //    UpdateList.Add(new Student() {
+                //        Id = stu.Id,
+                //        Name = stu.Name,
+                //        UserId = stu.UserId,
+                //        StudentNumber = stu.StudentNumber,
+                //        ClassId = stu.ClassId,
+                //        Gender = stu.Gender,
+                //        CredType = stu.CredType,
+                //        CredNumber = stu.CredNumber,
+                //        MobilePhone = stu.MobilePhone,
+                //        GradeId = stu.GradeId,
+                //        DivisId = stu.DivisId
+                //    });
+                    //oldDb.Set<Student>().Where(p => p.Id.Equals(stu.Id)).UpdateAsync(p => new Student
+                    //{
+                    //    Id = stu.Id,
+                    //    Name = stu.Name,
+                    //    UserId = stu.UserId,
+                    //    StudentNumber = stu.StudentNumber,
+                    //    ClassId = stu.ClassId,
+                    //    Gender = stu.Gender,
+                    //    CredType = stu.CredType,
+                    //    CredNumber = stu.CredNumber,
+                    //    MobilePhone = stu.MobilePhone,
+                    //    GradeId = stu.GradeId,
+                    //    DivisId = stu.DivisId
+                    //});
+
+                    //var data = oldDb.Set<Student>().Where(p => p.Id.Equals(stu.Id)).ToList();
+                    //foreach(var student in data)
+                    //{
+                    //    student.Id = stu.Id;
+                    //    student.Name = stu.Name;
+                    //    student.UserId = stu.UserId;
+                    //    student.StudentNumber = stu.StudentNumber;
+                    //    student.ClassId = stu.ClassId;
+                    //    student.Gender = stu.Gender;
+                    //    student.CredType = stu.CredType;
+                    //    student.CredNumber = stu.CredNumber;
+                    //    student.MobilePhone = stu.MobilePhone;
+                    //    student.GradeId = stu.GradeId;
+                    //    student.DivisId = stu.DivisId;
+                    //}
+                    //oldDb.SaveChanges();
+                //}
+                //else
+                //{
                     insertList.Add(new Student() {
                         Id = stu.Id,
                         Name = stu.Name,
@@ -424,11 +479,11 @@ namespace TaskApi.Job
                         CredType = stu.CredType,
                         CredNumber = stu.CredNumber,
                         MobilePhone = stu.MobilePhone,
-                        GradeId = stu.GradeId,
-                        DivisId = stu.DivisId,
-                        FacePic = stu.FacePic
-                    });
-                }
+                        FacePic = stu.FacePic,
+                        GradeId = oldDb.Set<Organ>().AsNoTracking().Where(p => p.Id.Equals(stu.ClassId)).Select(p => p.ParentId).FirstOrDefault(),
+                        DivisId =  oldDb.Set<Organ>().AsNoTracking().Where(p => p.Id.Equals(stu.GradeId)).Select(p => p.ParentId).FirstOrDefault()
+            });
+                //}
             }
             oldDb.Set<Student>().AddRange(insertList);
             oldDb.SaveChanges();
@@ -462,21 +517,38 @@ namespace TaskApi.Job
             var Ids = oldData.Select(p => p.Id).ToList();
             var DataList = newData.Except(oldData).ToList();
             var insertList = new List<User>();
+
+            var SqlUpdateList = db.Set<User>().ToList();
+            foreach(var sql in SqlUpdateList)
+            {
+                var stu = DataList.Where(p => p.Id.Equals(sql.Id)).FirstOrDefault();
+                if(stu == null)
+                {
+                    continue;
+                }
+                sql.Name = sql.Name;
+                sql.Account = sql.Account;
+                sql.OrganId = sql.OrganId;
+                sql.MobilePhone = sql.MobilePhone;
+                sql.DutyId = "studentDuty";
+            }
+
+            DataList = DataList.Where(p => !Ids.Contains(p.Id)).ToList();
             foreach (var sysUser in DataList)
             {
-                if (Ids.Contains(sysUser.Id))
-                {
-                    db.Set<User>().Where(p => p.Id.Equals(sysUser.Id)).Update(p => new User
-                    {
-                        Name = sysUser.Name,
-                        Account = sysUser.Account,
-                        OrganId = sysUser.OrganId,
-                        MobilePhone = sysUser.MobilePhone,
-                        DutyId = "studentDuty"
-                    });
-                }
-                else
-                {
+                //if (Ids.Contains(sysUser.Id))
+                //{
+                //    db.Set<User>().Where(p => p.Id.Equals(sysUser.Id)).Update(p => new User
+                //    {
+                //        Name = sysUser.Name,
+                //        Account = sysUser.Account,
+                //        OrganId = sysUser.OrganId,
+                //        MobilePhone = sysUser.MobilePhone,
+                //        DutyId = "studentDuty"
+                //    });
+                //}
+                //else
+                //{
                     insertList.Add(new User() {
                         Id = sysUser.Id,
                         Name = sysUser.Name,
@@ -486,7 +558,7 @@ namespace TaskApi.Job
                         HeadIcon = sysUser.HeadIcon,
                         DutyId = "studentDuty"
                     });
-                }
+                //}
             }
             db.Set<User>().AddRange(insertList);
             db.SaveChanges();

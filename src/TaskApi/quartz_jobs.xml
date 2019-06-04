@@ -143,7 +143,7 @@
       <recover>false</recover>
     </job>-->
 
-    <job>
+    <!--<job>
       <name>DHMigrateJob</name>
       <group>DHMigrate</group>
       <description>南航项目同步闸机流水信息</description>
@@ -178,15 +178,36 @@
       <durable>true</durable>
       <recover>false</recover>
     </job>
-    
+      -->
+    <job>
+      <name>DHCancelSurveyJob</name>
+      <group>DHCancelSurvey</group>
+      <description>南航项目撤控接口</description>
+      <job-type>TaskApi.DH.DHCancelSurveyJob,TaskApi</job-type>
+      <durable>true</durable>
+      <recover>false</recover>
+    </job>
+
     <!-- **************** *********************** *******       trigger      ***** ************************* *******************-->
+    <trigger>
+      <cron>
+        <name>DHCancelSurveyJobTrigger</name>
+        <group>DHCancelSurvey</group>
+        <job-name>DHCancelSurveyJob</job-name>
+        <job-group>DHCancelSurve</job-group>
+       <!--每3秒启动一次定时任务-->
+        <cron-expression>*/5 * * * * ?</cron-expression>
+      </cron>
+    </trigger>
+    
+    <!--
     <trigger>
       <cron>
         <name>DHMigrateJobTrigger</name>
         <group>DHMigrate</group>
         <job-name>DHMigrateJob</job-name>
         <job-group>DHMigrate</job-group>
-        <!--每3秒启动一次定时任务-->
+        --><!--每3秒启动一次定时任务--><!--
         <cron-expression>0/8 * * * * ?</cron-expression>
       </cron>
     </trigger>
@@ -197,7 +218,7 @@
         <group>UpdateToken</group>
         <job-name>UpdateTokenJob</job-name>
         <job-group>UpdateToken</job-group>
-        <!--每10秒启动一次定时任务-->
+        --><!--每10秒启动一次定时任务--><!--
         <cron-expression>0/10 * * * * ?</cron-expression>
       </cron>
     </trigger>
@@ -220,7 +241,7 @@
         <job-group>NHExceptionPush</job-group>
         <cron-expression>0 0 8 ? * *</cron-expression>
       </cron>
-    </trigger>
+    </trigger>-->
    
     <!--<trigger>
       <cron>
@@ -250,10 +271,8 @@
         <group>NanHang</group>
         <job-name>NanHangJob</job-name>
         <job-group>NanHang</job-group>
-         -->
-    <!--每日凌晨2点启动定时任务-->
-    <!--
-        <cron-expression>0 30 2 ? * *</cron-expression>
+    --><!--每日凌晨2点启动定时任务--><!--
+        <cron-expression>20 16 17 ? * *</cron-expression>
       </cron>
     </trigger>-->
 
