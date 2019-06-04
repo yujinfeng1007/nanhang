@@ -68,6 +68,7 @@ namespace ZHXY.Application
         /// </summary>
         public string Opinion { get; set; }
 
+        public string ImgUrl { get; set; }
 
     }
 

@@ -97,6 +97,12 @@
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="EntityFramework.Extended, Version=6.0.0.0, Culture=neutral, PublicKeyToken=05b7e29bdd433584, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.Extended.6.1.0.168\lib\net45\EntityFramework.Extended.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.Extensions, Version=0.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.Extensions.0.0.2\lib\net40\EntityFramework.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
@@ -208,12 +214,23 @@
     <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
     </Reference>
+    <Reference Include="ZKWeb.System.Drawing, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZKWeb.System.Drawing.4.0.1\lib\net45\ZKWeb.System.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="zxing, Version=0.16.4.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.4\lib\net45\zxing.dll</HintPath>
+    </Reference>
+    <Reference Include="zxing.presentation, Version=0.16.4.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.4\lib\net45\zxing.presentation.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Areas\Dorm\Controllers\DeviceController.cs" />
     <Compile Include="Areas\Dorm\Controllers\FaceController.cs" />
     <Compile Include="Areas\Dorm\Controllers\HolidayController.cs" />
     <Compile Include="Areas\Dorm\Controllers\NHExceptionPushController.cs" />
+    <Compile Include="Areas\Dorm\Controllers\VisitApprovalController.cs" />
+    <Compile Include="Areas\Dorm\Controllers\SupervisorController.cs" />
     <Compile Include="Areas\Dorm\Controllers\XFTXController.cs" />
     <Compile Include="Areas\Dorm\Controllers\DormBuildingController.cs" />
     <Compile Include="Areas\Dorm\Controllers\DormRoomController.cs" />
@@ -237,7 +254,6 @@
     <Compile Include="Areas\SystemManage\Controllers\LogController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\ModuleButtonController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\ModuleController.cs" />
-    <Compile Include="Areas\SystemManage\Controllers\ResourceController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\OrganizeController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\OrgLeaderController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\RoleAuthorizeController.cs" />
@@ -498,6 +514,7 @@
     <Content Include="Content\js\index.js" />
     <Content Include="Content\js\loading\pace.min.js" />
     <Content Include="Content\js\lodash\lodash.js" />
+    <Content Include="Content\js\md5\jquery.md5.js" />
     <Content Include="Scripts\echarts\close%402x.png" />
     <Content Include="Scripts\echarts\close.png" />
     <Content Include="Scripts\echarts\echarts.min.js" />
@@ -527,6 +544,11 @@
     <Content Include="Areas\SystemManage\Views\User\Index.cshtml" />
     <Content Include="Areas\SystemManage\Views\User\Info.cshtml" />
     <Content Include="Areas\SystemManage\Views\User\RevisePassword.cshtml" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Areas\Dorm\Views\VisitApproval\Form.cshtml" />
+    <Content Include="Areas\Dorm\Views\VisitApproval\Index.cshtml" />
     <Content Include="Areas\Dorm\Views\Device\Index.cshtml" />
     <Content Include="Areas\Dorm\Views\Device\Form.cshtml" />
     <Content Include="Areas\Dorm\Views\Device\Buildings.cshtml" />
@@ -546,40 +568,6 @@
     <Content Include="Content\js\jqgrid\grid.locale-cn.js" />
     <Content Include="Content\js\jqgrid\jqgrid.css" />
     <Content Include="Content\js\jqgrid\jqgrid.min.js" />
-    <Content Include="Content\pace\templates\pace-theme-barber-shop.tmpl.css" />
-    <Content Include="Content\pace\templates\pace-theme-big-counter.tmpl.css" />
-    <Content Include="Content\pace\templates\pace-theme-bounce.tmpl.css" />
-    <Content Include="Content\pace\templates\pace-theme-center-atom.tmpl.css" />
-    <Content Include="Content\pace\templates\pace-theme-center-circle.tmpl.css" />
-    <Content Include="Content\pace\templates\pace-theme-center-radar.tmpl.css" />
-    <Content Include="Content\pace\templates\pace-theme-center-simple.tmpl.css" />
-    <Content Include="Content\pace\templates\pace-theme-corner-indicator.tmpl.css" />
-    <Content Include="Content\pace\templates\pace-theme-fill-left.tmpl.css" />
-    <Content Include="Content\pace\templates\pace-theme-flash.tmpl.css" />
-    <Content Include="Content\pace\templates\pace-theme-flat-top.tmpl.css" />
-    <Content Include="Content\pace\templates\pace-theme-loading-bar.tmpl.css" />
-    <Content Include="Content\pace\templates\pace-theme-mac-osx.tmpl.css" />
-    <Content Include="Content\pace\templates\pace-theme-minimal.tmpl.css" />
-    <Content Include="Content\pace\themes\pace-theme-barber-shop.css" />
-    <Content Include="Content\pace\themes\pace-theme-big-counter.css" />
-    <Content Include="Content\pace\themes\pace-theme-bounce.css" />
-    <Content Include="Content\pace\themes\pace-theme-center-atom.css" />
-    <Content Include="Content\pace\themes\pace-theme-center-circle.css" />
-    <Content Include="Content\pace\themes\pace-theme-center-radar.css" />
-    <Content Include="Content\pace\themes\pace-theme-center-simple.css" />
-    <Content Include="Content\pace\themes\pace-theme-corner-indicator.css" />
-    <Content Include="Content\pace\themes\pace-theme-fill-left.css" />
-    <Content Include="Content\pace\themes\pace-theme-flash.css" />
-    <Content Include="Content\pace\themes\pace-theme-flat-top.css" />
-    <Content Include="Content\pace\themes\pace-theme-loading-bar.css" />
-    <Content Include="Content\pace\themes\pace-theme-mac-osx.css" />
-    <Content Include="Content\pace\themes\pace-theme-minimal.css" />
-    <Content Include="Content\treeview\checkbox.css" />
-    <Content Include="Content\treeview\checkbox.min.css" />
-    <Content Include="Content\treeview\core.css" />
-    <Content Include="Content\treeview\core.min.css" />
-    <Content Include="Content\treeview\tree.css" />
-    <Content Include="Content\treeview\tree.min.css" />
     <Content Include="NotOutReport.html" />
     <Content Include="Content\js\simditor\css\simditor.css" />
     <Content Include="Content\js\simditor\js\hotkeys.js" />
@@ -680,47 +668,6 @@
     <Content Include="Content\js\webuploader\webuploader.withoutimage.js" />
     <Content Include="Content\js\webuploader\webuploader.withoutimage.min.js" />
     <Content Include="Content\Site.css" />
-    <Content Include="Content\themes\base\accordion.css" />
-    <Content Include="Content\themes\base\all.css" />
-    <Content Include="Content\themes\base\autocomplete.css" />
-    <Content Include="Content\themes\base\base.css" />
-    <Content Include="Content\themes\base\button.css" />
-    <Content Include="Content\themes\base\core.css" />
-    <Content Include="Content\themes\base\datepicker.css" />
-    <Content Include="Content\themes\base\dialog.css" />
-    <Content Include="Content\themes\base\draggable.css" />
-    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
-    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
-    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_444444_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_555555_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_777620_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_777777_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_cc0000_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_ffffff_256x240.png" />
-    <Content Include="Content\themes\base\jquery-ui.css" />
-    <Content Include="Content\themes\base\jquery-ui.min.css" />
-    <Content Include="Content\themes\base\menu.css" />
-    <Content Include="Content\themes\base\progressbar.css" />
-    <Content Include="Content\themes\base\resizable.css" />
-    <Content Include="Content\themes\base\selectable.css" />
-    <Content Include="Content\themes\base\selectmenu.css" />
-    <Content Include="Content\themes\base\slider.css" />
-    <Content Include="Content\themes\base\sortable.css" />
-    <Content Include="Content\themes\base\spinner.css" />
-    <Content Include="Content\themes\base\tabs.css" />
-    <Content Include="Content\themes\base\theme.css" />
-    <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -1466,71 +1413,6 @@
     <Content Include="Scripts\i18n\zh-CN.js" />
     <Content Include="Scripts\i18n\zh-TW.js" />
     <Content Include="Scripts\jquery-2.1.1.min.map" />
-    <Content Include="Scripts\free-jqGrid\plugins\min\ui.multiselect.js.map" />
-    <Content Include="Scripts\free-jqGrid\plugins\min\jquery.jqgrid.showhidecolumnmenu.js.map" />
-    <Content Include="Scripts\free-jqGrid\plugins\min\jquery.createcontexmenufromnavigatorbuttons.js.map" />
-    <Content Include="Scripts\free-jqGrid\plugins\min\jquery.contextmenu.js.map" />
-    <Content Include="Scripts\free-jqGrid\plugins\min\jquery.contextmenu-ui.js.map" />
-    <Content Include="Scripts\free-jqGrid\plugins\min\grid.odata.js.map" />
-    <Content Include="Scripts\free-jqGrid\plugins\css\ui.multiselect.min.css.map" />
-    <Content Include="Scripts\free-jqGrid\modules\min\jsonxml.js.map" />
-    <Content Include="Scripts\free-jqGrid\modules\min\jquery.fmatter.js.map" />
-    <Content Include="Scripts\free-jqGrid\modules\min\jqmodal.js.map" />
-    <Content Include="Scripts\free-jqGrid\modules\min\jqdnr.js.map" />
-    <Content Include="Scripts\free-jqGrid\modules\min\grid.treegrid.js.map" />
-    <Content Include="Scripts\free-jqGrid\modules\min\grid.tbltogrid.js.map" />
-    <Content Include="Scripts\free-jqGrid\modules\min\grid.subgrid.js.map" />
-    <Content Include="Scripts\free-jqGrid\modules\min\grid.pivot.js.map" />
-    <Content Include="Scripts\free-jqGrid\modules\min\grid.jqueryui.js.map" />
-    <Content Include="Scripts\free-jqGrid\modules\min\grid.inlinedit.js.map" />
-    <Content Include="Scripts\free-jqGrid\modules\min\grid.import.js.map" />
-    <Content Include="Scripts\free-jqGrid\modules\min\grid.grouping.js.map" />
-    <Content Include="Scripts\free-jqGrid\modules\min\grid.formedit.js.map" />
-    <Content Include="Scripts\free-jqGrid\modules\min\grid.filter.js.map" />
-    <Content Include="Scripts\free-jqGrid\modules\min\grid.custom.js.map" />
-    <Content Include="Scripts\free-jqGrid\modules\min\grid.common.js.map" />
-    <Content Include="Scripts\free-jqGrid\modules\min\grid.celledit.js.map" />
-    <Content Include="Scripts\free-jqGrid\modules\min\grid.base.js.map" />
-    <Content Include="Scripts\free-jqGrid\jquery.jqgrid.min.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-vi.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-ua.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-tw.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-tr.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-th.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-sv.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-sr.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-sk.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-ru.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-ro.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-pt.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-pt-br.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-pl.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-no.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-nl.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-me.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-lt.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-kr.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-ja.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-it.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-is.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-id.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-hu.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-hr.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-he.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-gl.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-fr.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-fi.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-fa.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-es.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-en.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-el.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-de.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-da.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-cs.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-cn.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-ca.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-bg.js.map" />
-    <Content Include="Scripts\free-jqGrid\i18n\min\grid.locale-ar.js.map" />
     <None Include="Properties\PublishProfiles\发布到125服务器.pubxml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
@@ -1540,9 +1422,6 @@
     <Content Include="Scripts\laydate.js" />
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Views\Select\SelectOrgUser.cshtml" />
     <Content Include="Areas\SystemManage\Views\OrgLeader\Index.cshtml" />
     <Content Include="Views\Shared\_Index_Heads.cshtml" />
@@ -1808,7 +1687,7 @@
           <DevelopmentServerPort>51910</DevelopmentServerPort>
           <DevelopmentServerVPath>
           </DevelopmentServerVPath>
-          <IISUrl>http://192.168.1.146:8082</IISUrl>
+          <IISUrl>http://localhost:8100</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

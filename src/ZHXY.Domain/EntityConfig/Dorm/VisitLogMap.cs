@@ -23,6 +23,7 @@ namespace ZHXY.Domain
             Property(p => p.VisitEndTime).HasColumnName("end_time");
             Property(p => p.Relationship).HasColumnName("relation");
             Property(p => p.Status).HasColumnName("status");
+            Property(p => p.ImgUri).HasColumnName("img_uri");
             Property(p => p.CreatedTime).HasColumnName("created_time");
             Property(p => p.ApprovedTime).HasColumnName("approved_time");
 

@@ -84,8 +84,6 @@
     <Compile Include="SystemServices\Modules\Dto\UpdateModuleDto.cs" />
     <Compile Include="SystemServices\Modules\SysButtonAppService.cs" />
     <Compile Include="SystemServices\Modules\SysModuleAppService.cs" />
-    <Compile Include="SystemServices\Resource\ResourceService.cs" />
-    <Compile Include="SystemServices\Relevances\RelevanceService.cs" />
     <Compile Include="DormServices\Reports\InOutReceiveAppService.cs" />
     <Compile Include="DormServices\Reports\LateReturnReportService.cs" />
     <Compile Include="DormServices\Reports\NoOutReportService.cs" />
@@ -131,6 +129,7 @@
     <Compile Include="SystemServices\Filters\Dto\UpdateFilterIpDto.cs" />
     <Compile Include="SystemServices\Logs\Dto\AddLogDto.cs" />
     <Compile Include="SystemServices\Logs\Dto\GetLogListDto.cs" />
+    <Compile Include="SystemServices\Relevances\RelevanceService.cs" />
     <Compile Include="SystemServices\Resource\Dto\AddFuncDto.cs" />
     <Compile Include="SystemServices\Resource\Dto\AddMenuDto.cs" />
     <Compile Include="SystemServices\Resource\Dto\UpdateFuncDto.cs" />
@@ -207,8 +206,8 @@
     <PackageReference Include="EntityFramework">
       <Version>6.2.0</Version>
     </PackageReference>
-    <PackageReference Include="EntityFramework.Extensions">
-      <Version>0.0.2</Version>
+    <PackageReference Include="EntityFramework.Extended">
+      <Version>6.1.0.168</Version>
     </PackageReference>
     <PackageReference Include="LumiSoft.Net.dll">
       <Version>4.5.6712.42292</Version>

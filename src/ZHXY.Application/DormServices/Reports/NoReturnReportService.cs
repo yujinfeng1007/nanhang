@@ -32,7 +32,7 @@ namespace ZHXY.Application
                 var end = Convert.ToDateTime(endTime + " 23:59:59");
                 expression = expression.And(p => p.CreatedTime <= end);
             }
-            return Read(expression).OrderBy($"{pag.Sidx} {pag.Sord}").Skip(pag.Skip).Take(pag.Rows).ToListAsync().Result;
+            return Read(expression).Paging(pag).ToListAsync().Result;
         }
         public List<NoReturnReport> GetList(string startTime, string endTime)
         {
@@ -53,7 +53,11 @@ namespace ZHXY.Application
         {
             var expression = ExtLinq.True<NoReturnReport>();
             if (!string.IsNullOrEmpty(classId))
-                expression = expression.And(p => p.ClassId.Equals(classId));
+            {
+                List<string> OrgList = new List<string> { classId };
+                this.GetChildOrg(classId, OrgList);
+                expression = expression.And(p => OrgList.Contains(p.ClassId));
+            }
             if (!string.IsNullOrEmpty(keyboard))
             {
                 expression = expression.And(p => p.Name.Contains(keyboard));

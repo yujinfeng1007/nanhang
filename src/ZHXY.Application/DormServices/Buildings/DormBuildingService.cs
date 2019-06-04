@@ -22,7 +22,7 @@ namespace ZHXY.Application
         public async Task<DormBuildingView> AddAsync(CreateDormBuildingDto input)
         {
             Building entity = input;            
-            Add(entity);
+            AddAndSave(entity);
             await SaveChangesAsync();
             return entity;
         }
@@ -47,7 +47,7 @@ namespace ZHXY.Application
             query = string.IsNullOrEmpty(keyword) ? query : query.Where(p => p.BuildingNo.Contains(keyword));
             pagination.Records = query.CountAsync().Result;
             pagination.GetOrdering<Building>();
-            query = string.Equals("false", pagination.Sidx, StringComparison.CurrentCultureIgnoreCase) ? query.OrderBy(p => p.BuildingNo) : query.OrderBy(pagination.Sidx);
+            query = string.Equals("false", pagination.Sidx, StringComparison.CurrentCultureIgnoreCase) ? query.OrderBy(p => p.BuildingNo) : query.Paging(pagination);
             query = query.Skip(pagination.Skip).Take(pagination.Rows);
             return query.ToListAsync().Result.MapToList<DormBuildingView>();
         }
@@ -78,7 +78,7 @@ namespace ZHXY.Application
                     FirstKey = id,
                     SecondKey = user
                 };
-                Add(rel);
+                AddAndSave(rel);
             }
             SaveChanges();
         }
@@ -110,7 +110,7 @@ namespace ZHXY.Application
         public List<User> GetNotBindUsers(string id)
         {
             var usersIds = Read<Relevance>(p => p.Name.Equals(Relation.BuildingUser) && p.FirstKey.Equals(id)).Select(p => p.SecondKey).ToArray();
-            var list = Read<User>(p => !usersIds.Contains(p.Id) && p.OrganId == "473059e8a7a0754ca8f05eb2cd346e1d").ToList();
+            var list = Read<User>(p => !usersIds.Contains(p.Id) && p.OrganId == "EEA8D099CF7F462888473FE0937A0F6D").ToList();
             //var list = Read<User>(p => !usersIds.Contains(p.Id) && p.DutyId.Contains("dormitory") ).ToList();  //后续更新为通过岗位来区分宿管
             return list;
         }

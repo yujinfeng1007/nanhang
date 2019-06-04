@@ -21,10 +21,10 @@ namespace TaskApi.Job
         {
             ZhxyDbContext db = new ZhxyDbContext();
             Console.WriteLine("************************************        开始同步南航师生信息       ************************************");
-            ProcessOrgInfo(db); //同步教师组织机构信息
-            ProcessOrgInfoStu(db); //同步学生组织机构信息
-            ProcessSysOrgan(db);//处理sys_organization表的相关等级标识
-            ProcessTeacher(db); //同步教师信息
+            //ProcessOrgInfo(db); //同步教师组织机构信息
+            //ProcessOrgInfoStu(db); //同步学生组织机构信息
+            //ProcessSysOrgan(db);//处理sys_organization表的相关等级标识
+            //ProcessTeacher(db); //同步教师信息
             ProcessStudent(db); //同步学生信息
             Console.WriteLine("************************************        同步南航师生信息结束       ************************************");
         }
@@ -292,7 +292,7 @@ namespace TaskApi.Job
                 OrganId = p.OrganId,
                 MobilePhone = p.MobilePhone,
                 HeadIcon = p.HeadIcon,
-                Gender = p.Gender ? "1" : "0"
+                Gender = p.Gender==true ? "1" : "0"
             }).ToList();
             var addList = newData.Except(oldData).ToList();
             var Ids = oldData.Select(p => p.Id).ToList();
@@ -410,6 +410,7 @@ namespace TaskApi.Job
                         GradeId = stu.GradeId,
                         DivisId = stu.DivisId
                     });
+                    //oldDb.Set<Student>().Where(p => p.Id.Equals(stu.Id)).
                 }
                 else
                 {

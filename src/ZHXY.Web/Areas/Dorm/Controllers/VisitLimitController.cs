@@ -24,9 +24,9 @@ namespace ZHXY.Web.Dorm.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetFloor(string BuildingName)
+        public ActionResult GetFloor(string BuildingId)
         {
-            return Result.Success(service.GetFloor(BuildingName));
+            return Result.Success(service.GetFloor(BuildingId));
         }
 
         [HttpPost]

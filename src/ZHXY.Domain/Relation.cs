@@ -28,16 +28,16 @@
         public static string ClassLeader { get; } = $"{nameof(Organ)}{Separator}{nameof(Teacher)}";
 
 
-        /// <summary>
-        /// 用户和角色
-        /// </summary>
-        public static string UserRole { get; } = $"{nameof(User)}{Separator}{nameof(Role)}";
+        ///// <summary>
+        ///// 用户和角色
+        ///// </summary>
+        //public static string UserRole { get; } = $"{nameof(User)}{Separator}{nameof(Role)}";
 
 
-        /// <summary>
-        /// 用户资源
-        /// </summary>
-        public static string RoleResource { get; } = $"{nameof(Role).ToLower()}{Separator}{nameof(Resource).ToLower()}";
+        ///// <summary>
+        ///// 用户资源
+        ///// </summary>
+        //public static string RoleResource { get; } = $"{nameof(Role).ToLower()}{Separator}{nameof(Resource).ToLower()}";
 
     }
 }

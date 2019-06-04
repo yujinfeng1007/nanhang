@@ -27,13 +27,7 @@ namespace ZHXY.Application
         public AppService(IZhxyRepository r) => R = r;
         public AppService() { }
 
-
-
-        public void Add<T>(T t) where T : class, IEntity => R.Add(t);
         public void Add<T>(IEnumerable<T> entityList) where T : class, IEntity => R.AddRange(entityList);
-
-
-
 
         public void AddAndSave<T>(T t) where T : class, IEntity
         {

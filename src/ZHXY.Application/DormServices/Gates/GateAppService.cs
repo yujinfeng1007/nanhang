@@ -6,6 +6,7 @@ using System.Linq.Dynamic;
 using ZHXY.Application.DormServices.Gates.Dto;
 using ZHXY.Common;
 using ZHXY.Domain;
+using ZHXY.Dorm.Device.DH;
 
 namespace ZHXY.Application
 {
@@ -33,6 +34,12 @@ namespace ZHXY.Application
         {
             var gates = Query<Gate>(p => ids.Contains(p.Id)).ToList();
             gates.ForEach(item => item.Status = status);
+            foreach(var item in gates)
+            {
+                item.Status = status;
+                DHAccount.OpenDoor(status, item.DeviceNumber);
+            }
+           
             SaveChanges();
         }
 
@@ -75,7 +82,7 @@ namespace ZHXY.Application
                     FirstKey = id,
                     SecondKey = item
                 };
-                Add(rel);
+                AddAndSave(rel);
             }
             SaveChanges();
 

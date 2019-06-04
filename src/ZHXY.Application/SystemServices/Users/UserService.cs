@@ -62,8 +62,7 @@ namespace ZHXY.Application
                 //    }
                 //}
                 pagination.Records = query.CountAsync().Result;
-            query = query.OrderBy(pagination.Sidx).Skip(pagination.Rows * (pagination.Page - 1)).Take(pagination.Rows);
-            return query.ToListAsync().Result;
+            return query.Paging(pagination).ToListAsync().Result;
         }
 
         public User GetById(string id) => Read<User>(p => p.Id.Equals(id)).FirstOrDefaultAsync().Result;
@@ -78,7 +77,7 @@ namespace ZHXY.Application
         public void Add(AddUserDto dto)
         {
             var user = dto.MapTo<User>();
-            Add(user);
+            AddAndSave(user);
             SaveChanges();
         }
 
@@ -105,7 +104,7 @@ namespace ZHXY.Application
             else
             {
                 var user = userEntity.MapTo<User>();
-                Add(user);
+                AddAndSave(user);
             }
         
             var userRoles = new List<SysUserRole>();
