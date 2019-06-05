@@ -185,9 +185,7 @@ namespace ZHXY.Application
             //           orderby leave.Id descending
             //           select leave.Id              
             //          ).Count();
-
-
-
+           
             return new
             {
                 totalQty = totalQty,
@@ -195,15 +193,52 @@ namespace ZHXY.Application
                 outQty = outQty,
                 leaveQty = leaveQty
             };
+        }
 
+        /// <summary>
+        /// 通过组织机构ID，查询下属机构所包含的所有学生相关信息
+        /// </summary>
+        /// <param name="OrgId"></param>
+        /// <returns></returns>
+        public dynamic loadByOrg(string OrgId)
+        {
+            DateTime date = DateTime.Now;
+            List<string> OrgList = new List<string> { OrgId };
+            this.GetChildOrg(OrgId, OrgList);
+            var StuList = Read<Student>(p => OrgList.Contains(p.ClassId)).Select(p => new { p.InOut, p.Id}).ToList();
+            int totalQty = StuList.Count();
+            var outQty = StuList.Count(p => string.IsNullOrEmpty(p.InOut) || p.InOut.Equals("1"));
+            var inQty = StuList.Count(p => !string.IsNullOrEmpty(p.InOut) && p.InOut.Equals("0"));
+            var leaveQty = StuList.Join(Read<LeaveOrder>(s => s.Status == "1"), stu => stu.Id, leave => leave.LeaveerId, (stu, leave) => new { leave.Id}).Count();
+            return new {
+                totalQty,
+                inQty,
+                outQty,
+                leaveQty
+            };
         }
 
 
+        public dynamic ListOrgan(string userId)
+        {
+            var OrgLeader = Read<OrgLeader>(p => p.UserId.Equals(userId)).ToList();
+            if(OrgLeader == null || OrgLeader.Count() == 0)
+            {
+                return "当前用户未绑定相关机构！";
+            }
+            else
+            {
+                return OrgLeader.Join(Read<Organ>(), lea => lea.OrgId, org => org.Id, (lea, org) => new
+                {
+                    org.Id,
+                    org.Name
+                }).ToList();
+            }
+        }
     }
-
-
-    
 }
+
+
 
 
 

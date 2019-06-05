@@ -388,7 +388,12 @@ namespace ZHXY.Application
                     ApproveLevel = 1,
                     ApproveResult = "1"
                 });
-                MSG = PushVisitorSchool(input.VisitorId, buildingId, visit.VisitEndTime);
+                //人员在大华的ID
+                string code = Read<Student>(p => p.Id.Equals(input.VisitorId)).Select(p => p.StudentNumber).FirstOrDefault();
+                var dhUserstr = DHAccount.SELECT_DH_PERSON(new PersonMoudle() { code = code });
+                var ResultList = (List<object>)dhUserstr.ToString().ToJObject()["data"]["list"].ToObject(typeof(List<object>));
+                visit.DhId = ResultList.First().ToString().ToJObject().Value<int>("id").ToString();
+                MSG = PushVisitorSchool(buildingId, visit.VisitEndTime, Convert.ToInt32(visit.DhId));
             }
             else
             {
@@ -411,16 +416,11 @@ namespace ZHXY.Application
         /// <summary>
         /// 用于同学互访
         /// </summary>
-        /// <param name="VisitorId"></param>
         /// <param name="buildingId"></param>
         /// <param name="endTime"></param>
         /// <returns></returns>
-        private string PushVisitorSchool(string VisitorId, string buildingId, DateTime endTime)
+        private string PushVisitorSchool(string buildingId, DateTime endTime, int DHPersonId)
         {
-            //人员在大华的ID
-            string code = Read<Student>(p => p.Id.Equals(VisitorId)).Select(p => p.StudentNumber).FirstOrDefault();
-            var dhUserstr =  DHAccount.SELECT_DH_PERSON(new PersonMoudle() { code = code });
-            var ResultList = (List<object>)dhUserstr.ToString().ToJObject()["data"]["list"].ToObject(typeof(List<object>));
             // 闸机Id列表
             var zjids = Read<Relevance>(p => p.SecondKey == buildingId && p.Name == Relation.GateBuilding).Select(p => p.FirstKey).ToList();
             var channelIds = Read<Gate>(t => zjids.Contains(t.Id)).Select(p => p.DeviceNumber).ToArray();
@@ -428,7 +428,7 @@ namespace ZHXY.Application
             survey.channelId = channelIds.Select(p => p + "$7$0$0").ToArray();
             survey.initialTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             survey.expireTime = endTime.ToString("yyyy-MM-dd HH:mm:ss");
-            survey.personId = ResultList.First().ToString().ToJObject().Value<int>("id");
+            survey.personId = DHPersonId;
             return DHAccount.Survey(survey);
         }
 

@@ -17,14 +17,20 @@ namespace ZHXY.Web.Controllers
             return Result.Success(app.GetMobileDataByStu(userId, startTime, endTime));
         }
 
+        [HttpPost]
+        public ActionResult ListOrgan(string userId)
+        {
+            return Result.Success(app.ListOrgan(userId));
+        }
+
         /// <summary>
         /// 机构移动端首页数据接口
         /// </summary>
         [HttpPost]
         public ActionResult loadByOrg(string orgId)
         {
-            return Result.Success(app.GetMobileDataByOrg(orgId));
+            return Result.Success(app.loadByOrg(orgId));
+            //return Result.Success(app.GetMobileDataByOrg(orgId));
         }
-      
     }
 }
