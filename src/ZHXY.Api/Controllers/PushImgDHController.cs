@@ -1,4 +1,8 @@
-﻿using System.Web.Http;
+﻿using System;
+using System.Linq;
+using System.Web.Http;
+using ZHXY.Api.moudle;
+using ZHXY.Common;
 
 namespace ZHXY.Api.Controllers
 {
@@ -32,22 +36,22 @@ namespace ZHXY.Api.Controllers
         }
 
 
-        //[HttpGet]
-        //public string TestPushTeacher(string name)
-        //{
-        //    string MoudleFilePath = "C:\\人员信息Moudle.xlsx";
-        //    string DataFilePath = "C:\\人员信息.xlsx";
-        //    var moudle = new NanHangAccept();
-        //    var DormTeacherInfos = moudle.School_Teachers.Where(p => p.F_Name_Old.Equals("1")).Select(p => new DHTeacherMoudle
-        //    {
-        //        TeacherNo = p.F_Num,
-        //        name = p.F_Name,
-        //        CredNum = p.F_CredNum,
-        //        sex = p.F_Gender.Equals("1") ? "男" : "女"
-        //    }).ToList();
-        //    bool flag = NPOIExcelImport<DHTeacherMoudle>.TeacherWriteExcel(MoudleFilePath, DataFilePath, DormTeacherInfos);
-        //    Console.WriteLine(flag);
-        //    return "success";
-        //}
+        [HttpGet]
+        public string TestPushTeacher(string name)
+        {
+            string MoudleFilePath = "C:\\人员信息Moudle.xlsx";
+            string DataFilePath = "C:\\人员信息(教师).xlsx";
+            var moudle = new NanHangAccept();
+            var DormTeacherInfos = moudle.Set<TeacherInfo>().AsNoTracking().Where(p => p.ImgStatus == 1).Select(p => new DHTeacherMoudle
+            {
+                TeacherNo = p.teacherNo,
+                name = p.teacherName,
+                CredNum = p.certificateNo,
+                sex = p.sex ? "男" : "女"
+            }).ToList();
+            bool flag = NPOIExcelImport<DHTeacherMoudle>.TeacherWriteExcel(MoudleFilePath, DataFilePath, DormTeacherInfos);
+            Console.WriteLine(flag);
+            return "success";
+        }
     }
 }
