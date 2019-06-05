@@ -1344,7 +1344,6 @@
     <Content Include="Scripts\highcharts\6.2.0\themes\skies.src.js" />
     <Content Include="Scripts\highcharts\6.2.0\themes\sunset.js" />
     <Content Include="Scripts\highcharts\6.2.0\themes\sunset.src.js" />
-    <Content Include="libman.json" />
     <Content Include="Content\img\icon_16_3\Thumbs.db" />
     <Content Include="Content\img\ico_16_2\Thumbs.db" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

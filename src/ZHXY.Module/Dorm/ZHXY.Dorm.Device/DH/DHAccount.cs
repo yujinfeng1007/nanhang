@@ -235,7 +235,7 @@ namespace ZHXY.Dorm.Device.DH
             dic.Add("channelId", channelId);
             dic.Add("personId", personId);
             X_SUBJECT_TOKEN = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL).StringGet(REDIS_TOKEN_SET_KEY);
-            return HttpHelper.ExecutePost(Constants.CALCLE_VISIT_SURVEY_URL, JsonConvert.SerializeObject(dic), X_SUBJECT_TOKEN);
+            return HttpHelper.ExecutePostMachineInfo(Constants.CALCLE_VISIT_SURVEY_URL, JsonConvert.SerializeObject(dic), X_SUBJECT_TOKEN);
         }
 
         /// <summary>
