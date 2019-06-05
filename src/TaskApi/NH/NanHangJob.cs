@@ -21,10 +21,10 @@ namespace TaskApi.Job
         {
             ZhxyDbContext db = new ZhxyDbContext();
             Console.WriteLine("************************************        开始同步南航师生信息       ************************************");
-            //ProcessOrgInfo(db); //同步教师组织机构信息
-            //ProcessOrgInfoStu(db); //同步学生组织机构信息
-            //ProcessSysOrgan(db);//处理sys_organization表的相关等级标识
-            //ProcessTeacher(db); //同步教师信息
+            ProcessOrgInfo(db); //同步教师组织机构信息
+            ProcessOrgInfoStu(db); //同步学生组织机构信息
+            ProcessSysOrgan(db);//处理sys_organization表的相关等级标识
+            ProcessTeacher(db); //同步教师信息
             ProcessStudent(db); //同步学生信息
             Console.WriteLine("************************************        同步南航师生信息结束       ************************************");
         }
@@ -578,7 +578,7 @@ namespace TaskApi.Job
             }).ToList();
            
             //添加到 zhxy_Building表
-            var BuildData = newData.Where(p => p.Description != null && p.Description.Contains("栋")).Select(p => p.Description.Replace("栋", "#").Split('#')[0]).Distinct().ToList(); //新增至宿舍楼栋表（dorm_building）
+            var BuildData = newData.Where(p => p.Description != null && p.Description.Contains("栋")).Select(p => p.Description.Split('栋')[0].Replace(" ", "").Replace("海院A", "海A").Replace("海院B", "海B")).Distinct().ToList(); //新增至宿舍楼栋表（dorm_building）
             var oldBuildData = db.Set<Building>().AsNoTracking().Select(p => p.BuildingNo).ToList();
             var AddBuild = BuildData.Except(oldBuildData).ToList();
             if(null != AddBuild && AddBuild.Count() > 0)
