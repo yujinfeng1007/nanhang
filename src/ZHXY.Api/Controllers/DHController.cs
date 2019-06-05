@@ -71,7 +71,7 @@ namespace ZHXY.Api.Controllers
         [HttpGet]
         public object DeletePerson()
         {
-            return DHAccount.PUSH_DH_DELETE_PERSON(new string[] { "133447", "133427" });
+            return DHAccount.PUSH_DH_DELETE_PERSON(new string[] { "133475" });
         }
 
         [HttpGet]

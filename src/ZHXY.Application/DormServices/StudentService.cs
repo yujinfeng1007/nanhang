@@ -36,6 +36,7 @@ namespace ZHXY.Application
         public dynamic GetList(Pagination pagination, string keyword)
         {
             var query = Read<Student>();
+
             query = string.IsNullOrWhiteSpace(keyword) ? query : query.Where(p => p.Name.Contains(keyword));
             return query.Paging(pagination).Join(Read<Organ>(), p => p.GradeId, s=> s.Id, (stu, organ) => new {
                 id = stu.Id,

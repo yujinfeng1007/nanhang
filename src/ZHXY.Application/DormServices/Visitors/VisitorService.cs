@@ -208,7 +208,7 @@ namespace ZHXY.Application
         public string Approval(VisitorApprovalDto input)
         {
             var visitor = Get<VisitorApply>(input.VisitId);
-            visitor.ImgUri = "http://210.35.32.29:8100/UpLoad/20190603/201906031328171282.jpg";
+            visitor.ImgUri = "http://210.35.32.29:8100/web/temp.jpg";
             var visitorApprovers = Query<VisitorApprove>(p => p.VisitId.Equals(visitor.Id)).ToListAsync().Result;
             var DHMessage = "";
             foreach (var visitorApprover in visitorApprovers)
@@ -328,7 +328,7 @@ namespace ZHXY.Application
 
                 foreach(var visitor in listLimit)
                 {
-                    visitor.ImgUri = "http://210.35.32.29:8100/UpLoad/20190603/201906031328171282.jpg";
+                    visitor.ImgUri = "http://210.35.32.29:8100/web/temp.jpg";
                     PushVisitor("", Convert.ToInt32(visitor.VisitorGender), visitor.ImgUri, visitor.VisitorName, visitor.VisitorIDCard, visitor.BuildingId, visitor.VisitEndTime);
                 }
             }
@@ -348,7 +348,7 @@ namespace ZHXY.Application
         /// <param name="input"></param>
         public string Submit(VisitorApplySubmitDto input)
         {
-            input.ImgUri = "http://210.35.32.29:8100/UpLoad/20190603/201906031328171282.jpg";
+            input.ImgUri = "http://210.35.32.29:8100/web/temp.jpg";
             var currentUserId = Operator.GetCurrent().Id;
             var MSG = "";
             var LimitCount = Read<DormVisitLimit>(p => p.StudentId.Equals(currentUserId)).Select(p => p.UsableLimit).FirstOrDefault();
