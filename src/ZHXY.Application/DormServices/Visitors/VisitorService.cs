@@ -4,14 +4,11 @@ using System.Linq;
 using System.Linq.Dynamic;
 using ZHXY.Domain;
 using System;
-using System.Text;
 using ZHXY.Common.IsNumeric;
 using System.Data.Entity;
 using ZHXY.Dorm.Device.tools;
 using ZHXY.Dorm.Device.DH;
 using EntityFramework.Extensions;
-using System.Configuration;
-using System.IO;
 using Newtonsoft.Json.Linq;
 
 namespace ZHXY.Application

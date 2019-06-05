@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Web.Http;
-using ZHXY.Common;
+﻿using System.Web.Http;
 using ZHXY.Dorm.Device.DH;
 using ZHXY.Dorm.Device.tools;
 

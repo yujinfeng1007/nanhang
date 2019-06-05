@@ -1,10 +1,5 @@
 ﻿using ZHXY.Application;
-using ZHXY.Domain;
 using ZHXY.Common;
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.IO;
 using System.Web.Mvc;
 
 namespace ZHXY.Web.Dorm.Controllers

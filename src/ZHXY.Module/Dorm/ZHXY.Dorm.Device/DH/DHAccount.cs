@@ -1,9 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using ZHXY.Common;
 using ZHXY.Dorm.Device.tools;
 using HttpHelper = ZHXY.Dorm.Device.tools.HttpHelper;

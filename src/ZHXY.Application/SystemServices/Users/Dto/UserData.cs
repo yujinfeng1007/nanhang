@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace ZHXY.Application
+﻿namespace ZHXY.Application
 {
     public class UserData
     {

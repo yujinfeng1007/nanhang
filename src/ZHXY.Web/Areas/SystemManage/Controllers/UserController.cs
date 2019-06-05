@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.IO;
-using System.Threading.Tasks;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using ZHXY.Application;
 using ZHXY.Common;
 using ZHXY.Domain;
-using ZHXY.Domain.Entity;
 
 namespace ZHXY.Web.SystemManage.Controllers
 {

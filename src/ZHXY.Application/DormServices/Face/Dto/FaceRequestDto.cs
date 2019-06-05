@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace ZHXY.Application
+﻿namespace ZHXY.Application
 {
     /// <summary>
     /// 头像申请Dto

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using ZHXY.Application;
 using ZHXY.Common;
-using ZHXY.Domain;
 using ZHXY.Domain.Entity;
 
 namespace ZHXY.Web.SystemManage.Controllers

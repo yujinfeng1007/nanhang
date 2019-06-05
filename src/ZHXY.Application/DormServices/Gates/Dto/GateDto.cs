@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ZHXY.Application.DormServices.Gates.Dto
+﻿namespace ZHXY.Application.DormServices.Gates.Dto
 {
     public class GateDto
     {
