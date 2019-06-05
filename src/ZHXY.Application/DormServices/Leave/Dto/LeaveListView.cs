@@ -53,6 +53,7 @@ namespace ZHXY.Application
         /// 审批人
         /// </summary>
         public string[] Approver { get; set; }
+        public dynamic Approves { get; set; }
     }
 
     public class LeaveView: LeaveListView

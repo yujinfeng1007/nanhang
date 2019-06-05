@@ -65,7 +65,6 @@ namespace ZHXY.Application
             var leaveDays = Convert.ToDecimal(input.LeaveDays);
             if (leaveDays > 15) throw new Exception("请假天数不能大于15天!");
             if (!input.Approvers.Any()) throw new Exception("请先选择审批人!");
-            //if (input.Approvers.Length < 2) throw new Exception("必须选择班主任和辅导员,缺一不可!");
             var currentSemesterId = GetCurrentSemesterId();
             if (string.IsNullOrEmpty(currentSemesterId)) throw new Exception("当前学期未设置,请联系管理员!");
             var limit = Query<LeaveLimit>(p => p.SemesterId.Equals(currentSemesterId) && p.StudentId.Equals(input.LeaveerId)).FirstOrDefaultAsync().Result;
@@ -97,12 +96,12 @@ namespace ZHXY.Application
             return Read<Semester>(p => p.StartTime <= now && p.EndOfTime >= now).Select(p => p.Id).FirstOrDefaultAsync().Result;
         }
 
+
         /// <summary>
         /// 获取审批详情
         /// </summary>
-        public LeaveView GetApprovalDetail(string id, string currentUserId)
+        public dynamic GetApprovalDetail(string id, string currentUserId)
         {
-
             var leave = Get<LeaveOrder>(id);
             var leaveApprove = Read<LeaveApprove>(p => p.OrderId.Equals(id) && p.ApproverId.Equals(currentUserId)).FirstOrDefaultAsync().Result;
             if (null == leaveApprove) throw new Exception("您不可以审批!");
@@ -115,7 +114,14 @@ namespace ZHXY.Application
                 LeaveDays = leave.LeaveDays,
                 LeaveType = leave.LeaveType,
                 ReasonForLeave = leave.Reason,
-                AttachmentsPath = leave.AttachmentsPath
+                AttachmentsPath = leave.AttachmentsPath,
+                Approves= leaveApprove.ApproveLevel==1?null:Read<LeaveApprove>(p=>p.OrderId.Equals(leave.Id)&&p.ApproveLevel==1&&p.Result!=0)
+                .Select(p=>new {
+                    ApproverName = p.Approver.Name,
+                    p.Opinion,
+                    p.Result,
+                    Level = p.ApproveLevel
+                }).ToList()
             };
             if (Convert.ToDecimal(view.LeaveDays) <= 3)
             {
@@ -152,15 +158,17 @@ namespace ZHXY.Application
         /// <summary>
         /// 学生获取请假单详情
         /// </summary>
-        public ApproveDetailView GetRequestDetail(string id)
+        public ApproveDetailView GetOrderDetail(string id)
         {
             var leave = Get<LeaveOrder>(id);
-            var leaveApproves = Read<LeaveApprove>(p => p.OrderId.Equals(id) && p.Result != 0).Select(p => new LeaveApproveView
-            {
-                ApproverName = p.Approver.Name,
-                Opinion = p.Opinion,
-                Result = p.Result > 0 ? "同意" : "不同意"
-            }).ToListAsync().Result;
+            var leaveApproves = Read<LeaveApprove>(p => p.OrderId.Equals(id)).OrderBy(p => p.ApproveLevel).Select(p =>
+              new LeaveApproveView
+              {
+                  ApproverName = p.Approver.Name,
+                  Opinion = p.Opinion,
+                  Result = p.Result,
+                  Level = p.ApproveLevel
+              }).ToListAsync().Result;
 
             var obj = new ApproveDetailView
             {
@@ -251,7 +259,7 @@ namespace ZHXY.Application
             var query = Read<LeaveOrder>(p => p.LeaveerId.Equals(input.UserId));
             query = string.IsNullOrEmpty(input.Status) || input.Status.Equals("-1") ? query : query.Where(p => p.Status.Equals(input.Status));
             query = string.IsNullOrEmpty(input.Keyword) ? query : query.Where(p => p.Reason.Contains(input.Keyword));
-            query=query.Paging(input);
+            query = query.Paging(input);
             var list = query.Join(Read<User>(), a => a.LeaveerId, a => a.Id, (a, b) => new LeaveListView
             {
                 Id = a.Id,
@@ -264,7 +272,7 @@ namespace ZHXY.Application
                 ReasonForLeave = a.Reason,
                 CreatedTime = a.CreatedTime
             }).OrderByDescending(p => p.CreatedTime).ToListAsync().Result;
-           
+
 
             foreach (var item in list)
             {   //审批结果Result  0:未审批  1:同意  -1:拒绝   
@@ -279,7 +287,7 @@ namespace ZHXY.Application
                 if (item.LeaveDays <= 3)
                 {
                     item.ApprovalStatus = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result != 0).Any() ? "已审批" : "未审批";
-                    if (item.ApprovalStatus == "未审批") item.Approver = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result == 0 && p.ApproveLevel ==1 ).Select(p => p.Approver.Name).ToArray();
+                    if (item.ApprovalStatus == "未审批") item.Approver = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result == 0 && p.ApproveLevel == 1).Select(p => p.Approver.Name).ToArray();
                     continue;
                 }
                 if (item.LeaveDays > 3)
@@ -295,7 +303,7 @@ namespace ZHXY.Application
                         if (item.ApprovalStatus == "未审批") item.Approver = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result == 0 && p.ApproveLevel == 1).Select(p => p.Approver.Name).ToArray();
                     }
                     continue;
-                }                
+                }
             }
             return list;
         }
@@ -304,18 +312,19 @@ namespace ZHXY.Application
         /// 获取审批列表
         /// </summary>
         public dynamic GetApprovalList(GetApprovalListDto input)
-        {                    
+        {
             var leaveIds = Read<LeaveApprove>(p => p.ApproverId.Equals(input.CurrentUserId)).Select(p => p.OrderId).ToListAsync().Result;
-            var query = Read<LeaveOrder>(p => leaveIds.Contains(p.Id));
-            query = string.IsNullOrEmpty(input.Status) || input.Status.Equals("-1")
-                ? query
-                : query.Where(p => p.Status.Equals(input.Status));
-
+            var joinQuery = Read<LeaveOrder>().Join(Read<LeaveApprove>(), o => o.Id, a => a.OrderId, (o, a) => new { o, a })
+                .Where(p => leaveIds.Contains(p.o.Id) && p.a.ApproverId.Contains(input.CurrentUserId));
+            joinQuery = input.Status.Equals("0")
+                ? joinQuery.Where(p => p.a.Result == 0)
+                : joinQuery.Where(p => p.a.Result != 0);
+            var query = joinQuery.Select(p => p.o);
             query = string.IsNullOrEmpty(input.Keyword)
-                ? query
-                : query.Where(p => p.Reason.Contains(input.Keyword));
-            query=query.Paging(input);
-            var list = query.Join(Read<User>(),a=>a.LeaveerId,b=>b.Id,(a,b)=> new{a,b }).Select(p => new LeaveListView
+                 ? query
+                 : query.Where(p => p.Reason.Contains(input.Keyword));
+            query = query.Paging(input);
+            var list = query.Join(Read<User>(), a => a.LeaveerId, b => b.Id, (a, b) => new { a, b }).Select(p => new LeaveListView
             {
                 Id = p.a.Id,
                 LeaveerName = p.b.Name,
@@ -388,7 +397,7 @@ namespace ZHXY.Application
             var currentUserId = Operator.GetCurrent().Id;
             var approve = Read<LeaveApprove>(p => p.OrderId.Equals(order.Id) && p.ApproverId.Equals(currentUserId)).FirstOrDefaultAsync().Result;
             //if (approve.ApproveLevel == 2)  多级审批，只要有一个人审批通过，就算通过 
-                order.Status = "1";
+            order.Status = "1";
         }
 
         #region 不计考勤请假
@@ -473,47 +482,49 @@ namespace ZHXY.Application
             }).OrderBy(p => p.GroupName).ToList();
         }
 
-        /// <summary>
-        /// 获取用户可以取消的请假列表
-        /// 1.一级审批人是当前用户
-        /// 2.请假截至时间大于当前时间的
-        /// 3.审批通过的
-        /// </summary>
-        public dynamic GetCanceList(GetCancelListDto input)
-        {
-            var passIds = Read<LeaveApprove>(p => p.Result == 1).Select(p => p.OrderId).Distinct().ToListAsync().Result;
-            var rejectIds = Read<LeaveApprove>(p => p.Result == -1).Select(p => p.OrderId).Distinct().ToListAsync().Result;
-            var canceledIds = Read<CancelHoliday>().Select(p => p.OrderId).Distinct().ToArrayAsync().Result;
-            var ids = passIds.Except(rejectIds).Except(canceledIds);
-            var orderIds = Read<LeaveApprove>(p => ids.Contains(p.OrderId) && p.ApproveLevel == 1 && p.ApproverId.Equals(input.CurrentUserId)).Select(p => p.OrderId).Distinct().ToArrayAsync().Result;
-            var query = Read<LeaveOrder>(p => orderIds.Contains(p.Id))
-             .Select(p => new CancellableLeaveView
-             {
-                 OrderId = p.Id,
-                 ApplicantId = p.ApplicantId,
-                 StartTime = p.StartTime,
-                 EndOfTime = p.EndOfTime,
-                 LeaveDays = p.LeaveDays,
-                 ReasonForLeave = p.Reason,
-                 LeaveType = p.LeaveType
-             }).ToListAsync()
-             .Result.Where(p => p.EndOfTime >= DateTime.Now.Date);
-            var list= query.AsQueryable().Paging(input).ToListAsync().Result;
-            list.ForEach(item => item.ApplicantName = Read<User>(p => p.Id.Equals(item.ApplicantId)).Select(p => p.Name).FirstOrDefault());
-            return list;
-        }
+        ///// <summary>
+        ///// 获取用户可以取消的请假列表
+        ///// 1.一级审批人是当前用户
+        ///// 2.请假截至时间大于当前时间的
+        ///// 3.审批通过的
+        ///// </summary>
+        //public dynamic GetCanceList(GetCancelListDto input)
+        //{
+        //    var passIds = Read<LeaveApprove>(p => p.Result == 1).Select(p => p.OrderId).Distinct().ToListAsync().Result;
+        //    var rejectIds = Read<LeaveApprove>(p => p.Result == -1).Select(p => p.OrderId).Distinct().ToListAsync().Result;
+        //    var canceledIds = Read<CancelHoliday>().Select(p => p.OrderId).Distinct().ToArrayAsync().Result;
+        //    var ids = passIds.Except(rejectIds).Except(canceledIds);
+        //    var orderIds = Read<LeaveApprove>(p => ids.Contains(p.OrderId) && p.ApproveLevel == 1 && p.ApproverId.Equals(input.CurrentUserId)).Select(p => p.OrderId).Distinct().ToArrayAsync().Result;
+        //    var query = Read<LeaveOrder>(p => orderIds.Contains(p.Id))
+        //     .Select(p => new CancellableLeaveView
+        //     {
+        //         OrderId = p.Id,
+        //         ApplicantId = p.ApplicantId,
+        //         StartTime = p.StartTime,
+        //         EndOfTime = p.EndOfTime,
+        //         LeaveDays = p.LeaveDays,
+        //         ReasonForLeave = p.Reason,
+        //         LeaveType = p.LeaveType
+        //     }).ToListAsync()
+        //     .Result.Where(p => p.EndOfTime >= DateTime.Now.Date);
+        //    var list = query.AsQueryable().Paging(input).ToListAsync().Result;
+        //    list.ForEach(item => item.ApplicantName = Read<User>(p => p.Id.Equals(item.ApplicantId)).Select(p => p.Name).FirstOrDefault());
+        //    return list;
+        //}
 
-        /// <summary>
-        /// 销假
-        /// </summary>
-        public void CancelHoliday(CancelHolidayDto input)
-        {
-            var cancelHoliday = input.MapTo<CancelHoliday>();
-            var order = Read<LeaveOrder>(p => p.Id.Equals(input.OrderId)).FirstOrDefaultAsync().Result;
-            if (null == order) throw new Exception($"未找到请假单! leaveId:{input.OrderId}");
-            if (input.Days > order.LeaveDays) throw new Exception("销假天数不能大于请假天数!");
-            AddAndSave(cancelHoliday);
-        }
+        ///// <summary>
+        ///// 销假
+        ///// </summary>
+        //public void CancelHoliday(CancelHolidayDto input)
+        //{
+        //    var cancelHoliday = input.MapTo<CancelHoliday>();
+        //    var order = Read<LeaveOrder>(p => p.Id.Equals(input.OrderId)).FirstOrDefaultAsync().Result;
+        //    if (null == order) throw new Exception($"未找到请假单! leaveId:{input.OrderId}");
+        //    if (input.Days > order.LeaveDays) throw new Exception("销假天数不能大于请假天数!");
+        //    AddAndSave(cancelHoliday);
+        //}
 
     }
+
+
 }

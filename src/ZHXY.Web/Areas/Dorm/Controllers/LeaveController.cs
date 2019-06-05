@@ -26,17 +26,17 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult GetTeachers() => Result.Success(App.GetTeachers());
 
         /// <summary>
-        /// 获取审批详情
+        /// 学生获取审批详情
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult GetDetail([Required(ErrorMessage = "请假Id不能为空!")]string id)
+        public ActionResult GetDetail(string id)
         {
-            return Result.Success(App.GetRequestDetail(id));
+            return Result.Success(App.GetOrderDetail(id));
         }
 
-
+      
         /// <summary>
         /// 请假申请
         /// </summary>
@@ -116,9 +116,8 @@ namespace ZHXY.Web.Dorm.Controllers
         /// <summary>
         /// 添加审批人
         /// </summary>
-        /// <param name="input"></param>
         [HttpPost]
-        public void AddApprover(AddApproverDto input) => App.AddApprover(input);
+        public void AddApprover(AddApproverDto dto) => App.AddApprover(dto);
 
         /// <summary>
         /// 获取上级审批信息
@@ -132,30 +131,30 @@ namespace ZHXY.Web.Dorm.Controllers
         #region 销假
    
 
-        [HttpGet]
-        public async Task<ViewResult> Cancel() => await Task.Run(() => View());
+        //[HttpGet]
+        //public async Task<ViewResult> Cancel() => await Task.Run(() => View());
 
-        [HttpGet]
-        public async Task<ViewResult> CancelForm() => await Task.Run(() => View());
+        //[HttpGet]
+        //public async Task<ViewResult> CancelForm() => await Task.Run(() => View());
 
-        [HttpGet]
-        public ActionResult CancelList(GetCancelListDto input)
-        {
-            input.CurrentUserId = Operator.GetCurrent().Id;
-            var data = App.GetCanceList(input);
-            return Result.PagingRst(data, input.Records, input.Total);
-        }
+        //[HttpGet]
+        //public ActionResult CancelList(GetCancelListDto input)
+        //{
+        //    input.CurrentUserId = Operator.GetCurrent().Id;
+        //    var data = App.GetCanceList(input);
+        //    return Result.PagingRst(data, input.Records, input.Total);
+        //}
 
-        /// <summary>
-        /// 销假
-        /// </summary>
-        [HttpPost]
-        public ActionResult CancelHoliday(CancelHolidayDto input)
-        {
-            input.OperatorId = Operator.GetCurrent().Id;
-            App.CancelHoliday(input);
-            return Result.Success();
-        }
+        ///// <summary>
+        ///// 销假
+        ///// </summary>
+        //[HttpPost]
+        //public ActionResult CancelHoliday(CancelHolidayDto input)
+        //{
+        //    input.OperatorId = Operator.GetCurrent().Id;
+        //    App.CancelHoliday(input);
+        //    return Result.Success();
+        //}
         #endregion
     }
 }
