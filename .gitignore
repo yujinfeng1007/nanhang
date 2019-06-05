@@ -44,6 +44,6 @@ FakesAssemblies/
 node_modules/
 OpenCover/
 
-/src/ZHXY.Web/UpLoad/
+UpLoad/
 Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
 Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
