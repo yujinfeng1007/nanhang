@@ -40,13 +40,9 @@ Backup*/
 *.ldf
 *.ndf
 
-Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
-Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-
 FakesAssemblies/
 node_modules/
 OpenCover/
-HeadIcoTemp
 UpLoad/
 HeadIcoTemp/
 
