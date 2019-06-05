@@ -1,7 +1,5 @@
-﻿using System.Configuration;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Reflection;
-using ZHXY.Common;
 
 namespace ZHXY.Domain
 {

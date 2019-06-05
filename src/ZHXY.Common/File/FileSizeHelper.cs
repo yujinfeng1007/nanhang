@@ -1,8 +1,4 @@
-﻿using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-
-namespace ZHXY.Common
+﻿namespace ZHXY.Common
 {
     public static class FileSizeHelper
     {

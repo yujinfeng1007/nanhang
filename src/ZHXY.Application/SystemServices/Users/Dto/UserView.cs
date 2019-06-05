@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ZHXY.Application
+﻿namespace ZHXY.Application
 {
     public class UserView : UpdateUserDto
     {

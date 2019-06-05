@@ -1,6 +1,4 @@
-﻿using System.Data.Entity;
-using System.Linq;
-using ZHXY.Domain;
+﻿using ZHXY.Domain;
 
 namespace ZHXY.Application
 {

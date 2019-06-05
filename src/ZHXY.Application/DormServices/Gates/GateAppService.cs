@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Dynamic;
-using ZHXY.Application.DormServices.Gates.Dto;
 using ZHXY.Common;
 using ZHXY.Domain;
 using ZHXY.Dorm.Device.DH;

@@ -1,6 +1,4 @@
 ﻿using System.Web.Http;
-using ZHXY.Application;
-using ZHXY.Common;
 
 namespace ZHXY.Api.Controllers
 {

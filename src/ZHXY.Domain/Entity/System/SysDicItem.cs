@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ZHXY.Domain.Entity
+﻿namespace ZHXY.Domain.Entity
 {
     /// <summary>
     /// 字典明细

@@ -1,9 +1,7 @@
 ﻿using log4net;
 using ZHXY.Domain;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using ZHXY.Common;
 using EntityFramework.Extensions;
 

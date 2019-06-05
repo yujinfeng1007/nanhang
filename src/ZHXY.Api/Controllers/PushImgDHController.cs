@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Web.Http;
-using ZHXY.Common;
+﻿using System.Web.Http;
 
 namespace ZHXY.Api.Controllers
 {

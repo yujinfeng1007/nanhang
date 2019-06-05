@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Quartz;
-using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;

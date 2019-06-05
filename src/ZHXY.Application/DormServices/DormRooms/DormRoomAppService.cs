@@ -1,7 +1,5 @@
 ﻿using ZHXY.Common;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Dynamic;
 using System.Data.Entity;
 using ZHXY.Domain;
 using System;

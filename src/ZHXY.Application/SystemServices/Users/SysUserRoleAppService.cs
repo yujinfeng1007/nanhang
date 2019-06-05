@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using ZHXY.Common;
 using ZHXY.Domain;
-using ZHXY.Domain.Entity;
 
 namespace ZHXY.Application
 {

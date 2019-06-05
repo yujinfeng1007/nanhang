@@ -1,5 +1,4 @@
-﻿using System;
-using ZHXY.Common;
+﻿using ZHXY.Common;
 
 namespace ZHXY.Application
 {

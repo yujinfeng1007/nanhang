@@ -1,7 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-
-namespace ZHXY.Application
+﻿namespace ZHXY.Application
 {
     public class AddOrgDto
     {

@@ -3,7 +3,7 @@ using ZHXY.Domain;
 
 namespace ZHXY.Application
 {
-    public class DormBuildingView: UpdateDormBuildingDto
+    public class DormBuildingView
     {
         public string Id { get; set; }
         public string Title { get; set; }

@@ -1,12 +1,9 @@
 ﻿using Common.Logging;
-using Newtonsoft.Json.Linq;
 using Quartz;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ZHXY.Common;
 using ZHXY.Domain;
 using ZHXY.Domain.Entity.Dorm.Report;

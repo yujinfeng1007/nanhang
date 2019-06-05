@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ZHXY.Domain
+﻿namespace ZHXY.Domain
 {
     /// <summary>
     /// 地区

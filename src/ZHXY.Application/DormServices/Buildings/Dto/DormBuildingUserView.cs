@@ -1,7 +1,4 @@
-﻿using ZHXY.Common;
-using ZHXY.Domain;
-
-namespace ZHXY.Application
+﻿namespace ZHXY.Application
 {
     //宿管用户
     public class DormBuildingUserView
