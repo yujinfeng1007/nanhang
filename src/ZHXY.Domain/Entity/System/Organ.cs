@@ -20,7 +20,7 @@ namespace ZHXY.Domain
 
         #region 导航属性
 
-        /// <summary>
+        /// <summary>i
         /// 下级机构
         /// </summary>
         [JsonIgnore] public virtual ICollection<Organ> Children { get; set; } = new List<Organ>();

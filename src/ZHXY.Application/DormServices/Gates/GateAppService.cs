@@ -125,7 +125,11 @@ namespace ZHXY.Application
         /// <returns></returns>
         public dynamic GetUsers(string id)
         {
-            return Read<User>().OrderBy(p => p.NickName).Take(10).Select(p => new
+            var builidingIds = Read<Relevance>(p => p.Name == Relation.GateBuilding && p.FirstKey == id).Select(p => p.SecondKey).ToList();
+
+            var userIds = Read<Relevance>(p => p.Name == Relation.BuildingUser && builidingIds.Contains(p.FirstKey)).Select(t => t.SecondKey).ToList();
+
+            return Read<User>(p=>userIds.Contains(p.Id)).OrderBy(p => p.Name).Take(10).Select(p => new
             {
                 id = p.Id,
                 name = p.Name
