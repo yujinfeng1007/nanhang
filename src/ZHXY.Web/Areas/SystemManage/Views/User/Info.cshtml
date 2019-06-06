@@ -28,7 +28,8 @@
  .fileUpload ul li img {width: 75px;}
 </style>
 <script>
-    var keyValue = '@ZHXY.Common.OperatorProvider.Current.UserId';
+    @*var keyValue = '@ZHXY.Common.OperatorProvider.Current.UserId';*@
+    var keyValue = '@ZHXY.Common.Operator.GetCurrent().Id';
     $(function () {
         $('.wrapper').height($(window).height() - 11);
         initControl();
@@ -39,15 +40,16 @@
                 dataType: "json",
                 async: false,
                 success: function (data) {
+
                     $("#form1").formSerialize(data);
-                    if (data.F_Gender) {
-                        $("#F_Gender").val('男');
+                    if (data.Gender) {
+                        $("#Gender").val('男');
                     }
-                    else $("#F_Gender").val('女');
-                    if (top.clients.role[data.F_RoleId]) {
-                        $('#F_RoleId').val(top.clients.role[data.F_RoleId].fullname)
+                    else $("#Gender").val('女');
+                    if (top.clients.role[data.RoleId]) {
+                        $('#RoleId').val(top.clients.role[data.RoleId].fullname)
                     } else {
-                        $('#F_RoleId').val(data.F_RoleId)
+                        $('#RoleId').val(data.RoleId)
                     }
                 }
             });
@@ -56,39 +58,39 @@
     })
     function initControl() {
         $.ajax({
-            url: "/SystemManage/Organize/GetFormJson",
-            data: { keyValue: $("#F_OrganizeId").val() },
+            url: "/SystemManage/Organize/GetFullNameById",
+            data: { F_Id: $("#OrganId").val() },
             dataType: "json",
             async: false,
             success: function (data) {
-                $("#F_OrganizeId").val(data.F_FullName);
+                $("#OrganId").val(data.name);
             }
         });
         $.ajax({
             url: "/SystemManage/Organize/GetFormJson",
-            data: { keyValue: $("#F_DepartmentId").val() },
+            data: { keyValue: $("#DepartmentId").val() },
             dataType: "json",
             async: false,
             success: function (data) {
-                $("#F_DepartmentId").val(data.F_FullName);
+                $("#DepartmentId").val(data.name);
             }
         });
         $.ajax({
             url: "/SystemManage/Role/GetFormJson",
-            data: { keyValue: $("#F_RoleId").val() },
+            data: { keyValue: $("#RoleId").val() },
             dataType: "json",
             async: false,
             success: function (data) {
-                $("#F_RoleId").val(data.F_FullName);
+                $("#RoleId").val(data.name);
             }
         });
         $.ajax({
             url: "/SystemManage/Duty/GetFormJson",
-            data: { keyValue: $("#F_DutyId").val() },
+            data: { keyValue: $("#DutyId").val() },
             dataType: "json",
             async: false,
             success: function (data) {
-                $("#F_DutyId").val(data.F_FullName);
+                $("#DutyId").val(data.name);
             }
         });
         $.simpleUploader($('.fileUpload'))
@@ -96,22 +98,22 @@
     function submitForm() {
         $("#form1").validate({
             rules: {
-                F_MobilePhone: {
+                MobilePhone: {
                     required: true,
                     CheckPhone: true
-                },
-                F_Email: {
-                    required: true,
-                    CheckEmail: true
                 }
+                //Email: {
+                //    required: true,
+                //    CheckEmail: true
+                //}
             },
             messages: {
-                F_MobilePhone: {
-                    required: "必填字段"
-                },
-                F_Email: {
+                MobilePhone: {
                     required: "必填字段"
                 }
+                //Email: {
+                //    required: "必填字段"
+                //}
             },
             success: function (label, element) {
                 var $li = $(element).parents('li')
@@ -136,11 +138,11 @@
         }
         var postData = {};
         postData["__RequestVerificationToken"] = $("#form1").formSerialize().__RequestVerificationToken;
-        postData["F_MobilePhone"] = $("#F_MobilePhone").val();
-        postData["F_Email"] = $("#F_Email").val();
-        postData["F_WeChat"] = $("#F_WeChat").val();
-        postData["F_Description"] = $("#F_Description").val();
-        postData["F_HeadIcon"] = $("#F_HeadIcon").val();
+        postData["MobilePhone"] = $("#MobilePhone").val();
+        postData["Email"] = $("#Email").val();
+        //postData["F_WeChat"] = $("#F_WeChat").val();
+        //postData["F_Description"] = $("#F_Description").val();
+        postData["HeadIcon"] = $("#HeadIcon").val();
         $.submitForm({
             url: "/SystemManage/User/UpdateForm?keyValue=" + keyValue,
             param: postData,
@@ -151,10 +153,10 @@
     }
 
     function submitPwdForm() {
-        if ($("#F_UserPassword").val() != "") {
+        if ($("#UserPassword").val() != "") {
             $.ajax({
                 url: "/SystemManage/User/GetUserPassword",
-                data: { userid: keyValue, password: $.md5($("#F_UserPassword").val()) },
+                data: { userid: keyValue, password: $.md5($("#UserPassword").val()) },
                 type: "post",
                 dataType: "json",
                 success: function (IsOk) {
@@ -221,43 +223,43 @@
                 <ul class="pop-list">
                     <li>
                         <label>账户</label>
-                        <input id="F_Account" name="F_Account" type="text" class="form-control" disabled />
+                        <input id="Account" name="Account" type="text" class="form-control" disabled />
                     </li>
                     <li>
                         <label>姓名</label>
-                        <input id="F_RealName" name="F_RealName" type="text" class="form-control" disabled />
+                        <input id="Name" name="Name" type="text" class="form-control" disabled />
                     </li>
                     <li>
                         <label>性别</label>
-                        <input id="F_Gender" name="F_Gender" type="text" class="form-control" disabled />
+                        <input id="Gender" name="Gender" type="text" class="form-control" disabled />
                     </li>
                     <li>
                         <label>出生</label>
-                        <input id="F_Birthday" name="F_Birthday" type="text" class="form-control" disabled />
+                        <input id="Birthday" name="Birthday" type="text" class="form-control" disabled />
                     </li>
                     <li>
                         <label>公司</label>
-                        <input id="F_OrganizeId" name="F_OrganizeId" type="text" class="form-control" disabled />
+                        <input id="OrganId" name="OrganId" type="text" class="form-control" disabled />
                     </li>
                     <li>
                         <label>部门</label>
-                        <input id="F_DepartmentId" name="F_DepartmentId" type="text" class="form-control" disabled />
+                        <input id="DepartmentId" name="DepartmentId" type="text" class="form-control" disabled />
                     </li>
                     <li>
                         <label>角色</label>
-                        <input id="F_RoleId" name="F_RoleId" type="text" class="form-control" disabled />
+                        <input id="RoleId" name="RoleId" type="text" class="form-control" disabled />
                     </li>
                     <li>
                         <label>岗位</label>
-                        <input id="F_DutyId" name="F_DutyId" type="text" class="form-control" disabled />
+                        <input id="DutyId" name="DutyId" type="text" class="form-control" disabled />
                     </li>
-                    <li>
+                    @*<li>
                         <label>自我介绍</label>
-                        <textarea id="F_Description" name="F_Description" class="form-control" style="height: 60px;"></textarea>
-                    </li>
+                        <textarea id="Description" name="Description" class="form-control" style="height: 60px;"></textarea>
+                    </li>*@
                     <li class="required">
                         <label>头像</label>
-                        <div id="F_HeadIcon" class="fileUpload required">
+                        <div id="HeadIcon" name="HeadIcon" class="fileUpload required">
                         </div>
                     </li>
                     <li class="line">
@@ -265,16 +267,16 @@
                     </li>
                     <li>
                         <label>手机号码</label>
-                        <input id="F_MobilePhone" name="F_MobilePhone" type="text" class="form-control" />
+                        <input id="MobilePhone" name="MobilePhone" type="text" class="form-control" />
                     </li>
                     <li>
                         <label>电子邮箱</label>
-                        <input id="F_Email" name="F_Email" type="text" class="form-control" />
+                        <input id="Email" name="Email" type="text" class="form-control" />
                     </li>
-                    <li>
+                    @*<li>
                         <label>微信号</label>
-                        <input id="F_WeChat" name="F_WeChat" type="text" class="form-control" />
-                    </li>
+                        <input id="WeChat" name="F_WeChat" type="text" class="form-control" />
+                    </li>*@
                     <li>
                         <div style="padding-left: 115px;">
                             <a class="btn btn-primary" onclick="submitForm()"><i class="fa fa-save" style="margin-right:5px;"></i>确认修改</a>
@@ -289,7 +291,7 @@
                     </li>
                     <li>
                         <label>原密码</label>
-                        <input id="F_UserPassword" name="F_UserPassword" type="text" class="form-control" />
+                        <input id="UserPassword" name="UserPassword" type="text" class="form-control" />
                     </li>
                     <li>
                         <label>新密码</label>
