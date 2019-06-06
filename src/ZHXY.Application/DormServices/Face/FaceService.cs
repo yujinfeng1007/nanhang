@@ -121,8 +121,7 @@ namespace ZHXY.Application
             query = string.IsNullOrEmpty(input.SearchPattern) ? query : query.Where(p => p.Status.Equals(input.SearchPattern));
             query = string.IsNullOrEmpty(input.Keyword) ? query : query.Where(p => p.Applicant.Name.Contains(input.Keyword));
             //query = (input.StartTime != null && input.EndTime !=null) ? query : query.Where(p => p.Applicant.Name.Contains(input.Keyword));
-            query = query.Paging(input);
-            faceListViews = query.Select(p => new FaceListView
+            faceListViews = query.Paging(input).OrderByDescending(p => p.ApproveTime).Select(p => new FaceListView
             {
                 Id = p.Id,
                 ApplierName = p.Applicant.Name,
@@ -130,7 +129,7 @@ namespace ZHXY.Application
                 ApproveImg = p.ApproveImg,
                 ApprovalStatus = p.Status,
                 CreatedTime = p.CreatedTime
-            }).OrderByDescending(p => p.CreatedTime).ToListAsync().Result;
+            }).ToListAsync().Result;
             return faceListViews;
         }
 
@@ -170,7 +169,8 @@ namespace ZHXY.Application
             foreach ( var faceApprover in faceApprovers) {
                 faceApprover.Result = input.IsAgreed ? "1" :"-1" ;  
                 faceApprover.Opinion = input.Opinion;
-            }                        
+            }
+            face.ApproveTime = DateTime.Now;
             face.Status = "1";                        
             SaveChanges();
             //审批同意则更新头像并下发
