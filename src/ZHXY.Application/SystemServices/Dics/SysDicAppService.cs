@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using ZHXY.Common;
 using ZHXY.Domain;
@@ -12,7 +13,7 @@ namespace ZHXY.Application
     /// </summary>
     public class SysDicAppService : AppService
     {
-        public SysDicAppService(IZhxyRepository r) : base(r)
+        public SysDicAppService(DbContext r) : base(r)
         {
         }
 

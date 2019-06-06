@@ -23,22 +23,7 @@ namespace ZHXY.Web
         }
         protected void Application_Error(object sender, EventArgs e)
         {
-            var lastError = Server.GetLastError();
-            if (null != lastError)
-            {
-                Response.StatusCode = 200;
-                if ((lastError.GetBaseException() is NoLoggedInException))
-                {
-                    Response.Write("<script>top.location.pathname = '/Login/Index';</script>");
-                }
-                else
-                {
-                    Response.Write(new {state="error",message=lastError.GetBaseException().Message }.Serialize());
-                }
-                Server.ClearError();
-                Response.End();
-            }
-           
+           // todo
         }
     }
 }

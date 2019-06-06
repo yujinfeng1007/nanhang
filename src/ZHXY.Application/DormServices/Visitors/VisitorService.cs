@@ -4,12 +4,12 @@ using System.Linq;
 using System.Linq.Dynamic;
 using ZHXY.Domain;
 using System;
-using ZHXY.Common.IsNumeric;
 using System.Data.Entity;
 using ZHXY.Dorm.Device.tools;
 using ZHXY.Dorm.Device.DH;
 using EntityFramework.Extensions;
 using Newtonsoft.Json.Linq;
+using System.Text;
 
 namespace ZHXY.Application
 {
@@ -18,14 +18,14 @@ namespace ZHXY.Application
     /// </summary>
     public class VisitorService :  AppService
     {
-        public VisitorService(IZhxyRepository r) : base(r)
+        public VisitorService(DbContext r) : base(r)
         {
         }
 
         public object GetList(Pagination pagination, string F_Building, int Time_Type, string startTime, string endTime)
         {
-            DateTime StartTime = Convert.ToDateTime(startTime);
-            DateTime EndTime = Convert.ToDateTime(endTime);
+            var StartTime = Convert.ToDateTime(startTime);
+            var EndTime = Convert.ToDateTime(endTime);
             return Read<VisitorApply>(p => p.VisitStartTime > StartTime && p.VisitStartTime < EndTime)
                 .Paging(pagination).Join(Read<Student>(), p => p.ApplicantId, s => s.Id, (apply, stu) => new
             {
@@ -53,7 +53,7 @@ namespace ZHXY.Application
 
         public object GetBuilding(string KeyWords)
         {           
-            var query = R.Db.Set<Building>();
+            var query = R.Set<Building>();
             if(null != KeyWords && KeyWords.Length > 0)
             {
                 query.Where(p => p.BuildingNo.Contains(KeyWords));
@@ -70,7 +70,7 @@ namespace ZHXY.Application
             var query = Read<DormVisitLimit>().Join(Read<Student>(),a=>a.StudentId,b=>b.Id,(a, b)=>new{a,b});
             if (KeyWords != null && KeyWords.Length != 0)
             {
-                query = IsNumeric.isNumeric(KeyWords) ? query.Where(p => p.b.StudentNumber.Equals(KeyWords)) : query.Where(p => p.b.Name.Contains(KeyWords));
+                query = IsNumeric(KeyWords) ? query.Where(p => p.b.StudentNumber.Equals(KeyWords)) : query.Where(p => p.b.Name.Contains(KeyWords));
             }
             var result = query.Select(p => new { id = p.b.Id, text = p.b.Name, limit = p.a.UsableLimit, ImgUri = p.b.FacePic }).OrderBy(p => p.id).Take(20).ToList();
 
@@ -90,7 +90,7 @@ namespace ZHXY.Application
         public dynamic GetVisitorApprovalList(VisitorApprovalListDto input)
         {
             IQueryable<VisitorApply> query = null;
-            List<VisitorListView> visitorListViews = new List<VisitorListView>();
+            var visitorListViews = new List<VisitorListView>();
             //判断登陆用户是学生，还是宿管   若是学生获取所有提交的申请，若是老师则查看所有审批的申请
             var dutyId = Read<User>(p => p.Id.Equals(input.CurrentUserId)).Select(p => p.DutyId).FirstOrDefaultAsync().Result;
             if (dutyId.Equals("teacherDuty") || dutyId.Equals("suguanDuty"))
@@ -197,7 +197,7 @@ namespace ZHXY.Application
             // 闸机Id列表
             var zjids = Read<Relevance>(p => p.SecondKey == buildingId && p.Name == Relation.GateBuilding).Select(p => p.FirstKey).ToList();
             var channelIds= Read<Gate>(t=>zjids.Contains(t.Id)).Select(p=>p.DeviceNumber).ToArray();
-            SurveyMoudle survey = new SurveyMoudle();
+            var survey = new SurveyMoudle();
             survey.channelId = channelIds.Select(p => p + "$7$0$0").ToArray();
             survey.code = studentNum;
             survey.name = name;
@@ -223,18 +223,15 @@ namespace ZHXY.Application
         /// <returns></returns>
         public object GetDetail(string id) => Get<VisitorApply>(id);
 
-
-
-
         public void CheckVisitor(string UserId, int CheckType, string VisitLogId)
         {
-            string updateSql = "update visit set f_memo = 1 from [dbo].[Dorm_VisitLog] visit where visit.F_Id = '"+ VisitLogId + "'";
-            R.Db.Database.ExecuteSqlCommand(updateSql);
+            var updateSql = "update visit set f_memo = 1 from [dbo].[Dorm_VisitLog] visit where visit.F_Id = '"+ VisitLogId + "'";
+            R.Database.ExecuteSqlCommand(updateSql);
         }
 
         public object SearchStudentLimit(string StudentId)
         {
-            return R.Db.Set<DormVisitLimit>().Where(p => p.StudentId == StudentId).Select(p => new { id = StudentId, text = p.UsableLimit}).FirstOrDefault();
+            return R.Set<DormVisitLimit>().Where(p => p.StudentId == StudentId).Select(p => new { id = StudentId, text = p.UsableLimit}).FirstOrDefault();
         }
 
         /// <summary>
@@ -255,9 +252,9 @@ namespace ZHXY.Application
         public void ApprovalList(string[] ids, int pass, string img)
         {
             var ApplyIds = Query<VisitorApprove>(p => ids.Contains(p.Id)).Select(p => p.VisitId).ToList();
-            var VisitList = Read<VisitorApply>(p => ApplyIds.Contains(p.Id)).Update(s => new VisitorApply {
-                Status = pass.ToString(),
-                ApprovedTime = DateTime.Now
+            Query<VisitorApply>(p => ApplyIds.Contains(p.Id)).ToList().ForEach(s =>  {
+                s.Status = pass.ToString();
+                s.ApprovedTime = DateTime.Now;
             });
             //审批通过之后，把当前学生的访问额度 -1
             if(pass == 1)
@@ -273,9 +270,9 @@ namespace ZHXY.Application
                     VisitStartTime = visit.VisitStartTime,
                 }).ToList();
                 var ListStuId = Query<VisitorApprove>(p => ids.Contains(p.Id)).Join(Query<VisitorApply>(), p => p.VisitId, s => s.Id, (app, visit) => app.ApproverId).ToList();
-                Query<DormVisitLimit>().Where(p => ListStuId.Contains(p.StudentId)).Update(p => new DormVisitLimit
+                Query<DormVisitLimit>().Where(p => ListStuId.Contains(p.StudentId)).ToList().ForEach(p => 
                 {
-                    UsableLimit = p.UsableLimit-1
+                    p.UsableLimit -= 1;
                 });
                 foreach(var visitor in listLimit)
                 {
@@ -283,13 +280,14 @@ namespace ZHXY.Application
                     PushVisitor("", Convert.ToInt32(visitor.VisitorGender), visitor.ImgUri, visitor.VisitorName, visitor.VisitorIDCard, visitor.BuildingId, visitor.VisitEndTime);
                 }
             }
-            string UserId = Operator.GetCurrent().Id;
-            Query<VisitorApprove>(p => ids.Contains(p.Id)).Update(s => new VisitorApprove
+            var UserId = Operator.GetCurrent().Id;
+            Query<VisitorApprove>(p => ids.Contains(p.Id)).ToList().ForEach(s => 
             {
-                ApproverId = UserId,
-                ApproveResult = pass.ToString(),
-                Opinion = pass == 1 ? "通过" : "不通过"
+                s.ApproverId = UserId;
+                s.ApproveResult = pass.ToString();
+                s.Opinion = pass == 1 ? "通过" : "不通过";
             });
+            SaveChanges();
         }
 
         /// <summary>
@@ -330,7 +328,7 @@ namespace ZHXY.Application
             if (null == Approvers) throw new Exception("请先绑定宿管!");
             if (visit.VisitType.Equals("0"))
             {
-                Student stu = Read<Student>(p => p.Id.Equals(input.VisitorId)).FirstOrDefault();
+                var stu = Read<Student>(p => p.Id.Equals(input.VisitorId)).FirstOrDefault();
                 visit.Status = "1";
                 visit.VisitorIDCard = stu.CredNumber;
                 visit.VisitorGender = stu.Gender;
@@ -342,7 +340,7 @@ namespace ZHXY.Application
                     ApproveResult = "1"
                 });
                 //人员在大华的ID
-                string code = Read<Student>(p => p.Id.Equals(input.VisitorId)).Select(p => p.StudentNumber).FirstOrDefault();
+                var code = Read<Student>(p => p.Id.Equals(input.VisitorId)).Select(p => p.StudentNumber).FirstOrDefault();
                 var dhUserstr = DHAccount.SELECT_DH_PERSON(new PersonMoudle() { code = code });
                 var ResultList = (List<object>)dhUserstr.ToString().Parse2JObject()["data"]["list"].ToObject(typeof(List<object>));
                 visit.DhId = ResultList.First().ToString().Parse2JObject().Value<int>("id").ToString();
@@ -379,7 +377,7 @@ namespace ZHXY.Application
             // 闸机Id列表
             var zjids = Read<Relevance>(p => p.SecondKey == buildingId && p.Name == Relation.GateBuilding).Select(p => p.FirstKey).ToList();
             var channelIds = Read<Gate>(t => zjids.Contains(t.Id)).Select(p => p.DeviceNumber).ToArray();
-            SurveyMoudle survey = new SurveyMoudle();
+            var survey = new SurveyMoudle();
             survey.channelId = channelIds.Select(p => p + "$7$0$0").ToArray();
             survey.initialTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             survey.expireTime = endTime.ToString("yyyy-MM-dd HH:mm:ss");
@@ -389,7 +387,7 @@ namespace ZHXY.Application
 
         public object NotCheckApply(Pagination pagination)
         {
-            string UserId = Operator.GetCurrent().Id;
+            var UserId = Operator.GetCurrent().Id;
             return 
                 Read<VisitorApprove>(p => p.ApproveResult.Equals("0") && p.ApproverId.Contains(UserId)).Paging(pagination)
                 .Join(Read<VisitorApply>(p => p.Status.Equals("0")), p => p.VisitId, s=>s.Id, (approve, apply) => new {
@@ -426,7 +424,7 @@ namespace ZHXY.Application
         ////////////////////////////////                 宿管相关                 //////////////////////////////////////
         public object GetDorm()
         {
-            string SuperId = Operator.GetCurrent().Id;
+            var SuperId = Operator.GetCurrent().Id;
             var BuildingIds = Read<Relevance>(p => p.SecondKey.Equals(SuperId) && p.Name.Equals("Building_User")).Select(p => p.FirstKey).ToList();
             return Read<Building>(p => BuildingIds.Contains(p.Id)).Select(p => new {
                 id = p.Id,
@@ -446,11 +444,30 @@ namespace ZHXY.Application
         
             var OutCount = Total.Count(p => string.IsNullOrEmpty(p.InOut) || p.InOut.Equals("1"));
             var InCount = Total.Count(p => !string.IsNullOrEmpty(p.InOut) && p.InOut.Equals("0"));
-            Dictionary<string, int> ResultDic = new Dictionary<string, int>();
+            var ResultDic = new Dictionary<string, int>();
             ResultDic.Add("TotalCount", Total.Count());
             ResultDic.Add("OutCount", OutCount);
             ResultDic.Add("InCount", InCount);
             return ResultDic.ToJson();
+        }
+
+
+
+        public static bool IsNumeric(string str)
+        {
+            if (str == null || str.Length == 0)
+                return false;
+            var ascii = new ASCIIEncoding();
+            var bytestr = ascii.GetBytes(str);
+
+            foreach (var c in bytestr)
+            {
+                if (c < 48 || c > 57)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

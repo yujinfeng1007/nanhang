@@ -19,7 +19,7 @@ namespace TaskApi
         {
             using (var db = new UnitWork().BeginTrans())
             {
-                string gw = data.post_Description;
+                var gw = data.post_Description;
                 if (data.isHeadmaster == "1")
                 {
                     gw = "班主任";
@@ -29,16 +29,16 @@ namespace TaskApi
                     gw = "副班主任";
                 }
                 var userType = data.UserType;
-                string num = data.user_Num;
-                string loginId = data.LoginId;
-                string mobilePhone = data.MOBILE;
-                string orgId = data.OrgId;
-                string passWord = data.PassWord;
-                string telephone = data.TELEPHONE;
-                string userId = data.UserId;
-                string userName = data.UserName;
-                string userStatus = data.UserStatus;
-                string sex = data.sex;
+                var num = data.user_Num;
+                var loginId = data.LoginId;
+                var mobilePhone = data.MOBILE;
+                var orgId = data.OrgId;
+                var passWord = data.PassWord;
+                var telephone = data.TELEPHONE;
+                var userId = data.UserId;
+                var userName = data.UserName;
+                var userStatus = data.UserStatus;
+                var sex = data.sex;
                 DateTime? inDate = null;
                 DateTime tmpDate;
                 if (DateTime.TryParse(data.join_school_time, out tmpDate))
@@ -65,14 +65,14 @@ namespace TaskApi
             var student = new Student();
             if (catetoryId == "Class")
             {
-                var org = db.FindEntity<Organ>(p => p.Id == entity.OrganId);
+                var org = db.FirstOrDefault<Organ>(p => p.Id == entity.OrganId);
                 student.ClassId = entity.OrganId;
                 student.GradeId = org?.ParentId;
                 student.DivisId = org?.Parent?.ParentId;
             }
             if (catetoryId == "Grade")
             {
-                var org = db.FindEntity<Organ>(p => p.Id == entity.OrganId);
+                var org = db.FirstOrDefault<Organ>(p => p.Id == entity.OrganId);
                 student.GradeId = entity.OrganId;
                 student.DivisId = org?.ParentId;
             }
@@ -89,7 +89,7 @@ namespace TaskApi
             student.MobilePhone = entity.MobilePhone;
             student.OrganId = entity.OrganId;
 
-            var s = db.FindEntity<Student>(p => p.UserId == entity.Id);
+            var s = db.FirstOrDefault<Student>(p => p.UserId == entity.Id);
             if (s != null)
             {
                 db.Update(student);
@@ -109,12 +109,12 @@ namespace TaskApi
             var teacher = new Teacher();
             if (catetoryId == "Class")
             {
-                var org = db.FindEntity<Organ>(p => p.Id == entity.OrganId);
+                var org = db.FirstOrDefault<Organ>(p => p.Id == entity.OrganId);
                 teacher.OrganId = org?.Parent?.ParentId;
             }
             if (catetoryId == "Grade")
             {
-                var org = db.FindEntity<Organ>(p => p.Id == entity.OrganId);
+                var org = db.FirstOrDefault<Organ>(p => p.Id == entity.OrganId);
                 teacher.OrganId = org?.ParentId;
             }
             if (catetoryId == "Division")
@@ -127,7 +127,7 @@ namespace TaskApi
             //teacher.F_PolitStatu = politstatu;
             teacher.CredType = credType;
             teacher.EntryTime = entryTime;
-            var t = db.FindEntity<Teacher>(p => p.UserId == entity.Id);
+            var t = db.FirstOrDefault<Teacher>(p => p.UserId == entity.Id);
             if (t != null)
             {
                 db.Update(teacher);
@@ -155,12 +155,12 @@ namespace TaskApi
             entity.HeadIcon = ico;
             if (catetoryId == "Class")
             {
-                var org = db.FindEntity<Organ>(p => p.Id == orgId);
+                var org = db.FirstOrDefault<Organ>(p => p.Id == orgId);
                 entity.OrganId = org?.Parent?.ParentId;
             }
             if (catetoryId == "Grade")
             {
-                var org = db.FindEntity<Organ>(p => p.Id == orgId);
+                var org = db.FirstOrDefault<Organ>(p => p.Id == orgId);
                 entity.OrganId = org?.ParentId;
             }
             if (catetoryId == "Division")
@@ -184,7 +184,7 @@ namespace TaskApi
             if (isAdmin == "1")
             {
             }
-            var data = db.FindEntity<User>(t => t.Id == userId);
+            var data = db.FirstOrDefault<User>(t => t.Id == userId);
             if (data != null)
             {
                 db.Update(entity);

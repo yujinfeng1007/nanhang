@@ -14,7 +14,7 @@ namespace ZHXY.Application
     /// </summary>
     public partial class LeaveService : AppService, ILeaveService
     {
-        public LeaveService(IZhxyRepository r) : base(r) { }
+        public LeaveService(DbContext r) : base(r) { }
 
         /// <summary>
         /// 请假申请

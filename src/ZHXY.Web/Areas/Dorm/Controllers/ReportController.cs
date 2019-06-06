@@ -177,7 +177,7 @@ namespace ZHXY.Web.Dorm.Controllers
         }
         public FileResult OriginalExport(string studentNum)
         {
-            string stuId = "";
+            var stuId = "";
             if (!string.IsNullOrEmpty(studentNum))
             {
                 stuId = new StudentService().GetIdByStudentNumber(studentNum);

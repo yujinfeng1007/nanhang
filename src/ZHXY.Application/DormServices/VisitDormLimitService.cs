@@ -2,23 +2,16 @@
 using ZHXY.Domain;
 using System;
 using System.Linq;
-using ZHXY.Common;
-using EntityFramework.Extensions;
+using System.Data.Entity;
 
 namespace ZHXY.Application
 {
     public class VisitDormLimitService : AppService
     {
-        public VisitDormLimitService(IZhxyRepository r) : base(r)
+        public VisitDormLimitService(DbContext r) : base(r)
         {
         }
-        public VisitDormLimitService()
-        {
-            R = new ZhxyRepository();
-        }
-
-        private ILog Logger { get; } = LogManager.GetLogger(typeof(VisitDormLimitService));
-
+        public VisitDormLimitService() => R = new ZhxyDbContext();
         public object GetGridJson(Pagination pagination, string F_Building, string F_Floor)
         {
             var DormInfoQuery = Read<DormRoom>();
@@ -62,41 +55,6 @@ namespace ZHXY.Application
                 F_College = organ.Name,
                 F_EnabledMark = 1
             });
-
-            //var CountSql = new StringBuilder("select count(1) "
-            //                                            +" from Dorm_Visit_Limit limit "
-            //                                            +" left join Dorm_DormStudent dormStudent on limit.Student_Id=dormStudent.F_Student_ID "
-            //                                            +" left join Dorm_Dorm dorm on dormStudent.F_DormID = dorm.F_ID " 
-            //                                            +" left join School_Students student on student.F_Id = dormStudent.F_Student_ID "
-            //                                            +" left join Sys_Organize organ on organ.F_Id = student.F_Grade_ID "
-            //                                            +" where limit.F_EnabledMark=1 ");
-            //if (null != F_Building && !"".Equals(F_Building))
-            //{
-            //    CountSql.Append(" and dorm.F_Building_No='" + F_Building + "' ");
-            //}
-            //if (null != F_Floor && !"".Equals(F_Floor))
-            //{
-            //    CountSql.Append(" and dorm.F_Floor_No='" + F_Floor + "' ");
-            //}
-            //pagination.Records = R.Db.Database.SqlQuery<int>(CountSql.ToString()).First();
-            //if (pagination.Page * pagination.Rows > pagination.Records)
-            //{
-            //    pagination.Rows = pagination.Records % pagination.Rows;
-            //}
-
-            //var DataSql = new StringBuilder("select top "+ pagination.Rows + " * from (select top "+ pagination.Page * pagination.Rows + " dorm.F_Building_No as F_Build, dormStudent.F_Memo F_Dorm_Num,student.F_Name F_Student_Name, organ.F_FullName F_College ,"
-            //                                        +" limit.TotalLimit Total_Limit, limit.UsableLimit Usable_Limit, limit.F_EnabledMark F_EnabledMark"
-            //                                        +" from Dorm_Visit_Limit limit"
-            //                                        +" left"
-            //                                        +" join Dorm_DormStudent dormStudent on limit.Student_Id = dormStudent.F_Student_ID"
-            //                                        + " left"
-            //                                        + " join Dorm_Dorm dorm on dormStudent.F_DormID = dorm.F_ID"
-            //                                        + " left"
-            //                                        + " join School_Students student on student.F_Id = dormStudent.F_Student_ID"
-            //                                        + " left"
-            //                                        + " join Sys_Organize organ on organ.F_Id = student.F_Grade_ID"
-            //                                        + " where limit.F_EnabledMark = 1 ORDER BY F_Dorm_Num desc) as a ORDER BY a.F_Dorm_Num ASC");
-            //return R.Db.Database.SqlQuery<DormVisitLimitMoudle>(DataSql.ToString()).ToList();
         }
 
         public object GetFloor(string BuildName)
@@ -209,75 +167,14 @@ namespace ZHXY.Application
             }));
 
             ///修改
-            Query<DormVisitLimit>().Where(p => UpdateIds.Contains(p.StudentId)).Update(o => new DormVisitLimit
+            Query<DormVisitLimit>().Where(p => UpdateIds.Contains(p.StudentId)).ToList().ForEach(item =>
             {
-                TotalLimit = TimesOfWeek,
-                UsableLimit = TimesOfWeek,
-                IsAutoSet = AutoSet,
-                UpdateTime = DateTimeNow
+                item.TotalLimit = TimesOfWeek;
+                item.UsableLimit = TimesOfWeek;
+                item.IsAutoSet = AutoSet;
+                item.UpdateTime = DateTimeNow;
             });
             SaveChanges();
-
-            //int ProcessRows = 999; //每次处理的数据长度
-            /////添加
-            //if (null != InsertIds && InsertIds.Count() != 0)
-            //{
-            //    if (InsertIds.Count() >= ProcessRows)
-            //    {
-            //        int Page = InsertIds.Count() / ProcessRows;
-            //        var SqlText = new StringBuilder("INSERT INTO [dbo].[Dorm_Visit_Limit]([F_Id], [Student_Id], [TotalLimit], [UsableLimit], [IsAutoSet], [CreateTime], [UpdaetTime], [F_EnabledMark]) VALUES ");
-
-            //        for (int i = 1; i <= Page + 1; i++)
-            //        {
-            //            var processList = InsertIds.Skip((i - 1) * ProcessRows).Take(ProcessRows).ToList();
-            //            foreach (string id in processList)
-            //            {
-            //                SqlText.Append("('" + Guid.NewGuid().ToString() + "', '" + id + "', " + TimesOfWeek + ", " + TimesOfWeek + ", " + AutoSet + ", '" + DateTimeNow.ToString() + "', '" + DateTimeNow.ToString() + "', '" + true + "'),");
-            //            }
-            //            R.Db.Database.ExecuteSqlCommand(SqlText.ToString().Substring(0, SqlText.Length - 1));
-            //            SqlText = new StringBuilder("INSERT INTO [dbo].[Dorm_Visit_Limit]([F_Id], [Student_Id], [TotalLimit], [UsableLimit], [IsAutoSet], [CreateTime], [UpdaetTime], [F_EnabledMark]) VALUES ");
-            //        }
-            //    }
-            //    else
-            //    {
-            //        var SqlText = new StringBuilder("INSERT INTO [dbo].[Dorm_Visit_Limit]([F_Id], [Student_Id], [TotalLimit], [UsableLimit], [IsAutoSet], [CreateTime], [UpdaetTime], [F_EnabledMark]) VALUES ");
-            //        foreach (string id in InsertIds)
-            //        {
-            //            SqlText.Append("('" + Guid.NewGuid().ToString() + "', '" + id + "', " + TimesOfWeek + ", " + TimesOfWeek + ", " + AutoSet + ", '" + DateTimeNow.ToString() + "', '" + DateTimeNow.ToString() + "', '" + true + "'),");
-            //        }
-            //        R.Db.Database.ExecuteSqlCommand(SqlText.ToString().Substring(0, SqlText.Length - 1));
-            //    }
-
-            //}
-
-            /////修改
-            //if (null != UpdateIds && UpdateIds.Count() != 0)
-            //{
-            //    if (UpdateIds.Count() >= ProcessRows)
-            //    {
-            //        int Page = InsertIds.Count() / ProcessRows;
-            //        var UpdateSql = new StringBuilder("UPDATE [dbo].[Dorm_Visit_Limit] SET [TotalLimit] = " + TimesOfWeek + ", [UsableLimit] = " + TimesOfWeek + ", [IsAutoSet] = " + AutoSet + ", [UpdaetTime] = '" + DateTimeNow + "' WHERE [Student_Id] in (");
-            //        for (int i = 1; i <= Page + 1; i++)
-            //        {
-            //            var processList = UpdateIds.Skip((i - 1) * ProcessRows).Take(ProcessRows).ToList();
-            //            foreach (string id in processList)
-            //            {
-            //                UpdateSql.Append("'" + id + "',");
-            //            }
-            //            R.Db.Database.ExecuteSqlCommand(UpdateSql.ToString().Substring(0, UpdateSql.Length - 1) + ")");
-            //            UpdateSql = new StringBuilder("UPDATE [dbo].[Dorm_Visit_Limit] SET [TotalLimit] = " + TimesOfWeek + ", [UsableLimit] = " + TimesOfWeek + ", [IsAutoSet] = " + AutoSet + ", [UpdaetTime] = '" + DateTimeNow + "' WHERE [Student_Id] in (");
-            //        }
-            //    }
-            //    else
-            //    {
-            //        var UpdateSql = new StringBuilder("UPDATE [dbo].[Dorm_Visit_Limit] SET [TotalLimit] = " + TimesOfWeek + ", [UsableLimit] = " + TimesOfWeek + ", [IsAutoSet] = " + AutoSet + ", [UpdaetTime] = '" + DateTimeNow + "' WHERE [Student_Id] in (");
-            //        foreach (string id in UpdateIds)
-            //        {
-            //            UpdateSql.Append("'" + id + "',");
-            //        }
-            //        R.Db.Database.ExecuteSqlCommand(UpdateSql.ToString().Substring(0, UpdateSql.Length - 1) + ")");
-            //    }
-            //}
         }
 
         private class DormVisitLimitMoudle

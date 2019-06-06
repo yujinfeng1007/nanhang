@@ -11,7 +11,7 @@ namespace ZHXY.Application
     /// </summary>
     public class DormRoomAppService : AppService
     {
-        public DormRoomAppService(IZhxyRepository r) : base(r)
+        public DormRoomAppService(DbContext r) : base(r)
         {
         }
 

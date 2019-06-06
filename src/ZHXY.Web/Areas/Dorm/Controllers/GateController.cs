@@ -59,7 +59,7 @@ namespace ZHXY.Web.Dorm.Controllers
             var entity = new AddGateDto();
             if (data == null || data["data"].ToString() == "[]")  return Result.Success();
             var datas = (List<object>)data["data"].ToObject(typeof(List<object>));
-            for (int i = 0; i < datas.Count; i++)
+            for (var i = 0; i < datas.Count; i++)
             {
                 entity.DeviceNumber = data["data"][i]["id"]?.ToString();
                 entity.Name = data["data"][i]["name"]?.ToString();

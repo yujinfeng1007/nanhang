@@ -14,7 +14,7 @@ namespace ZHXY.Application
     /// </summary>
     public class SysDicItemAppService : AppService
     {
-        public SysDicItemAppService(IZhxyRepository r) : base(r)
+        public SysDicItemAppService(DbContext r) : base(r)
         {
         }
 

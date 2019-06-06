@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 using ZHXY.Common;
@@ -8,7 +9,7 @@ namespace ZHXY.Application
 {
     public class SysRoleAuthorizeAppService : AppService
     {
-        public SysRoleAuthorizeAppService(IZhxyRepository r) : base(r)
+        public SysRoleAuthorizeAppService(DbContext r) : base(r)
         {
         }
 

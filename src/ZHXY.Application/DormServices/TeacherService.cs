@@ -12,7 +12,7 @@ namespace ZHXY.Application
     /// </summary>
     public class TeacherService : AppService
     {
-        public TeacherService(IZhxyRepository r):base(r)
+        public TeacherService(DbContext r):base(r)
         {
         }
         public dynamic GetByJobNumber(string num)

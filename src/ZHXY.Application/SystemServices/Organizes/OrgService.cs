@@ -14,8 +14,8 @@ namespace ZHXY.Application
     /// </summary>
     public class OrgService : AppService
     {
-        public OrgService() => R = new ZhxyRepository();
-        public OrgService(IZhxyRepository r) => R = r;
+        public OrgService() => R = new ZhxyDbContext();
+        public OrgService(DbContext r) => R = r;
         public List<Organ> GetList()
         {
             return Read<Organ>().ToListAsync().Result;

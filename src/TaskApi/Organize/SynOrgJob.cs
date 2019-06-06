@@ -239,7 +239,7 @@ namespace TaskApi
                     return false;
                 }
                 var userService = new SynUserService(schoolCode);
-                string userNum = string.IsNullOrEmpty(data.user_Num) ? data.UserId : data.user_Num;
+                var userNum = string.IsNullOrEmpty(data.user_Num) ? data.UserId : data.user_Num;
                 userService.UpdOrAdd(data, GetOrgCateGoryId(data.Level));
             }
             catch (Exception e)

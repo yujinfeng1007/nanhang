@@ -31,7 +31,6 @@ namespace ZHXY.Web.Controllers
         [HttpGet]
         public virtual ActionResult Index2()
         {
-            Licence.IsLicence();
             if (Operator.GetCurrent().IsEmpty())
             {
                 return View("index");
@@ -42,8 +41,6 @@ namespace ZHXY.Web.Controllers
         [HttpGet]
         public virtual ActionResult Index(string role = null)
         {
-            Licence.IsLicence();
-
             if (Operator.GetCurrent().IsEmpty())
             {
                 return View();

@@ -20,11 +20,11 @@ namespace ZHXY.Application
         /// <summary>
         /// 子类需要使用该仓储对象需要自行初始化
         /// </summary>
-        protected IRepоsitory R { get; set; }
+        protected DbContext R { get; set; }
 
         #endregion 属性
 
-        public AppService(IZhxyRepository r) => R = r;
+        public AppService(DbContext r) => R = r;
         public AppService() { }
 
         public void AddRange<T>(IEnumerable<T> entityList) where T : class, IEntity => R.AddRange(entityList);
@@ -106,7 +106,7 @@ namespace ZHXY.Application
             var conn = new SqlConnection();
             try
             {
-                conn = (SqlConnection)R.Db.Database.Connection;
+                conn = (SqlConnection)R.Database.Connection;
                 var cmd = new SqlCommand
                 {
                     Connection = conn,

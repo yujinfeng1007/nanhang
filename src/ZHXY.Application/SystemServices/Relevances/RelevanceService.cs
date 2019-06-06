@@ -1,10 +1,11 @@
-﻿using ZHXY.Domain;
+﻿using System.Data.Entity;
+using ZHXY.Domain;
 
 namespace ZHXY.Application
 {
     public class RelevanceService : AppService
     {
-        public RelevanceService(IZhxyRepository r) : base(r) { }
+        public RelevanceService(DbContext r) : base(r) { }
 
         ///// <summary>
         ///// 获取用户角色

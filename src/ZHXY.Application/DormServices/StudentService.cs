@@ -12,13 +12,13 @@ namespace ZHXY.Application
     /// </summary>
     public class StudentService : AppService
     {
-        public StudentService(IZhxyRepository r) : base(r)
+        public StudentService(DbContext r) : base(r)
         {
         }
 
         public StudentService()
         {
-            R = new ZhxyRepository();
+            R = new ZhxyDbContext();
         }   
         public dynamic GetByStudentNumber(string num)
         {

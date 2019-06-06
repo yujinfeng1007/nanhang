@@ -19,7 +19,7 @@ namespace TaskApi.Job
         private ILog Logger { get; } = LogManager.GetLogger(typeof(NanHangJob));
         public void Execute(IJobExecutionContext context)
         {
-            ZhxyDbContext db = new ZhxyDbContext();
+            var db = new ZhxyDbContext();
             Console.WriteLine("************************************        开始同步南航师生信息       ************************************");
             ProcessOrgInfo(db); //同步教师组织机构信息
             ProcessOrgInfoStu(db); //同步学生组织机构信息
@@ -181,11 +181,11 @@ namespace TaskApi.Job
         public void ProcessSysOrgan(ZhxyDbContext db)
         {
             //修改学生年级的 F_CategoryId 为 "Division"
-            string UpdateDivSql = "UPDATE organ2 set organ2.category_id='Division' from [dbo].[zhxy_organ] organ1  left join zhxy_organ organ2 on organ2.p_id=organ1.id where organ1.p_id='2'";
+            var UpdateDivSql = "UPDATE organ2 set organ2.category_id='Division' from [dbo].[zhxy_organ] organ1  left join zhxy_organ organ2 on organ2.p_id=organ1.id where organ1.p_id='2'";
             //修改学生的学部（）
-            string UpdateGradeSql = "UPDATE organ3 set organ3.category_id='Grade' from[dbo].[zhxy_organ] organ1 left join zhxy_organ organ2 on organ2.p_id = organ1.id left join zhxy_organ organ3 on organ3.p_id = organ2.id where organ1.p_id = '2'";
+            var UpdateGradeSql = "UPDATE organ3 set organ3.category_id='Grade' from[dbo].[zhxy_organ] organ1 left join zhxy_organ organ2 on organ2.p_id = organ1.id left join zhxy_organ organ3 on organ3.p_id = organ2.id where organ1.p_id = '2'";
             //修改学生的班级
-            string UpdateClassSql = "UPDATE organ4 set organ4.category_id='Class' from[dbo].[zhxy_organ] organ1 left join zhxy_organ organ2 on organ2.p_id = organ1.id left join zhxy_organ organ3 on organ3.p_id = organ2.id left join zhxy_organ organ4 on organ4.p_id = organ3.id where organ1.p_id = '2'";
+            var UpdateClassSql = "UPDATE organ4 set organ4.category_id='Class' from[dbo].[zhxy_organ] organ1 left join zhxy_organ organ2 on organ2.p_id = organ1.id left join zhxy_organ organ3 on organ3.p_id = organ2.id left join zhxy_organ organ4 on organ4.p_id = organ3.id where organ1.p_id = '2'";
 
             db.Database.ExecuteSqlCommand(UpdateDivSql);
             db.Database.ExecuteSqlCommand(UpdateGradeSql);
@@ -344,7 +344,7 @@ namespace TaskApi.Job
             {
                 foreach(var s in AddData)
                 {
-                    SysUserRole r = new SysUserRole();
+                    var r = new SysUserRole();
                     r.F_User = s;
                     r.F_Role = "teacher";
                     ListData.Add(r);
@@ -392,7 +392,7 @@ namespace TaskApi.Job
             var insertList = new List<Student>();
             var SqlUpdateList = oldDb.Set<Student>().ToList();
             var ProUpdateList = DataList.Where(p => Ids.Contains(p.Id)).ToList();
-            int i = 0;
+            var i = 0;
             foreach (var student in SqlUpdateList)
             {
                 i++;
@@ -586,7 +586,7 @@ namespace TaskApi.Job
                 var add = new List<Building>();
                 foreach(var s in AddBuild)
                 {
-                    Building b = new Building();
+                    var b = new Building();
                     b.BuildingNo = s;
                     add.Add(b);
                 }
@@ -600,14 +600,14 @@ namespace TaskApi.Job
             var AddRoomInfo = NewRoomTitle.Except(RoomTitle).ToList();
             if(AddRoomInfo != null && AddRoomInfo.Count() > 0)
             {
-                List<DormRoom> AddDorm = new List<DormRoom>();
+                var AddDorm = new List<DormRoom>();
                 foreach(var title in AddRoomInfo)
                 {
-                    string[] BuildNo = title.Split('栋');
+                    var BuildNo = title.Split('栋');
                     if(BuildNo != null && BuildNo.Count() == 2)
                     {
-                        DormRoom d = new DormRoom();
-                        string build = BuildNo[0];
+                        var d = new DormRoom();
+                        var build = BuildNo[0];
                         d.BuildingId = db.Set<Building>().AsNoTracking().Where(p => p.BuildingNo.Equals(build)).Select(s => s.Id).FirstOrDefault();
                         d.FloorNumber = BuildNo[1].Replace(BuildNo[1].Substring(1), "");
                         d.RoomNumber = BuildNo[1];
@@ -623,7 +623,7 @@ namespace TaskApi.Job
             var ListDataNew = new List<DormStudentMoudle>();
             foreach(var n in newData)
             {
-                DormStudentMoudle D = new DormStudentMoudle();
+                var D = new DormStudentMoudle();
                 D.DormId = db.Set<DormRoom>().AsNoTracking().Where(p => p.Title.Equals(n.Description)).Select(p => p.Id).FirstOrDefault();
                 D.StudentId = n.StudentId;
                 D.Gender = n.Gender;
@@ -671,7 +671,7 @@ namespace TaskApi.Job
             {
                 foreach (var s in AddData)
                 {
-                    SysUserRole r = new SysUserRole();
+                    var r = new SysUserRole();
                     r.F_User = s;
                     r.F_Role = "student";
                     ListData.Add(r);
@@ -683,7 +683,7 @@ namespace TaskApi.Job
 
         public static PersonMoudle contactMoudleStudent(ZhxyDbContext oldDb, string id)
         {
-            string sql = "SELECT NULL\n" +
+            var sql = "SELECT NULL\n" +
                 "\taccessCardsn,\n" +
                 "\ta.F_StudentNum code,\n" +
                 "\ta.F_Class_ID colleageClass,\n" +
@@ -731,7 +731,7 @@ namespace TaskApi.Job
 
         public static PersonMoudle contackMoudleTeacher(ZhxyDbContext oldDb, string id)
         {
-            string sql = "SELECT \n" +
+            var sql = "SELECT \n" +
                 "       NULL accessCardsn,\n" +
                 "        a.F_Num code,\n" +
                 "        NULL colleageClass,\n" +
@@ -793,8 +793,8 @@ namespace TaskApi.Job
             foreach (var d in stuList)
             {
                 //string filepath = System.AppDomain.CurrentDomain.BaseDirectory;
-                string fileName = "E:\\img\\" + d.studentNo + ".png";
-                bool t = GetImageBase64Str.DownLoadPic(d.ImgUri, fileName);
+                var fileName = "E:\\img\\" + d.studentNo + ".png";
+                var t = GetImageBase64Str.DownLoadPic(d.ImgUri, fileName);
                 if (t)
                 {
                     var dr = dt.NewRow();

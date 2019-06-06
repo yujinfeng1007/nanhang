@@ -64,7 +64,7 @@ namespace TaskApi.DH
             }
             catch 
             {
-                string msg = string.Format("{0}:{1}发生异常!{2}", "cache", "存储", key);
+                var msg = string.Format("{0}:{1}发生异常!{2}", "cache", "存储", key);
             }
 
         }
@@ -102,7 +102,7 @@ namespace TaskApi.DH
             }
             catch 
             {
-                string msg = string.Format("{0}:{1}发生异常!{2}", "cache", "存储", key);
+                var msg = string.Format("{0}:{1}发生异常!{2}", "cache", "存储", key);
             }
 
         }
@@ -130,7 +130,7 @@ namespace TaskApi.DH
             }
             catch 
             {
-                string msg = string.Format("{0}:{1}发生异常!{2}", "cache", "获取", key);
+                var msg = string.Format("{0}:{1}发生异常!{2}", "cache", "获取", key);
             }
             return obj;
         }
@@ -153,7 +153,7 @@ namespace TaskApi.DH
             }
             catch
             {
-                string msg = string.Format("{0}:{1}发生异常!{2}", "cache", "删除", key);
+                var msg = string.Format("{0}:{1}发生异常!{2}", "cache", "删除", key);
             }
 
         }
@@ -176,7 +176,7 @@ namespace TaskApi.DH
             }
             catch 
             {
-                string msg = string.Format("{0}:{1}发生异常!{2}", "cache", "是否存在", key);
+                var msg = string.Format("{0}:{1}发生异常!{2}", "cache", "是否存在", key);
             }
 
             return false;
@@ -218,7 +218,7 @@ namespace TaskApi.DH
             }
             catch 
             {
-                string msg = string.Format("{0}:{1}发生异常!{2}", "cache", "获取", keys.Aggregate((a, b) => a + "," + b));
+                var msg = string.Format("{0}:{1}发生异常!{2}", "cache", "获取", keys.Aggregate((a, b) => a + "," + b));
             }
             return null;
         }

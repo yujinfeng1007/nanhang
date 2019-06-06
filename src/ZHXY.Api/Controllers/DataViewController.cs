@@ -13,8 +13,8 @@ namespace ZHXY.Api.Controllers
     /// </summary>
     public class DataViewController : BaseApiController
     {
-        private RelevanceService rApp = new RelevanceService(new ZhxyRepository());
-        private DeviceService app = new DeviceService(new ZhxyRepository());
+        private RelevanceService rApp = new RelevanceService(new ZhxyDbContext());
+        private DeviceService app = new DeviceService(new ZhxyDbContext());
         //private DormBuildingService app = new DormBuildingService(new ZhxyRepository());
 
         /// <summary>

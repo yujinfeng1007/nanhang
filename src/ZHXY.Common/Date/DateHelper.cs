@@ -200,7 +200,7 @@ namespace ZHXY.Common
             if (hh > 24) throw new Exception(error);
             if (mm > 59) throw new Exception(error);
             if (ss > 59) throw new Exception(error);
-            string cronExpression = ss + " " + mm + " " + hh + " ? * *";
+            var cronExpression = ss + " " + mm + " " + hh + " ? * *";
             return cronExpression;
         }
         #endregion
@@ -324,14 +324,14 @@ namespace ZHXY.Common
             if (string.IsNullOrEmpty(timespan)) { return DateTime.Now; }
             if (timespan.Length < 13)
             {
-                for (int i = 0; i < 13 - length; i++)
+                for (var i = 0; i < 13 - length; i++)
                 {
                     timespan = timespan + "0";
                 }
             }
             try
             {
-                long lTime = long.Parse(timespan) * 10000L;
+                var lTime = long.Parse(timespan) * 10000L;
                 var toNow = new TimeSpan(lTime);
                 return StartDateTime.Add(toNow);
             }

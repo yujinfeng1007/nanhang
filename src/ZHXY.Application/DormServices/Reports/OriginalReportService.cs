@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using ZHXY.Common;
+using System.Data.Entity;
 
 namespace ZHXY.Application
 {
@@ -14,7 +15,7 @@ namespace ZHXY.Application
     /// </summary>
     public class OriginalReportService : AppService
     {
-        public OriginalReportService(IZhxyRepository r) : base(r) { }
+        public OriginalReportService(DbContext r) : base(r) { }
 
 
 
@@ -29,8 +30,8 @@ namespace ZHXY.Application
         public List<OriginalReport> GetMonthOriginalList(Pagination pagination, string studentNum,string startTime,string endTime)
         {
             var now = DateTime.Now;
-            string tablePart = now.ToString("yyyyMM");
-            string sql = "select * from dhflow_" + tablePart;
+            var tablePart = now.ToString("yyyyMM");
+            var sql = "select * from dhflow_" + tablePart;
             var data = GetDataTable(sql, new DbParameter[] { });
             var list = data.TableToList<OriginalReport>();
             if (!string.IsNullOrEmpty(studentNum))
@@ -94,7 +95,7 @@ namespace ZHXY.Application
             else 
             {
                 var now = DateTime.Now;
-                string tablePart = now.ToString("yyyyMM");
+                var tablePart = now.ToString("yyyyMM");
                 var sb = new StringBuilder();
                 sb.Append(" select top "+pagination.Rows+" *");
                 sb.Append(" from(select row_number()");
@@ -172,7 +173,7 @@ namespace ZHXY.Application
         }
         public string CreateSql(string stuId, ref IDictionary<string, string> parms)
         {
-            string tablePart = DateTime.Now.ToString("yyyyMM");
+            var tablePart = DateTime.Now.ToString("yyyyMM");
             var sb = new StringBuilder();
             sb.Append("select * from dhflow_");
             sb.Append(tablePart);

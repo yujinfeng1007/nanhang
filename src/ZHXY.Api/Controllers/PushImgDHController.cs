@@ -40,8 +40,8 @@ namespace ZHXY.Api.Controllers
         [HttpGet]
         public string TestPushTeacher(string name)
         {
-            string MoudleFilePath = "C:\\人员信息Moudle.xlsx";
-            string DataFilePath = "C:\\人员信息(教师).xlsx";
+            var MoudleFilePath = "C:\\人员信息Moudle.xlsx";
+            var DataFilePath = "C:\\人员信息(教师).xlsx";
             var moudle = new NanHangAccept();
             var DormTeacherInfos = moudle.Set<TeacherInfo>().AsNoTracking().Where(p => p.ImgStatus == 1).Select(p => new DHTeacherMoudle
             {
@@ -50,7 +50,7 @@ namespace ZHXY.Api.Controllers
                 CredNum = p.certificateNo,
                 sex = p.sex ? "男" : "女"
             }).ToList();
-            bool flag = NPOIExcelImport<DHTeacherMoudle>.TeacherWriteExcel(MoudleFilePath, DataFilePath, DormTeacherInfos);
+            var flag = NPOIExcelImport<DHTeacherMoudle>.TeacherWriteExcel(MoudleFilePath, DataFilePath, DormTeacherInfos);
             Console.WriteLine(flag);
             return "success";
         }

@@ -1,4 +1,5 @@
-﻿using ZHXY.Domain;
+﻿using System.Data.Entity;
+using ZHXY.Domain;
 
 namespace ZHXY.Application
 {
@@ -7,6 +8,6 @@ namespace ZHXY.Application
     /// </summary>
     public class XFTXService : AppService
     {
-        public XFTXService(IZhxyRepository r) : base(r) { }
+        public XFTXService(DbContext r) : base(r) { }
     }
 }

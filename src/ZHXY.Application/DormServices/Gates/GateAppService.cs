@@ -14,7 +14,7 @@ namespace ZHXY.Application
     /// </summary>
     public class GateAppService : AppService
     {
-        public GateAppService(IZhxyRepository r) : base(r) { }
+        public GateAppService(DbContext r) : base(r) { }
         public List<GateView> GetList(Pagination pag, string keyword)
         {
             var query = Read<Gate>();

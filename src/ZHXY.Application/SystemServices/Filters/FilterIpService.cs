@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using ZHXY.Common;
 using ZHXY.Domain;
@@ -7,7 +8,7 @@ namespace ZHXY.Application
 {
     public class FilterIpService : AppService
     {
-        public FilterIpService(IZhxyRepository r) => R = r;
+        public FilterIpService(DbContext r) => R = r;
 
         public List<FilterIp> GetList(string keyword)
         {

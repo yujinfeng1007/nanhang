@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 using ZHXY.Common;
@@ -12,7 +13,7 @@ namespace ZHXY.Application
     /// </summary>
     public class SysButtonAppService : AppService
     {
-        public SysButtonAppService(IZhxyRepository r) : base(r)
+        public SysButtonAppService(DbContext r) : base(r)
         {
         }
         public List<SysButton> GetList(string moduleId = "")
