@@ -6,17 +6,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using log4net;
+using ZHXY.Application;
 using ZHXY.Common;
 
-namespace ZHXY.Application
+namespace ZHXY.Web
 {
     [LoginAuthentication]
-    [ValidateParam]
+    [ValidationParamterFilter]
+    [ProcessMvcError]
     public abstract class ZhxyController : Controller
     {
         #region property
 
-        protected ILog FileLog => Logger.GetLogger(GetType().ToString());
+        protected ILog FileLog => LogHelper.GetLogger(GetType().ToString());
 
         #endregion property
 

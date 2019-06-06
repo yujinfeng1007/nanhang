@@ -271,6 +271,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="App_Start\ZhxyController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -579,7 +580,6 @@
     <Content Include="Content\js\jqgrid\grid.locale-cn.js" />
     <Content Include="Content\js\jqgrid\jqgrid.css" />
     <Content Include="Content\js\jqgrid\jqgrid.min.js" />
-    <Content Include="NotOutReport.html" />
     <Content Include="Content\js\simditor\css\simditor.css" />
     <Content Include="Content\js\simditor\js\hotkeys.js" />
     <Content Include="Content\js\simditor\js\hotkeys.min.js" />

@@ -150,14 +150,13 @@
     <Compile Include="SystemServices\Users\Dto\UpdateUserDto.cs" />
     <Compile Include="SystemServices\Users\Dto\UserData.cs" />
     <Compile Include="SystemServices\Users\SysUserRoleAppService.cs" />
-    <Compile Include="WebCore\CookieHelper.cs" />
     <Compile Include="WebCore\DIHelper.cs" />
     <Compile Include="WebCore\Filters\ApiCompressionFilter.cs" />
-    <Compile Include="WebCore\Filters\CustomApiExceptionFilter.cs" />
+    <Compile Include="WebCore\Filters\ProcessApiExceptionFilter.cs" />
     <Compile Include="WebCore\Filters\HandlerAuthorize.cs" />
-    <Compile Include="WebCore\Filters\IpFilter.cs" />
     <Compile Include="WebCore\Filters\LoginAuthentication.cs" />
-    <Compile Include="WebCore\Filters\ValidateParam.cs" />
+    <Compile Include="WebCore\Filters\ProcessMvcErrorAttribute.cs" />
+    <Compile Include="WebCore\Filters\ValidationParamterFilter.cs" />
     <Compile Include="WebCore\Response\CheckBox\CheckBoxSelectModel.cs" />
     <Compile Include="WebCore\Response\ResponseResult.cs" />
     <Compile Include="01.Base\AppService.cs" />
@@ -184,7 +183,6 @@
     <Compile Include="WebCore\Response\Tree\TreeSelect.cs" />
     <Compile Include="WebCore\Response\Tree\TreeSelectModel.cs" />
     <Compile Include="WebCore\Response\Tree\TreeView.cs" />
-    <Compile Include="WebCore\ZhxyController.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Autofac">

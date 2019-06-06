@@ -10,9 +10,9 @@ namespace ZHXY.Application
     /// <summary>
     /// 自定义错误处理
     /// </summary>
-    public class CustomApiExceptionFilter : ExceptionFilterAttribute
+    public class ProcessApiExceptionFilter : ExceptionFilterAttribute
     {
-        private static ILog FileLogger { get; } = Logger.GetLogger("ErrorLogAttribute");
+        private static ILog FileLogger { get; } = LogHelper.GetLogger("ErrorLogAttribute");
 
         public override void OnException(HttpActionExecutedContext actContext)
         {

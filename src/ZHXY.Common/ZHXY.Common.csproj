@@ -65,7 +65,7 @@
     <Compile Include="Tests\TestRandom.cs" />
     <Compile Include="Extend\PredicateBuilder.cs" />
     <Compile Include="File\CompressionHelper.cs" />
-    <Compile Include="Log\Logger.cs" />
+    <Compile Include="Logger\LogHelper.cs" />
     <Compile Include="NumberBuilder\NumberBuilder.cs" />
     <Compile Include="Date\DateHelper.cs" />
     <Compile Include="AutoMaper\AutoMapperExt.cs" />

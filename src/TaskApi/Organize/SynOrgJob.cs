@@ -19,7 +19,7 @@ namespace TaskApi
         private readonly string GetAllUserInfoApiName = "/Models/jxzfzhxy/BaseInterfaceService.svc/GetAllUserInfo";
         private readonly string GetUserInfoByLastUpdatedTimeApiName = "/Models/jxzfzhxy/BaseInterfaceService.svc/GetUserInfoByLastUpdatedTime";
 
-        private readonly ILog _logger = Logger.GetLogger(typeof(SynOrgJob));
+        private readonly ILog _logger = LogHelper.GetLogger(typeof(SynOrgJob));
 
         private Dictionary<string, string> schoolDict = new Dictionary<string, string>();
 

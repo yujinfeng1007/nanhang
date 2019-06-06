@@ -131,7 +131,7 @@ namespace ZHXY.Web.Dorm.Controllers
             return Result.Success(App.GetPrevApprove(id));
         }
 
-        [HttpGet]
+        [HttpPost]
         public ActionResult SuspendLeave(string orderId)
         {
             App.SuspendLeave(orderId);

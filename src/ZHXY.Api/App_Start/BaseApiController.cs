@@ -3,12 +3,13 @@ using System.Web.Http;
 using ZHXY.Application;
 using ZHXY.Common;
 
-namespace ZHXY.Api.Controllers
+namespace ZHXY.Api
 {
     /// <summary>
     /// 控制器基类
     /// </summary>
-    [CustomApiExceptionFilter]
+    [ValidationParamterFilter]
+    [ProcessApiExceptionFilter]
     [ApiCompressionFilter]
     public abstract class BaseApiController : ApiController
     {
