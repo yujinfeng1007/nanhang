@@ -82,7 +82,8 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpPost]
         public ActionResult SubmitVisitor(VisitorApplySubmitDto input)
         {
-            return Result.Success(App.Submit(input));
+            var img = ConfigurationManager.AppSettings["NH_DEFAULT_IMG"];
+            return Result.Success(App.Submit(input, img));
         }
 
         /// <summary>
@@ -113,7 +114,8 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult ApprovalVisitor(VisitorApprovalDto input)
         {
             input.CurrentUserId = Operator.GetCurrent().Id;
-            return Result.Success(App.Approval(input));
+            var img = ConfigurationManager.AppSettings["NH_DEFAULT_IMG"];
+            return Result.Success(App.Approval(input, img));
         }
 
 

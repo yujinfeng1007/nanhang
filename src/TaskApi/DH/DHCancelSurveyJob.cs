@@ -18,7 +18,7 @@ namespace TaskApi.DH
             Console.WriteLine(" ************  开始执行南航项目：访客撤控 ： " + DateTime.Now);
             ZhxyDbContext db = new ZhxyDbContext();
             DateTime dateTime = DateTime.Now;
-            var ApplyList = db.Set<VisitorApply>().Where(p => dateTime > p.VisitEndTime && p.Status == "1" && p.DhId != null).ToList();
+            var ApplyList = db.Set<VisitorApply>().Where(p => dateTime > p.VisitEndTime && p.SurveyStatus == "0" && p.DhId != null).ToList();
             foreach(var apply in ApplyList)
             {
                 // 闸机Id列表
@@ -28,7 +28,7 @@ namespace TaskApi.DH
                 JObject jo = Json.ToJObject(ResultStr);
                 if (jo.Value<bool>("success"))
                 {
-                    apply.Status = "2";
+                    apply.SurveyStatus = "1";
                     Console.WriteLine("撤控成功：" + ResultStr + "  DhId = " + apply.DhId);
                 }
                 else

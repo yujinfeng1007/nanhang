@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Configuration;
+using System.Web.Mvc;
 using ZHXY.Application;
 using ZHXY.Common;
 
@@ -26,7 +27,8 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpPost]
         public ActionResult ApprovalList(string[] ids, int pass)
         {
-            App.ApprovalList(ids, pass);
+            var img = ConfigurationManager.AppSettings["NH_DEFAULT_IMG"];
+            App.ApprovalList(ids, pass, img);
             return Result.Success();
         }
     }

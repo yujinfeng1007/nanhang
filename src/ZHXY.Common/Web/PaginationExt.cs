@@ -13,6 +13,12 @@ namespace ZHXY.Common
     public static class PaginationExt
     {
 
+        public static IQueryable<T> PagingNoSort<T>(this IQueryable<T> query, Pagination pag) where T : class, new()
+        {
+            pag.Records = query.CountAsync().Result;
+            return query.Skip(pag.Skip).Take(pag.Rows);
+        }
+
         public static IQueryable<T> Paging<T>(this IQueryable<T> query, Pagination pag) where T : class, new()
         {
             var ordering=pag.GetOrdering<T>();
