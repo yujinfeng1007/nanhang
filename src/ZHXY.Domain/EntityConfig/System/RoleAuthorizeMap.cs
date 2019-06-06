@@ -7,7 +7,7 @@ namespace ZHXY.Domain
     {
         public RoleAuthorizeMap()
         {
-            ToTable("Sys_RoleAuthorize");
+            ToTable("zhxy_role_authorize");
             HasKey(t => t.F_Id);
         }
     }

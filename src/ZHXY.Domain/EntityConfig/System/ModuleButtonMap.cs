@@ -7,7 +7,7 @@ namespace ZHXY.Domain
     {
         public ModuleButtonMap()
         {
-            ToTable("Sys_ModuleButton");
+            ToTable("zhxy_module_button");
             HasKey(t => t.F_Id);
         }
     }

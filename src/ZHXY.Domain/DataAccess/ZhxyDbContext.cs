@@ -9,6 +9,9 @@ namespace ZHXY.Domain
         public ZhxyDbContext() : base("default")
         {
             Configuration.ValidateOnSaveEnabled = false;
+            Configuration.LazyLoadingEnabled = true;
+            Configuration.UseDatabaseNullSemantics = true;
+            Configuration.ValidateOnSaveEnabled = false;
         }
 
         protected override void OnModelCreating(DbModelBuilder builder)
