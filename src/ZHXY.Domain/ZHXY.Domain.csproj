@@ -53,6 +53,7 @@
     <Compile Include="EntityConfig\Dorm\Report\ZhxyPushMap.cs" />
     <Compile Include="EntityConfig\Dorm\StuFaceOrderMap.cs" />
     <Compile Include="EntityConfig\Dorm\VisitorApproveMap.cs" />
+    <Compile Include="EntityConfig\Dorm\LeaveSuspendMap.cs" />
     <Compile Include="EntityConfig\System\AppVersionMap.cs" />
     <Compile Include="EntityConfig\System\ItemsDetailMap.cs" />
     <Compile Include="EntityConfig\System\ItemsMap.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="Entity\Dorm\Report\ZhxyPush.cs" />
     <Compile Include="Entity\Dorm\StuFaceOrder.cs" />
     <Compile Include="Entity\Dorm\VisitorApprove.cs" />
+    <Compile Include="Entity\Dorm\LeaveSuspend.cs" />
     <Compile Include="Entity\System\AppVersion.cs" />
     <Compile Include="Entity\System\SysButton.cs" />
     <Compile Include="Entity\System\SysDic.cs" />

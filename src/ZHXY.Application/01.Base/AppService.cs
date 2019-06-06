@@ -27,7 +27,8 @@ namespace ZHXY.Application
         public AppService(IZhxyRepository r) => R = r;
         public AppService() { }
 
-        public void Add<T>(IEnumerable<T> entityList) where T : class, IEntity => R.AddRange(entityList);
+        public void AddRange<T>(IEnumerable<T> entityList) where T : class, IEntity => R.AddRange(entityList);
+        public void Add<T>(T entity) where T : class, IEntity => R.Add(entity);
 
         public void AddAndSave<T>(T t) where T : class, IEntity
         {
@@ -35,7 +36,7 @@ namespace ZHXY.Application
             R.SaveChanges();
         }
 
-        public void AddAndSave<T>(IEnumerable<T> ts) where T : class, IEntity
+        public void AddRangeAndSave<T>(IEnumerable<T> ts) where T : class, IEntity
         {
             R.AddRange(ts);
             R.SaveChanges();
@@ -91,8 +92,6 @@ namespace ZHXY.Application
             Del(expression);
             R.SaveChanges();
         }
-
-
 
         public T Get<T>(string id) where T : class, IEntity => R.Find<T>(id);
 

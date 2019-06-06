@@ -13,6 +13,7 @@ namespace ZHXY.Application
         public DateTime StartTime { get; set; }
         public DateTime EndOfTime { get; set; }
         public decimal? LeaveDays { get; set; }
+        public bool Cancelable { get; set; }
         public string LeaveType { get; set; }
         public string ReasonForLeave { get; set; }
         public string Status { get; set; }

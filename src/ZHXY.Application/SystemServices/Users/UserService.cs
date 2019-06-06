@@ -114,7 +114,7 @@ namespace ZHXY.Application
                 userRoles.AddRange(from r in roles where !r.IsEmpty() select new SysUserRole { F_Id = Guid.NewGuid().ToString("N").ToUpper(), F_Role = r, F_User = keyValue });
             }
             Del<SysUserRole>(t => t.F_User == keyValue);
-            Add<SysUserRole>(userRoles);
+            AddRange<SysUserRole>(userRoles);
 
             SaveChanges();
         }

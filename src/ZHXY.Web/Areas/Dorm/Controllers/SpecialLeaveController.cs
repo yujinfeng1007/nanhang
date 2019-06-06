@@ -10,8 +10,8 @@ namespace ZHXY.Web.Dorm.Controllers
     /// </summary>
     public class SpecialLeaveController : ZhxyController
     {
-        public LeaveService App { get; }
-        public SpecialLeaveController(LeaveService app) => App = app;
+        public ILeaveService App { get; }
+        public SpecialLeaveController(ILeaveService app) => App = app;
         public async Task<ViewResult> ApplyForm() => await Task.Run(() => View());
         public async Task<ViewResult> SelectStudent() => await Task.Run(() => View());
 

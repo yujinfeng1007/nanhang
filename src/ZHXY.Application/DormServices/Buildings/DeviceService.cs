@@ -70,7 +70,7 @@ namespace ZHXY.Application
                 };
                 ReleList.Add(rel);
             }
-            Add(ReleList);
+            AddRange(ReleList);
             SaveChanges();
         }
 
