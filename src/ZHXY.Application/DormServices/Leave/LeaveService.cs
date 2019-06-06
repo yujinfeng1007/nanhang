@@ -254,7 +254,12 @@ namespace ZHXY.Application
                 }
             }
 
-            list.ForEach(item => item.Cancelable = item.ApprovalStatus == "已审批" && item.EndOfTime.Date > now && !Read<LeaveSuspend>(p => p.OrderId.Equals(item.Id)).Any());
+            list.ForEach(item =>
+            {
+                var canceled = Read<LeaveSuspend>(p => p.OrderId.Equals(item.Id)).Any();
+                item.Canceled = canceled;
+                item.Cancelable = item.ApprovalStatus == "已审批" && item.EndOfTime.Date > now && !canceled;
+            });
             return list;
         }
 
@@ -287,6 +292,7 @@ namespace ZHXY.Application
                 CreatedTime = p.a.CreatedTime
             }).OrderByDescending(p => p.CreatedTime).ToListAsync().Result;
             SetViewStatus(input.CurrentUserId, ref list);
+            list.ForEach(item => item.Canceled = Read<LeaveSuspend>(p => p.OrderId.Equals(item.Id)).Any());
             return list;
         }
 
