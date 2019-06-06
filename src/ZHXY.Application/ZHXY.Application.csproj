@@ -124,8 +124,7 @@
     <Compile Include="DormServices\Performances\PerformanceAppService.cs" />
     <Compile Include="DormServices\Reports\ReportAppService.cs" />
     <Compile Include="DormServices\Visitors\Dto\VisitorApplySubmitDto.cs" />
-    <Compile Include="SystemServices\Caches\SmartCampusConsts.cs" />
-    <Compile Include="SystemServices\Caches\FieldItem.cs" />
+    <Compile Include="SystemServices\Caches\Consts.cs" />
     <Compile Include="SystemServices\Caches\CacheService.cs" />
     <Compile Include="SystemServices\Filters\Dto\AddFilterIpDto.cs" />
     <Compile Include="SystemServices\Filters\Dto\UpdateFilterIpDto.cs" />
@@ -151,13 +150,14 @@
     <Compile Include="SystemServices\Users\Dto\UserData.cs" />
     <Compile Include="SystemServices\Users\SysUserRoleAppService.cs" />
     <Compile Include="WebCore\DIHelper.cs" />
-    <Compile Include="WebCore\Filters\ApiCompressionFilter.cs" />
+    <Compile Include="WebCore\Filters\CompressMvcResultAttribute.cs" />
+    <Compile Include="WebCore\Filters\CompressWebApiResultAttribute.cs" />
     <Compile Include="WebCore\Filters\ProcessApiExceptionFilter.cs" />
     <Compile Include="WebCore\Filters\HandlerAuthorize.cs" />
     <Compile Include="WebCore\Filters\LoginAuthentication.cs" />
     <Compile Include="WebCore\Filters\ProcessMvcErrorAttribute.cs" />
     <Compile Include="WebCore\Filters\ValidationParamterFilter.cs" />
-    <Compile Include="WebCore\Response\CheckBox\CheckBoxSelectModel.cs" />
+    <Compile Include="SystemServices\Users\Dto\CheckBoxSelectModel.cs" />
     <Compile Include="WebCore\Response\ResponseResult.cs" />
     <Compile Include="01.Base\AppService.cs" />
     <Compile Include="DormServices\Semesters\SemesterService.cs" />

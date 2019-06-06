@@ -49,12 +49,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoFac\AutoFacHelper.cs" />
+    <Compile Include="Cache\RedisCache.cs" />
     <Compile Include="Excel\DHStudentMoudle.cs" />
     <Compile Include="Json\IsNumeric.cs" />
     <Compile Include="Tests\TestAutoMapper.cs" />
-    <Compile Include="Cache\Cache.cs" />
-    <Compile Include="Cache\CacheFactory.cs" />
-    <Compile Include="Cache\ICache.cs" />
     <Compile Include="File\FileSizeHelper.cs" />
     <Compile Include="Tests\TestJson.cs" />
     <Compile Include="Tests\TestNumberBuilder.cs" />

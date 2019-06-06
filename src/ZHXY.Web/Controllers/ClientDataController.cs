@@ -10,12 +10,13 @@ namespace ZHXY.Web.Controllers
         [HttpGet]
         public JsonResult Get(string clientType)
         {
-            var data = new data();
-            var cache = CacheFactory.Cache();
-            data.dataItems = CacheService.GetDataItemListByCache();
-            data.duty = CacheService.GetDutyListByCache();
-            data.organize = CacheService.GetOrganizeListByCache();
-            data.role = CacheService.GetRoleListByCache();
+            var data = new data
+            {
+                dataItems = CacheService.GetDataItemListByCache(),
+                duty = CacheService.GetDutyListByCache(),
+                organize = CacheService.GetOrganizeListByCache(),
+                role = CacheService.GetRoleListByCache()
+            };
 
             if (Operator.GetCurrent() == null) return Json(data, JsonRequestBehavior.AllowGet);
             data.authorizeMenu = CacheService.GetMenuList(clientType).ToString();

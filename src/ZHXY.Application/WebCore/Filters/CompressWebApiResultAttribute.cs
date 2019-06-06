@@ -8,7 +8,7 @@ namespace ZHXY.Application
     /// <summary>
     /// 对结果进行压缩处理
     /// </summary>
-    public class ApiCompressionFilter : ActionFilterAttribute
+    public class CompressWebApiResultAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuted(HttpActionExecutedContext actContext)
         {
@@ -32,4 +32,5 @@ namespace ZHXY.Application
             }
         }
     }
+
 }

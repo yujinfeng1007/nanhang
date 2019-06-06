@@ -17,13 +17,11 @@ namespace ZHXY.Web.Controllers
 
     public class LoginController : Controller
     {
-        //private DutyService DutyApp { get; }
         private UserService UserApp { get; }
         public SysUserRoleAppService userRoleAppService { get; }
 
         public LoginController( UserService userApp, SysUserRoleAppService userRoleService)
         {
-            //DutyApp = app;
             UserApp = userApp;
             userRoleAppService = userRoleService;
         }

@@ -10,7 +10,7 @@ namespace ZHXY.Api
     /// </summary>
     [ValidationParamterFilter]
     [ProcessApiExceptionFilter]
-    [ApiCompressionFilter]
+    [CompressWebApiResultAttribute]
     public abstract class BaseApiController : ApiController
     {
         /// <summary>

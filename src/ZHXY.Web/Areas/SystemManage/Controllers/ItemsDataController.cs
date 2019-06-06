@@ -54,8 +54,8 @@ namespace ZHXY.Web.SystemManage.Controllers
             var str = App.SubmitForm(itemsDetailEntity, keyValue);
             if (str.IsEmpty())
             {
-                CacheFactory.Cache().RemoveCache(SmartCampusConsts.DATAITEMS);
-                CacheFactory.Cache().WriteCache(CacheService.GetDataItemList(), SmartCampusConsts.DATAITEMS);
+                RedisCache.Remove(Consts.DATAITEMS);
+                RedisCache.Set( Consts.DATAITEMS, CacheService.GetDataItemList());
                 return Result.Success();
             }
             else
@@ -78,8 +78,8 @@ namespace ZHXY.Web.SystemManage.Controllers
                 //itemsDetailEntity.Remove();
                 App.DeleteForm(F_Id[i]);
             }
-            CacheFactory.Cache().RemoveCache(SmartCampusConsts.DATAITEMS);
-            CacheFactory.Cache().WriteCache(CacheService.GetDataItemList(), SmartCampusConsts.DATAITEMS);
+            RedisCache.Remove(Consts.DATAITEMS);
+            RedisCache.Set( Consts.DATAITEMS, CacheService.GetDataItemList());
            return Result.Success();
         }
     }

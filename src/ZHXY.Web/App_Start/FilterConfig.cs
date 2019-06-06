@@ -1,6 +1,5 @@
-﻿using System;
-using System.Web.Mvc;
-using ZHXY.Common;
+﻿using System.Web.Mvc;
+using ZHXY.Application;
 
 namespace ZHXY.Web
 {
@@ -15,7 +14,7 @@ namespace ZHXY.Web
         /// <param name="filters"></param>
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new HandleErrorAttribute());
+            filters.Add(new CompressMvcResultAttribute());
         }
     }
 

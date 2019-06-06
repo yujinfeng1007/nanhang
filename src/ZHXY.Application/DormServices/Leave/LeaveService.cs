@@ -8,9 +8,6 @@ using ZHXY.Common;
 
 namespace ZHXY.Application
 {
-
-
-
     /// <summary>
     /// 请假服务
     /// <author>yujinfeng</author>
@@ -227,10 +224,9 @@ namespace ZHXY.Application
                 CreatedTime = a.CreatedTime
             }).OrderByDescending(p => p.CreatedTime).ToListAsync().Result;
             var now = DateTime.Now.Date;
-            list.ForEach(item => item.Cancelable = item.EndOfTime.Date > now);
 
             foreach (var item in list)
-            {   
+            {
                 if (Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result == -1).Any())
                 {
                     item.ApprovalStatus = "已审批";
@@ -257,6 +253,8 @@ namespace ZHXY.Application
                     continue;
                 }
             }
+
+            list.ForEach(item => item.Cancelable = item.ApprovalStatus == "已审批" && item.EndOfTime.Date > now && !Read<LeaveSuspend>(p => p.OrderId.Equals(item.Id)).Any());
             return list;
         }
 
@@ -387,7 +385,7 @@ namespace ZHXY.Application
         /// <param name="orderId"></param>
         public void SuspendLeave(string orderId)
         {
-            var currentDate=DateTime.Now.Date;
+            var currentDate = DateTime.Now.Date;
             var order = Read<LeaveOrder>(p => p.Id.Equals(orderId)).FirstOrDefault();
             if (order.EndOfTime.Date <= currentDate) throw new Exception("Holiday deadline must be after today!");
             var suspendLeave = new LeaveSuspend

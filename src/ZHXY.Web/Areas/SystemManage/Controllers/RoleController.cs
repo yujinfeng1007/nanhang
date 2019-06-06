@@ -97,7 +97,7 @@ namespace ZHXY.Web.SystemManage.Controllers
             else
                 roleEntity.F_Data_Deps = string.Empty;
             App.SubmitForm(roleEntity, permissionIds2.Split(','), permissionIds3.Split(','), permissionIds4.Split(','), keyValue);
-            CacheFactory.Cache().RemoveCache();
+            RedisCache.Clear();
             return Result.Success();
         }
 
@@ -112,7 +112,7 @@ namespace ZHXY.Web.SystemManage.Controllers
             {
                 App.DeleteForm(F_Id[i]);
             }
-            CacheFactory.Cache().RemoveCache();
+            RedisCache.Clear();
             return Result.Success();
         }
 
