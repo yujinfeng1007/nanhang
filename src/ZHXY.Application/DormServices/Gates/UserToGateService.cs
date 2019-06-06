@@ -181,7 +181,7 @@ namespace ZHXY.Application.DormServices.Gates
                 try
                 {
                     var dhUserstr = DHAccount.SELECT_DH_PERSON(new PersonMoudle { code = person.code });
-                    var ResultList = (List<object>)dhUserstr.ToString().ToJObject()["data"]["list"].ToObject(typeof(List<object>));
+                    var ResultList = (List<object>)dhUserstr.ToString().Parse2JObject()["data"]["list"].ToObject(typeof(List<object>));
                     if (null != ResultList && ResultList.Count() > 0)
                     {
                         //var jo = dhUserstr.ToString().ToJObject();
@@ -201,7 +201,7 @@ namespace ZHXY.Application.DormServices.Gates
                             person.dormitoryFloor = null;
                             person.dormitoryRoom = null;
                             person.dormitoryArea = null;
-                            person.id = ResultList.First().ToString().ToJObject().Value<int>("id");
+                            person.id = ResultList.First().ToString().Parse2JObject().Value<int>("id");
                             DHAccount.PUSH_DH_UPDATE_PERSON(person);
                         }
                         catch (Exception e)

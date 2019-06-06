@@ -56,7 +56,7 @@ namespace ZHXY.Web.Controllers
                         existen = files[i].FileName.Substring(files[i].FileName.LastIndexOf('.') + 1);
                         if (!IsAllowed(existen))//files[i]
                         {
-                            return Content(new { state = ResultState.Error, message = "上传文件格式有误！" }.ToCamelJson());
+                            return Content(new { state = ResultState.Error, message = "上传文件格式有误！" }.Serialize());
                         }
                         var fullPath = $"{basePath}{uploadName}.{existen}";
                         files[i].SaveAs(fullPath);
@@ -79,7 +79,7 @@ namespace ZHXY.Web.Controllers
             }
             catch
             {
-                return Content(new { state = "error", message = "上传错误！" }.ToCamelJson());
+                return Content(new { state = "error", message = "上传错误！" }.Serialize());
             }
             return Json(new { state, message, url = filepath, filpath = filepath, uploadname = filepath, type = existen, size = size.ToString("F") + "KB" });
         }

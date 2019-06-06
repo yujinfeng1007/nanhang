@@ -25,7 +25,7 @@ namespace TaskApi.DH
                 var zjids = db.Set<Relevance>().Where(p => p.SecondKey == apply.BuildingId && p.Name == Relation.GateBuilding).Select(p => p.FirstKey).ToList();
                 var channelIds = db.Set<Gate>().Where(t => zjids.Contains(t.Id)).Select(p => p.DeviceNumber+ "$7$0$0").ToArray();
                 var ResultStr = DHAccount.CancelSurvey(channelIds, apply.DhId);
-                JObject jo = Json.ToJObject(ResultStr);
+                var jo = ResultStr.Parse2JObject();
                 if (jo.Value<bool>("success"))
                 {
                     apply.SurveyStatus = "1";

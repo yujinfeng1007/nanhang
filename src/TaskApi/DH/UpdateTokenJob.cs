@@ -36,7 +36,7 @@ namespace TaskApi.DH
             DataDic.Add("ipAddress", "");
             DataDic.Add("clientType", "WINPC");
             string response = HttpHelper.ExecutePost(Constants.AUTHENTICATION_URI, DataDic.ToJson(), "");
-            var jo1 = response.ToJObject();
+            var jo1 = response.Parse2JObject();
             string Realm = jo1["realm"].ToString(); //域信息
             string RandomKey = jo1["randomKey"].ToString(); //随机值
             string EncryptType = jo1["encryptType"].ToString(); //加密方式

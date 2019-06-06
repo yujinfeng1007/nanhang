@@ -19,7 +19,7 @@ namespace ZHXY.Application
         public List<DbBackup> GetList(string queryJson)
         {
             var expression = ExtLinq.True<DbBackup>();
-            var queryParam = queryJson.ToJObject();
+            var queryParam = queryJson.Parse2JObject();
             if (!queryParam["condition"].IsEmpty() && !queryParam["keyword"].IsEmpty())
             {
                 var condition = queryParam["condition"].ToString();

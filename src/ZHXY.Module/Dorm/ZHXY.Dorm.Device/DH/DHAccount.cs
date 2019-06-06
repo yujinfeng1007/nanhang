@@ -58,10 +58,10 @@ namespace ZHXY.Dorm.Device.DH
                 string PersonJson = HttpHelper.ExecuteGetPersons(Constants.SELECT_STUDENTS_INFO, new PersonMoudle() { code = personMoudle.code }, X_SUBJECT_TOKEN);
                 if (null != PersonJson)
                 {
-                    var code = PersonJson.ToJObject().Value<int>("code");
+                    var code = PersonJson.Parse2JObject().Value<int>("code");
                     if (code == 200)
                     {
-                        personMoudle.id = PersonJson.ToJObject()["data"]["list"][0].Value<int>("id");
+                        personMoudle.id = PersonJson.Parse2JObject()["data"]["list"][0].Value<int>("id");
                     }
                 }
             }

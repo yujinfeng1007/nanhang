@@ -94,7 +94,7 @@ namespace ZHXY.Common
                 if (ip == "localtion" || ip == "127.0.0.1") return "本地";
                 var url = $"https://sp0.baidu.com/8aQDcjqpAAV3otqbppnN2DJv/api.php?query={ip}&resource_id=6006&ie=utf8&oe=gbk&format=json";
                 res = HttpMethods.HttpGet(url, Encoding.GetEncoding("GBK"));
-                var resjson = res.ToObject<LocationResponse>();
+                var resjson = res.Deserialize<LocationResponse>();
                 res = resjson.Data[0].Location;
             }
             catch

@@ -33,7 +33,7 @@ namespace ZHXY.Web
                 }
                 else
                 {
-                    Response.Write(new {state="error",message=lastError.GetBaseException().Message }.ToCamelJson());
+                    Response.Write(new {state="error",message=lastError.GetBaseException().Message }.Serialize());
                 }
                 Server.ClearError();
                 Response.End();

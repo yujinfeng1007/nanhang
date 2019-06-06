@@ -176,7 +176,7 @@ namespace ZHXY.Application
                 DHMessage =  PushVisitor("",Convert.ToInt32( visitor.VisitorGender), visitor.ImgUri, visitor.VisitorName, visitor.VisitorIDCard, visitor.BuildingId, visitor.VisitEndTime);
                 if(DHMessage != null)
                 {
-                    JObject jo = Json.ToJObject(DHMessage);
+                    var jo = DHMessage.Parse2JObject();
                     if (jo.Value<bool>("success"))
                     {
                         visitor.DhId = jo.Value<JObject>("data").Value<string>("personId");
@@ -344,8 +344,8 @@ namespace ZHXY.Application
                 //人员在大华的ID
                 string code = Read<Student>(p => p.Id.Equals(input.VisitorId)).Select(p => p.StudentNumber).FirstOrDefault();
                 var dhUserstr = DHAccount.SELECT_DH_PERSON(new PersonMoudle() { code = code });
-                var ResultList = (List<object>)dhUserstr.ToString().ToJObject()["data"]["list"].ToObject(typeof(List<object>));
-                visit.DhId = ResultList.First().ToString().ToJObject().Value<int>("id").ToString();
+                var ResultList = (List<object>)dhUserstr.ToString().Parse2JObject()["data"]["list"].ToObject(typeof(List<object>));
+                visit.DhId = ResultList.First().ToString().Parse2JObject().Value<int>("id").ToString();
                 MSG = PushVisitorSchool(buildingId, visit.VisitEndTime, Convert.ToInt32(visit.DhId));
                 //添加校内访客成功： 访问额度 -1
                 LimitCount.UsableLimit--;

@@ -61,7 +61,7 @@ namespace TaskApi.NHExceptionReport
             long StartTimestamp = DateHelper.ConvertDateTimeInt(QuartzTime.AddDays(-1));
             long EndTimestamp = DateHelper.ConvertDateTimeInt(QuartzTime);
             String UsersLastRecordSql = "select b.id,b.code,b.inout, b.swipDate, b.date,b.firstName name from (SELECT code, MAX(swipDate) swipDate FROM [dbo].[" + TableName + "] GROUP BY code HAVING MAX(swipDate) BETWEEN '" + StartTimestamp + "' and '" + EndTimestamp + "' ) a JOIN " + TableName + " b on a.code=b.code and a.swipDate = b.swipDate";
-            var List = SqlHelper.ExecuteDataTable(UsersLastRecordSql).ToJson().ToList<LastRecordMoudle>().Where(p => p.inout == 1 && !LeaveListId.Contains(p.studentId)).ToList();
+            var List = SqlHelper.ExecuteDataTable(UsersLastRecordSql).ToJson().Deserialize<List<LastRecordMoudle>>().Where(p => p.inout == 1 && !LeaveListId.Contains(p.studentId)).ToList();
             List<NoReturnReport> ReportList = new List<NoReturnReport>();
             foreach (var noReturn in List)
             {
@@ -104,7 +104,7 @@ namespace TaskApi.NHExceptionReport
             long StartTimestamp = DateHelper.ConvertDateTimeInt(StartTime);
             long EndTimestamp = DateHelper.ConvertDateTimeInt(EndTime);
             string UsersLastRecordSql = "select b.id,b.code,b.inout, b.swipDate, b.date,b.firstName name from (SELECT code, MAX(swipDate) swipDate FROM [dbo].[" + TableName + "] GROUP BY code HAVING MAX(swipDate) BETWEEN '" + StartTimestamp + "' and '" + EndTimestamp + "' ) a JOIN " + TableName + " b on a.code=b.code and a.swipDate = b.swipDate";
-            var List = SqlHelper.ExecuteDataTable(UsersLastRecordSql).ToJson().ToList<LastRecordMoudle>().Where(p => p.inout == 0 && !LeaveListId.Contains(p.studentId));
+            var List = SqlHelper.ExecuteDataTable(UsersLastRecordSql).ToJson().Deserialize<List<LastRecordMoudle>>().Where(p => p.inout == 0 && !LeaveListId.Contains(p.studentId));
             List<LateReturnReport> reportList = new List<LateReturnReport>();
             foreach(var p in List)
             {
@@ -141,7 +141,7 @@ namespace TaskApi.NHExceptionReport
             long StartTimestamp = DateHelper.ConvertDateTimeInt(QuartzTime.Date.AddDays(-(int) QuartzTime.Day+1));
             long EndTimestamp = DateHelper.ConvertDateTimeInt(QuartzTime);
             String UsersLastRecordSql = "select b.id,b.code,b.inout, b.swipDate, b.date,b.firstName name from (SELECT code, MAX(swipDate) swipDate FROM [dbo].[" + TableName + "] GROUP BY code HAVING MAX(swipDate) BETWEEN '" + StartTimestamp + "' and '" + EndTimestamp + "' ) a JOIN " + TableName + " b on a.code=b.code and a.swipDate = b.swipDate";
-            var List = SqlHelper.ExecuteDataTable(UsersLastRecordSql).ToJson().ToList<LastRecordMoudle>().Where(p => p.inout == 0).ToList();
+            var List = SqlHelper.ExecuteDataTable(UsersLastRecordSql).ToJson().Deserialize<List<LastRecordMoudle>>().Where(p => p.inout == 0).ToList();
             List<NoOutReport> ReportList = new List<NoOutReport>();
             foreach(var noOut in List)
             {

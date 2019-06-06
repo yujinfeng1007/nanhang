@@ -80,7 +80,7 @@
     <Compile Include="File\FileDownHelper.cs" />
     <Compile Include="File\FtpHelper.cs" />
     <Compile Include="ITextSharp\ITextSharpHelper.cs" />
-    <Compile Include="Json\Json.cs" />
+    <Compile Include="Json\JsonUtil.cs" />
     <Compile Include="Licence\Licence.cs" />
     <Compile Include="Mail\MailHelper.cs" />
     <Compile Include="Net\HttpMethods.cs" />

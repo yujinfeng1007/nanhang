@@ -23,7 +23,7 @@ namespace ZHXY.Common
             var a = new Animal { Name = name, Age = (byte)age };
             var json = a.ToJson();
             System.Console.WriteLine(json);
-            var b = json.ToObject<Animal>();
+            var b = json.Deserialize<Animal>();
             Assert.AreEqual(a.Name, b.Name);
             Assert.AreEqual(a.Age, b.Age);
 

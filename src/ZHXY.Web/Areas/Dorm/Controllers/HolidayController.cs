@@ -34,7 +34,7 @@ namespace ZHXY.Web.Dorm.Controllers
 
         public ActionResult GetList()
         {
-            return Result.Success(App.Read<Holiday>().ToList().ToCamelJson());
+            return Result.Success(App.Read<Holiday>().ToList().Serialize());
         }
 
         [HttpPost]
