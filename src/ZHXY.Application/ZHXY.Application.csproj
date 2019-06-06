@@ -71,6 +71,7 @@
     <Compile Include="DormServices\Holiday\Dto\AddHolidayDto.cs" />
     <Compile Include="DormServices\Holiday\Dto\UpdateHolidayDto.cs" />
     <Compile Include="DormServices\Holiday\HolidayAppService.cs" />
+    <Compile Include="DormServices\Leave\CloseLeaveService.cs" />
     <Compile Include="DormServices\Performances\Dto\BuildingAccessStatisticsView.cs" />
     <Compile Include="DormServices\Visitors\Dto\VisitorApprovalDto.cs" />
     <Compile Include="DormServices\Visitors\Dto\VisitorApprovalListDto.cs" />

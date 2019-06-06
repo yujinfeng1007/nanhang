@@ -7,6 +7,7 @@
     {
         public string ApproverName { get; set; }
         public string Opinion { get; set; }
-        public string Result { get; set; }
+        public int Result { get; set; }
+        public int Level { get; set; }
     }
 }

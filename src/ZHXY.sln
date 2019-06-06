@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Module", "Module", "{37FAB7
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZHXY.Dorm.Device", "ZHXY.Module\Dorm\ZHXY.Dorm.Device\ZHXY.Dorm.Device.csproj", "{2175A722-2E8A-4E1C-A6E8-10710506DAD2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "应用层", "应用层", "{04BC4415-8A79-449B-821E-71C68CDA41F1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +60,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{BEF1F2C9-1903-4AC4-93BD-08452BFA37A3} = {04BC4415-8A79-449B-821E-71C68CDA41F1}
+		{C2F1C93C-ED06-4915-AC46-A3001FE0E30C} = {04BC4415-8A79-449B-821E-71C68CDA41F1}
+		{BDD37780-6931-462C-B04F-BD5A3D97A5D4} = {04BC4415-8A79-449B-821E-71C68CDA41F1}
 		{2175A722-2E8A-4E1C-A6E8-10710506DAD2} = {37FAB731-872F-4DE6-8CAB-E17B978B61CB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
