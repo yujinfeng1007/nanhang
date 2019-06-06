@@ -49,49 +49,10 @@ namespace ZHXY.Application
                 F_Classroom_ID = dorm.Title,
                 F_EnabledMark = temp.Status
             }).ToList();
-
-
-            //////获取记录数
-            //var CountSql = new StringBuilder("select COUNT(1) from Dorm_VisitLog visit left join Dorm_Dorm dorm on dorm.F_Id=visit.F_Building_ID where visit.F_CreatorTime > '" + startTime + "' and visit.F_CreatorTime < '" + endTime + "'");
-            //if (F_Building != null && F_Building.Trim().Length != 0)
-            //{
-            //    CountSql.Append(" and visit.F_Building_Id = '" + F_Building + "'");
-            //}
-            //pagination.Records = R.Db.Database.SqlQuery<int>(CountSql.ToString()).First();
-            //if (pagination.Page * pagination.Rows > pagination.Records)
-            //{
-            //    pagination.Rows = pagination.Records % pagination.Rows;
-            //}
-            //var sqlStr = new StringBuilder("select top " + pagination.Rows + " * from (select top " + pagination.Page * pagination.Rows);
-            //sqlStr.Append(" visit.* from Dorm_VisitLog visit left join Dorm_Dorm dorm on dorm.F_Id=visit.F_Building_ID where visit.F_CreatorTime > '" + startTime + "' and visit.F_CreatorTime < '" + endTime + "'");
-            //if (F_Building != null && F_Building.Trim().Length != 0)
-            //{
-            //    sqlStr.Append(" and visit.F_Building_Id = '" + F_Building + "'");
-            //}
-            //sqlStr.Append(" order by " + pagination.Sidx + ") w order by w.F_Id");
-            //var ListData = R.Db.Database.SqlQuery<VisitorApply>(sqlStr.ToString()).ToList();
-            //foreach(var visit in ListData)
-            //{
-            //    visit.DormId = R.Db.Set<DormStudent>().Where(p => p.StudentId == visit.ApplicantId).Select(p => p.Description).FirstOrDefault();
-            //    visit.ApplicantId = R.Db.Set<Student>().Where(p => p.Id == visit.ApplicantId).Select(p => p.Name).FirstOrDefault();
-            //}
-            //return ListData;
         }
 
         public object GetBuilding(string KeyWords)
-        {
-            //var SqlStr = new StringBuilder("SELECT  DISTINCT F_Building_No FROM [dbo].[Dorm_Dorm]  ");
-            //if(KeyWords != null && KeyWords.Length != 0)
-            //{
-            //    SqlStr.Append(" WHERE F_Building_No LIKE '%" + KeyWords + "%'");
-            //}
-            //SqlStr.Append(" ORDER BY F_Building_No ASC ");
-            //return R.Db.Database.SqlQuery<string>(SqlStr.ToString()).Select(p => new
-            //{
-            //    id = p,
-            //    text = p
-            //}).ToList();
-
+        {           
             var query = R.Db.Set<Building>();
             if(null != KeyWords && KeyWords.Length > 0)
             {
@@ -150,7 +111,7 @@ namespace ZHXY.Application
             query = string.IsNullOrEmpty(input.ApprovalStatus) ? query : query.Where(p => p.Status.Equals(input.ApprovalStatus));
             query = string.IsNullOrEmpty(input.Keyword) ? query : query.Where(p => p.Student.Name.Contains(input.Keyword));            
             //query = query.Paging(input);
-            visitorListViews = query.OrderByDescending(p => p.ApprovedTime).Select(p => new VisitorListView
+            visitorListViews = query.OrderByDescending(p => p.CreatedTime).PagingNoSort(input).Select(p => new VisitorListView
             {
                 Id = p.Id,
                 ApplicantName = p.Student.Name,
@@ -202,28 +163,25 @@ namespace ZHXY.Application
         /// <summary>
         /// 访客审批
         /// </summary>
-        public string Approval(VisitorApprovalDto input)
+        public string Approval(VisitorApprovalDto input, string img)
         {
             var visitor = Get<VisitorApply>(input.VisitId);
-            visitor.ImgUri = "http://210.35.32.29:8100/web/temp.jpg";
-            var visitorApprovers = Query<VisitorApprove>(p => p.VisitId.Equals(visitor.Id)).ToListAsync().Result;
+            visitor.ImgUri = img;
+            var visitorApprover = Query<VisitorApprove>(p => p.VisitId.Equals(visitor.Id)).FirstOrDefault();
             var DHMessage = "";
-            foreach (var visitorApprover in visitorApprovers)
+            visitorApprover.ApproveResult = input.IsAgreed ? "1" : "-1";
+            visitorApprover.Opinion = input.Opinion;
+            if(visitorApprover.ApproveResult=="1")
             {
-                visitorApprover.ApproveResult = input.IsAgreed ? "1" : "-1";
-                visitorApprover.Opinion = input.Opinion;
-
-                if(visitorApprover.ApproveResult=="1")
+                DHMessage =  PushVisitor("",Convert.ToInt32( visitor.VisitorGender), visitor.ImgUri, visitor.VisitorName, visitor.VisitorIDCard, visitor.BuildingId, visitor.VisitEndTime);
+                if(DHMessage != null)
                 {
-                   DHMessage =  PushVisitor("",Convert.ToInt32( visitor.VisitorGender), visitor.ImgUri, visitor.VisitorName, visitor.VisitorIDCard, visitor.BuildingId, visitor.VisitEndTime);
-
-                    if(DHMessage != null)
+                    JObject jo = Json.ToJObject(DHMessage);
+                    if (jo.Value<bool>("success"))
                     {
-                        JObject jo = Json.ToJObject(DHMessage);
-                        if (jo.Value<bool>("success"))
-                        {
-                            visitor.DhId = jo.Value<JObject>("data").Value<string>("personId");
-                        }
+                        visitor.DhId = jo.Value<JObject>("data").Value<string>("personId");
+                        var VisitLimit = Query<DormVisitLimit>(p => p.StudentId.Equals(visitor.ApplicantId)).FirstOrDefault();
+                        VisitLimit.UsableLimit--;
                     }
                 }
             }
@@ -294,15 +252,13 @@ namespace ZHXY.Application
         /// </summary>
         /// <param name="id"></param>
         /// <param name="pass"></param>
-        public void ApprovalList(string[] ids, int pass)
+        public void ApprovalList(string[] ids, int pass, string img)
         {
             var ApplyIds = Query<VisitorApprove>(p => ids.Contains(p.Id)).Select(p => p.VisitId).ToList();
             var VisitList = Read<VisitorApply>(p => ApplyIds.Contains(p.Id)).Update(s => new VisitorApply {
                 Status = pass.ToString(),
                 ApprovedTime = DateTime.Now
             });
-           
-
             //审批通过之后，把当前学生的访问额度 -1
             if(pass == 1)
             {
@@ -315,21 +271,18 @@ namespace ZHXY.Application
                     BuildingId = visit.BuildingId,
                     VisitEndTime = visit.VisitEndTime,
                     VisitStartTime = visit.VisitStartTime,
-                    
                 }).ToList();
                 var ListStuId = Query<VisitorApprove>(p => ids.Contains(p.Id)).Join(Query<VisitorApply>(), p => p.VisitId, s => s.Id, (app, visit) => app.ApproverId).ToList();
                 Query<DormVisitLimit>().Where(p => ListStuId.Contains(p.StudentId)).Update(p => new DormVisitLimit
                 {
                     UsableLimit = p.UsableLimit-1
                 });
-
                 foreach(var visitor in listLimit)
                 {
-                    visitor.ImgUri = "http://210.35.32.29:8100/web/temp.jpg";
+                    visitor.ImgUri = img;
                     PushVisitor("", Convert.ToInt32(visitor.VisitorGender), visitor.ImgUri, visitor.VisitorName, visitor.VisitorIDCard, visitor.BuildingId, visitor.VisitEndTime);
                 }
             }
-
             string UserId = Operator.GetCurrent().Id;
             Query<VisitorApprove>(p => ids.Contains(p.Id)).Update(s => new VisitorApprove
             {
@@ -343,13 +296,13 @@ namespace ZHXY.Application
         /// 提交申请
         /// </summary>
         /// <param name="input"></param>
-        public string Submit(VisitorApplySubmitDto input)
+        public string Submit(VisitorApplySubmitDto input, string img)
         {
-            input.ImgUri = "http://210.35.32.29:8100/web/temp.jpg";
+            input.ImgUri = img;
             var currentUserId = Operator.GetCurrent().Id;
             var MSG = "";
-            var LimitCount = Read<DormVisitLimit>(p => p.StudentId.Equals(currentUserId)).Select(p => p.UsableLimit).FirstOrDefault();
-            if(LimitCount == 0)
+            var LimitCount = Query<DormVisitLimit>(p => p.StudentId.Equals(currentUserId)).FirstOrDefault();
+            if(LimitCount.UsableLimit == 0)
             {
                 return "当前学生被访额度为0";
             }
@@ -394,6 +347,8 @@ namespace ZHXY.Application
                 var ResultList = (List<object>)dhUserstr.ToString().ToJObject()["data"]["list"].ToObject(typeof(List<object>));
                 visit.DhId = ResultList.First().ToString().ToJObject().Value<int>("id").ToString();
                 MSG = PushVisitorSchool(buildingId, visit.VisitEndTime, Convert.ToInt32(visit.DhId));
+                //添加校内访客成功： 访问额度 -1
+                LimitCount.UsableLimit--;
             }
             else
             {

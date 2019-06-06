@@ -70,7 +70,15 @@ namespace ZHXY.Domain
         /// </summary>
         public string ImgUri { get; set; }
 
+        /// <summary>
+        /// 大华平台对应用户ID
+        /// </summary>
         public string DhId { get; set; }
+
+        /// <summary>
+        /// 用于从大华闸机撤控的标识
+        /// </summary>
+        public string SurveyStatus { get; set; } = "0";
 
         /// <summary>
         /// 学生基础信息

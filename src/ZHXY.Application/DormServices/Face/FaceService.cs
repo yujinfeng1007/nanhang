@@ -47,53 +47,6 @@ namespace ZHXY.Application
             SaveChanges();
         }
 
-
-
-
-        /// <summary>
-        /// 获取头像审批列表
-        /// </summary>
-        //public dynamic GetFaceApprovalList(GetFaceApprovalListDto input)
-        //{
-        //    //获取当前用户所审批的审批单据
-        //    var faceIds = Read<FaceApprove>(p => p.ApproverId.Equals(input.CurrentUserId)).Select(p => p.OrderId).ToListAsync().Result;
-        //    //根据审批单据获取头像详细信息
-        //    var query = Read<StuFaceOrder>(p => faceIds.Contains(p.Id));
-        //    query = string.IsNullOrEmpty(input.SearchPattern) ? query : query.Where(p => p.Status.Equals(input.SearchPattern));
-        //    query = string.IsNullOrEmpty(input.Keyword) ? query : query.Where(p => p.Applicant.Name.Contains(input.Keyword));
-        //    query = query.Paging(input);
-        //    var list = query.Select(p => new FaceListView
-        //    {
-        //        Id = p.Id,
-        //        ApplierName = p.Applicant.Name,
-        //        SubmitImg = p.SubmitImg,
-        //        ApproveImg = p.ApproveImg,
-        //        ApprovalStatus = p.Status,
-        //        CreatedTime = p.CreatedTime
-        //    }).OrderByDescending(p => p.CreatedTime).ToListAsync().Result;
-        //    return list;
-        //}
-
-        /// <summary>
-        /// 获取头像审批详情
-        /// </summary>
-        //public FaceListView GetFaceApprovalDetail(string appId, string currentUserId)
-        //{
-
-        //    var face = Get<StuFaceOrder>(appId);
-        //    var view = new FaceListView
-        //    {
-        //        Id = face.Id,
-        //        ApplierName = face.Applicant.Name,
-        //        SubmitImg = face.SubmitImg,
-        //        ApproveImg = face.ApproveImg,
-        //        ApprovalStatus = face.Status,
-        //        CreatedTime = face.CreatedTime
-        //    };
-        //    return view;
-        //}
-
-
         /// <summary>
         /// 学生和宿管获取头像审批列表
         /// </summary>
@@ -120,8 +73,7 @@ namespace ZHXY.Application
             }
             query = string.IsNullOrEmpty(input.SearchPattern) ? query : query.Where(p => p.Status.Equals(input.SearchPattern));
             query = string.IsNullOrEmpty(input.Keyword) ? query : query.Where(p => p.Applicant.Name.Contains(input.Keyword));
-            //query = (input.StartTime != null && input.EndTime !=null) ? query : query.Where(p => p.Applicant.Name.Contains(input.Keyword));
-            faceListViews = query.Paging(input).OrderByDescending(p => p.ApproveTime).Select(p => new FaceListView
+            faceListViews = query.OrderByDescending(p => p.CreatedTime).PagingNoSort(input).Select(p => new FaceListView
             {
                 Id = p.Id,
                 ApplierName = p.Applicant.Name,
@@ -140,8 +92,6 @@ namespace ZHXY.Application
         {
             //获取审批结果和意见（随机取一条即可）
             var approveInfo = Read<FaceApprove>(p => p.OrderId.Equals(appId)).FirstOrDefaultAsync().Result;
-
-
             var face = Get<StuFaceOrder>(appId);
             var view = new FaceListView
             {

@@ -27,6 +27,7 @@ namespace ZHXY.Domain
             Property(p => p.CreatedTime).HasColumnName("created_time");
             Property(p => p.ApprovedTime).HasColumnName("approved_time");
             Property(p => p.DhId).HasColumnName("dh_id");
+            Property(p => p.SurveyStatus).HasColumnName("survey_status");
 
             // 导航属性
             HasOptional(p => p.Student).WithMany().HasForeignKey(p => p.ApplicantId);
