@@ -40,10 +40,14 @@ namespace ZHXY.Domain
         public string ApprovalOpinion { get; set; }
 
         /// <summary>
+        /// 审批时间
+        /// </summary>
+        public DateTime ApproveTime { get; set; }
+        /// <summary>
         /// 宿管
         /// </summary>
         //public virtual User DormManager { get; set; }
-        
+
 
         /// <summary>
         /// 申请人

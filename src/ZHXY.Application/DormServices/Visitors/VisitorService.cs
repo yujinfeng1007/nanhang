@@ -150,7 +150,7 @@ namespace ZHXY.Application
             query = string.IsNullOrEmpty(input.ApprovalStatus) ? query : query.Where(p => p.Status.Equals(input.ApprovalStatus));
             query = string.IsNullOrEmpty(input.Keyword) ? query : query.Where(p => p.Student.Name.Contains(input.Keyword));            
             //query = query.Paging(input);
-            visitorListViews = query.Select(p => new VisitorListView
+            visitorListViews = query.OrderByDescending(p => p.ApprovedTime).Select(p => new VisitorListView
             {
                 Id = p.Id,
                 ApplicantName = p.Student.Name,
@@ -164,7 +164,7 @@ namespace ZHXY.Application
                 VisitEndTime = p.VisitEndTime,                
                 ApprovalStatus = p.Status,
                 CreatedTime = p.CreatedTime
-            }).OrderByDescending(p => p.CreatedTime).ToListAsync().Result;
+            }).ToListAsync().Result;
             return visitorListViews;
         }
 
@@ -227,7 +227,7 @@ namespace ZHXY.Application
                     }
                 }
             }
-
+            visitor.ApprovedTime = DateTime.Now;
             visitor.Status = "1";
             SaveChanges();
             return DHMessage;

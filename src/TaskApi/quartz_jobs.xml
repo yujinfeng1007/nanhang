@@ -196,7 +196,7 @@
         <group>DHMigrate</group>
         <job-name>DHMigrateJob</job-name>
         <job-group>DHMigrate</job-group>
-        <cron-expression>0/8 * * * * ?</cron-expression>
+        <cron-expression>0/3 * * * * ?</cron-expression>
       </cron>
     </trigger>
     
