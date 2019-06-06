@@ -35,7 +35,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NH</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
@@ -510,15 +510,27 @@
     <Content Include="Content\fonts\gijgo-material.ttf" />
     <Content Include="Content\fonts\gijgo-material.eot" />
     <Content Include="Content\js\framework-clientdata.js" />
+    <Content Include="Content\js\handlebars\handlebars-runtime.js" />
+    <Content Include="Content\js\handlebars\handlebars.js" />
     <Content Include="Content\js\index.js" />
+    <Content Include="Content\js\layout\jquery.layout.js" />
     <Content Include="Content\js\loading\pace.min.js" />
     <Content Include="Content\js\lodash\lodash.js" />
     <Content Include="Content\js\md5\jquery.md5.js" />
+    <Content Include="Content\js\select2\select2.min.css" />
+    <Content Include="Content\js\select2\select2.min.js" />
+    <Content Include="Content\js\validate\jquery.validate.min.js" />
+    <Content Include="Content\js\validate\message_zh.js" />
+    <Content Include="Content\js\wizard\wizard.css" />
+    <Content Include="Content\js\wizard\wizard.js" />
+    <Content Include="Content\js\zoom\zoom.css" />
+    <Content Include="Content\js\zoom\zoom.js" />
     <Content Include="Scripts\echarts\close%402x.png" />
     <Content Include="Scripts\echarts\close.png" />
     <Content Include="Scripts\echarts\echarts.min.js" />
     <Content Include="Scripts\echarts\refresh%402x.png" />
     <Content Include="Scripts\echarts\refresh.png" />
+    <Content Include="Scripts\main.js" />
     <Content Include="Views\Page\AddMenuForm.cshtml" />
     <Content Include="Views\Page\AddFuncForm.cshtml" />
     <Content Include="Areas\SystemManage\Views\ModuleButton\CloneButton.cshtml" />
@@ -1411,6 +1423,7 @@
     <Content Include="Scripts\i18n\zh-TW.js" />
     <Content Include="Scripts\jquery-2.1.1.min.map" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\发布到125.pubxml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
@@ -1424,12 +1437,6 @@
     <Content Include="Views\Shared\_Index_Heads.cshtml" />
     <Content Include="Views\Shared\_Layout_Heads.cshtml" />
     <Content Include="Views\Shared\_My.cshtml" />
-    <None Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
-    <None Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_Layout.cshtml" />
