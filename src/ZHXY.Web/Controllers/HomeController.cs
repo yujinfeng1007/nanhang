@@ -1,6 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using ZHXY.Application;
+using ZHXY.Common;
+
 namespace ZHXY.Web.Controllers
 {
     [LoginAuthentication]
@@ -34,6 +37,35 @@ namespace ZHXY.Web.Controllers
         public ActionResult GetDefaultDataView()
         {
             return Result.Success(App.GetDefaultData());
+        }
+
+
+        [HttpGet]
+        public ActionResult ClientData(string clientType)
+        {
+            var data = new
+            {
+                dataItems = CacheService.GetDataItemListByCache(),
+                duty = CacheService.GetDutyListByCache(),
+                organize = CacheService.GetOrganizeListByCache(),
+                role = CacheService.GetRoleListByCache(),
+                authorizeMenu = CacheService.GetMenuList(clientType).ToString(),
+                authorizeButton = (Dictionary<string, object>)CacheService.GetMenuButtonList()
+            };
+            return Result.Success(data);
+        }
+
+
+        [HttpGet]
+        public ActionResult UserInfo()
+        {
+            var current = Operator.GetCurrent();
+            return Result.Success(new
+            {
+                UserCode = current?.Account,
+                UserName = current?.Name,
+                current?.HeadIcon
+            });
         }
     }
 }

@@ -7,21 +7,20 @@ namespace ZHXY.Web.Controllers
 {
     public class ClientDataController : Controller
     {
+       
         [HttpGet]
         public JsonResult Get(string clientType)
         {
-            var data = new data
+            var data = new
             {
                 dataItems = CacheService.GetDataItemListByCache(),
                 duty = CacheService.GetDutyListByCache(),
                 organize = CacheService.GetOrganizeListByCache(),
-                role = CacheService.GetRoleListByCache()
+                role = CacheService.GetRoleListByCache(),
+                authorizeMenu = CacheService.GetMenuList(clientType).ToString(),
+                authorizeButton = (Dictionary<string, object>)CacheService.GetMenuButtonList()
             };
-
-            if (Operator.GetCurrent() == null) return Json(data, JsonRequestBehavior.AllowGet);
-            data.authorizeMenu = CacheService.GetMenuList(clientType).ToString();
-            data.authorizeButton = (Dictionary<string, object>)CacheService.GetMenuButtonList();
-            return Json(data, JsonRequestBehavior.AllowGet);
+            return Json(data,JsonRequestBehavior.AllowGet);
         }
 
 
@@ -31,21 +30,10 @@ namespace ZHXY.Web.Controllers
             var current = Operator.GetCurrent();
             return Json(new
             {
-                UserCode= current?.Account,
-                UserName= current?.Name,
+                UserCode = current?.Account,
+                UserName = current?.Name,
                 current?.HeadIcon
             }, JsonRequestBehavior.AllowGet);
-        }
-
-
-        private class data
-        {
-            public Dictionary<string, object> authorizeButton;
-            public string authorizeMenu;
-            public Dictionary<string, object> dataItems;
-            public Dictionary<string, object> duty;
-            public Dictionary<string, object> organize;
-            public Dictionary<string, object> role;
         }
     }
 }

@@ -143,7 +143,6 @@ namespace ZHXY.Application
 
         public static object GetMenuListByType(string clientType)
         {
-            //var roleId = OperatorProvider.Current.RoleId;
             var app = new SysRoleAuthorizeAppService(new ZhxyDbContext());
             if (Operator.GetCurrent().IsSystem)
             {

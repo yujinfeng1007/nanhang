@@ -123,9 +123,9 @@ function init($) {
         catch (e) { console.log(e); }
     }
 
-    $.getJSON("/ClientData/UserInfo", function (resp) {
-        $(".userInfo").html(`${resp.UserCode}(${resp.UserName})`);
-        $("#headIcon").attr("src", resp.HeadIcon);
+    $.getJSON("/Home/UserInfo", function (resp) {
+        $(".userInfo").html(`${resp.data.userCode}(${resp.data.userName})`);
+        $("#headIcon").attr("src", resp.data.headIcon);
     });
 
 

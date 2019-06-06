@@ -262,7 +262,6 @@
     <Compile Include="Areas\SystemManage\SystemManageAreaRegistration.cs" />
     <Compile Include="Controllers\ClientDataController.cs" />
     <Compile Include="Controllers\MobileDataViewController.cs" />
-    <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Controllers\SelectController.cs" />
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -532,8 +531,6 @@
     <Content Include="Scripts\echarts\refresh%402x.png" />
     <Content Include="Scripts\echarts\refresh.png" />
     <Content Include="Scripts\main.js" />
-    <Content Include="Views\Page\AddMenuForm.cshtml" />
-    <Content Include="Views\Page\AddFuncForm.cshtml" />
     <Content Include="Areas\SystemManage\Views\ModuleButton\CloneButton.cshtml" />
     <Content Include="Areas\SystemManage\Views\ModuleButton\Details.cshtml" />
     <Content Include="Areas\SystemManage\Views\ModuleButton\Form.cshtml" />
@@ -1667,9 +1664,7 @@
     <Analyzer Include="..\packages\Microsoft.DependencyValidation.Analyzers.0.10.0\analyzers\dotnet\cs\Microsoft.DependencyValidation.Analyzers.resources.dll" />
     <Analyzer Include="..\packages\Microsoft.DependencyValidation.Analyzers.0.10.0\analyzers\dotnet\Microsoft.DependencyValidation.Analyzers.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Dashboard\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
