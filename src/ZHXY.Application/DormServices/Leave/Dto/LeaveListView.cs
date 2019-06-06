@@ -48,6 +48,7 @@ namespace ZHXY.Application
         public string ReasonForLeave { get; set; }
 
         public DateTime? CreatedTime { get; set; }
+        public bool Cancelable { get; set; }
 
         /// <summary>
         /// 审批人

@@ -23,7 +23,8 @@ namespace ZHXY.Application
             builder.RegisterType(typeof(UnitWork)).As(typeof(IUnitWork)).InstancePerRequest();
 
             // 注册app层
-            builder.RegisterAssemblyTypes(Assembly.Load("ZHXY.Application")).Where(p => p.BaseType.Equals(typeof(AppService)) && !p.IsAbstract).AsSelf().InstancePerRequest();
+            builder.RegisterAssemblyTypes(typeof(AppService).Assembly).Where(p => p.BaseType.Equals(typeof(AppService)) && !p.IsAbstract).AsSelf().InstancePerRequest();
+            builder.RegisterAssemblyTypes(typeof(AppService).Assembly).Where(p => p.BaseType.Equals(typeof(AppService)) && !p.IsAbstract).AsImplementedInterfaces().InstancePerRequest();
 
             // 注册控制器
             builder.RegisterControllers(Assembly.GetCallingAssembly());

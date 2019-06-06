@@ -120,7 +120,7 @@ namespace ZHXY.Application
             }
 
             Del<SysRoleAuthorize>(t => t.F_ObjectId == keyValue);
-            Add<SysRoleAuthorize>(roleAuthorizeEntitys);
+            AddRange<SysRoleAuthorize>(roleAuthorizeEntitys);
         }
 
         public List<SysRole> GetListByRoleId(string roleId)

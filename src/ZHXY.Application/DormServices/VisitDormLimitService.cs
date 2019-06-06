@@ -198,7 +198,7 @@ namespace ZHXY.Application
             var DateTimeNow = DateTime.Now;
 
             ///添加
-            AddAndSave(InsertIds.Select(p => new DormVisitLimit
+            AddRangeAndSave(InsertIds.Select(p => new DormVisitLimit
             {
                 StudentId = p,
                 TotalLimit = TimesOfWeek,

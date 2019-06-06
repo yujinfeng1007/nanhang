@@ -11,14 +11,8 @@ namespace ZHXY.Web.Dorm.Controllers
     /// </summary>
     public class LeaveController : ZhxyController
     {
-        public LeaveService App { get; }
-        public LeaveController(LeaveService app) => App = app;
-
-        #region 请假
-
-        #region for 家校通
-
-
+        public ILeaveService App { get; }
+        public LeaveController(ILeaveService app) => App = app;
         /// <summary>
         /// 获取老师
         /// </summary>
@@ -36,7 +30,7 @@ namespace ZHXY.Web.Dorm.Controllers
             return Result.Success(App.GetOrderDetail(id));
         }
 
-      
+
         /// <summary>
         /// 请假申请
         /// </summary>
@@ -46,9 +40,6 @@ namespace ZHXY.Web.Dorm.Controllers
             App.Request(input);
             return Result.Success();
         }
-        #endregion
-
-        #region for web
         public async Task<ViewResult> ApproveForm() => await Task.Run(() => View());
         public async Task<ViewResult> BulkApproveForm() => await Task.Run(() => View());
 
@@ -74,7 +65,7 @@ namespace ZHXY.Web.Dorm.Controllers
         /// 批量审批
         /// </summary>
         [HttpPost]
-        public ActionResult OneKeyApproval(OneKeyApprovalDto input)  
+        public ActionResult OneKeyApproval(OneKeyApprovalDto input)
         {
             input.CurrentUserId = Operator.GetCurrent().Id;
             App.OneKeyApproval(input);
@@ -82,15 +73,15 @@ namespace ZHXY.Web.Dorm.Controllers
         }
 
         /// <summary>
-        /// 获取请假列表
+        /// 学生端获取请假列表
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult> GetLeaveHistory(GetLeaveHistoryDto input) => await Task.Run(() =>
         {
-            var data= App.GetLeaveHistory(input);
-            return Result.PagingRst(data, input.Records,input.Total);
+            var data = App.GetLeaveHistory(input);
+            return Result.PagingRst(data, input.Records, input.Total);
         });
 
         /// <summary>
@@ -100,8 +91,8 @@ namespace ZHXY.Web.Dorm.Controllers
         public ActionResult Load(GetApprovalListDto input)
         {
             input.CurrentUserId = Operator.GetCurrent().Id;
-            var data= App.GetApprovalList(input);
-            return  Result.PagingRst(data,input.Records,input.Total);
+            var data = App.GetApprovalList(input);
+            return Result.PagingRst(data, input.Records, input.Total);
         }
 
         /// <summary>
@@ -124,37 +115,7 @@ namespace ZHXY.Web.Dorm.Controllers
         /// </summary>
         [HttpGet]
         public ActionResult GetPreApprove(string id) => Result.Success(App.GetPrevApprove(id));
-        #endregion
 
-        #endregion
-        
-        #region 销假
-   
 
-        //[HttpGet]
-        //public async Task<ViewResult> Cancel() => await Task.Run(() => View());
-
-        //[HttpGet]
-        //public async Task<ViewResult> CancelForm() => await Task.Run(() => View());
-
-        //[HttpGet]
-        //public ActionResult CancelList(GetCancelListDto input)
-        //{
-        //    input.CurrentUserId = Operator.GetCurrent().Id;
-        //    var data = App.GetCanceList(input);
-        //    return Result.PagingRst(data, input.Records, input.Total);
-        //}
-
-        ///// <summary>
-        ///// 销假
-        ///// </summary>
-        //[HttpPost]
-        //public ActionResult CancelHoliday(CancelHolidayDto input)
-        //{
-        //    input.OperatorId = Operator.GetCurrent().Id;
-        //    App.CancelHoliday(input);
-        //    return Result.Success();
-        //}
-        #endregion
     }
 }
