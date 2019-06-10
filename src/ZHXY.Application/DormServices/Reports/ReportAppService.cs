@@ -39,14 +39,14 @@ namespace ZHXY.Application
             var tableName = DateTime.Now.ToString("yyyyMM");
 
             // 考勤总人数
-            var totalQty = Read<Student>(t => !string.IsNullOrEmpty(t.InOut)).Count();
+            var totalQty = Read<Student>().Count();
 
 
             // 在寝人数
             var inQty = Read<Student>(t => t.InOut == "0").Count();
 
             // 外出人数
-            var outQty = Read<Student>(t=>t.InOut=="1").Count();
+            var outQty = Read<Student>(t=>t.InOut=="1" || string.IsNullOrEmpty(t.InOut)).Count();
 
             // 请假人数
             var leaveQty = Read<LeaveOrder>(t => t.StartTime <= now && t.EndOfTime >= now && t.Status=="1").Count();
