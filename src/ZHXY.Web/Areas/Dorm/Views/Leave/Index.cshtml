@@ -1,5 +1,5 @@
 ﻿@{
-    
+
     Layout = "~/Views/Shared/_Index.cshtml";
 }
 <script>
@@ -7,7 +7,7 @@
     function gridList() {
         $("#gridList").dataGrid({
             url: "/Dorm/leave/load",
-            postData: { keyword: $("#txt_keyword").val(), searchPattern: $("#searchPattern").val() },
+            postData: { keyword: $("#txt_keyword").val(), status: $("#status").val() },
             height: $(window).height() - 128,
             colModel: [
                 { label: '主键', name: 'id', hidden: true },
@@ -36,7 +36,7 @@
         });
         $("#btn_search").click(function () {
             $("#gridList").jqGrid('setGridParam', {
-                postData: { keyword: $("#txt_keyword").val(), searchPattern: $("#searchPattern").val() },
+                postData: { keyword: $("#txt_keyword").val(), status: $("#status").val() },
             }).trigger('reloadGrid');
         });
     }
@@ -75,7 +75,7 @@
             prompt: pass ? "注：您确定一键通过？" : "注：您确定一键拒绝？",
             url: "/Dorm/leave/oneKeyApproval",
             param: {
-                orders:ids,
+                orders: ids,
                 isAgreed: pass,
                 opinion: pass ? "一键通过" : "一键拒绝"
             },
@@ -109,6 +109,21 @@
 
 
     $(function () {
+        // 绑定下拉
+        $("#status").select2({
+            minimumResultsForSearch: -1,
+            data: [
+                {
+                    id: 0,
+                    text: '未审批'
+                },
+                {
+                    id: 1,
+                    text: '已审批'
+                }
+            ],
+        });
+
         gridList();
 
         /**
@@ -141,21 +156,6 @@
                     }
             }
         }, 50)
-
-        // 绑定下拉
-         $("#searchPattern").select2({
-            minimumResultsForSearch: -1,
-            data: [
-                {
-                    id: 0,
-                    text: '未审批'
-                },
-                 {
-                    id: 1,
-                    text: '已审批'
-                }
-             ],
-        });
     });
 
 </script>
@@ -181,7 +181,7 @@
             <li class="formTitle">搜索：</li>
             <li>
                 <div class="input-group" style="margin-right:10px;width:200px;">
-                    <select id="searchPattern" name="searchPattern" class="form-control"></select>
+                    <select id="status" name="status" class="form-control"></select>
                 </div>
             </li>
             <li>

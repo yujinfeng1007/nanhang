@@ -1,12 +1,13 @@
 ﻿using System.Linq;
 using System.Text;
+using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 using ZHXY.Common;
 namespace ZHXY.Application
 {
-    public class ValidationParamterFilter : ActionFilterAttribute
+    public class ValidationApiParamterFilter : ActionFilterAttribute
     {
-        public override void OnActionExecuting(System.Web.Http.Controllers.HttpActionContext actionContext)
+        public override void OnActionExecuting(HttpActionContext actionContext)
         {
             if (!actionContext.ModelState.IsValid)
             {

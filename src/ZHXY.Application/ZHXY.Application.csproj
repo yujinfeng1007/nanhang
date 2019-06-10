@@ -171,7 +171,7 @@
     <Compile Include="WebCore\Filters\HandlerAuthorize.cs" />
     <Compile Include="WebCore\Filters\LoginAuthentication.cs" />
     <Compile Include="WebCore\Filters\ProcessMvcErrorAttribute.cs" />
-    <Compile Include="WebCore\Filters\ValidationParamterFilter.cs" />
+    <Compile Include="WebCore\Filters\ValidationApiParamterFilter.cs" />
     <Compile Include="SystemServices\Users\Dto\CheckBoxSelectModel.cs" />
     <Compile Include="WebCore\Response\Pagination.cs" />
     <Compile Include="WebCore\Response\PaginationExt.cs" />

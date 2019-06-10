@@ -12,7 +12,6 @@ using ZHXY.Common;
 namespace ZHXY.Web
 {
     [LoginAuthentication]
-    [ValidationParamterFilter]
     [ProcessMvcError]
     public abstract class ZhxyController : Controller
     {
