@@ -13,6 +13,8 @@
         public string BuildName { get; set; }
         public string FloorName { get; set; }
         public string DormName { get; set; }
+
+        public string DormId { get; set; }
     }
 
     //南航项目- 教师信息尼生成Excel下放大华闸机
