@@ -14,7 +14,7 @@ namespace ZHXY.Application
     /// <summary>
     /// 应用服务基类,过时方法，请使用BassAppService
     /// </summary>
-    public abstract class AppService
+    public abstract class AppService : IAppService
     {
         #region 属性
         /// <summary>

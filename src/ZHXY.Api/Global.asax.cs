@@ -2,6 +2,7 @@
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.SessionState;
+using ZHXY.Application;
 
 namespace ZHXY.Api
 {
@@ -15,6 +16,7 @@ namespace ZHXY.Api
         /// </summary>
         protected void Application_Start()
         {
+            DIHelper.SetWebApiDependencyResolver();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
         }

@@ -2,7 +2,7 @@
 
 namespace ZHXY.Application
 {
-    public interface ILeaveService
+    public interface ILeaveService: IAppService
     {
         void AddApprover(AddApproverDto input);
         void Approval(LeaveApprovalDto input);

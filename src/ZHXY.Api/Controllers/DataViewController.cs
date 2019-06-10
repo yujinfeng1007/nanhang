@@ -11,9 +11,9 @@ namespace ZHXY.Api.Controllers
     /// </summary>
     public class DataViewController : BaseApiController
     {
-        private RelevanceService rApp = new RelevanceService(new EFContext());
-        private DeviceService app = new DeviceService(new EFContext());
-        //private DormBuildingService app = new DormBuildingService(new ZhxyRepository());
+        private IDeviceService App { get; }
+
+        public DataViewController(IDeviceService app) => App = app;
 
         /// <summary>
         /// 1.1.	查询可绑定的楼栋信息
@@ -25,14 +25,14 @@ namespace ZHXY.Api.Controllers
         {
             try
             {
-                var relevance = rApp.Read<Relevance>(t=>t.Name== "Device_Building" && t.FirstKey==input.F_Sn).FirstOrDefault();
+                var relevance = App.Read<Relevance>(t => t.Name == "Device_Building" && t.FirstKey == input.F_Sn).FirstOrDefault();
 
-                var buildings = app.GetBindGate(relevance);
+                var buildings = App.GetBindGate(relevance);
 
                 var json = new
                 {
-                    F_Is_Binded = relevance!=null?true:false,
-                    F_Buildings = buildings.Select(t=>new { F_BuildingId= t.Id,F_BuildingName=t.BuildingNo}),
+                    F_Is_Binded = relevance != null ? true : false,
+                    F_Buildings = buildings.Select(t => new { F_BuildingId = t.Id, F_BuildingName = t.BuildingNo }),
                 };
                 return Success(json);
 
@@ -54,7 +54,7 @@ namespace ZHXY.Api.Controllers
         {
             try
             {
-                app.BindBuildings(input.F_Sn, input.F_BuildingIds);
+                App.BindBuildings(input.F_Sn, input.F_BuildingIds);
 
                 return Success("Ok");
 
@@ -75,7 +75,7 @@ namespace ZHXY.Api.Controllers
         {
             try
             {
-                app.UnBindBuildings(input.F_Sn);
+                App.UnBindBuildings(input.F_Sn);
 
                 return Success("Ok");
 
@@ -94,9 +94,9 @@ namespace ZHXY.Api.Controllers
         {
             try
             {
-                return Success(app.GetLatestAppVersion(input.F_currentVersion));
+                return Success(App.GetLatestAppVersion(input.F_currentVersion));
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return Error("0001", e.Message);
             }
@@ -112,7 +112,7 @@ namespace ZHXY.Api.Controllers
         {
             try
             {
-                return Success(app.GetDormOutInInfo(input.F_BuildingIds));
+                return Success(App.GetDormOutInInfo(input.F_BuildingIds));
 
             }
             catch (Exception e)
@@ -131,7 +131,7 @@ namespace ZHXY.Api.Controllers
         {
             try
             {
-                return Success(app.GetVisitorList(input.F_BuildingIds));
+                return Success(App.GetVisitorList(input.F_BuildingIds));
 
             }
             catch (Exception e)
@@ -150,7 +150,7 @@ namespace ZHXY.Api.Controllers
         {
             try
             {
-                return Success(app.GetLatestInOutRecord(input.F_BuildingIds));
+                return Success(App.GetLatestInOutRecord(input.F_BuildingIds));
 
             }
             catch (Exception e)
@@ -169,7 +169,7 @@ namespace ZHXY.Api.Controllers
         {
             try
             {
-                return Success(app.GetInOutNumInLatestHours(input.F_BuildingIds));
+                return Success(App.GetInOutNumInLatestHours(input.F_BuildingIds));
 
             }
             catch (Exception e)
@@ -189,7 +189,7 @@ namespace ZHXY.Api.Controllers
         {
             try
             {
-                return Success(app.GetSignInfo(input.F_BuildingIds));
+                return Success(App.GetSignInfo(input.F_BuildingIds));
 
             }
             catch (Exception e)

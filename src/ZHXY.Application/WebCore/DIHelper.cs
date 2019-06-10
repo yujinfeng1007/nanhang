@@ -49,7 +49,6 @@ namespace ZHXY.Application
             builder.RegisterType<EFContext>().As<DbContext>().InstancePerRequest();
 
             // 注册 service 层
-            builder.RegisterAssemblyTypes(typeof(AppService).Assembly).Where(p => p.BaseType.Equals(typeof(AppService)) && !p.IsAbstract).AsSelf().InstancePerRequest();
             builder.RegisterAssemblyTypes(typeof(AppService).Assembly).Where(p => p.BaseType.Equals(typeof(AppService)) && !p.IsAbstract).AsImplementedInterfaces().InstancePerRequest();
 
             // 设置容器
