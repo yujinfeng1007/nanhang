@@ -49,27 +49,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoFac\AutoFacHelper.cs" />
+    <Compile Include="Cache\RedisCache.cs" />
     <Compile Include="Excel\DHStudentMoudle.cs" />
-    <Compile Include="Json\IsNumeric.cs" />
-    <Compile Include="Tests\TestAutoMapper.cs" />
-    <Compile Include="Cache\Cache.cs" />
-    <Compile Include="Cache\CacheFactory.cs" />
-    <Compile Include="Cache\ICache.cs" />
-    <Compile Include="File\FileSizeHelper.cs" />
-    <Compile Include="Tests\TestJson.cs" />
-    <Compile Include="Tests\TestNumberBuilder.cs" />
-    <Compile Include="Tests\TestPinyin.cs" />
-    <Compile Include="Tests\TestQrCode.cs" />
     <Compile Include="Random\RandomHelper.cs" />
-    <Compile Include="Tests\TestCaptcha.cs" />
-    <Compile Include="Tests\TestRandom.cs" />
     <Compile Include="Extend\PredicateBuilder.cs" />
     <Compile Include="File\CompressionHelper.cs" />
-    <Compile Include="Log\Logger.cs" />
+    <Compile Include="Logger\LogHelper.cs" />
     <Compile Include="NumberBuilder\NumberBuilder.cs" />
     <Compile Include="Date\DateHelper.cs" />
     <Compile Include="AutoMaper\AutoMapperExt.cs" />
-    <Compile Include="Exceptions\NoSchoolCodeException.cs" />
     <Compile Include="Excel\ExcelHelper.cs" />
     <Compile Include="Excel\NPOIExcel.cs" />
     <Compile Include="Excel\NPOIExcelImport.cs" />
@@ -79,10 +67,7 @@
     <Compile Include="Extend\ExtList.Comparint.cs" />
     <Compile Include="File\FileDownHelper.cs" />
     <Compile Include="File\FtpHelper.cs" />
-    <Compile Include="ITextSharp\ITextSharpHelper.cs" />
-    <Compile Include="Json\Json.cs" />
-    <Compile Include="Licence\Licence.cs" />
-    <Compile Include="Mail\MailHelper.cs" />
+    <Compile Include="Json\JsonUtil.cs" />
     <Compile Include="Net\HttpMethods.cs" />
     <Compile Include="Net\Net.cs" />
     <Compile Include="Operator\CurrentUser.cs" />
@@ -93,11 +78,8 @@
     <Compile Include="Encryption\DESEncryptHelper.cs" />
     <Compile Include="Encryption\Md5EncryptHelper.cs" />
     <Compile Include="Redis\RedisHelper.cs" />
-    <Compile Include="Tests\TestRedis.cs" />
     <Compile Include="Validate\RegularRule.cs" />
-    <Compile Include="Tests\TestRegularRule.cs" />
     <Compile Include="Captcha\CaptchaGenerator.cs" />
-    <Compile Include="Net\NetworkUtility.cs" />
     <Compile Include="Web\Pagination.cs" />
     <Compile Include="Web\PaginationExt.cs" />
     <Compile Include="Web\WebHelper.cs" />
@@ -117,12 +99,6 @@
     </PackageReference>
     <PackageReference Include="EntityFramework">
       <Version>6.2.0</Version>
-    </PackageReference>
-    <PackageReference Include="itextsharp.xmlworker">
-      <Version>5.5.13</Version>
-    </PackageReference>
-    <PackageReference Include="jpush">
-      <Version>3.2.7</Version>
     </PackageReference>
     <PackageReference Include="log4net">
       <Version>2.0.8</Version>
@@ -146,12 +122,6 @@
       <Version>3.1.0</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="MSTest.TestAdapter">
-      <Version>1.4.0</Version>
-    </PackageReference>
-    <PackageReference Include="MSTest.TestFramework">
-      <Version>1.4.0</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.2</Version>

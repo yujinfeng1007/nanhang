@@ -92,8 +92,8 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult SubmitForm(SysDic itemsEntity, string keyValue)
         {
             App.SubmitForm(itemsEntity, keyValue);
-            CacheFactory.Cache().RemoveCache(SmartCampusConsts.DATAITEMS);
-            CacheFactory.Cache().WriteCache(CacheService.GetDataItemList(), SmartCampusConsts.DATAITEMS);
+            RedisCache.Remove(Consts.DATAITEMS);
+            RedisCache.Set(Consts.DATAITEMS, CacheService.GetDataItemList());
             return Result.Success();
         }
 
@@ -103,8 +103,8 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult DeleteForm(string keyValue)
         {
             App.DeleteForm(keyValue);
-            CacheFactory.Cache().RemoveCache(SmartCampusConsts.DATAITEMS);
-            CacheFactory.Cache().WriteCache(CacheService.GetDataItemList(), SmartCampusConsts.DATAITEMS);
+            RedisCache.Remove(Consts.DATAITEMS);
+            RedisCache.Set( Consts.DATAITEMS, CacheService.GetDataItemList());
             return Result.Success();
         }
     }

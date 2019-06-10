@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using ZHXY.Common;
 using ZHXY.Domain;
@@ -12,7 +13,7 @@ namespace ZHXY.Application
     /// </summary>
     public class SysModuleAppService:AppService
     {
-        public SysModuleAppService(IZhxyRepository r) : base(r)
+        public SysModuleAppService(DbContext r) : base(r)
         {
         }
         public List<SysModule> GetList() =>Read< SysModule >().OrderBy(t => t.F_SortCode).ToList();

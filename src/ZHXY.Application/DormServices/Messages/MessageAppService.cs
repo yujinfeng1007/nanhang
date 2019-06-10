@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using ZHXY.Common;
 using ZHXY.Domain;
@@ -11,7 +12,7 @@ namespace ZHXY.Application
     /// </summary>
     public class MessageAppService : AppService
     {
-        public MessageAppService(IZhxyRepository r) : base(r) { }
+        public MessageAppService(DbContext r) : base(r) { }
 
         /// <summary>
         /// 设置机构消息接收人
@@ -30,7 +31,7 @@ namespace ZHXY.Application
         public object GetLateReturnReport(string OrgId, string ReportDate)
         {
             var ReportTime = Convert.ToDateTime(ReportDate);
-            List<string> OrgList = new List<string> { OrgId };
+            var OrgList = new List<string> { OrgId };
             this.GetChildOrg(OrgId, OrgList);
             var LateReturnList = Read<LateReturnReport>(p => ReportTime == p.CreatedTime && OrgList.Contains(p.Class)).ToList();
             return LateReturnList.ToJson();
@@ -45,7 +46,7 @@ namespace ZHXY.Application
         public object GetNotReturnReport(string OrgId, string ReportDate)
         {
             var ReportTime = Convert.ToDateTime(ReportDate);
-            List<string> OrgList = new List<string> { OrgId };
+            var OrgList = new List<string> { OrgId };
             this.GetChildOrg(OrgId, OrgList);
             var NoReturnList = Read<NoReturnReport>(p => p.CreatedTime == ReportTime && OrgList.Contains(p.ClassId)).ToList();
             return NoReturnList.ToJson();
@@ -60,7 +61,7 @@ namespace ZHXY.Application
         public object GetNotOutReport(string OrgId, string ReportDate)
         {
             var ReportTime = Convert.ToDateTime(ReportDate);
-            List<string> OrgList = new List<string> { OrgId };
+            var OrgList = new List<string> { OrgId };
             this.GetChildOrg(OrgId, OrgList);
             var NoOutList = Read<NoOutReport>(p => p.CreatedTime == ReportTime && OrgList.Contains(p.ClassId)).ToList();
             return NoOutList.ToJson();

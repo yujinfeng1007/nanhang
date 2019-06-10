@@ -11,7 +11,7 @@ namespace ZHXY.Common
             try
             {
                 var content = HttpContext.Current.Session[LoginUserKey]?.ToString();
-                return content.ToObject<CurrentUser>();
+                return content.Deserialize<CurrentUser>();
             }
             catch
             {

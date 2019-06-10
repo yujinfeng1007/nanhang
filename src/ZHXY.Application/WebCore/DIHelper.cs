@@ -14,10 +14,6 @@ namespace ZHXY.Application
             var builder = new ContainerBuilder();
 
             builder.RegisterType<ZhxyDbContext>().As<DbContext>().InstancePerRequest();
-            builder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepositoryBase<>)).InstancePerRequest();
-
-            // 注册仓储层
-            builder.RegisterAssemblyTypes(Assembly.Load("ZHXY.Domain")).Where(t => t.Name.EndsWith("Repository") && !t.IsAbstract).AsImplementedInterfaces().InstancePerRequest();
 
             // 注册单元工作
             builder.RegisterType(typeof(UnitWork)).As(typeof(IUnitWork)).InstancePerRequest();
@@ -28,7 +24,6 @@ namespace ZHXY.Application
 
             // 注册控制器
             builder.RegisterControllers(Assembly.GetCallingAssembly());
-
             builder.RegisterModelBinders(Assembly.GetCallingAssembly());
             builder.RegisterModelBinderProvider();
 
@@ -40,8 +35,6 @@ namespace ZHXY.Application
 
             // 设置容器
             var container = builder.Build();
-
-            //AutoFacHelper.SetContainer(container);
 
             // 设置 Mvc 依赖解析 
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));

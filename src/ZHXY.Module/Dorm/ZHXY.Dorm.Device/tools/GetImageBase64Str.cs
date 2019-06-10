@@ -8,13 +8,13 @@ namespace ZHXY.Dorm.Device.tools
     {
         public static string ImageBase64Str(string ImageURI)
         {
-            string filepath = System.AppDomain.CurrentDomain.BaseDirectory;
-            string fileName =filepath+ "/image.png";
-            bool flag = DownLoadPic(ImageURI, fileName);
+            var filepath = System.AppDomain.CurrentDomain.BaseDirectory;
+            var fileName =filepath+ "/image.png";
+            var flag = DownLoadPic(ImageURI, fileName);
             if (flag)
             {
                 var stream = FileToStream(fileName);
-                byte[] by = StreamToBytes(stream);
+                var by = StreamToBytes(stream);
                 return Convert.ToBase64String(by);
             }
             else
@@ -28,7 +28,7 @@ namespace ZHXY.Dorm.Device.tools
             // 打开文件
             var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
             // 读取文件的 byte[]
-            byte[] bytes = new byte[fileStream.Length];
+            var bytes = new byte[fileStream.Length];
             fileStream.Read(bytes, 0, bytes.Length);
             fileStream.Close();
             // 把 byte[] 转换成 Stream
@@ -39,7 +39,7 @@ namespace ZHXY.Dorm.Device.tools
         }
         public static byte[] StreamToBytes(Stream stream)
         {
-            byte[] bytes = new byte[stream.Length];
+            var bytes = new byte[stream.Length];
             stream.Read(bytes, 0, bytes.Length);
             stream.Seek(0, SeekOrigin.Begin);
             return bytes;
@@ -47,7 +47,7 @@ namespace ZHXY.Dorm.Device.tools
 
         public static bool DownLoadPic(string url, string fileName)
         {
-            bool flag = true;
+            var flag = true;
             try
             {
                 var request = WebRequest.CreateHttp(url);
@@ -55,7 +55,7 @@ namespace ZHXY.Dorm.Device.tools
                 var response = request.GetResponse() as HttpWebResponse;
                 var stream = response.GetResponseStream();
                 Stream fileStream = new FileStream(fileName, FileMode.Create);
-                byte[] bArr = new byte[1024];
+                var bArr = new byte[1024];
                 int size;
                 do
                 {

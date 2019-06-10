@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 using ZHXY.Common;
@@ -8,7 +9,7 @@ namespace ZHXY.Application
 {
     public class SysRoleAuthorizeAppService : AppService
     {
-        public SysRoleAuthorizeAppService(IZhxyRepository r) : base(r)
+        public SysRoleAuthorizeAppService(DbContext r) : base(r)
         {
         }
 
@@ -63,7 +64,7 @@ namespace ZHXY.Application
         public bool ActionValidate(string roleId, string moduleId, string action)
         {
             var authorizeurldata = new List<AuthorizeActionModel>();
-            var cachedata = CacheFactory.Cache().GetCache<List<AuthorizeActionModel>>("authorizeurldata_" + roleId);
+            var cachedata = RedisCache.Get<List<AuthorizeActionModel>>("authorizeurldata_" + roleId);
             if (cachedata == null)
             {
                 var moduledata = Read<SysModule>().ToList();
@@ -84,7 +85,7 @@ namespace ZHXY.Application
                             authorizeurldata.Add(new AuthorizeActionModel { F_Id = moduleButtonEntity.F_ModuleId, F_UrlAddress = moduleButtonEntity.F_UrlAddress });
                     }
                 }
-                CacheFactory.Cache().WriteCache(authorizeurldata, "authorizeurldata_" + roleId, DateTime.Now.AddMinutes(5));
+                RedisCache.Set("authorizeurldata_" + roleId, authorizeurldata, DateTime.Now.AddMinutes(5));
             }
             else
             {

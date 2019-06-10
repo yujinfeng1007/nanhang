@@ -7,7 +7,7 @@ namespace ZHXY.Mapping
     {
         public ItemsMap()
         {
-            ToTable("Sys_Items");
+            ToTable("zhxy_item");
             HasKey(t => t.F_Id);
         }
     }

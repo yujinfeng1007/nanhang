@@ -11,11 +11,11 @@ namespace ZHXY.Application
     /// </summary>
     public class LogService : AppService
     {
-        public LogService(IZhxyRepository r) => R = r;
+        public LogService(DbContext r) => R = r;
 
         public LogService()
         {
-            R = new ZhxyRepository();
+            R = new ZhxyDbContext();
         }
         public void AddLog(AddLogDto input)
         {

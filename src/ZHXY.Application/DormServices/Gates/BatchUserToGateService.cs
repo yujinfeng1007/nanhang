@@ -2,18 +2,17 @@
 using ICSharpCode.SharpZipLib.Zip;
 using System;
 using System.Data;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using ZHXY.Common;
 using ZHXY.Domain;
-using ZHXY.Dorm.Device.DH;
-using ZHXY.Dorm.Device.tools;
 
-namespace ZHXY.Application.DormServices.Gates
+namespace ZHXY.Application
 {
     public class BatchUserToGateService : AppService
     {
-        public BatchUserToGateService(IZhxyRepository r) : base(r) { }
+        public BatchUserToGateService(DbContext r) : base(r) { }
 
         // 下载用户头像，并返回用户
         private DataTable downImage(string[] userId, string imgPath = null)
@@ -62,14 +61,14 @@ namespace ZHXY.Application.DormServices.Gates
             dt.Columns.Add(dc19);
             foreach (var d in stuList)
             {
-                string studentNo = d.Name;
-                string imgUri = d.HeadIcon;
-                string gender = "女";
-                string certificateNo = "";
-                string userType = "访客";
-                string ss = "";
-                string lc = "";
-                string ld = "";
+                var studentNo = d.Name;
+                var imgUri = d.HeadIcon;
+                var gender = "女";
+                var certificateNo = "";
+                var userType = "访客";
+                var ss = "";
+                var lc = "";
+                var ld = "";
                 if (d.DutyId.Contains("student"))
                 {
                     var stu = Read<Student>(p => p.UserId == d.Id).FirstOrDefault();
@@ -94,7 +93,7 @@ namespace ZHXY.Application.DormServices.Gates
                     certificateNo = tea?.CredNumber;
                     userType = "教职工";
                 }
-                string filepath = imgPath;
+                var filepath = imgPath;
                 if (string.IsNullOrEmpty(imgPath))
                     filepath = System.AppDomain.CurrentDomain.BaseDirectory + "\\HeadIcoTemp\\";
 
@@ -105,8 +104,8 @@ namespace ZHXY.Application.DormServices.Gates
                 Directory.CreateDirectory(filepath);
 
 
-                string fileName = filepath + studentNo + ".png";
-                bool t = GetImageBase64Str.DownLoadPic(imgUri, fileName);
+                var fileName = filepath + studentNo + ".png";
+                var t = GetImageBase64Str.DownLoadPic(imgUri, fileName);
                 if (t)
                 {
                     var dr = dt.NewRow();
@@ -138,9 +137,9 @@ namespace ZHXY.Application.DormServices.Gates
         // 发送用户头像到闸机
         public void SendUserHeadIco(string[] userId)
         {
-            string filepath = System.AppDomain.CurrentDomain.BaseDirectory + "\\HeadIcoTemp\\";
+            var filepath = System.AppDomain.CurrentDomain.BaseDirectory + "\\HeadIcoTemp\\";
             var dt = downImage(userId, filepath);
-            string zipfile = zipFile(filepath);
+            var zipfile = zipFile(filepath);
             if (zipfile == null)
                 throw new Exception("上传头像文件出错！");
             DHAccount.PUSH_DH_BATCHPHOTO_ZIP(zipfile);
@@ -154,12 +153,12 @@ namespace ZHXY.Application.DormServices.Gates
         #region 压缩  
         private string zipFile(string filePath)
         {
-            string zipedFile = filePath + "\\imgs.zip";
-            bool result = false;
+            var zipedFile = filePath + "\\imgs.zip";
+            var result = false;
             if (!Directory.Exists(filePath))
                 return null;
 
-            ZipOutputStream zipStream = new ZipOutputStream(File.Create(zipedFile));
+            var zipStream = new ZipOutputStream(File.Create(zipedFile));
             zipStream.SetLevel(6);
             result = ZipDirectory(filePath, zipStream, "");
 
@@ -178,11 +177,11 @@ namespace ZHXY.Application.DormServices.Gates
         /// <returns></returns>   
         private static bool ZipDirectory(string folderToZip, ZipOutputStream zipStream, string parentFolderName)
         {
-            bool result = true;
+            var result = true;
             string[] folders, files;
             ZipEntry ent = null;
             FileStream fs = null;
-            Crc32 crc = new Crc32();
+            var crc = new Crc32();
 
 
             ent = new ZipEntry(Path.Combine(parentFolderName, Path.GetFileName(folderToZip) + "/"));
@@ -190,14 +189,14 @@ namespace ZHXY.Application.DormServices.Gates
             zipStream.Flush();
 
             files = Directory.GetFiles(folderToZip);
-            foreach (string file in files)
+            foreach (var file in files)
             {
                 try
                 {
 
                     fs = File.OpenRead(file);
 
-                    byte[] buffer = new byte[fs.Length];
+                    var buffer = new byte[fs.Length];
                     fs.Read(buffer, 0, buffer.Length);
                     ent = new ZipEntry(Path.Combine(parentFolderName, Path.GetFileName(folderToZip) + "/" + Path.GetFileName(file)));
                     ent.DateTime = DateTime.Now;
@@ -235,7 +234,7 @@ namespace ZHXY.Application.DormServices.Gates
 
 
             folders = Directory.GetDirectories(folderToZip);
-            foreach (string folder in folders)
+            foreach (var folder in folders)
                 if (!ZipDirectory(folder, zipStream, folderToZip))
                     return false;
 

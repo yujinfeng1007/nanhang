@@ -12,7 +12,7 @@ namespace ZHXY.Application
     /// </summary>
     public class NoReturnReportService : AppService
     {
-        public NoReturnReportService(IZhxyRepository r) : base(r) { }
+        public NoReturnReportService(DbContext r) : base(r) { }
 
         public List<NoReturnReport> GetList(Pagination pag, string startTime, string endTime, string classId)
         {
@@ -53,7 +53,7 @@ namespace ZHXY.Application
             var expression = ExtLinq.True<NoReturnReport>();
             if (!string.IsNullOrEmpty(classId))
             {
-                List<string> OrgList = new List<string> { classId };
+                var OrgList = new List<string> { classId };
                 this.GetChildOrg(classId, OrgList);
                 expression = expression.And(p => OrgList.Contains(p.ClassId));
             }

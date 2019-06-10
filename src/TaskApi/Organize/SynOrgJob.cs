@@ -19,7 +19,7 @@ namespace TaskApi
         private readonly string GetAllUserInfoApiName = "/Models/jxzfzhxy/BaseInterfaceService.svc/GetAllUserInfo";
         private readonly string GetUserInfoByLastUpdatedTimeApiName = "/Models/jxzfzhxy/BaseInterfaceService.svc/GetUserInfoByLastUpdatedTime";
 
-        private readonly ILog _logger = Logger.GetLogger(typeof(SynOrgJob));
+        private readonly ILog _logger = LogHelper.GetLogger(typeof(SynOrgJob));
 
         private Dictionary<string, string> schoolDict = new Dictionary<string, string>();
 
@@ -78,8 +78,8 @@ namespace TaskApi
         {
             //var result = new HttpHelper(_url).Get<ResultModel>(null, GetAllOrgInfoApiName);
             //var result = HttpHelper.GetString(_url+GetAllOrgInfoApiName)?.ToObject<ResultModel>();
-            var result = new HttpClient().GetStringAsync(_url + GetAllOrgInfoApiName).Result?.ToObject<ResultModel>();
-            var datas = result.Result.ToList<OrgModel>();
+            var result = new HttpClient().GetStringAsync(_url + GetAllOrgInfoApiName).Result?.Deserialize<ResultModel>();
+            var datas = result.Result.Deserialize<List<OrgModel>>();
             foreach (var dic in schoolDict)
             {
                 Console.WriteLine("同步."+dic.Key);
@@ -122,8 +122,8 @@ namespace TaskApi
             var parms = new Dictionary<string, string>();
             parms.Add("LastUpdatedTime", DateTime.Now.AddMinutes(-Convert.ToInt32(ConfigurationManager.AppSettings["UpdatedBeforeTime"])).ToString("yyyy-MM-dd HH:mm:ss"));
 
-            var result = WebHelper.GetString(_url+ GetOrgInfoByLastUpdatedTimeApiName, parms )?.ToObject<ResultModel>();
-            var datas = result.Result.ToList<OrgModel>();
+            var result = WebHelper.GetString(_url+ GetOrgInfoByLastUpdatedTimeApiName, parms )?.Deserialize<ResultModel>();
+            var datas = result.Result.Deserialize<List<OrgModel>>();
             foreach (var data in datas)
             {
                 foreach (var dic in schoolDict)
@@ -216,8 +216,8 @@ namespace TaskApi
         {
             Console.WriteLine("同步所有用户.");
             //var result = new HttpHelper(_url).Get<ResultModel>(null, GetAllUserInfoApiName);
-            var result=new HttpClient().GetStringAsync(_url + GetAllUserInfoApiName).Result?.ToObject<ResultModel>();
-            var datas = result.Result.ToList<UserModel>();
+            var result=new HttpClient().GetStringAsync(_url + GetAllUserInfoApiName).Result?.Deserialize<ResultModel>();
+            var datas = result.Result.Deserialize<List<UserModel>>();
             foreach (var data in datas)
             {
                 foreach (var dic in schoolDict)
@@ -239,7 +239,7 @@ namespace TaskApi
                     return false;
                 }
                 var userService = new SynUserService(schoolCode);
-                string userNum = string.IsNullOrEmpty(data.user_Num) ? data.UserId : data.user_Num;
+                var userNum = string.IsNullOrEmpty(data.user_Num) ? data.UserId : data.user_Num;
                 userService.UpdOrAdd(data, GetOrgCateGoryId(data.Level));
             }
             catch (Exception e)
@@ -258,8 +258,8 @@ namespace TaskApi
 
             var parms = new Dictionary<string, string>();
             parms.Add("LastUpdatedTime", DateTime.Now.AddMinutes(-Convert.ToInt32(ConfigurationManager.AppSettings["UpdatedBeforeTime"])).ToString("yyyy-MM-dd HH:mm:ss"));
-            var result = WebHelper.GetString(_url+GetUserInfoByLastUpdatedTimeApiName,parms)?.ToObject<ResultModel>();
-            var datas = result.Result.ToList<UserModel>();
+            var result = WebHelper.GetString(_url+GetUserInfoByLastUpdatedTimeApiName,parms)?.Deserialize<ResultModel>();
+            var datas = result.Result.Deserialize<List<UserModel>>();
             foreach (var data in datas)
             {
                 foreach (var dic in schoolDict)

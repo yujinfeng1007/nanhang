@@ -16,24 +16,24 @@ namespace ZHXY.Dorm.Device.tools
                 myRequest.ContentType = "application/json;charset=UTF-8";
                 myRequest.ReadWriteTimeout = 30000;
                 if(token != null){ myRequest.Headers.Add("X-Subject-Token", token);}
-                byte[] data = Encoding.UTF8.GetBytes(Param);
+                var data = Encoding.UTF8.GetBytes(Param);
                 myRequest.ContentLength = data.Length;
                 var myStream = myRequest.GetRequestStream();
                 myStream.Write(data, 0, data.Length);
                 myStream.Close();
                 var myResponse = myRequest.GetResponse() as HttpWebResponse;
                 var sr = new StreamReader(myResponse.GetResponseStream(), Encoding.UTF8);
-                string res = sr.ReadToEnd();
+                var res = sr.ReadToEnd();
                 return res;
             }
             catch (WebException ex)
             {
                 var rsp = ex.Response as HttpWebResponse;
-                int statucCode = (int) rsp.StatusCode;
+                var statucCode = (int) rsp.StatusCode;
                 if(statucCode == 401)
                 {
                     var sr = new StreamReader(rsp.GetResponseStream(), Encoding.UTF8);
-                    string res = sr.ReadToEnd();
+                    var res = sr.ReadToEnd();
                     return res;
                 }
                 return null;
@@ -42,7 +42,7 @@ namespace ZHXY.Dorm.Device.tools
 
         public static string ExecuteGetPersons(string URI, PersonMoudle personMoudle, string token)
         {
-            string url = returnParam(URI, personMoudle);
+            var url = returnParam(URI, personMoudle);
             try
             {
                 var myRequest = HttpWebRequest.Create(url) as HttpWebRequest;
@@ -52,17 +52,17 @@ namespace ZHXY.Dorm.Device.tools
                 if (token != null) { myRequest.Headers.Add("Cookie", "JSESSIONID=636972042564F947376441F073B8160D;token=" + token); }
                 var myResponse = myRequest.GetResponse() as HttpWebResponse;
                 var sr = new StreamReader(myResponse.GetResponseStream(), Encoding.UTF8);
-                string res = sr.ReadToEnd();
+                var res = sr.ReadToEnd();
                 return res;
             }
             catch (WebException ex)
             {
                 var rsp = ex.Response as HttpWebResponse;
-                int statucCode = (int)rsp.StatusCode;
+                var statucCode = (int)rsp.StatusCode;
                 if (statucCode == 401)
                 {
                     var sr = new StreamReader(rsp.GetResponseStream(), Encoding.UTF8);
-                    string res = sr.ReadToEnd();
+                    var res = sr.ReadToEnd();
                     return res;
                 }
                 return null;
@@ -78,7 +78,7 @@ namespace ZHXY.Dorm.Device.tools
                 myRequest.ContentType = "application/json;charset=UTF-8";
                 myRequest.ReadWriteTimeout = 30000;
                 if (token != null) { myRequest.Headers.Add("Cookie", "JSESSIONID=636972042564F947376441F073B8160D;token=" + token); }
-                byte[] data = Encoding.UTF8.GetBytes(Param);
+                var data = Encoding.UTF8.GetBytes(Param);
                 myRequest.ContentLength = data.Length;
                 var myStream = myRequest.GetRequestStream();
                 myStream.Write(data, 0, data.Length);
@@ -86,17 +86,17 @@ namespace ZHXY.Dorm.Device.tools
 
                 var myResponse = myRequest.GetResponse() as HttpWebResponse;
                 var sr = new StreamReader(myResponse.GetResponseStream(), Encoding.UTF8);
-                string res = sr.ReadToEnd();
+                var res = sr.ReadToEnd();
                 return res;
             }
             catch (WebException ex)
             {
                 var rsp = ex.Response as HttpWebResponse;
-                int statucCode = (int)rsp.StatusCode;
+                var statucCode = (int)rsp.StatusCode;
                 if (statucCode == 401)
                 {
                     var sr = new StreamReader(rsp.GetResponseStream(), Encoding.UTF8);
-                    string res = sr.ReadToEnd();
+                    var res = sr.ReadToEnd();
                     return res;
                 }
                 return ex.Message;
@@ -124,17 +124,17 @@ namespace ZHXY.Dorm.Device.tools
                 if (token != null) { myRequest.Headers.Add("Cookie", "JSESSIONID=636972042564F947376441F073B8160D;token=" + token); }
                 var myResponse = myRequest.GetResponse() as HttpWebResponse;
                 var sr = new StreamReader(myResponse.GetResponseStream(), Encoding.UTF8);
-                string res = sr.ReadToEnd();
+                var res = sr.ReadToEnd();
                 return res;
             }
             catch (WebException ex)
             {
                 var rsp = ex.Response as HttpWebResponse;
-                int statucCode = (int)rsp.StatusCode;
+                var statucCode = (int)rsp.StatusCode;
                 if (statucCode == 401)
                 {
                     var sr = new StreamReader(rsp.GetResponseStream(), Encoding.UTF8);
-                    string res = sr.ReadToEnd();
+                    var res = sr.ReadToEnd();
                     return res;
                 }
                 return null;
@@ -157,14 +157,14 @@ namespace ZHXY.Dorm.Device.tools
                 myRequest.ContentType = "application/json;charset=UTF-8";
                 myRequest.ReadWriteTimeout = 30000;
                 if (token != null) { myRequest.Headers.Add("Cookie", "JSESSIONID=636972042564F947376441F073B8160D;token=" + token); }
-                byte[] data = Encoding.UTF8.GetBytes(Param);
+                var data = Encoding.UTF8.GetBytes(Param);
                 myRequest.ContentLength = data.Length;
                 var myStream = myRequest.GetRequestStream();
                 myStream.Write(data, 0, data.Length);
                 myStream.Close();
                 var myResponse = myRequest.GetResponse() as HttpWebResponse;
                 var sr = new StreamReader(myResponse.GetResponseStream(), Encoding.UTF8);
-                string res = sr.ReadToEnd();
+                var res = sr.ReadToEnd();
                 return res;
             }
             catch (Exception ex)
@@ -188,14 +188,14 @@ namespace ZHXY.Dorm.Device.tools
                 myRequest.ContentType = "application/json;charset=UTF-8";
                 myRequest.ReadWriteTimeout = 30000;
                 if (token != null){myRequest.Headers.Add("Cookie", "JSESSIONID=636972042564F947376441F073B8160D;token=" + token); }
-                byte[] data = Encoding.UTF8.GetBytes(Param);
+                var data = Encoding.UTF8.GetBytes(Param);
                 myRequest.ContentLength = data.Length;
                 var myStream = myRequest.GetRequestStream();
                 myStream.Write(data, 0, data.Length);
                 myStream.Close();
                 var myResponse = myRequest.GetResponse() as HttpWebResponse;
                 var sr = new StreamReader(myResponse.GetResponseStream(), Encoding.UTF8);
-                string res = sr.ReadToEnd();
+                var res = sr.ReadToEnd();
                 return res;
             }
             catch
@@ -220,18 +220,18 @@ namespace ZHXY.Dorm.Device.tools
                 myRequest.ReadWriteTimeout = 1000 * 60 * 60;
                 if (token != null) {myRequest.Headers.Add("Cookie", "JSESSIONID=636972042564F947376441F073B8160D;token=" + token); }
                 myRequest.AllowAutoRedirect = true;
-                string boundary = DateTime.Now.Ticks.ToString("X"); // 随机分隔线
+                var boundary = DateTime.Now.Ticks.ToString("X"); // 随机分隔线
                 myRequest.ContentType = "multipart/form-data;charset=utf-8;boundary=" + boundary;
-                byte[] itemBoundaryBytes = Encoding.UTF8.GetBytes("\r\n--" + boundary + "\r\n");
+                var itemBoundaryBytes = Encoding.UTF8.GetBytes("\r\n--" + boundary + "\r\n");
 
-                byte[] endBoundaryBytes = Encoding.UTF8.GetBytes("\r\n--" + boundary + "--\r\n");
-                int pos = filePath.LastIndexOf("\\");
-                string fileName = filePath.Substring(pos + 1);
+                var endBoundaryBytes = Encoding.UTF8.GetBytes("\r\n--" + boundary + "--\r\n");
+                var pos = filePath.LastIndexOf("\\");
+                var fileName = filePath.Substring(pos + 1);
                 var sbHeader = new StringBuilder(string.Format("Content-Disposition:form-data;name=\"file\";filename=\"{0}\"\r\nContent-Type:application/octet-stream\r\n\r\n", fileName));
 
-                byte[] postHeaderBytes = Encoding.UTF8.GetBytes(sbHeader.ToString());
+                var postHeaderBytes = Encoding.UTF8.GetBytes(sbHeader.ToString());
                 var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-                byte[] bArr = new byte[fs.Length];
+                var bArr = new byte[fs.Length];
                 fs.Read(bArr, 0, bArr.Length);
                 fs.Close();
                 var postStream = myRequest.GetRequestStream();
@@ -242,12 +242,12 @@ namespace ZHXY.Dorm.Device.tools
                 postStream.Close();
                 var myResponse = myRequest.GetResponse() as HttpWebResponse;
                 var sr = new StreamReader(myResponse.GetResponseStream(), Encoding.UTF8);
-                string res = sr.ReadToEnd();
+                var res = sr.ReadToEnd();
                 return res;
             }
             catch(Exception ex)
             {
-                string message = ex.Message;
+                var message = ex.Message;
                 Console.WriteLine(message);
                 return null;
             }

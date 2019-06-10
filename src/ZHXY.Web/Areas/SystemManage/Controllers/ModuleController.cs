@@ -79,7 +79,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult SubmitForm(SysModule moduleEntity, string keyValue)
         {
             App.SubmitForm(moduleEntity, keyValue);
-            CacheFactory.Cache().RemoveCache();
+            RedisCache.Clear();
             return Result.Success();
         }
 
@@ -90,7 +90,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult DeleteForm(string keyValue)
         {
             App.DeleteForm(keyValue);
-            CacheFactory.Cache().RemoveCache();
+            RedisCache.Clear();
             return Result.Success();
         }
     }

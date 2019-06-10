@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using ZHXY.Common;
 using System.Linq;
+using System.Data.Entity;
 
 namespace ZHXY.Application
 {
@@ -11,7 +12,7 @@ namespace ZHXY.Application
     /// </summary>
     public class NoOutReportService: AppService
     {
-        public NoOutReportService(IZhxyRepository r) : base(r) { }
+        public NoOutReportService(DbContext r) : base(r) { }
         public List<NoOutReport> GetList(Pagination pagination, string startTime, string endTime, string classId)
         {
             pagination.Sord = "desc";
@@ -53,7 +54,7 @@ namespace ZHXY.Application
             var expression = ExtLinq.True<NoOutReport>();
             if (!string.IsNullOrEmpty(classId))
             {
-                List<string> OrgList = new List<string> { classId };
+                var OrgList = new List<string> { classId };
                 this.GetChildOrg(classId, OrgList);
                 expression = expression.And(p => OrgList.Contains(p.ClassId));
             }

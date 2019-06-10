@@ -17,7 +17,7 @@ namespace ZHXY.Application
     /// </summary>
     public class DormBuildingService : AppService
     {
-        public DormBuildingService(IZhxyRepository r) : base(r) { }
+        public DormBuildingService(DbContext r) : base(r) { }
 
         public async Task<DormBuildingView> AddAsync(CreateDormBuildingDto input)
         {

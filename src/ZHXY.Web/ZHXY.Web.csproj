@@ -35,7 +35,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NH</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
@@ -262,7 +262,6 @@
     <Compile Include="Areas\SystemManage\SystemManageAreaRegistration.cs" />
     <Compile Include="Controllers\ClientDataController.cs" />
     <Compile Include="Controllers\MobileDataViewController.cs" />
-    <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Controllers\SelectController.cs" />
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -271,6 +270,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="App_Start\ZhxyController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -510,17 +510,27 @@
     <Content Include="Content\fonts\gijgo-material.ttf" />
     <Content Include="Content\fonts\gijgo-material.eot" />
     <Content Include="Content\js\framework-clientdata.js" />
+    <Content Include="Content\js\handlebars\handlebars-runtime.js" />
+    <Content Include="Content\js\handlebars\handlebars.js" />
     <Content Include="Content\js\index.js" />
+    <Content Include="Content\js\layout\jquery.layout.js" />
     <Content Include="Content\js\loading\pace.min.js" />
     <Content Include="Content\js\lodash\lodash.js" />
     <Content Include="Content\js\md5\jquery.md5.js" />
+    <Content Include="Content\js\select2\select2.min.css" />
+    <Content Include="Content\js\select2\select2.min.js" />
+    <Content Include="Content\js\validate\jquery.validate.min.js" />
+    <Content Include="Content\js\validate\message_zh.js" />
+    <Content Include="Content\js\wizard\wizard.css" />
+    <Content Include="Content\js\wizard\wizard.js" />
+    <Content Include="Content\js\zoom\zoom.css" />
+    <Content Include="Content\js\zoom\zoom.js" />
     <Content Include="Scripts\echarts\close%402x.png" />
     <Content Include="Scripts\echarts\close.png" />
     <Content Include="Scripts\echarts\echarts.min.js" />
     <Content Include="Scripts\echarts\refresh%402x.png" />
     <Content Include="Scripts\echarts\refresh.png" />
-    <Content Include="Views\Page\AddMenuForm.cshtml" />
-    <Content Include="Views\Page\AddFuncForm.cshtml" />
+    <Content Include="Scripts\main.js" />
     <Content Include="Areas\SystemManage\Views\ModuleButton\CloneButton.cshtml" />
     <Content Include="Areas\SystemManage\Views\ModuleButton\Details.cshtml" />
     <Content Include="Areas\SystemManage\Views\ModuleButton\Form.cshtml" />
@@ -567,7 +577,6 @@
     <Content Include="Content\js\jqgrid\grid.locale-cn.js" />
     <Content Include="Content\js\jqgrid\jqgrid.css" />
     <Content Include="Content\js\jqgrid\jqgrid.min.js" />
-    <Content Include="NotOutReport.html" />
     <Content Include="Content\js\simditor\css\simditor.css" />
     <Content Include="Content\js\simditor\js\hotkeys.js" />
     <Content Include="Content\js\simditor\js\hotkeys.min.js" />
@@ -1410,7 +1419,7 @@
     <Content Include="Scripts\i18n\zh-CN.js" />
     <Content Include="Scripts\i18n\zh-TW.js" />
     <Content Include="Scripts\jquery-2.1.1.min.map" />
-    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\发布到125.pubxml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
@@ -1424,12 +1433,6 @@
     <Content Include="Views\Shared\_Index_Heads.cshtml" />
     <Content Include="Views\Shared\_Layout_Heads.cshtml" />
     <Content Include="Views\Shared\_My.cshtml" />
-    <None Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
-    <None Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -1652,18 +1655,12 @@
       <Project>{7dc886cd-b8a0-44e8-aadd-57fcb0cfecb8}</Project>
       <Name>ZHXY.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ZHXY.Module\Dorm\ZHXY.Dorm.Device\ZHXY.Dorm.Device.csproj">
-      <Project>{2175A722-2E8A-4E1C-A6E8-10710506DAD2}</Project>
-      <Name>ZHXY.Dorm.Device</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\Microsoft.DependencyValidation.Analyzers.0.10.0\analyzers\dotnet\cs\Microsoft.DependencyValidation.Analyzers.resources.dll" />
     <Analyzer Include="..\packages\Microsoft.DependencyValidation.Analyzers.0.10.0\analyzers\dotnet\Microsoft.DependencyValidation.Analyzers.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Dashboard\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

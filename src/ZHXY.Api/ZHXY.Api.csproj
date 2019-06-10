@@ -162,30 +162,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\bootstrap-theme.css" />
-    <Content Include="Content\bootstrap-theme.min.css" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <None Include="Scripts\jquery-2.1.1.intellisense.js" />
-    <Content Include="Scripts\jquery-2.1.1.js" />
-    <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\Bootstrapper.cs" />
-    <Compile Include="App_Start\ClonePropValue.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
-    <Compile Include="App_Start\ValidataParam.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\BaseApiController.cs" />
-    <Compile Include="Controllers\BaseBpController.cs" />
+    <Compile Include="App_Start\BaseApiController.cs" />
     <Compile Include="Controllers\DataViewController.cs" />
     <Compile Include="Controllers\DHController.cs" />
     <Compile Include="Controllers\PushImgDHController.cs" />
@@ -204,17 +190,8 @@
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\bootstrap.min.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
-    <Content Include="Content\bootstrap-theme.min.css.map" />
-    <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\发布到125.pubxml" />
-    <Content Include="Scripts\jquery-2.1.1.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -241,10 +218,6 @@
     <ProjectReference Include="..\ZHXY.Domain\ZHXY.Domain.csproj">
       <Project>{7DC886CD-B8A0-44E8-AADD-57FCB0CFECB8}</Project>
       <Name>ZHXY.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ZHXY.Module\Dorm\ZHXY.Dorm.Device\ZHXY.Dorm.Device.csproj">
-      <Project>{2175a722-2e8a-4e1c-a6e8-10710506dad2}</Project>
-      <Name>ZHXY.Dorm.Device</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

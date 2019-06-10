@@ -19,12 +19,12 @@
                 { label: '名称', name: 'Name', align: 'left' },
                 { label: '编号', name: 'EnCode', align: 'left', hidden: true },
                 { label: "主键", name: "Id", align: 'left', key: true, hidden: true },
-                {
-                    label: '分类', name: 'CategoryId', width: 80, align: 'left',
-                    formatter: function (cellvalue) {
-                        return top.clients.dataItems["OrganizeCategory"][cellvalue] == null ? "" : top.clients.dataItems["OrganizeCategory"][cellvalue];
-                    }
-                },
+                //{
+                //    label: '分类', name: 'CategoryId', width: 80, align: 'left',
+                //    formatter: function (cellvalue) {
+                //        return top.clients.dataItems["OrganizeCategory"][cellvalue] == null ? "" : top.clients.dataItems["OrganizeCategory"][cellvalue];
+                //    }
+                //},
             ]
 
         });

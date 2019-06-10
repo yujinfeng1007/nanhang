@@ -7,7 +7,7 @@ namespace ZHXY.Domain
     {
         public ModuleMap()
         {
-            ToTable("Sys_Module");
+            ToTable("zhxy_module");
             HasKey(t => t.F_Id);
         }
     }

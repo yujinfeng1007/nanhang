@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ZHXY.Common;
+using System.Data.Entity;
 
 namespace ZHXY.Application
 {
@@ -11,7 +12,7 @@ namespace ZHXY.Application
     /// </summary>
     public class LateReturnReportService: AppService
     {
-        public LateReturnReportService(IZhxyRepository r) : base(r) { }
+        public LateReturnReportService(DbContext r) : base(r) { }
         public List<LateReturnReport> GetList(Pagination pagination,string startTime, string endTime, string classId)
         {
             pagination.Sord = "desc";
@@ -56,7 +57,7 @@ namespace ZHXY.Application
             var expression = ExtLinq.True<LateReturnReport>();
             if (!string.IsNullOrEmpty(classId))
             {
-                List<string> OrgList = new List<string> { classId };
+                var OrgList = new List<string> { classId };
                 this.GetChildOrg(classId, OrgList);
                 expression = expression.And(p => OrgList.Contains(p.Class));
             }

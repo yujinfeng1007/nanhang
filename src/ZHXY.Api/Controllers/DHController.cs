@@ -1,6 +1,5 @@
 ﻿using System.Web.Http;
-using ZHXY.Dorm.Device.DH;
-using ZHXY.Dorm.Device.tools;
+using ZHXY.Application;
 
 namespace ZHXY.Api.Controllers
 {
@@ -19,7 +18,7 @@ namespace ZHXY.Api.Controllers
             //return DHAccount.DHUpdate();
 
             //推送人员信息至大华
-            PersonMoudle personMoudle = new PersonMoudle();
+            var personMoudle = new PersonMoudle();
             personMoudle.id = 0;
             personMoudle.orgId = "org001";
             personMoudle.code = "888888";
@@ -76,7 +75,7 @@ namespace ZHXY.Api.Controllers
         public object FindPerson(string idCode)
         {
             //查询人员信息  大华
-            PersonMoudle personMoudleTest = new PersonMoudle();
+            var personMoudleTest = new PersonMoudle();
             personMoudleTest.idCode = idCode;
             personMoudleTest.roleId = "temp";
             personMoudleTest.code = null;
@@ -94,7 +93,7 @@ namespace ZHXY.Api.Controllers
         public string TempSurvey(string PicUrl, string idCode, string name)
         {
             string[] str = { "1000004$7$0$0", "1000009$7$0$0", "1000013$7$0$0", "1000002$7$0$0", "1000010$7$0$0", "1000000$7$0$0", "1000012$7$0$0", "1000008$7$0$0", "1000011$7$0$0", "1000003$7$0$0" };
-            SurveyMoudle survey = new SurveyMoudle();
+            var survey = new SurveyMoudle();
             survey.channelId = str;
             survey.code = "";
             survey.name = name;

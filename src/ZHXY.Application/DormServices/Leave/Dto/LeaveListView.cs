@@ -49,6 +49,7 @@ namespace ZHXY.Application
 
         public DateTime? CreatedTime { get; set; }
         public bool Cancelable { get; set; }
+        public bool Canceled { get; set; }
 
         /// <summary>
         /// 审批人

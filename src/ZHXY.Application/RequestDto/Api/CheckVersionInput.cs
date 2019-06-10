@@ -1,4 +1,4 @@
-﻿namespace ZHXY.Application.RequestDto.Api
+﻿namespace ZHXY.Application
 {
     /// <summary>
     /// 检查版本

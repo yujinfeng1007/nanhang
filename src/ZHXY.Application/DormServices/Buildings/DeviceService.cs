@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using ZHXY.Common;
 using ZHXY.Domain;
 
 namespace ZHXY.Application
@@ -13,7 +12,7 @@ namespace ZHXY.Application
     /// </summary>
     public class DeviceService : AppService
     {
-        public DeviceService(IZhxyRepository r) : base(r) { }
+        public DeviceService(DbContext r) : base(r) { }
 
 
         public List<Device> GetList(Pagination pagination, string keyword = "")
@@ -59,7 +58,7 @@ namespace ZHXY.Application
 
         public void BindBuilding(string id, string[] buildings)
         {
-            List<Relevance> ReleList = new List<Relevance>();
+            var ReleList = new List<Relevance>();
             foreach (var item in buildings)
             {
                 var rel = new Relevance
@@ -315,12 +314,12 @@ namespace ZHXY.Application
 
             var outDt = GetDataTable(outSql, new System.Data.Common.DbParameter[] { });
 
-            for (int i = 0; i < 24; i++)
+            for (var i = 0; i < 24; i++)
             {
                 var item = (from a in inDt.AsEnumerable() select a.Field<int?>("F_Hour")).Where(t => t == i).FirstOrDefault();
                 if (item == null)
                 {
-                    DataRow row = inDt.NewRow();
+                    var row = inDt.NewRow();
                     row["F_Num"] = 0;
                     row["F_Hour"] = i;
                     inDt.Rows.InsertAt(row, i);
@@ -329,7 +328,7 @@ namespace ZHXY.Application
                 item = (from a in outDt.AsEnumerable() select a.Field<int?>("F_Hour")).Where(t => t == i).FirstOrDefault();
                 if (item == null)
                 {
-                    DataRow row = outDt.NewRow();
+                    var row = outDt.NewRow();
                     row["F_Num"] = 0;
                     row["F_Hour"] = i;
                     outDt.Rows.InsertAt(row, i);
@@ -357,7 +356,7 @@ namespace ZHXY.Application
 
             if (appVersion != null)
             {
-                bool flag = false;
+                var flag = false;
 
                 var b = appVersion.Version.Split('.');
 

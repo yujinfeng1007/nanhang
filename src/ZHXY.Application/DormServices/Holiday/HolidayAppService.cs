@@ -11,7 +11,7 @@ namespace ZHXY.Application
     /// </summary>
     public class HolidayAppService : AppService
     {
-        public HolidayAppService(IZhxyRepository r) : base(r) { }
+        public HolidayAppService(DbContext r) : base(r) { }
         public Holiday GetById(string id) => Get<Holiday>(id);
         public void Update(UpdateHolidayDto input)
         {

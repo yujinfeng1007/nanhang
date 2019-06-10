@@ -15,8 +15,8 @@ namespace ZHXY.Application
     public class UserService : AppService
     {
         private SysUserRoleAppService userRoleAppService { get; }
-        public UserService(IZhxyRepository r) : base(r) { }
-        public UserService(IZhxyRepository r, SysUserRoleAppService userRoleService) : base(r)
+        public UserService(DbContext r) : base(r) { }
+        public UserService(DbContext r, SysUserRoleAppService userRoleService) : base(r)
         {
             userRoleAppService = userRoleService;
         }
@@ -34,34 +34,13 @@ namespace ZHXY.Application
             var query = Read<User>(p => p.Account != "admin");
             query = string.IsNullOrWhiteSpace(keyword) ? query : query.Where(p => p.Account.Contains(keyword) || p.Name.Contains(keyword) || p.MobilePhone.Contains(keyword));
             query = string.IsNullOrWhiteSpace(F_DutyId) ? query : query.Where(p => p.DutyId.Equals(F_DutyId));
-            //if (!string.IsNullOrEmpty(F_CreatorTime_Start))
-            //{
-            //    var time = Convert.ToDateTime(F_CreatorTime_Start + " 00:00:00");
-            //    query = query.Where(p => p.F_CreatorTime >= time);
-            //}
-            //if (!string.IsNullOrEmpty(F_CreatorTime_Stop))
-            //{
-            //    var time = Convert.ToDateTime(F_CreatorTime_Stop + " 23:59:59");
-            //    query = query.Where(p => p.F_CreatorTime <= time);
-            //}
+
             if (!string.IsNullOrEmpty(F_DepartmentId))
             {
                 query = query.Where(p => p.OrganId.Equals(F_DepartmentId));
             }
-                //if (!string.IsNullOrEmpty(F_DepartmentId))
-                //{
-                //    var orgs = OrgApp.GetListByParentId(F_DepartmentId);
-                //    if (orgs != null && orgs.Count != 0)
-                //    {
-                //        var deps = orgs.Select(p => p.F_Id).ToArray();
-                //        query = query.Where(p => deps.Contains(p.F_DepartmentId) || p.F_DepartmentId.Equals(F_DepartmentId));
-                //    }
-                //    else
-                //    {
-                //        query = query.Where(p => p.F_DepartmentId.Equals(F_DepartmentId));
-                //    }
-                //}
-                pagination.Records = query.CountAsync().Result;
+
+            pagination.Records = query.CountAsync().Result;
             return query.Paging(pagination).ToListAsync().Result;
         }
 
@@ -81,7 +60,7 @@ namespace ZHXY.Application
             SaveChanges();
         }
 
-       public void  Submit(User userEntity,string F_RoleId, string keyValue)
+        public void Submit(User userEntity, string F_RoleId, string keyValue)
         {
             if (!string.IsNullOrEmpty(userEntity.Account))
             {
@@ -106,7 +85,7 @@ namespace ZHXY.Application
                 var user = userEntity.MapTo<User>();
                 AddAndSave(user);
             }
-        
+
             var userRoles = new List<SysUserRole>();
             if (!string.IsNullOrEmpty(F_RoleId))
             {
@@ -145,7 +124,7 @@ namespace ZHXY.Application
             cuser.LoginToken = DESEncryptHelper.Encrypt(Guid.NewGuid().ToString());
             cuser.Ip = Net.Ip;
             cuser.IpLocation = Net.GetLocation(cuser.Ip);
-            cuser.Roles =  userRoleAppService.GetListByUserId(user.Id).Select(t => t.F_Role).ToArray();
+            cuser.Roles = userRoleAppService.GetListByUserId(user.Id).Select(t => t.F_Role).ToArray();
             if (cuser.Account == "admin")
             {
                 cuser.DutyId = "admin";
@@ -153,9 +132,6 @@ namespace ZHXY.Application
             }
             return cuser;
         }
-
-        //public void Enable(string id) => throw new NotImplementedException();
-        //public void Disable(string id) => throw new NotImplementedException();
 
         public bool VerifyPwd(string userId, string password)
         {
@@ -176,45 +152,6 @@ namespace ZHXY.Application
             }).ToListAsync().Result;
         }
 
-
-        //public void SetRole(string userId, string[] roleId)
-        //{
-        //    var roles = Query<Relevance>(p => p.Name.Equals(Relation.UserRole) && p.FirstKey.Equals(userId)).ToArrayAsync().Result;
-        //    Del<Relevance>(roles);
-        //    foreach (var item in roleId)
-        //    {
-        //        Add(new Relevance { Name = Relation.UserRole, FirstKey = userId, SecondKey = item });
-        //    }
-        //    SaveChanges();
-        //}
-
-        //public void AddRole(string userId, string[] roleIds)
-        //{
-        //    var existingRoles = RelevanceApp.GetUserRole(userId);
-        //    var addRoles = roleIds.Except(existingRoles);
-        //    foreach (var item in addRoles)
-        //    {
-        //        Add(new Relevance { Name = Relation.UserRole, FirstKey = userId, SecondKey = item });
-        //    }
-        //    SaveChanges();
-        //}
-
-        //public void RemoveRole(string userId, string[] roleIds)
-        //{
-        //    var removeList = Query<Relevance>(p =>
-        //     p.Name.Equals(Relation.UserRole) &&
-        //     p.FirstKey.Equals(userId) &&
-        //     roleIds.Contains(p.SecondKey)
-        //     ).ToArrayAsync().Result;
-        //    DelAndSave<Relevance>(removeList);
-        //}
-
-        //public dynamic GetRolesExcludeUser(string userId)
-        //{
-        //    var exclude = RelevanceApp.GetUserRole(userId);
-        //    return Read<Role>(p => !exclude.Contains(p.Id)).ToListAsync().Result;
-        //}
-
         public void RevisePassword(string userPassword, string userId)
         {
             var user = Query<User>(p => p.Id.Equals(userId)).FirstOrDefaultAsync().Result;
@@ -222,52 +159,5 @@ namespace ZHXY.Application
             user.Password = Md5EncryptHelper.Encrypt(DESEncryptHelper.Encrypt(Md5EncryptHelper.Encrypt(userPassword, 32).ToLower(), user.Secretkey).ToLower(), 32).ToLower();
             SaveChanges();
         }
-
-        //public UserData GetUserData(CurrentUser user)
-        //{
-        //    var d = new UserData
-        //    {
-        //        UserId = user.Id,
-        //        Organ = user.OrganId,
-        //        Duty = user.DutyId,
-        //        Roles = user.Roles
-        //    };
-        //    var query = Read<Resource>(p => p.BelongSys.Equals("1")&&p.Type.Equals(SYS_CONSTS.Menu));
-        //    if (user.Name == "超级管理员")
-        //    {
-        //        var list = query.ToListAsync().Result;
-        //        d.Menus = TreeHelper.GetMenuJson(list);
-        //    }
-        //    else
-        //    {
-        //        d.Menus = GetUserMenu(user.Id, "1");
-        //    }
-
-
-        //    var o = Read<User>(p => p.Id.Equals(user.Id)).FirstOrDefaultAsync().Result;
-        //    d.UserName = o.Name;
-        //    d.HeadIcon = o.HeadIcon;
-        //    return d;
-        //}
-
-        //public dynamic GetUserRoles(string userId)
-        //{
-        //    var roles = RelevanceApp.GetUserRole(userId);
-        //    return Read<Role>(p => roles.Contains(p.Id)).ToListAsync().Result;
-        //}
-
-       
-
-        //public string GetUserMenu(string userId, string system)
-        //{
-        //    var userMenus = RelevanceApp.GetUserRosource(userId);
-        //    var list = Read<Resource>(p => userMenus.Contains(p.Id) && p.BelongSys.Equals(system)&&p.Type.Equals(SYS_CONSTS.Menu)).ToListAsync().Result;
-        //    return TreeHelper.GetMenuJson(list);
-        //}
-
-        //public void GerUserResource(string userId)
-        //{
-
-        //}
     }
 }

@@ -4,6 +4,7 @@ using ZHXY.Common;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
+using System.Data.Entity;
 
 namespace ZHXY.Application
 {
@@ -13,7 +14,7 @@ namespace ZHXY.Application
     /// </summary>
     public class ReportAppService : AppService
     {
-        public ReportAppService(IZhxyRepository r) : base(r) { }
+        public ReportAppService(DbContext r) : base(r) { }
 
         /// <summary>
         /// 获取异常出入报表
@@ -38,14 +39,14 @@ namespace ZHXY.Application
             var tableName = DateTime.Now.ToString("yyyyMM");
 
             // 考勤总人数
-            var totalQty = Read<Student>(t => !string.IsNullOrEmpty(t.InOut)).Count();
+            var totalQty = Read<Student>().Count();
 
 
             // 在寝人数
             var inQty = Read<Student>(t => t.InOut == "0").Count();
 
             // 外出人数
-            var outQty = Read<Student>(t=>t.InOut=="1").Count();
+            var outQty = Read<Student>(t=>t.InOut=="1" || string.IsNullOrEmpty(t.InOut)).Count();
 
             // 请假人数
             var leaveQty = Read<LeaveOrder>(t => t.StartTime <= now && t.EndOfTime >= now && t.Status=="1").Count();
@@ -117,7 +118,7 @@ namespace ZHXY.Application
             //判断登陆用户所属机构级别   院系Grade  、 年级Division 、 班级Class
             var category = Read<Organ>(p => p.Id.Equals(orgId)).Select(p => p.CategoryId).FirstOrDefault();
             //总人数
-            int totalQty = 0;
+            var totalQty = 0;
           
             if (category.Equals("Grade")) {
                 totalQty = Read<Student>().Where(p => p.GradeId.Equals(orgId)).Count();
@@ -129,7 +130,7 @@ namespace ZHXY.Application
 
 
             //在寝人数   in_out 0-进  1-出
-            int inQty = 0;
+            var inQty = 0;
 
             if (category.Equals("Division"))
             {
@@ -144,7 +145,7 @@ namespace ZHXY.Application
                 inQty = Read<Student>().Where(p => p.ClassId.Equals(orgId) && p.InOut.Equals("0")).Count();
             }
             //外出人数  in_out 0-进  1-出
-            int outQty = 0;
+            var outQty = 0;
 
             if (category.Equals("Division"))
             {
@@ -159,7 +160,7 @@ namespace ZHXY.Application
                 outQty = Read<Student>().Where(p => p.ClassId.Equals(orgId) && p.InOut.Equals("1")).Count();
             }
             //请假人数
-            int leaveQty = 0;
+            var leaveQty = 0;
 
            //sql写法
            var leaveSql = new StringBuilder("select count(1) from zhxy_leave_order leave join zhxy_student stu on leave.leaveer_id = stu.id where leave.status = '1' ");
@@ -176,7 +177,7 @@ namespace ZHXY.Application
                 leaveSql = leaveSql.Append(" and stu.class_id = '" + orgId + "'");
             }
 
-             leaveQty = R.Db.Database.SqlQuery<int>(leaveSql.ToString()).First();
+             leaveQty = R.Database.SqlQuery<int>(leaveSql.ToString()).First();
             //linq写法            
             //var sql = (from leave in Read<LeaveOrder>()
             //           join stu in Read<Student>() on leave.LeaveerId equals stu.Id
@@ -202,11 +203,11 @@ namespace ZHXY.Application
         /// <returns></returns>
         public dynamic loadByOrg(string OrgId)
         {
-            DateTime date = DateTime.Now;
-            List<string> OrgList = new List<string> { OrgId };
+            var date = DateTime.Now;
+            var OrgList = new List<string> { OrgId };
             this.GetChildOrg(OrgId, OrgList);
             var StuList = Read<Student>(p => OrgList.Contains(p.ClassId)).Select(p => new { p.InOut, p.Id}).ToList();
-            int totalQty = StuList.Count();
+            var totalQty = StuList.Count();
             var outQty = StuList.Count(p => string.IsNullOrEmpty(p.InOut) || p.InOut.Equals("1"));
             var inQty = StuList.Count(p => !string.IsNullOrEmpty(p.InOut) && p.InOut.Equals("0"));
             var leaveQty = StuList.Join(Read<LeaveOrder>(s => s.Status == "1"), stu => stu.Id, leave => leave.LeaveerId, (stu, leave) => new { leave.Id}).Count();

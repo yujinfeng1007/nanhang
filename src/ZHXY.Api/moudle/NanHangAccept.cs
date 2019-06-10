@@ -1,9 +1,6 @@
 namespace ZHXY.Api.moudle
 {
-    using System;
     using System.Data.Entity;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Linq;
 
     public partial class NanHangAccept : DbContext
     {

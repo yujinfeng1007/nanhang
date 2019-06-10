@@ -15,8 +15,6 @@ namespace ZHXY.Api
         /// </summary>
         protected void Application_Start()
         {
-            //ZHXY.Application.AutoFacExt.InitAutofac();//依赖注入初始化
-            Bootstrapper.Run();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
         }

@@ -20,16 +20,13 @@
             colModel: [
                 { label: "主键", name: "F_Id", hidden: true, key: true },
                 { label: '名称', name: 'F_FullName', width: 200, align: 'left' },
-
-
                 { label: '连接', name: 'F_UrlAddress', width: 260, align: 'left' },
-
-                {
-                    label: "隶属系统", name: "F_BelongSys", width: 80, align: "center",
-                    formatter: function (cellvalue) {
-                        return top.clients.dataItems["F_BelongSys"][cellvalue] == null ? "" : top.clients.dataItems["F_BelongSys"][cellvalue];
-                    }
-                },
+                //{
+                //    label: "隶属系统", name: "F_BelongSys", width: 80, align: "center",
+                //    formatter: function (cellvalue) {
+                //        return top.clients.dataItems["F_BelongSys"][cellvalue] == null ? "" : top.clients.dataItems["F_BelongSys"][cellvalue];
+                //    }
+                //},
                 {
                     label: '目标', name: 'F_Target', width: 80, align: 'center',
                     formatter: function (cellvalue) {

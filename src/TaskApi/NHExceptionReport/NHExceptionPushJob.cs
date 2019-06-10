@@ -4,10 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using ZHXY.Application;
 using ZHXY.Common;
 using ZHXY.Domain;
 using ZHXY.Domain.Entity.Dorm.Report;
-using ZHXY.Dorm.Device.NH;
 
 namespace TaskApi.NHExceptionReport
 {
@@ -19,16 +19,16 @@ namespace TaskApi.NHExceptionReport
             Console.WriteLine("开始推送异常消息：" + DateTime.Now);
             //new PushAppMessage().PushReportMessage("48038@nchu.edu.cn", "Test Message", "");
             //DateTime Time = Convert.ToDateTime("2019-06-05 08:00:00");
-            DateTime Time = DateTime.Now;
-            ZhxyDbContext dbContext = new ZhxyDbContext();
+            var Time = DateTime.Now;
+            var dbContext = new ZhxyDbContext();
             //测试阶段：  只推给 罗尉平 老师
             var leaderList = dbContext.Set<OrgLeader>().Where(p => p.UserId.Equals("c769eb3d87d6f7468133840f055bc9e6")).ToList();
             var PushList = new List<ZhxyPush>();
             foreach (var leader in leaderList)
             {
-                HashSet<string> Ids = new HashSet<string>(); //当前组织机构下属所有组织机构的ID集合
-                string OrgId = leader.OrgId;
-                string UserId = leader.UserId;
+                var Ids = new HashSet<string>(); //当前组织机构下属所有组织机构的ID集合
+                var OrgId = leader.OrgId;
+                var UserId = leader.UserId;
                 var OrgIds = dbContext.Set<Organ>().Where(p => p.ParentId.Equals(OrgId)).Select(p => p.Id).ToList();
                 if (null == OrgIds || OrgIds.Count() == 0)
                 {
@@ -68,17 +68,17 @@ namespace TaskApi.NHExceptionReport
                 Ids.Add(OrgId);
                 if (null != Ids && Ids.Count() != 0)
                 {
-                    List<Dictionary<string, object>> DataList = new List<Dictionary<string, object>>();
-                    DateTime Yeatday = Time.Date.AddDays(-1).Date;
-                    string userName = dbContext.Set<User>().Where(p => p.Id.Equals(leader.UserId)).Select(p => p.Account).FirstOrDefault();
+                    var DataList = new List<Dictionary<string, object>>();
+                    var Yeatday = Time.Date.AddDays(-1).Date;
+                    var userName = dbContext.Set<User>().Where(p => p.Id.Equals(leader.UserId)).Select(p => p.Account).FirstOrDefault();
                     var NoReturnCount = dbContext.Set<NoReturnReport>().Where(p => Yeatday.Equals(p.CreatedTime) && Ids.Contains(p.ClassId)).ToList().Count();
                     var LateReturnCount = dbContext.Set<LateReturnReport>().Where(p => Yeatday == p.CreatedTime && Ids.Contains(p.Class)).ToList().Count();
                     var NoOutCount = dbContext.Set<NoOutReport>().Where(p => Yeatday == p.CreatedTime && Ids.Contains(p.ClassId)).ToList().Count();
 
-                    Dictionary<string, object> NoReturnDic = new Dictionary<string, object>();
-                    Dictionary<string, object> LateReturnDic = new Dictionary<string, object>();
-                    Dictionary<string, object> NotOutDic = new Dictionary<string, object>();
-                    Dictionary<string, object> DataDic = new Dictionary<string, object>();
+                    var NoReturnDic = new Dictionary<string, object>();
+                    var LateReturnDic = new Dictionary<string, object>();
+                    var NotOutDic = new Dictionary<string, object>();
+                    var DataDic = new Dictionary<string, object>();
                     NoReturnDic.Add("未归人员数量：", NoReturnCount + "人");
                     NoReturnDic.Add("URI", ConfigurationManager.AppSettings["NoReturnReport"] + "?OrgId=" + leader.OrgId + "&ReportDate=" + Yeatday.Date.ToString("yyyy-MM-dd"));
                     LateReturnDic.Add("晚归人员数量：", LateReturnCount + "人");

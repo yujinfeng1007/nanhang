@@ -17,13 +17,11 @@ namespace ZHXY.Web.Controllers
 
     public class LoginController : Controller
     {
-        //private DutyService DutyApp { get; }
         private UserService UserApp { get; }
         public SysUserRoleAppService userRoleAppService { get; }
 
         public LoginController( UserService userApp, SysUserRoleAppService userRoleService)
         {
-            //DutyApp = app;
             UserApp = userApp;
             userRoleAppService = userRoleService;
         }
@@ -33,7 +31,6 @@ namespace ZHXY.Web.Controllers
         [HttpGet]
         public virtual ActionResult Index2()
         {
-            Licence.IsLicence();
             if (Operator.GetCurrent().IsEmpty())
             {
                 return View("index");
@@ -44,8 +41,6 @@ namespace ZHXY.Web.Controllers
         [HttpGet]
         public virtual ActionResult Index(string role = null)
         {
-            Licence.IsLicence();
-
             if (Operator.GetCurrent().IsEmpty())
             {
                 return View();

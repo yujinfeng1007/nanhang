@@ -2,7 +2,6 @@
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Dynamic;
-using ZHXY.Common;
 using ZHXY.Domain;
 
 namespace ZHXY.Application
@@ -12,7 +11,7 @@ namespace ZHXY.Application
     /// </summary>
     public class PerformanceAppService : AppService
     {
-        public PerformanceAppService(IZhxyRepository r) : base(r) { }
+        public PerformanceAppService(DbContext r) : base(r) { }
 
         /// <summary>
         /// 获取登录考核

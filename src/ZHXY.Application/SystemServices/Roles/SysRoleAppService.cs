@@ -13,7 +13,7 @@ namespace ZHXY.Application
     /// </summary>
     public class SysRoleAppService : AppService
     {
-        public SysRoleAppService(IZhxyRepository r) : base(r)
+        public SysRoleAppService(DbContext r) : base(r)
         {
         }
 

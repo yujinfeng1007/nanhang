@@ -4,20 +4,16 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Dynamic;
-using ZHXY.Common;
 
 namespace ZHXY.Application
 {
-
-
-
     /// <summary>
     /// 请假服务
     /// <author>yujinfeng</author>
     /// </summary>
     public partial class LeaveService : AppService, ILeaveService
     {
-        public LeaveService(IZhxyRepository r) : base(r) { }
+        public LeaveService(DbContext r) : base(r) { }
 
         /// <summary>
         /// 请假申请
@@ -227,10 +223,9 @@ namespace ZHXY.Application
                 CreatedTime = a.CreatedTime
             }).OrderByDescending(p => p.CreatedTime).ToListAsync().Result;
             var now = DateTime.Now.Date;
-            list.ForEach(item => item.Cancelable = item.EndOfTime.Date > now);
 
             foreach (var item in list)
-            {   
+            {
                 if (Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result == -1).Any())
                 {
                     item.ApprovalStatus = "已审批";
@@ -257,6 +252,13 @@ namespace ZHXY.Application
                     continue;
                 }
             }
+
+            list.ForEach(item =>
+            {
+                var canceled = Read<LeaveSuspend>(p => p.OrderId.Equals(item.Id)).Any();
+                item.Canceled = canceled;
+                item.Cancelable = item.ApprovalStatus == "已审批" && item.EndOfTime.Date > now && !canceled;
+            });
             return list;
         }
 
@@ -289,6 +291,7 @@ namespace ZHXY.Application
                 CreatedTime = p.a.CreatedTime
             }).OrderByDescending(p => p.CreatedTime).ToListAsync().Result;
             SetViewStatus(input.CurrentUserId, ref list);
+            list.ForEach(item => item.Canceled = Read<LeaveSuspend>(p => p.OrderId.Equals(item.Id)).Any());
             return list;
         }
 
@@ -387,7 +390,7 @@ namespace ZHXY.Application
         /// <param name="orderId"></param>
         public void SuspendLeave(string orderId)
         {
-            var currentDate=DateTime.Now.Date;
+            var currentDate = DateTime.Now.Date;
             var order = Read<LeaveOrder>(p => p.Id.Equals(orderId)).FirstOrDefault();
             if (order.EndOfTime.Date <= currentDate) throw new Exception("Holiday deadline must be after today!");
             var suspendLeave = new LeaveSuspend

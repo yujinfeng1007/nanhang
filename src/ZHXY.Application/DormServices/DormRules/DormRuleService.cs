@@ -10,7 +10,7 @@ namespace ZHXY.Application
     /// </summary>
     public class DormRuleAppService : AppService
     {
-        public DormRuleAppService(IZhxyRepository r) : base(r) { }
+        public DormRuleAppService(DbContext r) : base(r) { }
         public DormTimeRule GetById(string id) => Get<DormTimeRule>(id);
         public void Update(UpdateDormRuleDto input)
         {

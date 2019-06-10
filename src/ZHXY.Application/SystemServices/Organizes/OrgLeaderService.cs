@@ -9,7 +9,7 @@ namespace ZHXY.Application
     /// </summary>
     public class OrgLeaderService : AppService
     {
-        public OrgLeaderService(IZhxyRepository r) => R = r;
+        public OrgLeaderService(DbContext r) => R = r;
 
         public dynamic Get( string orgId)
         {

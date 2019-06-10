@@ -20,7 +20,7 @@ namespace ZHXY.Dorm.Device.DH
         public static object DHLogOut()
         {
             X_SUBJECT_TOKEN = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL).StringGet(REDIS_TOKEN_SET_KEY);
-            string cookieStr = "X-Subject-Token="+ X_SUBJECT_TOKEN;
+            var cookieStr = "X-Subject-Token="+ X_SUBJECT_TOKEN;
             var DataDic = new Dictionary<string, string>();
             DataDic.Add("userName", Constants.DAHUA_LOGIN_USERNAME);
             DataDic.Add("token", X_SUBJECT_TOKEN);
@@ -55,13 +55,13 @@ namespace ZHXY.Dorm.Device.DH
             }
             if( default(int) == personMoudle.id)
             {
-                string PersonJson = HttpHelper.ExecuteGetPersons(Constants.SELECT_STUDENTS_INFO, new PersonMoudle() { code = personMoudle.code }, X_SUBJECT_TOKEN);
+                var PersonJson = HttpHelper.ExecuteGetPersons(Constants.SELECT_STUDENTS_INFO, new PersonMoudle() { code = personMoudle.code }, X_SUBJECT_TOKEN);
                 if (null != PersonJson)
                 {
-                    var code = PersonJson.ToJObject().Value<int>("code");
+                    var code = PersonJson.Parse2JObject().Value<int>("code");
                     if (code == 200)
                     {
-                        personMoudle.id = PersonJson.ToJObject()["data"]["list"][0].Value<int>("id");
+                        personMoudle.id = PersonJson.Parse2JObject()["data"]["list"][0].Value<int>("id");
                     }
                 }
             }
@@ -100,7 +100,7 @@ namespace ZHXY.Dorm.Device.DH
         public static object CREATE_DORMITORY(String name, string pid, int level)
         {
             X_SUBJECT_TOKEN = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL).StringGet(REDIS_TOKEN_SET_KEY);
-            Dictionary<string, object> dicObj = new Dictionary<string, object>();
+            var dicObj = new Dictionary<string, object>();
             var dic = new Dictionary<string, string>();
             dic.Add("name", name);
             dic.Add("pname", pid);
@@ -178,7 +178,7 @@ namespace ZHXY.Dorm.Device.DH
             DataDic.Add("type", type);
             DataDic.Add("isDomain", isDomain);
             DataDic.Add("searchKey", searchKey);
-            string response = HttpHelper.ExecutePostMachineInfo(Constants.GET_MACHINE_INFO_URI, JsonConvert.SerializeObject(DataDic), X_SUBJECT_TOKEN);
+            var response = HttpHelper.ExecutePostMachineInfo(Constants.GET_MACHINE_INFO_URI, JsonConvert.SerializeObject(DataDic), X_SUBJECT_TOKEN);
             return (JObject)JsonConvert.DeserializeObject(response);
         }
 
@@ -190,13 +190,13 @@ namespace ZHXY.Dorm.Device.DH
         {
             X_SUBJECT_TOKEN = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL).StringGet(REDIS_TOKEN_SET_KEY);
             mqMoudle.data.optional = Constants.GET_MQ_CONFIG_URI + "?token=" + X_SUBJECT_TOKEN;
-            string response = HttpHelper.ExecutePostMachineInfo(mqMoudle.data.optional, JsonConvert.SerializeObject(mqMoudle), X_SUBJECT_TOKEN);
+            var response = HttpHelper.ExecutePostMachineInfo(mqMoudle.data.optional, JsonConvert.SerializeObject(mqMoudle), X_SUBJECT_TOKEN);
             var jo = (JObject)JsonConvert.DeserializeObject(response);
-            int code = jo.Value<int>("code"); //返回码
-            string desc = jo.Value<string>("desc"); //结果描述  Success
-            string userName = jo["data"]["userName"].ToString(); //用户名
-            string addr = jo["data"]["addr"].ToString(); //MQ地址
-            string password = jo["data"]["password"].ToString(); //密码
+            var code = jo.Value<int>("code"); //返回码
+            var desc = jo.Value<string>("desc"); //结果描述  Success
+            var userName = jo["data"]["userName"].ToString(); //用户名
+            var addr = jo["data"]["addr"].ToString(); //MQ地址
+            var password = jo["data"]["password"].ToString(); //密码
             return jo;
         }
 
@@ -231,7 +231,7 @@ namespace ZHXY.Dorm.Device.DH
         /// <returns></returns>
         public static string CancelSurvey(string[] channelId, string personId)
         {
-            Dictionary<string, object> dic = new Dictionary<string, object>();
+            var dic = new Dictionary<string, object>();
             dic.Add("channelId", channelId);
             dic.Add("personId", personId);
             X_SUBJECT_TOKEN = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL).StringGet(REDIS_TOKEN_SET_KEY);
@@ -247,7 +247,7 @@ namespace ZHXY.Dorm.Device.DH
         public static string OpenDoor(int type, string channelId)
         {
             X_SUBJECT_TOKEN = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL).StringGet(REDIS_TOKEN_SET_KEY);
-            Dictionary<string, object> dic = new Dictionary<string, object>();
+            var dic = new Dictionary<string, object>();
             dic.Add("type", type);
             dic.Add("channelId", channelId);
             return HttpHelper.ExecutePost(Constants.SET_OPEN_DOOR_URL, JsonConvert.SerializeObject(dic), X_SUBJECT_TOKEN);

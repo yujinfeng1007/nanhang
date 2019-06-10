@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ZHXY.Common;
+using System.Data.Entity;
 
 namespace ZHXY.Application
 {
@@ -12,14 +13,14 @@ namespace ZHXY.Application
     /// </summary>
     public class DbBackupService : AppService
     {
-        public DbBackupService(IZhxyRepository r) : base(r)
+        public DbBackupService(DbContext r) : base(r)
         {
         }
 
         public List<DbBackup> GetList(string queryJson)
         {
             var expression = ExtLinq.True<DbBackup>();
-            var queryParam = queryJson.ToJObject();
+            var queryParam = queryJson.Parse2JObject();
             if (!queryParam["condition"].IsEmpty() && !queryParam["keyword"].IsEmpty())
             {
                 var condition = queryParam["condition"].ToString();
@@ -56,7 +57,7 @@ namespace ZHXY.Application
         private void Backup(DbBackup dbBackupEntity)
         {
             DbHelper.ExecuteSqlCommand($"backup database {dbBackupEntity.DbName} to disk ='{dbBackupEntity.FilePath}'");
-            dbBackupEntity.FileSize = new FileInfo(dbBackupEntity.FilePath).Length.ToFileSizeString();
+            dbBackupEntity.FileSize = new FileInfo(dbBackupEntity.FilePath).Length.ToString();
             dbBackupEntity.FilePath = "/Resource/DbBackup/" + dbBackupEntity.FileName;
             AddAndSave(dbBackupEntity);
         }

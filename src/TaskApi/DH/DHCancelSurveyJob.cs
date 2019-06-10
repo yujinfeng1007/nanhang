@@ -1,13 +1,9 @@
-﻿using Newtonsoft.Json.Linq;
-using Quartz;
+﻿using Quartz;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ZHXY.Application;
 using ZHXY.Common;
 using ZHXY.Domain;
-using ZHXY.Dorm.Device.DH;
 
 namespace TaskApi.DH
 {
@@ -16,8 +12,8 @@ namespace TaskApi.DH
         public void Execute(IJobExecutionContext context)
         {
             Console.WriteLine(" ************  开始执行南航项目：访客撤控 ： " + DateTime.Now);
-            ZhxyDbContext db = new ZhxyDbContext();
-            DateTime dateTime = DateTime.Now;
+            var db = new ZhxyDbContext();
+            var dateTime = DateTime.Now;
             var ApplyList = db.Set<VisitorApply>().Where(p => dateTime > p.VisitEndTime && p.SurveyStatus == "0" && p.DhId != null).ToList();
             foreach(var apply in ApplyList)
             {
@@ -25,7 +21,7 @@ namespace TaskApi.DH
                 var zjids = db.Set<Relevance>().Where(p => p.SecondKey == apply.BuildingId && p.Name == Relation.GateBuilding).Select(p => p.FirstKey).ToList();
                 var channelIds = db.Set<Gate>().Where(t => zjids.Contains(t.Id)).Select(p => p.DeviceNumber+ "$7$0$0").ToArray();
                 var ResultStr = DHAccount.CancelSurvey(channelIds, apply.DhId);
-                JObject jo = Json.ToJObject(ResultStr);
+                var jo = ResultStr.Parse2JObject();
                 if (jo.Value<bool>("success"))
                 {
                     apply.SurveyStatus = "1";

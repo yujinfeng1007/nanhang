@@ -20,9 +20,9 @@ namespace TaskApi.NHExceptionReport
         {
             // 测试用时间点   
             //DateTime QuartzTime = Convert.ToDateTime("2019-05-24 02:00:00");
-            DateTime QuartzTime = DateTime.Now;
-            string TableName = "DHFLOW_" + QuartzTime.Year + QuartzTime.Month.ToString().PadLeft(2, '0');
-            ZhxyDbContext db = new ZhxyDbContext();
+            var QuartzTime = DateTime.Now;
+            var TableName = "DHFLOW_" + QuartzTime.Year + QuartzTime.Month.ToString().PadLeft(2, '0');
+            var db = new ZhxyDbContext();
             var sw = new Stopwatch();
             sw.Start();
 
@@ -58,16 +58,16 @@ namespace TaskApi.NHExceptionReport
         public void ProcessNoReturnException(DateTime QuartzTime, string TableName, List<string> LeaveListId, ZhxyDbContext db)
         {
             //查看所有人员当天的最后一条记录
-            long StartTimestamp = DateHelper.ConvertDateTimeInt(QuartzTime.AddDays(-1));
-            long EndTimestamp = DateHelper.ConvertDateTimeInt(QuartzTime);
-            String UsersLastRecordSql = "select b.id,b.code,b.inout, b.swipDate, b.date,b.firstName name from (SELECT code, MAX(swipDate) swipDate FROM [dbo].[" + TableName + "] GROUP BY code HAVING MAX(swipDate) BETWEEN '" + StartTimestamp + "' and '" + EndTimestamp + "' ) a JOIN " + TableName + " b on a.code=b.code and a.swipDate = b.swipDate";
-            var List = SqlHelper.ExecuteDataTable(UsersLastRecordSql).ToJson().ToList<LastRecordMoudle>().Where(p => p.inout == 1 && !LeaveListId.Contains(p.studentId)).ToList();
-            List<NoReturnReport> ReportList = new List<NoReturnReport>();
+            var StartTimestamp = DateHelper.ConvertDateTimeInt(QuartzTime.AddDays(-1));
+            var EndTimestamp = DateHelper.ConvertDateTimeInt(QuartzTime);
+            var UsersLastRecordSql = "select b.id,b.code,b.inout, b.swipDate, b.date,b.firstName name from (SELECT code, MAX(swipDate) swipDate FROM [dbo].[" + TableName + "] GROUP BY code HAVING MAX(swipDate) BETWEEN '" + StartTimestamp + "' and '" + EndTimestamp + "' ) a JOIN " + TableName + " b on a.code=b.code and a.swipDate = b.swipDate";
+            var List = SqlHelper.ExecuteDataTable(UsersLastRecordSql).ToJson().Deserialize<List<LastRecordMoudle>>().Where(p => p.inout == 1 && !LeaveListId.Contains(p.studentId)).ToList();
+            var ReportList = new List<NoReturnReport>();
             foreach (var noReturn in List)
             {
                 var IdAndClass = db.Set<Student>().Where(s => s.StudentNumber.Equals(noReturn.code)).FirstOrDefault();
                 if(IdAndClass == null){continue;}
-                NoReturnReport report = new NoReturnReport();
+                var report = new NoReturnReport();
                 report.Id = Guid.NewGuid().ToString().Replace("-", "");
                 report.CreatedTime = QuartzTime.AddDays(-1).Date;
                 report.College = "root";
@@ -94,23 +94,23 @@ namespace TaskApi.NHExceptionReport
         public void ProcessLateReturnException(DateTime QuartzTime, string TableName, List<string> LeaveListId, ZhxyDbContext db)
         {
             //查看所有人员23:00到凌晨2点的最后一条记录
-            DateTime StartTime = QuartzTime.AddDays(-1).Date.AddHours(WorkDayLateReturnTime);
+            var StartTime = QuartzTime.AddDays(-1).Date.AddHours(WorkDayLateReturnTime);
             var DayOfWeek = QuartzTime.AddDays(-1).DayOfWeek.ToString();
             if (DayOfWeek.Equals("Saturday") || DayOfWeek.Equals("Friday"))
             {
                 StartTime = QuartzTime.Date;
             }
-            DateTime EndTime = QuartzTime.Date.AddHours(NotReturnTime);
-            long StartTimestamp = DateHelper.ConvertDateTimeInt(StartTime);
-            long EndTimestamp = DateHelper.ConvertDateTimeInt(EndTime);
-            string UsersLastRecordSql = "select b.id,b.code,b.inout, b.swipDate, b.date,b.firstName name from (SELECT code, MAX(swipDate) swipDate FROM [dbo].[" + TableName + "] GROUP BY code HAVING MAX(swipDate) BETWEEN '" + StartTimestamp + "' and '" + EndTimestamp + "' ) a JOIN " + TableName + " b on a.code=b.code and a.swipDate = b.swipDate";
-            var List = SqlHelper.ExecuteDataTable(UsersLastRecordSql).ToJson().ToList<LastRecordMoudle>().Where(p => p.inout == 0 && !LeaveListId.Contains(p.studentId));
-            List<LateReturnReport> reportList = new List<LateReturnReport>();
+            var EndTime = QuartzTime.Date.AddHours(NotReturnTime);
+            var StartTimestamp = DateHelper.ConvertDateTimeInt(StartTime);
+            var EndTimestamp = DateHelper.ConvertDateTimeInt(EndTime);
+            var UsersLastRecordSql = "select b.id,b.code,b.inout, b.swipDate, b.date,b.firstName name from (SELECT code, MAX(swipDate) swipDate FROM [dbo].[" + TableName + "] GROUP BY code HAVING MAX(swipDate) BETWEEN '" + StartTimestamp + "' and '" + EndTimestamp + "' ) a JOIN " + TableName + " b on a.code=b.code and a.swipDate = b.swipDate";
+            var List = SqlHelper.ExecuteDataTable(UsersLastRecordSql).ToJson().Deserialize<List<LastRecordMoudle>>().Where(p => p.inout == 0 && !LeaveListId.Contains(p.studentId));
+            var reportList = new List<LateReturnReport>();
             foreach(var p in List)
             {
                 var IDClassId = db.Set<Student>().Where(s => s.StudentNumber.Equals(p.code)).FirstOrDefault();
                 if(null == IDClassId) {continue; }
-                LateReturnReport r = new LateReturnReport();
+                var r = new LateReturnReport();
                 r.Id = Guid.NewGuid().ToString().Replace("-", "");
                 r.CreatedTime = QuartzTime.AddDays(-1).Date;
                 r.College = "root";
@@ -138,11 +138,11 @@ namespace TaskApi.NHExceptionReport
         public void ProcessNotOutException(DateTime QuartzTime, string TableName, ZhxyDbContext db)
         {
             //查看所有人员当天的最后一条记录
-            long StartTimestamp = DateHelper.ConvertDateTimeInt(QuartzTime.Date.AddDays(-(int) QuartzTime.Day+1));
-            long EndTimestamp = DateHelper.ConvertDateTimeInt(QuartzTime);
-            String UsersLastRecordSql = "select b.id,b.code,b.inout, b.swipDate, b.date,b.firstName name from (SELECT code, MAX(swipDate) swipDate FROM [dbo].[" + TableName + "] GROUP BY code HAVING MAX(swipDate) BETWEEN '" + StartTimestamp + "' and '" + EndTimestamp + "' ) a JOIN " + TableName + " b on a.code=b.code and a.swipDate = b.swipDate";
-            var List = SqlHelper.ExecuteDataTable(UsersLastRecordSql).ToJson().ToList<LastRecordMoudle>().Where(p => p.inout == 0).ToList();
-            List<NoOutReport> ReportList = new List<NoOutReport>();
+            var StartTimestamp = DateHelper.ConvertDateTimeInt(QuartzTime.Date.AddDays(-(int) QuartzTime.Day+1));
+            var EndTimestamp = DateHelper.ConvertDateTimeInt(QuartzTime);
+            var UsersLastRecordSql = "select b.id,b.code,b.inout, b.swipDate, b.date,b.firstName name from (SELECT code, MAX(swipDate) swipDate FROM [dbo].[" + TableName + "] GROUP BY code HAVING MAX(swipDate) BETWEEN '" + StartTimestamp + "' and '" + EndTimestamp + "' ) a JOIN " + TableName + " b on a.code=b.code and a.swipDate = b.swipDate";
+            var List = SqlHelper.ExecuteDataTable(UsersLastRecordSql).ToJson().Deserialize<List<LastRecordMoudle>>().Where(p => p.inout == 0).ToList();
+            var ReportList = new List<NoOutReport>();
             foreach(var noOut in List)
             {
                 var FTime = DateHelper.DateDiff("hour", DateHelper.GetTime(noOut.swipDate), QuartzTime);
@@ -150,7 +150,7 @@ namespace TaskApi.NHExceptionReport
                 var IdAndClass = db.Set<Student>().Where(s => s.StudentNumber.Equals(noOut.code)).FirstOrDefault();
                 if (IdAndClass == null){continue; }
 
-                NoOutReport report = new NoOutReport();
+                var report = new NoOutReport();
                 report.Id = Guid.NewGuid().ToString().Replace("-", "");
                 report.CreatedTime = QuartzTime.AddDays(-1).Date;
                 report.College = "root";

@@ -1,5 +1,4 @@
-﻿using ZHXY.Common;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using ZHXY.Domain;
 using System;
@@ -11,7 +10,7 @@ namespace ZHXY.Application
     /// </summary>
     public class DormRoomAppService : AppService
     {
-        public DormRoomAppService(IZhxyRepository r) : base(r)
+        public DormRoomAppService(DbContext r) : base(r)
         {
         }
 

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using ZHXY.Common;
 
 namespace ZHXY.Application
 {
@@ -12,13 +11,13 @@ namespace ZHXY.Application
     /// </summary>
     public class StudentService : AppService
     {
-        public StudentService(IZhxyRepository r) : base(r)
+        public StudentService(DbContext r) : base(r)
         {
         }
 
         public StudentService()
         {
-            R = new ZhxyRepository();
+            R = new ZhxyDbContext();
         }   
         public dynamic GetByStudentNumber(string num)
         {

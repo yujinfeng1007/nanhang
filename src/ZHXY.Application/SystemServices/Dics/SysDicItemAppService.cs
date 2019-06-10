@@ -4,7 +4,6 @@ using System.Data.Entity;
 using System.Linq;
 
 using ZHXY.Common;
-using ZHXY.Domain;
 using ZHXY.Domain.Entity;
 
 namespace ZHXY.Application
@@ -14,7 +13,7 @@ namespace ZHXY.Application
     /// </summary>
     public class SysDicItemAppService : AppService
     {
-        public SysDicItemAppService(IZhxyRepository r) : base(r)
+        public SysDicItemAppService(DbContext r) : base(r)
         {
         }
 

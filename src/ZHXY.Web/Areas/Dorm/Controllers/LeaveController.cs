@@ -11,8 +11,14 @@ namespace ZHXY.Web.Dorm.Controllers
     /// </summary>
     public class LeaveController : ZhxyController
     {
-        public ILeaveService App { get; }
+
+        public async Task<ViewResult> ApproveForm() => await Task.Run(() => View());
+        public async Task<ViewResult> BulkApproveForm() => await Task.Run(() => View());
+
+        private ILeaveService App { get; }
+
         public LeaveController(ILeaveService app) => App = app;
+
         /// <summary>
         /// 获取老师
         /// </summary>
@@ -40,15 +46,17 @@ namespace ZHXY.Web.Dorm.Controllers
             App.Request(input);
             return Result.Success();
         }
-        public async Task<ViewResult> ApproveForm() => await Task.Run(() => View());
-        public async Task<ViewResult> BulkApproveForm() => await Task.Run(() => View());
+      
 
 
         /// <summary>
         /// 获取详情
         /// </summary>
         [HttpGet]
-        public ActionResult Get([Required(ErrorMessage = "请假Id不能为空!")]string id) => Result.Success(App.GetApprovalDetail(id, Operator.GetCurrent().Id));
+        public ActionResult Get([Required(ErrorMessage = "请假Id不能为空!")]string id)
+        {
+            return Result.Success(App.GetApprovalDetail(id, Operator.GetCurrent().Id));
+        }
 
         /// <summary>
         /// 请假审批
@@ -78,11 +86,11 @@ namespace ZHXY.Web.Dorm.Controllers
         /// <param name="input"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult> GetLeaveHistory(GetLeaveHistoryDto input) => await Task.Run(() =>
+        public ActionResult GetLeaveHistory(GetLeaveHistoryDto input)  
         {
             var data = App.GetLeaveHistory(input);
             return Result.PagingRst(data, input.Records, input.Total);
-        });
+        }
 
         /// <summary>
         /// 获取审批列表
@@ -99,23 +107,36 @@ namespace ZHXY.Web.Dorm.Controllers
         /// 获取审批人列表
         /// </summary>
         [HttpGet]
-        public async Task<ActionResult> LoadFinals(string search)
+        public  ActionResult LoadFinals(string search)
         {
-            return await Task.Run(() => Result.Success(App.GetFinalJudgeList(search)));
+            return Result.Success(App.GetFinalJudgeList(search));
         }
 
         /// <summary>
         /// 添加审批人
         /// </summary>
         [HttpPost]
-        public void AddApprover(AddApproverDto dto) => App.AddApprover(dto);
+        public ActionResult AddApprover(AddApproverDto dto)
+        {
+            App.AddApprover(dto);
+            return Result.Success();
+        }
 
         /// <summary>
         /// 获取上级审批信息
         /// </summary>
         [HttpGet]
-        public ActionResult GetPreApprove(string id) => Result.Success(App.GetPrevApprove(id));
+        public ActionResult GetPreApprove(string id)
+        {
+            return Result.Success(App.GetPrevApprove(id));
+        }
 
+        [HttpPost]
+        public ActionResult SuspendLeave(string orderId)
+        {
+            App.SuspendLeave(orderId);
+            return Result.Success();
+        }
 
     }
 }

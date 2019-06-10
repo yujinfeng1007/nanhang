@@ -7,7 +7,7 @@ namespace ZHXY.Mapping
     {
         public RoleMap()
         {
-            ToTable("Sys_Role");
+            ToTable("zhxy_role");
             HasKey(t => t.F_Id);
         }
     }

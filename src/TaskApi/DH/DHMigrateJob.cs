@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Quartz;
-using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,10 +18,10 @@ namespace TaskApi.DH
         public void Execute(IJobExecutionContext context)
         {
             var db = RedisHelper.GetDatabase(REDIS_LINE_RECORD_DB_LEVEL);
-            RedisValue[] valueArr = db.SetRandomMembers(REDIS_LINE_RECORD_SET_KEY, REDIS_PROCESS_COUNT);
+            var valueArr = db.SetRandomMembers(REDIS_LINE_RECORD_SET_KEY, REDIS_PROCESS_COUNT);
             Console.WriteLine("处理闸机流水信息,处理数据长度为： " + valueArr.Length + "   DateTime : " + DateTime.Now.ToString());
             var ListLineRecord = new List<LineRecordMoudle>();
-            for (int i = 0; i < valueArr.Length; i++)
+            for (var i = 0; i < valueArr.Length; i++)
             {
                 var jo = ((JObject)JsonConvert.DeserializeObject(valueArr[i])).Value<JObject>("info");
                 jo.Add("id", Guid.NewGuid().ToString());
@@ -46,14 +45,14 @@ namespace TaskApi.DH
             var TempLastMonthList = new List<LineRecordMoudle>();  //上个月数据入库集合 (访客)
             var TempCurrentMonthList = new List<LineRecordMoudle>(); //当前月份数据入库集合（访客）
             var dateTitle = GetDateTime(Int32.Parse(lineRecordMoudles[0].swipDate));
-            int TableIntTitle = Int32.Parse(dateTitle.Year + "" + dateTitle.Month);
-            string tableNameTitle = "DHFLOW_" + dateTitle.Year + dateTitle.Month.ToString().PadLeft(2, '0');
-            string tableNameTemp = "DHFLOW_TEMP_" + dateTitle.Year + dateTitle.Month.ToString().PadLeft(2, '0');//访客流水表
+            var TableIntTitle = Int32.Parse(dateTitle.Year + "" + dateTitle.Month);
+            var tableNameTitle = "DHFLOW_" + dateTitle.Year + dateTitle.Month.ToString().PadLeft(2, '0');
+            var tableNameTemp = "DHFLOW_TEMP_" + dateTitle.Year + dateTitle.Month.ToString().PadLeft(2, '0');//访客流水表
             string tableNameOther = null, tableNameTempOther = null;
             foreach (var lineRecord in lineRecordMoudles)
             {
                 var date = GetDateTime(Int32.Parse(lineRecord.swipDate));
-                int TableInt = Int32.Parse(date.Year + "" + date.Month);
+                var TableInt = Int32.Parse(date.Year + "" + date.Month);
                 if(TableInt == TableIntTitle)
                 {
                     if (lineRecord.roleId.Equals("temp"))
@@ -125,7 +124,7 @@ namespace TaskApi.DH
         private int GetTimeStamp(DateTime dt)
         {
             var dateStart = new DateTime(1970, 1, 1, 8, 0, 0);
-            int timeStamp = Convert.ToInt32((dt - dateStart).TotalSeconds);
+            var timeStamp = Convert.ToInt32((dt - dateStart).TotalSeconds);
             return timeStamp;
         }
 
@@ -137,7 +136,7 @@ namespace TaskApi.DH
         private DateTime GetDateTime(int timeStamp)
         {
             var dtStart = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
-            long lTime = ((long)timeStamp * 10000000);
+            var lTime = ((long)timeStamp * 10000000);
             var toNow = new TimeSpan(lTime);
             var targetDt = dtStart.Add(toNow);
             return targetDt;

@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using ZHXY.Application.DormServices.Gates;
-using ZHXY.Common;
 using ZHXY.Domain;
 
 namespace ZHXY.Application
 {
     public class FaceService  :  AppService
     {
-        public FaceService(IZhxyRepository r) : base(r) { }
+        public FaceService(DbContext r) : base(r) { }
       
 
         /// <summary>
@@ -53,7 +51,7 @@ namespace ZHXY.Application
         public dynamic GetFaceApprovalList(GetFaceApprovalListDto input)
         {
             IQueryable<StuFaceOrder> query = null;
-            List<FaceListView> faceListViews = new List<FaceListView>();
+            var faceListViews = new List<FaceListView>();
             //判断登陆用户是学生，还是宿管   若是学生获取所有提交的申请，若是老师则查看所有审批的申请
             var dutyId = Read<User>(p => p.Id.Equals(input.CurrentUserId)).Select(p => p.DutyId).FirstOrDefaultAsync().Result;
             if (dutyId.Equals("teacherDuty") || dutyId.Equals("suguanDuty"))
@@ -125,8 +123,8 @@ namespace ZHXY.Application
             SaveChanges();
             //审批同意则更新头像并下发
             if (input.IsAgreed) {
-                new UserService(new ZhxyRepository()).UpdIco(face.ApplicantId, face.ApproveImg);
-                new StudentService(new ZhxyRepository()).UpdIco(face.ApplicantId, face.ApproveImg);                
+                new UserService(new ZhxyDbContext()).UpdIco(face.ApplicantId, face.ApproveImg);
+                new StudentService(new ZhxyDbContext()).UpdIco(face.ApplicantId, face.ApproveImg);                
                 new UserToGateService().SendUserHeadIco(new string[] { face.ApplicantId });
                 Console.WriteLine();
             }

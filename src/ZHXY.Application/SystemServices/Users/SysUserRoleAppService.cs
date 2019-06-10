@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
-using ZHXY.Common;
 using ZHXY.Domain;
 
 namespace ZHXY.Application
@@ -10,7 +10,7 @@ namespace ZHXY.Application
     /// </summary>
     public class SysUserRoleAppService : AppService
     {
-        public SysUserRoleAppService(IZhxyRepository r) : base(r)
+        public SysUserRoleAppService(DbContext r) : base(r)
         {
         }
 

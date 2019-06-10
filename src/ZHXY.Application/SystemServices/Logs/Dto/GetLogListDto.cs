@@ -1,6 +1,4 @@
-﻿using ZHXY.Common;
-
-namespace ZHXY.Application
+﻿namespace ZHXY.Application
 {
     public class GetLogListDto: Pagination
     {

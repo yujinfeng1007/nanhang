@@ -1,15 +1,15 @@
-﻿using ZHXY.Common;
-using System.Data;
+﻿using System.Data;
 using System.Collections.Generic;
 using System.Linq;
 using ZHXY.Domain;
 using System;
+using System.Data.Entity;
 
 namespace ZHXY.Application
 {
     public class InOutReceiveAppService : AppService
     {
-        public InOutReceiveAppService(IZhxyRepository r) : base(r) { }
+        public InOutReceiveAppService(DbContext r) : base(r) { }
         public List<InOutReceive> GetList(Pagination pagination)
         {
             var list = Read<InOutReceive>().Paging(pagination).ToList();

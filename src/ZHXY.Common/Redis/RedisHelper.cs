@@ -5,18 +5,12 @@ namespace ZHXY.Common
 {
     public static class RedisHelper
     {
-        private static readonly ConnectionMultiplexer _instance;
+        private static readonly ConnectionMultiplexer Instance;
 
-        static RedisHelper()
-        {
-            var connectionString = ConfigurationManager.AppSettings["redis_server_session"];
-            _instance= ConnectionMultiplexer.Connect(connectionString);
-        }
+        private static string ConnectionString { get; } = ConfigurationManager.ConnectionStrings["redis"].ConnectionString;
+        static RedisHelper() => Instance = ConnectionMultiplexer.Connect(ConnectionString);
+        public static IDatabase GetDatabase(int db = 0) => Instance.GetDatabase(db);
 
-        public static IDatabase GetDatabase(int db)
-        {
-            return _instance.GetDatabase(db);
-        }
-      
+        public static void FlushDatabase(int db = 0) => Instance.GetServer(ConnectionString).FlushDatabase(db);
     }
 }

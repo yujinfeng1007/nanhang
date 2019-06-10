@@ -207,7 +207,7 @@ namespace ZHXY.Common
                     {
                         var sheet = workbook.GetSheetAt(0);
                         //开始写入数据
-                        for(int i=0; i<StudentInfosList.Count; i++)
+                        for(var i=0; i<StudentInfosList.Count; i++)
                         {
                             var rows = sheet.CreateRow(i + 1);
                             var student = StudentInfosList[i];
@@ -232,7 +232,7 @@ namespace ZHXY.Common
             }
             catch(Exception ex)
             {
-                string ErrorMess = ex.Message;
+                var ErrorMess = ex.Message;
                 Console.WriteLine(ErrorMess);
                 fs?.Close();
                 return false;
@@ -264,7 +264,7 @@ namespace ZHXY.Common
                     {
                         var sheet = workbook.GetSheetAt(0);
                         //开始写入数据
-                        for (int i = 0; i < StudentMoudleList.Count; i++)
+                        for (var i = 0; i < StudentMoudleList.Count; i++)
                         {
                             var rows = sheet.CreateRow(i + 1);
                             var student = StudentMoudleList[i];
@@ -289,7 +289,7 @@ namespace ZHXY.Common
             }
             catch (Exception ex)
             {
-                string ErrorMess = ex.Message;
+                var ErrorMess = ex.Message;
                 Console.WriteLine(ErrorMess);
                 fs?.Close();
                 return false;

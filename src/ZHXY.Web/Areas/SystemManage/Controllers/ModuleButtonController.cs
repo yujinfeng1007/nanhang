@@ -70,8 +70,8 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult SubmitForm(SysButton moduleButtonEntity, string keyValue)
         {
             App.SubmitForm(moduleButtonEntity, keyValue);
-            CacheFactory.Cache().RemoveCache();
-            CacheFactory.Cache().WriteCache(CacheService.GetMenuButtonList(), SmartCampusConsts.AUTHORIZEBUTTON);
+            RedisCache.Clear();
+            RedisCache.Set( Consts.AUTHORIZEBUTTON, CacheService.GetMenuButtonList());
             return Result.Success();
         }
 
@@ -81,10 +81,10 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult DeleteForm(string keyValue)
         {
             App.DeleteForm(keyValue);
-            //CacheFactory.Cache().RemoveCache(Cons.AUTHORIZEBUTTON);
-            //CacheFactory.Cache().WriteCache(MvcApplication.GetMenuButtonList(), Cons.AUTHORIZEBUTTON);
-            CacheFactory.Cache().RemoveCache();
-            //CacheFactory.Cache().WriteCache(MvcApplication.GetMenuButtonList(), Cons.AUTHORIZEBUTTON);
+            //RedisCache.RemoveCache(Cons.AUTHORIZEBUTTON);
+            //RedisCache.WriteCache(MvcApplication.GetMenuButtonList(), Cons.AUTHORIZEBUTTON);
+            RedisCache.Clear();
+            //RedisCache.WriteCache(MvcApplication.GetMenuButtonList(), Cons.AUTHORIZEBUTTON);
             return Result.Success();
         }
 
@@ -144,8 +144,8 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult SubmitCloneButton(string moduleId, string Ids)
         {
             App.SubmitCloneButton(moduleId, Ids);
-            CacheFactory.Cache().RemoveCache();
-            //CacheFactory.Cache().WriteCache(MvcApplication.GetMenuButtonList(), Cons.AUTHORIZEBUTTON);
+            RedisCache.Clear();
+            //RedisCache.WriteCache(MvcApplication.GetMenuButtonList(), Cons.AUTHORIZEBUTTON);
             return Result.Success();
         }
     }

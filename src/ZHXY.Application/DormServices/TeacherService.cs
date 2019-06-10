@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using ZHXY.Common;
 
 namespace ZHXY.Application
 {
@@ -12,7 +11,7 @@ namespace ZHXY.Application
     /// </summary>
     public class TeacherService : AppService
     {
-        public TeacherService(IZhxyRepository r):base(r)
+        public TeacherService(DbContext r):base(r)
         {
         }
         public dynamic GetByJobNumber(string num)
