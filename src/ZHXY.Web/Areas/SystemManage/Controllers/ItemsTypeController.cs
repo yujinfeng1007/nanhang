@@ -92,8 +92,8 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult SubmitForm(SysDic itemsEntity, string keyValue)
         {
             App.SubmitForm(itemsEntity, keyValue);
-            RedisCache.Remove(Consts.DATAITEMS);
-            RedisCache.Set(Consts.DATAITEMS, CacheService.GetDataItemList());
+            RedisCache.Remove(SysConsts.DATAITEMS);
+            RedisCache.Set(SysConsts.DATAITEMS, CacheService.GetDataItemList());
             return Result.Success();
         }
 
@@ -103,8 +103,8 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult DeleteForm(string keyValue)
         {
             App.DeleteForm(keyValue);
-            RedisCache.Remove(Consts.DATAITEMS);
-            RedisCache.Set( Consts.DATAITEMS, CacheService.GetDataItemList());
+            RedisCache.Remove(SysConsts.DATAITEMS);
+            RedisCache.Set( SysConsts.DATAITEMS, CacheService.GetDataItemList());
             return Result.Success();
         }
     }

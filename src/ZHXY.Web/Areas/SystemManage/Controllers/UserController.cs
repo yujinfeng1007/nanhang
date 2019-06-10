@@ -14,6 +14,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         private UserService App { get; }
 
         public UserController(UserService app) => App = app;
+
         #region view
 
         [HttpGet]
@@ -80,26 +81,7 @@ namespace ZHXY.Web.SystemManage.Controllers
             return Result.Success();
         }
 
-        //[HttpPost]
-
-        //[ValidateAntiForgeryToken]
-        //public ActionResult UpdateForm(User userEntity, string keyValue)
-        //{
-        //    userEntity.F_Id = keyValue;
-        //    if (userEntity.F_EnabledMark == null)
-        //        userEntity.F_EnabledMark = true;
-        //    App.Update(userEntity);
-        //    return Result.Success();
-        //}
-
-        //[HttpPost]
-
-        //public ActionResult SubmitSetUp(User userEntity)
-        //{
-        //    App.SubmitSetUp(userEntity);
-        //    return Result.Success();
-        //}
-
+      
         [HttpPost]
         [HandlerAuthorize]
 
@@ -122,44 +104,11 @@ namespace ZHXY.Web.SystemManage.Controllers
             
         }
 
-        //[HttpPost]
-
-        //[HandlerAuthorize]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult DisabledAccount(string keyValue)
-        //{
-        //    var F_Id = keyValue.Split('|');
-        //    for (var i = 0; i < F_Id.Length - 1; i++)
-        //    {
-        //        var userEntity = new SysUser { F_Id = F_Id[i], F_EnabledMark = false };
-        //        App.Update(userEntity);
-        //    }
-        //    return Result.Success();
-        //}
-
-        //[HttpPost]
-
-        //[HandlerAuthorize]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult EnabledAccount(string keyValue)
-        //{
-        //    var F_Id = keyValue.Split('|');
-        //    for (var i = 0; i < F_Id.Length - 1; i++)
-        //    {
-        //        var userEntity = new SysUser { F_Id = F_Id[i], F_EnabledMark = true };
-        //        App.Update(userEntity);
-        //    }
-        //    return Result.Success();
-        //}
-
+       
         public JsonResult GetUserPassword(string userid, string password)
         {
             var IsOk = App.VerifyPwd(userid, password);
             return Json(IsOk);
         }
-
-
-        //[HttpGet]
-        //public async Task<ActionResult> GetByOrg(string orgId, string keyword) => await Task.Run(() =>   Result.Success(App.GetUserByOrg(orgId, keyword)));
     }
 }

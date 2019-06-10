@@ -97,8 +97,6 @@ namespace ZHXY.Web.SystemManage.Controllers
             else
             {
                 var user = UserApp.GetById(keyword);
-                //if (!user.IsEmpty())
-                //    data_deeps = user.DataDeps;
             }
 
             var treeList = new List<TreeViewModel>();
@@ -145,35 +143,7 @@ namespace ZHXY.Web.SystemManage.Controllers
             return Content(treeList.TreeGridJson());
         }
 
-        /// <summary>
-        /// 获取学校
-        /// </summary>
-        /// <param name="keyword">  </param>
-        /// <returns>  </returns>
-        [HttpGet]
-        public ActionResult GetSchoolOrGradeTreeGridJson(string keyword)
-        {
-            var data = App.GetList();
-            if (!string.IsNullOrEmpty(keyword))
-            {
-                data = data.TreeWhere(t => t.CategoryId.Contains(keyword));
-            }
-            var treeList = new List<TreeGridModel>();
-            foreach (var item in data)
-            {
-                var treeModel = new TreeGridModel();
-                var hasChildren = data.Count(t => t.ParentId == item.Id) != 0;
-                treeModel.id = item.Id;
-                treeModel.isLeaf = hasChildren;
-                treeModel.parentId = item.ParentId;
-                treeModel.expanded = false;
-                treeModel.entityJson = item.ToJson();
-                treeList.Add(treeModel);
-            }
-            return Content(treeList.TreeGridJson());
-        }
-
-
+       
         [HttpGet]
         public JsonResult GetDivisGradeClass(string keyValue)
         {
@@ -219,85 +189,6 @@ namespace ZHXY.Web.SystemManage.Controllers
             return Result.Success();
         }
 
-        /// <summary>
-        /// 取到学部对应
-        /// </summary>
-        [HttpGet]
-        public ActionResult GetOrgDics()
-        {
-            // 获取所有学部
-            var orgList = App.GetList().Where(t => t.CategoryId == "Division").ToList();
-            var orgs = new Dictionary<string, Dictionary<string, string[]>>();
-            //入学年段
-            var tmp = new Dictionary<string, string[]>();
-            ////就读方式
-            //Dictionary <string, string[]> F_SchoolType = new Dictionary<string, string[]>();
-            ////来源类型
-            //Dictionary<string, string[]> F_ComeFrom_Type = new Dictionary<string, string[]>();
-            foreach (var org in orgList)
-            {
-                switch (org.EnCode)
-                {
-                    //精品小学
-                    case "01":
-                    case "04":
-                        tmp = new Dictionary<string, string[]>();
-                        tmp.Add("F_InYear", new string[] { "一年级", "二年级", "三年级", "四年级", "五年级", "六年级" });
-                        tmp.Add("F_SchoolType", new string[] { "住校", "走读", "陪读" });
-                        tmp.Add("F_ComeFrom_Type", new string[] { "校外转入", "校内直升", "无学籍" });
-                        orgs.Add(org.Id, tmp);
-                        break;
-
-                    case "02":
-                    case "05":
-                        tmp = new Dictionary<string, string[]>();
-                        tmp.Add("F_InYear", new string[] { "初一", "初二", "初三" });
-                        tmp.Add("F_SchoolType", new string[] { "住校", "走读", "陪读" });
-                        tmp.Add("F_ComeFrom_Type", new string[] { "校外转入", "校内直升" });
-                        orgs.Add(org.Id, tmp);
-                        break;
-
-                    case "03":
-                    case "06":
-                        tmp = new Dictionary<string, string[]>();
-                        tmp.Add("F_InYear", new string[] { "高一", "高二", "高三" });
-                        tmp.Add("F_SchoolType", new string[] { "住校", "走读", "陪读" });
-                        tmp.Add("F_ComeFrom_Type", new string[] { "校外转入", "校内直升" });
-                        orgs.Add(org.Id, tmp);
-                        break;
-
-                    case "07":
-                        tmp = new Dictionary<string, string[]>();
-                        tmp.Add("F_InYear", new string[] { "小学", "初中", "高中" });
-                        tmp.Add("F_SchoolType", new string[] { "住校", "走读", "陪读" });
-                        tmp.Add("F_ComeFrom_Type", new string[] { "校外转入", "校内直升" });
-                        orgs.Add(org.Id, tmp);
-                        break;
-
-                    case "08":
-                        tmp = new Dictionary<string, string[]>();
-                        tmp.Add("F_InYear", new string[] { "小一", "小二", "小三", "小四", "小五", "小六" });
-                        tmp.Add("F_SchoolType", new string[] { "住校" });
-                        tmp.Add("F_ComeFrom_Type", new string[] { "校外转入", "校内直升" });
-                        orgs.Add(org.Id, tmp);
-                        break;
-
-                    case "11":
-                    case "12":
-                    case "13":
-                    case "14":
-                    case "15":
-                    case "16":
-                        tmp = new Dictionary<string, string[]>();
-                        tmp.Add("F_InYear", new string[] { "小小班", "小班", "中班", "大班" });
-                        tmp.Add("F_SchoolType", new string[] { "日托", "全日托", "周托", "全托" });
-                        tmp.Add("F_ComeFrom_Type", new string[] { "校外转入", "无学籍" });
-                        orgs.Add(org.Id, tmp);
-                        break;
-                }
-            }
-            return Content(orgs.ToJson());
-        }
 
         /// <summary>
         /// 获取老师机构

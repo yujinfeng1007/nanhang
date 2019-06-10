@@ -39,12 +39,12 @@ namespace ZHXY.Application
 
         public static Dictionary<string, object> GetDutyListByCache()
         {
-            if (RedisCache.Get<Dictionary<string, object>>(Consts.DUTY).IsEmpty())
+            if (RedisCache.Get<Dictionary<string, object>>(SysConsts.DUTY).IsEmpty())
             {
-                RedisCache.Set(Consts.DUTY,(Dictionary<string, object>)GetDutyList());
+                RedisCache.Set(SysConsts.DUTY,(Dictionary<string, object>)GetDutyList());
             }
 
-            return RedisCache.Get<Dictionary<string, object>>(Consts.DUTY);
+            return RedisCache.Get<Dictionary<string, object>>(SysConsts.DUTY);
         }
 
 
@@ -68,12 +68,12 @@ namespace ZHXY.Application
 
         public static Dictionary<string, object> GetRoleListByCache()
         {
-            if (RedisCache.Get<Dictionary<string, object>>(Consts.ROLE).IsEmpty())
+            if (RedisCache.Get<Dictionary<string, object>>(SysConsts.ROLE).IsEmpty())
             {
-                RedisCache.Set(Consts.ROLE, (Dictionary<string, object>)GetRoleList());
+                RedisCache.Set(SysConsts.ROLE, (Dictionary<string, object>)GetRoleList());
             }
 
-            return RedisCache.Get<Dictionary<string, object>>(Consts.ROLE);
+            return RedisCache.Get<Dictionary<string, object>>(SysConsts.ROLE);
         }
 
 
@@ -107,12 +107,12 @@ namespace ZHXY.Application
 
         public static Dictionary<string, object> GetDataItemListByCache()
         {
-            if (RedisCache.Get<Dictionary<string, object>>(Consts.DATAITEMS).IsEmpty())
+            if (RedisCache.Get<Dictionary<string, object>>(SysConsts.DATAITEMS).IsEmpty())
             {
-                RedisCache.Set(Consts.DATAITEMS, (Dictionary<string, object>)GetDataItemList());
+                RedisCache.Set(SysConsts.DATAITEMS, (Dictionary<string, object>)GetDataItemList());
             }
 
-            return RedisCache.Get<Dictionary<string, object>>(Consts.DATAITEMS);
+            return RedisCache.Get<Dictionary<string, object>>(SysConsts.DATAITEMS);
         }
 
 
@@ -135,9 +135,9 @@ namespace ZHXY.Application
 
         public static Dictionary<string, object> GetOrganizeListByCache()
         {
-            RedisCache.Remove(Consts.ORGANIZE);
-            RedisCache.Set(Consts.ORGANIZE, GetOrganizeList());
-            return RedisCache.Get<Dictionary<string, object>>(Consts.ORGANIZE);
+            RedisCache.Remove(SysConsts.ORGANIZE);
+            RedisCache.Set(SysConsts.ORGANIZE, GetOrganizeList());
+            return RedisCache.Get<Dictionary<string, object>>(SysConsts.ORGANIZE);
         }
 
 
