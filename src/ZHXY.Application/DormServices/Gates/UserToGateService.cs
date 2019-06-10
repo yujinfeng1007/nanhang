@@ -5,10 +5,8 @@ using System.Data.Entity;
 using System.Linq;
 using ZHXY.Common;
 using ZHXY.Domain;
-using ZHXY.Dorm.Device.DH;
-using ZHXY.Dorm.Device.tools;
 
-namespace ZHXY.Application.DormServices.Gates
+namespace ZHXY.Application
 {
     /// <summary>
     /// 闸机人员信息

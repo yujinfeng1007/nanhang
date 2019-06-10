@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using ZHXY.Application.DormServices.Gates;
-using ZHXY.Common;
 using ZHXY.Domain;
 
 namespace ZHXY.Application

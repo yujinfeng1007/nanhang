@@ -1,5 +1,4 @@
 ﻿using System.Data.Entity;
-using ZHXY.Domain;
 
 namespace ZHXY.Application
 {

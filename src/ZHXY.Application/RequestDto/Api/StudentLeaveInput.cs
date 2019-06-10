@@ -1,7 +1,7 @@
 ﻿using System;
 using ZHXY.Domain;
 
-namespace ZHXY.Application.RequestDto.Api
+namespace ZHXY.Application
 {
     /// <summary>
     /// 学生请假输入

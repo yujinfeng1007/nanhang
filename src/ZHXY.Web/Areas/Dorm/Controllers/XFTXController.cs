@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using ZHXY.Application;
-using ZHXY.Application.DormServices.Gates;
 
 namespace ZHXY.Web.Dorm.Controllers
 {

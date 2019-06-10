@@ -2,8 +2,6 @@
 using System.Linq;
 using System.Web.Http;
 using ZHXY.Application;
-using ZHXY.Application.DormServices.Gates.Dto;
-using ZHXY.Application.RequestDto.Api;
 using ZHXY.Domain;
 
 namespace ZHXY.Api.Controllers

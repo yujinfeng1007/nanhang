@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using ZHXY.Application;
-using ZHXY.Common;
-using ZHXY.Dorm.Device.DH;
 
 namespace ZHXY.Web.Dorm.Controllers
 {

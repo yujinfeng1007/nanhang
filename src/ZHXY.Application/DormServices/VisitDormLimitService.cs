@@ -1,5 +1,4 @@
-﻿using log4net;
-using ZHXY.Domain;
+﻿using ZHXY.Domain;
 using System;
 using System.Linq;
 using System.Data.Entity;

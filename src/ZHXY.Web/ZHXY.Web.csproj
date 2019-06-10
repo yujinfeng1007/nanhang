@@ -1655,10 +1655,6 @@
       <Project>{7dc886cd-b8a0-44e8-aadd-57fcb0cfecb8}</Project>
       <Name>ZHXY.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ZHXY.Module\Dorm\ZHXY.Dorm.Device\ZHXY.Dorm.Device.csproj">
-      <Project>{2175A722-2E8A-4E1C-A6E8-10710506DAD2}</Project>
-      <Name>ZHXY.Dorm.Device</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\Microsoft.DependencyValidation.Analyzers.0.10.0\analyzers\dotnet\cs\Microsoft.DependencyValidation.Analyzers.resources.dll" />

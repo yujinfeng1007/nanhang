@@ -4,8 +4,8 @@ using Quartz;
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using ZHXY.Application;
 using ZHXY.Common;
-using ZHXY.Dorm.Device.tools;
 
 namespace TaskApi.DH
 {

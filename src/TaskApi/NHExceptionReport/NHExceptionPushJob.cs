@@ -4,10 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using ZHXY.Application;
 using ZHXY.Common;
 using ZHXY.Domain;
 using ZHXY.Domain.Entity.Dorm.Report;
-using ZHXY.Dorm.Device.NH;
 
 namespace TaskApi.NHExceptionReport
 {

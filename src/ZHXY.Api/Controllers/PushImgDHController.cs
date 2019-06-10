@@ -3,7 +3,6 @@ using System.Linq;
 using System.Web.Http;
 using ZHXY.Api.moudle;
 using ZHXY.Common;
-using ZHXY.Domain;
 
 namespace ZHXY.Api.Controllers
 {

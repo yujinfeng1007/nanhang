@@ -1,4 +1,4 @@
-﻿namespace ZHXY.Application.DormServices.Gates.Dto
+﻿namespace ZHXY.Application
 {
     public class GateDto
     {

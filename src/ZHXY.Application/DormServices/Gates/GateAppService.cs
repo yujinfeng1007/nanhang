@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Dynamic;
 using ZHXY.Common;
 using ZHXY.Domain;
-using ZHXY.Dorm.Device.DH;
 
 namespace ZHXY.Application
 {

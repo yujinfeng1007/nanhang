@@ -1,13 +1,9 @@
-﻿using Newtonsoft.Json.Linq;
-using Quartz;
+﻿using Quartz;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ZHXY.Application;
 using ZHXY.Common;
 using ZHXY.Domain;
-using ZHXY.Dorm.Device.DH;
 
 namespace TaskApi.DH
 {

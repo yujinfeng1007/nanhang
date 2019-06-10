@@ -4,13 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics;
-using ZHXY.Common;
-using ZHXY.Dorm.Device.DH;
-using ZHXY.Dorm.Device.tools;
 using EntityFramework.Extensions;
 using System.Data;
 using ZHXY.Domain;
 using TaskApi.NH;
+using ZHXY.Application;
 
 namespace TaskApi.Job
 {

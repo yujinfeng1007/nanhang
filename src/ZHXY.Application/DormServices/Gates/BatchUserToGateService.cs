@@ -7,10 +7,8 @@ using System.IO;
 using System.Linq;
 using ZHXY.Common;
 using ZHXY.Domain;
-using ZHXY.Dorm.Device.DH;
-using ZHXY.Dorm.Device.tools;
 
-namespace ZHXY.Application.DormServices.Gates
+namespace ZHXY.Application
 {
     public class BatchUserToGateService : AppService
     {

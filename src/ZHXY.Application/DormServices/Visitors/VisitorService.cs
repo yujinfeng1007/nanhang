@@ -5,9 +5,6 @@ using System.Linq.Dynamic;
 using ZHXY.Domain;
 using System;
 using System.Data.Entity;
-using ZHXY.Dorm.Device.tools;
-using ZHXY.Dorm.Device.DH;
-using EntityFramework.Extensions;
 using Newtonsoft.Json.Linq;
 using System.Text;
 

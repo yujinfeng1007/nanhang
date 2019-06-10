@@ -1,5 +1,4 @@
-﻿using ZHXY.Common;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using ZHXY.Domain;
 using System;

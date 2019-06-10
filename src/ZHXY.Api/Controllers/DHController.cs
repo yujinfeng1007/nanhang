@@ -1,6 +1,5 @@
 ﻿using System.Web.Http;
-using ZHXY.Dorm.Device.DH;
-using ZHXY.Dorm.Device.tools;
+using ZHXY.Application;
 
 namespace ZHXY.Api.Controllers
 {

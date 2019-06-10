@@ -3,7 +3,6 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using ZHXY.Application;
-using ZHXY.Common;
 
 namespace ZHXY.Web
 {

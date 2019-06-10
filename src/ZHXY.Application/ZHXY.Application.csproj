@@ -38,6 +38,8 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -45,6 +47,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="01.Base\TreeHelper.cs" />
+    <Compile Include="Connected Services\PushService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="DormServices\Buildings\DeviceService.cs" />
     <Compile Include="DormServices\Buildings\XFTXService.cs" />
     <Compile Include="DormServices\Buildings\Dto\CreateDormBuildingDto.cs" />
@@ -52,6 +59,7 @@
     <Compile Include="DormServices\Buildings\Dto\DormBuildingView.cs" />
     <Compile Include="DormServices\Buildings\Dto\UpdateDormBuildingDto.cs" />
     <Compile Include="DormServices\Buildings\DormBuildingService.cs" />
+    <Compile Include="DormServices\DH\DHAccount.cs" />
     <Compile Include="DormServices\DormRules\Dto\UpdateDormRuleDto.cs" />
     <Compile Include="DormServices\Face\Dto\FaceListView.cs" />
     <Compile Include="DormServices\Face\Dto\FaceApprovalDto.cs" />
@@ -73,7 +81,14 @@
     <Compile Include="DormServices\Holiday\HolidayAppService.cs" />
     <Compile Include="DormServices\Leave\ILeaveService.cs" />
     <Compile Include="DormServices\Leave\LeaveServiceExt.cs" />
+    <Compile Include="DormServices\NH\PushAppMessage.cs" />
     <Compile Include="DormServices\Performances\Dto\BuildingAccessStatisticsView.cs" />
+    <Compile Include="DormServices\tools\Constants.cs" />
+    <Compile Include="DormServices\tools\GetImageBase64Str.cs" />
+    <Compile Include="DormServices\tools\HttpHelper.cs" />
+    <Compile Include="DormServices\tools\Md5Tool.cs" />
+    <Compile Include="DormServices\tools\MQMoudle.cs" />
+    <Compile Include="DormServices\tools\PersonMoudle.cs" />
     <Compile Include="DormServices\Visitors\Dto\VisitorApprovalDto.cs" />
     <Compile Include="DormServices\Visitors\Dto\VisitorApprovalListDto.cs" />
     <Compile Include="DormServices\Visitors\Dto\VisitorListView.cs" />
@@ -280,18 +295,74 @@
       <Project>{7DC886CD-B8A0-44E8-AADD-57FCB0CFECB8}</Project>
       <Name>ZHXY.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ZHXY.Module\Dorm\ZHXY.Dorm.Device\ZHXY.Dorm.Device.csproj">
-      <Project>{2175A722-2E8A-4E1C-A6E8-10710506DAD2}</Project>
-      <Name>ZHXY.Dorm.Device</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Connected Services\PushService\DataCenter.wsdl" />
+    <None Include="Connected Services\PushService\ZHXY.Application.PushService.GetAllOUListsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\PushService\ZHXY.Application.PushService.GetMiddleLeaderListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\PushService\ZHXY.Application.PushService.GetOUListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\PushService\ZHXY.Application.PushService.News_GetNewsListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\PushService\ZHXY.Application.PushService.News_GetTopNewsListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\PushService\ZHXY.Application.PushService.Portal_GetAffairListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\PushService\ZHXY.Application.PushService.Portal_GetNoticeContentResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\PushService\ZHXY.Application.PushService.Portal_GetNoticeListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\PushService\ZHXY.Application.PushService.Portal_GetNoticesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\PushService\ZHXY.Application.PushService.Portal_SendInstantMessageResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\PushService\ZHXY.Application.PushService.Portal_SetNoticeReadStatusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\PushService\ZHXY.Application.PushService.UpdateStudentClassNoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\PushService\ZHXY.Application.PushService.UpdateStudentStatusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\PushService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\PushService\DataCenter.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\PushService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\PushService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\PushService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,7 +1,6 @@
 ﻿using ZHXY.Domain;
 using System.Collections.Generic;
 using System.Linq;
-using ZHXY.Common;
 using System.Data.Entity;
 
 namespace ZHXY.Application
