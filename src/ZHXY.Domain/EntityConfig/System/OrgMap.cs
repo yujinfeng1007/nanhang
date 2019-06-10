@@ -2,20 +2,20 @@
 
 namespace ZHXY.Domain
 {
-    public class OrgMap : EntityTypeConfiguration<Organ>
+    public class OrgMap : EntityTypeConfiguration<Org>
     {
         public OrgMap()
         {
-            ToTable("zhxy_organ");
+            ToTable("zhxy_org");
             HasKey(t => t.Id);
 
             Property(p => p.Id).HasColumnName("id");
             Property(p => p.ParentId).HasColumnName("p_id");
-            Property(p => p.EnCode).HasColumnName("code");
+            Property(p => p.Code).HasColumnName("code");
             Property(p => p.Name).HasColumnName("name");
             Property(p => p.ShortName).HasColumnName("short_name");
-            Property(p => p.CategoryId).HasColumnName("category_id");
-            Property(p => p.SortCode).HasColumnName("sort_code");
+            Property(p => p.Type).HasColumnName("org_type");
+            Property(p => p.Sort).HasColumnName("sort");
             HasOptional(p => p.Parent).WithMany(p => p.Children).HasForeignKey(p => p.ParentId);
         }
     }

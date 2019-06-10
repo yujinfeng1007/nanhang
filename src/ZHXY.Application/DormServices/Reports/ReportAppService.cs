@@ -116,7 +116,7 @@ namespace ZHXY.Application
         public dynamic GetMobileDataByOrg(string orgId)
         {
             //判断登陆用户所属机构级别   院系Grade  、 年级Division 、 班级Class
-            var category = Read<Organ>(p => p.Id.Equals(orgId)).Select(p => p.CategoryId).FirstOrDefault();
+            var category = Read<Org>(p => p.Id.Equals(orgId)).Select(p => p.Type).FirstOrDefault();
             //总人数
             var totalQty = 0;
           
@@ -229,7 +229,7 @@ namespace ZHXY.Application
             }
             else
             {
-                return OrgLeader.Join(Read<Organ>(), lea => lea.OrgId, org => org.Id, (lea, org) => new
+                return OrgLeader.Join(Read<Org>(), lea => lea.OrgId, org => org.Id, (lea, org) => new
                 {
                     org.Id,
                     org.Name

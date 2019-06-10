@@ -35,7 +35,7 @@ namespace ZHXY.Web.SystemManage.Controllers
 
         [HttpGet]
         
-        public ActionResult GetTreeGridJson(string keyword, string F_BelongSys)
+        public ActionResult GetTree(string keyword, string F_BelongSys)
         {
             var data = App.GetList();
             if (!string.IsNullOrEmpty(keyword))
@@ -62,7 +62,7 @@ namespace ZHXY.Web.SystemManage.Controllers
                 treeModel.entityJson = item.ToJson();
                 treeList.Add(treeModel);
             }
-            return Content(treeList.TreeGridJson());
+            return Result.PagingRst(treeList.TreeGridJson().Deserialize<object>());
         }
 
         [HttpGet]

@@ -91,17 +91,17 @@ namespace TaskApi.Job
             var newDb = new NHModel();
             var newData = newDb.Set<Teacher_Organ>().AsNoTracking().Select(p => new OrganMoudle { Id = p.OrgId, Name = p.OrgName, ParentId = p.ParentOrgId, EnCode = p.OrgId }).ToList();
             //获取生产环境数据库数据集
-            var oldData = db.Set<Organ>().AsNoTracking().Select(p => new OrganMoudle { Id = p.Id, Name = p.Name, ParentId = p.ParentId, EnCode = p.EnCode }).ToList();
+            var oldData = db.Set<Org>().AsNoTracking().Select(p => new OrganMoudle { Id = p.Id, Name = p.Name, ParentId = p.ParentId, EnCode = p.Code }).ToList();
             var addList = newData.Except(oldData).ToList(); //取差集 （新增和修改数据）
 
             var idList = oldData.Select(p => p.Id).ToList();
-            var endList = new List<Organ>();
+            var endList = new List<Org>();
             foreach (var org in addList)
             {
                 if (org.ParentId == null) { org.ParentId = "3"; }
                 if (idList.Contains(org.Id))
                 {
-                    db.Set<Organ>().Where(p => p.Id.Equals(org.Id)).Update(p => new Organ
+                    db.Set<Org>().Where(p => p.Id.Equals(org.Id)).Update(p => new Org
                     {
                         ParentId = org.ParentId,
                         Name = org.Name
@@ -109,18 +109,18 @@ namespace TaskApi.Job
                 }
                 else
                 {
-                    endList.Add(new Organ()
+                    endList.Add(new Org()
                     {
                         Id = org.Id,
                         Name = org.Name,
                         ParentId = org.ParentId,
-                        EnCode = org.EnCode
+                        Code = org.EnCode
                     });
                 }
             }
             //newDb.BulkDelete(newDb.OrganizationInfoes.ToList()); //操作完成后，删除取出来的数据
             //oldDb.BulkInsert(endList);
-            db.Set<Organ>().AddRange(endList);
+            db.Set<Org>().AddRange(endList);
             db.SaveChanges();
             newDb.Dispose();
             sw.Stop();
@@ -139,16 +139,16 @@ namespace TaskApi.Job
             var newDb = new NHModel();
             var newData = newDb.Set<Student_Organ>().AsNoTracking().Select(p => new OrganMoudle { Id = p.OrgId, Name = p.OrgName, ParentId = p.ParentOrgId, EnCode = p.OrgId }).ToList();
             //获取生产环境数据库数据集
-            var oldData = db.Set<Organ>().AsNoTracking().Select(p => new OrganMoudle { Id = p.Id, Name = p.Name, ParentId = p.ParentId, EnCode = p.EnCode }).ToList();
+            var oldData = db.Set<Org>().AsNoTracking().Select(p => new OrganMoudle { Id = p.Id, Name = p.Name, ParentId = p.ParentId, EnCode = p.Code }).ToList();
             var addList = newData.Except(oldData).ToList(); //取差集 （新增和修改数据）
             var idList = oldData.Select(p => p.Id).ToList();
-            var endList = new List<Organ>();
+            var endList = new List<Org>();
             foreach (var org in addList)
             {
                 if (org.ParentId == null) { org.ParentId = "2"; }
                 if (idList.Contains(org.Id))
                 {
-                    db.Set<Organ>().Where(p => p.Id.Equals(org.Id)).Update(p => new Organ
+                    db.Set<Org>().Where(p => p.Id.Equals(org.Id)).Update(p => new Org
                     {
                         ParentId = org.ParentId,
                         Name = org.Name
@@ -156,17 +156,17 @@ namespace TaskApi.Job
                 }
                 else
                 {
-                    endList.Add(new Organ() {
+                    endList.Add(new Org() {
                         Id = org.Id,
                         Name = org.Name,
                         ParentId = org.ParentId,
-                        EnCode = org.EnCode
+                        Code = org.EnCode
                     });
                 }
             }
             //newDb.BulkDelete(newDb.OrganizationInfo_stu.ToList()); //操作完成后，删除取出来的数据
             //oldDb.BulkInsert(endList);
-            db.Set<Organ>().AddRange(endList);
+            db.Set<Org>().AddRange(endList);
             db.SaveChanges();
             newDb.Dispose();
             sw.Stop();
@@ -409,8 +409,8 @@ namespace TaskApi.Job
                 student.CredType = stu.CredType;
                 student.CredNumber = stu.CredNumber;
                 student.MobilePhone = stu.MobilePhone;
-                student.GradeId = oldDb.Set<Organ>().AsNoTracking().Where(p => p.Id.Equals(stu.ClassId)).Select(p => p.ParentId).FirstOrDefault();
-                student.DivisId = oldDb.Set<Organ>().AsNoTracking().Where(p => p.Id.Equals(stu.GradeId)).Select(p => p.ParentId).FirstOrDefault();
+                student.GradeId = oldDb.Set<Org>().AsNoTracking().Where(p => p.Id.Equals(stu.ClassId)).Select(p => p.ParentId).FirstOrDefault();
+                student.DivisId = oldDb.Set<Org>().AsNoTracking().Where(p => p.Id.Equals(stu.GradeId)).Select(p => p.ParentId).FirstOrDefault();
             }
             oldDb.SaveChanges();
             DataList = DataList.Where(p => !Ids.Contains(p.Id)).ToList();
@@ -478,8 +478,8 @@ namespace TaskApi.Job
                         CredNumber = stu.CredNumber,
                         MobilePhone = stu.MobilePhone,
                         FacePic = stu.FacePic,
-                        GradeId = oldDb.Set<Organ>().AsNoTracking().Where(p => p.Id.Equals(stu.ClassId)).Select(p => p.ParentId).FirstOrDefault(),
-                        DivisId =  oldDb.Set<Organ>().AsNoTracking().Where(p => p.Id.Equals(stu.GradeId)).Select(p => p.ParentId).FirstOrDefault()
+                        GradeId = oldDb.Set<Org>().AsNoTracking().Where(p => p.Id.Equals(stu.ClassId)).Select(p => p.ParentId).FirstOrDefault(),
+                        DivisId =  oldDb.Set<Org>().AsNoTracking().Where(p => p.Id.Equals(stu.GradeId)).Select(p => p.ParentId).FirstOrDefault()
             });
                 //}
             }

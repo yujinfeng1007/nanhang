@@ -95,6 +95,62 @@ namespace ZHXY.Application
             });
         }
 
+        private void SetViewStatus(ref List<LeaveListView> list)
+        {
+
+            foreach (var item in list)
+            {
+                if (Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result == -1).Any())
+                {
+                    item.ApprovalStatus = "3";
+                    continue;
+                }
+
+                if (item.LeaveDays <= 3)
+                {
+                    var approve = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result != 0).FirstOrDefault();
+                    item.Approver = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result == 0 && p.ApproveLevel == 1).Select(p => p.Approver.Name).ToArray();
+                    if (null == approve)
+                    {
+                        item.ApprovalStatus = "1";
+                        continue;
+                    }
+                    item.ApprovalStatus = approve.Result > 0 ? "2" : "3";
+                    continue;
+                }
+                if (item.LeaveDays > 3)
+                {
+                    if (Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.ApproveLevel == 2).Any())
+                    {
+                        item.Approver = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result == 0 && p.ApproveLevel == 2).Select(p => p.Approver.Name).ToArray();
+                        var approve = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.ApproveLevel == 2 && p.Result != 0).FirstOrDefault();
+                        if (null == approve)
+                        {
+                            item.ApprovalStatus = "1";
+                        }
+                        else
+                        {
+                            item.ApprovalStatus = approve.Result > 0 ? "2" : "3";
+                        }
+                    }
+                    else
+                    {
+                        item.Approver = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result == 0 && p.ApproveLevel == 1).Select(p => p.Approver.Name).ToArray();
+                        var approve = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.ApproveLevel == 1&& p.Result != 0).FirstOrDefault();
+                        if (null == approve)
+                        {
+                            item.ApprovalStatus = "1";
+                        }
+                        else
+                        {
+                            item.ApprovalStatus = approve.Result > 0 ? "1" : "3";
+                        }
+                    }
+                    continue;
+                }
+            }
+        }
+
         /// <summary>
         /// 设置请假单状态
         /// </summary>

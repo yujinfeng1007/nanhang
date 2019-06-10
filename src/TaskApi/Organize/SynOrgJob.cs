@@ -139,7 +139,7 @@ namespace TaskApi
             try
             {
                 var db = new ZhxyDbContext();
-                var parentdata = db.Set<Organ>().Where(t => t.Id == f_ParentId).FirstOrDefault();
+                var parentdata = db.Set<Org>().Where(t => t.Id == f_ParentId).FirstOrDefault();
                 if (parentdata == null)
                 {
                     return false;
@@ -160,12 +160,12 @@ namespace TaskApi
             {
                 using (var db = new UnitWork().BeginTrans())
                 {
-                    var entity = new Organ();
-                    entity.EnCode = f_EnCode;
+                    var entity = new Org();
+                    entity.Code = f_EnCode;
                     entity.Name = f_FullName;
                     entity.ParentId = f_ParentId;
-                    entity.CategoryId = CateGoryId;
-                    var data = db.QueryAsNoTracking<Organ>(t => t.Id == f_id).FirstOrDefault();
+                    entity.Type = CateGoryId;
+                    var data = db.QueryAsNoTracking<Org>(t => t.Id == f_id).FirstOrDefault();
                     if (data != null)
                     {
                         db.Update(entity);
@@ -233,7 +233,7 @@ namespace TaskApi
             try
             {
                 var db = new ZhxyDbContext();
-                var parentdata = db.Set<Organ>().Where(t => t.Id == data.OrgId).FirstOrDefault();
+                var parentdata = db.Set<Org>().Where(t => t.Id == data.OrgId).FirstOrDefault();
                 if (parentdata == null)
                 {
                     return false;

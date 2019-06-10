@@ -24,31 +24,12 @@ namespace ZHXY.Web.SystemManage.Controllers
 
         [HttpGet]
 
-        public ActionResult GetGridJson(Pagination pagination, string keyword, string F_DepartmentId, string F_DutyId, string F_CreatorTime_Start, string F_CreatorTime_Stop, string F_Contains)
+        public ActionResult GetGridJson(Pagination p, string keyword, string org_id, string duty_id)
         {
-            var data = new
-            {
-                rows = App.GetList(pagination, keyword, F_DepartmentId, F_DutyId, F_CreatorTime_Start, F_CreatorTime_Stop),
-                total = pagination.Total,
-                page = pagination.Page,
-                records = pagination.Records
-            };
-            return Content(data.ToJson());
+            var rows = App.GetList(p, keyword, org_id, duty_id);
+            return Result.PagingRst(rows, p.Records, p.Total);
         }
 
-        [HttpGet]
-
-        public ActionResult GetList(Pagination pagination, string keyword, string F_DepartmentId, string F_DutyId, string F_CreatorTime_Start, string F_CreatorTime_Stop, string F_Contains)
-        {
-            var data = new
-            {
-                rows = App.GetList(pagination, keyword, F_DepartmentId, F_DutyId, F_CreatorTime_Start, F_CreatorTime_Stop),
-                total = pagination.Total,
-                page = pagination.Page,
-                records = pagination.Records
-            };
-            return Content(data.ToJson());
-        }
 
         [HttpGet]
 
@@ -75,13 +56,13 @@ namespace ZHXY.Web.SystemManage.Controllers
         [HttpPost]
 
         [ValidateAntiForgeryToken]
-        public ActionResult SubmitForm(User userEntity,string F_RoleId, string keyValue)
+        public ActionResult SubmitForm(User userEntity, string F_RoleId, string keyValue)
         {
             App.Submit(userEntity, F_RoleId, keyValue);
             return Result.Success();
         }
 
-      
+
         [HttpPost]
         [HandlerAuthorize]
 
@@ -101,10 +82,10 @@ namespace ZHXY.Web.SystemManage.Controllers
         {
             App.RevisePassword(userPassword, keyValue);
             return Result.Success();
-            
+
         }
 
-       
+
         public JsonResult GetUserPassword(string userid, string password)
         {
             var IsOk = App.VerifyPwd(userid, password);

@@ -132,7 +132,7 @@
     <Compile Include="Entity\Dorm\Student.cs" />
     <Compile Include="Entity\Dorm\Teacher.cs" />
     <Compile Include="Entity\System\Area.cs" />
-    <Compile Include="Entity\System\Organ.cs" />
+    <Compile Include="Entity\System\Org.cs" />
     <Compile Include="Entity\System\User.cs" />
     <Compile Include="Entity\System\DbBackup.cs" />
     <Compile Include="Entity\System\FilterIp.cs" />

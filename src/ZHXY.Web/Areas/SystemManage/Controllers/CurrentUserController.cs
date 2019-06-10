@@ -55,7 +55,7 @@ namespace ZHXY.Web.SystemManage.Controllers
                 //user.Classes,
                 Classes = classes.Select(p => new {
                     Id = p.Id,
-                    CategoryId = p.CategoryId,
+                    CategoryId = p.Type,
                     Name = p.Name,
                     ParentName = p.Parent.Name
                 }).ToList(),

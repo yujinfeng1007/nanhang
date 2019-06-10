@@ -127,7 +127,7 @@ namespace ZHXY.Application
             var dictionary = new Dictionary<string, object>();
             foreach (var item in data)
             {
-                var fieldItem = new { encode = item.EnCode, fullname = item.Name };
+                var fieldItem = new { encode = item.Code, fullname = item.Name };
                 dictionary.Add(item.Id, fieldItem);
             }
             return dictionary;

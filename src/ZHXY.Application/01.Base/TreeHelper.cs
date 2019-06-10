@@ -19,7 +19,7 @@ namespace ZHXY.Application
         /// </summary>
         public static void GetChildOrg(this AppService app, string rootId, List<string> result)
         {
-            app.Read<Organ>(p => p.ParentId.Equals(rootId)).Select(p => p.Id).ToList().ForEach(e=>
+            app.Read<Org>(p => p.ParentId.Equals(rootId)).Select(p => p.Id).ToList().ForEach(e=>
             {
                 result.Add(e);
                 app.GetChildOrg(e,result);
@@ -29,12 +29,12 @@ namespace ZHXY.Application
         /// <summary>
         /// 获取子机构
         /// </summary>
-        public static List<TreeView> GetChildOrg(this AppService app,  string nodeId=null ,int nodeLevel=0)
+        public static dynamic GetChildOrg(this AppService app,  string nodeId=null ,int nodeLevel=0)
         {
             nodeLevel = string.IsNullOrWhiteSpace(nodeId) ? 0 : nodeLevel + 1;
             nodeId = string.IsNullOrWhiteSpace(nodeId) ? "0" : nodeId;
-            return  app.Read<Organ>(p => p.ParentId.Equals(nodeId)).Select(p =>
-                new TreeView
+            return  app.Read<Org>(p => p.ParentId.Equals(nodeId)).Select(p =>
+                new 
                 {
                     Id = p.Id,
                     ParentId = p.ParentId,
@@ -44,18 +44,18 @@ namespace ZHXY.Application
                     Expanded = false,
                     Name = p.Name,
                     ParentName = p.Parent.Name,
-                    SortCode = p.SortCode ?? 0
+                    SortCode = p.Sort ?? 0
                 }).ToListAsync().Result;
         }
 
         /// <summary>
         /// 获取老师机构
         /// </summary>
-        public static List<TreeView> GetTeacherOrg(this AppService app, string nodeId = "3", int nodeLevel = 0)
+        public static dynamic GetTeacherOrg(this AppService app, string nodeId = "3", int nodeLevel = 0)
         {
             nodeLevel = "3" == nodeId ? 0 : nodeLevel + 1;
-            return app.Read<Organ>(p => p.ParentId.Equals(nodeId)).Select(p =>
-               new TreeView
+            return app.Read<Org>(p => p.ParentId.Equals(nodeId)).Select(p =>
+               new 
                {
                    Id = p.Id,
                    ParentId = p.ParentId,
@@ -65,7 +65,7 @@ namespace ZHXY.Application
                    Expanded = false,
                    Name = p.Name,
                    ParentName = p.Parent.Name,
-                   SortCode = p.SortCode ?? 0
+                   SortCode = p.Sort ?? 0
                }).ToListAsync().Result;
         }
 

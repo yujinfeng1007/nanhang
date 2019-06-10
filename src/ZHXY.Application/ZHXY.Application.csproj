@@ -194,7 +194,6 @@
     <Compile Include="WebCore\Response\Tree\TreeQuery.cs" />
     <Compile Include="WebCore\Response\Tree\TreeSelect.cs" />
     <Compile Include="WebCore\Response\Tree\TreeSelectModel.cs" />
-    <Compile Include="WebCore\Response\Tree\TreeView.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Autofac">

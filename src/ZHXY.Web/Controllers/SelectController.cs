@@ -94,7 +94,7 @@ namespace ZHXY.Web.Controllers
             query = string.IsNullOrEmpty(pagination.Sidx) ? query.OrderByDescending(p => p.Id) : query.Paging(pagination);
             query = query.Skip(pagination.Skip).Take(pagination.Rows);
             var list = (from user in query
-                        join org in App.Read<Organ>() on user.OrganId equals org.Id into orgJoin
+                        join org in App.Read<Org>() on user.OrganId equals org.Id into orgJoin
                         from org in orgJoin.DefaultIfEmpty()
                         join role in App.Read<SysRole>() on user.DutyId equals role.F_Id into roleJoin
                         from role in roleJoin.DefaultIfEmpty()
@@ -136,7 +136,7 @@ namespace ZHXY.Web.Controllers
         public ActionResult GetDeptTree(string nodeid, string keyword)
         {
             var hasKeyword = !string.IsNullOrEmpty(keyword);
-            var query = App.Read<Organ>();
+            var query = App.Read<Org>();
             if (hasKeyword)
             {
                 query = query.Where(p => p.Name.Contains(keyword));
@@ -148,7 +148,7 @@ namespace ZHXY.Web.Controllers
                  : query.Where(p => p.ParentId.Equals(nodeid));
             }
             var list = query.Select(p =>
-                new TreeView
+                new 
                 {
                     Id = p.Id,
                     ParentId = p.ParentId,
@@ -159,7 +159,7 @@ namespace ZHXY.Web.Controllers
                     Name = p.Name,
                     ParentName = p.Parent.Name,
                     IsDisabled = false,
-                    SortCode = p.SortCode.HasValue ? p.SortCode.Value : 0
+                    SortCode = p.Sort.HasValue ? p.Sort.Value : 0
                 }).ToList();
             list = list.OrderBy(p => string.IsNullOrEmpty(p.ParentName) ? p.Name : p.ParentName + p.SortCode).ToList();
 

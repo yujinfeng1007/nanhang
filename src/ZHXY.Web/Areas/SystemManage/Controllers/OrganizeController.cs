@@ -73,7 +73,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         {
             var data = App.GetList();
             if (!string.IsNullOrEmpty(keyword))
-                data = data.Where(t => t.CategoryId == keyword).ToList();
+                data = data.Where(t => t.Type == keyword).ToList();
             if (!parentId.IsEmpty())
                 data = data.Where(t => t.ParentId == parentId).ToList();
             var list = new List<object>();
@@ -106,13 +106,12 @@ namespace ZHXY.Web.SystemManage.Controllers
                 var hasChildren = data.Count(t => t.ParentId == item.Id) != 0;
                 tree.id = item.Id;
                 tree.text = item.Name;
-                tree.value = item.EnCode;
+                tree.value = item.Code;
                 tree.parentId = item.ParentId;
                 tree.isexpand = true;
                 tree.complete = false;
                 tree.hasChildren = hasChildren;
                 tree.showcheck = true;
-                //tree.img = "";
                 if (!data_deeps.IsEmpty() && (data_deeps.IndexOf(item.Id, StringComparison.Ordinal) != -1))
                     tree.checkstate = 1;
                 else
@@ -123,7 +122,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetTreeGridJson(string keyword, string divisId, string gradeId, string classId, string schoolId)
+        public ActionResult GetTree(string keyword)
         {
             var data = App.GetList();
             if (!string.IsNullOrEmpty(keyword))
@@ -137,28 +136,12 @@ namespace ZHXY.Web.SystemManage.Controllers
                 treeModel.isLeaf = hasChildren;
                 treeModel.parentId = item.ParentId;
                 treeModel.expanded = false;
-                treeModel.entityJson = item.ToJson();
+                treeModel.entityJson = item.Serialize();
                 treeList.Add(treeModel);
             }
-            return Content(treeList.TreeGridJson());
+            return Result.PagingRst(treeList.TreeGridJson().Deserialize<object>());
         }
 
-       
-        [HttpGet]
-        public JsonResult GetDivisGradeClass(string keyValue)
-        {
-            var DivsGradeClass = "";
-            var Dataclass = App.GetById(keyValue);
-            if (Dataclass == null) return Json(DivsGradeClass, JsonRequestBehavior.AllowGet);
-            var Gradedata = Dataclass.Parent;
-            if (Gradedata == null) return Json(DivsGradeClass, JsonRequestBehavior.AllowGet);
-            var Divis = Gradedata.Parent;
-            if (Divis != null)
-            {
-                DivsGradeClass = Divis.Name + Gradedata.Name + Dataclass.Name;
-            }
-            return Json(DivsGradeClass, JsonRequestBehavior.AllowGet);
-        }
 
         [HttpGet]
         public ActionResult Get(string id)

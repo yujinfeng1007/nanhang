@@ -65,14 +65,14 @@ namespace TaskApi
             var student = new Student();
             if (catetoryId == "Class")
             {
-                var org = db.FirstOrDefault<Organ>(p => p.Id == entity.OrganId);
+                var org = db.FirstOrDefault<Org>(p => p.Id == entity.OrganId);
                 student.ClassId = entity.OrganId;
                 student.GradeId = org?.ParentId;
                 student.DivisId = org?.Parent?.ParentId;
             }
             if (catetoryId == "Grade")
             {
-                var org = db.FirstOrDefault<Organ>(p => p.Id == entity.OrganId);
+                var org = db.FirstOrDefault<Org>(p => p.Id == entity.OrganId);
                 student.GradeId = entity.OrganId;
                 student.DivisId = org?.ParentId;
             }
@@ -109,12 +109,12 @@ namespace TaskApi
             var teacher = new Teacher();
             if (catetoryId == "Class")
             {
-                var org = db.FirstOrDefault<Organ>(p => p.Id == entity.OrganId);
+                var org = db.FirstOrDefault<Org>(p => p.Id == entity.OrganId);
                 teacher.OrganId = org?.Parent?.ParentId;
             }
             if (catetoryId == "Grade")
             {
-                var org = db.FirstOrDefault<Organ>(p => p.Id == entity.OrganId);
+                var org = db.FirstOrDefault<Org>(p => p.Id == entity.OrganId);
                 teacher.OrganId = org?.ParentId;
             }
             if (catetoryId == "Division")
@@ -155,12 +155,12 @@ namespace TaskApi
             entity.HeadIcon = ico;
             if (catetoryId == "Class")
             {
-                var org = db.FirstOrDefault<Organ>(p => p.Id == orgId);
+                var org = db.FirstOrDefault<Org>(p => p.Id == orgId);
                 entity.OrganId = org?.Parent?.ParentId;
             }
             if (catetoryId == "Grade")
             {
-                var org = db.FirstOrDefault<Organ>(p => p.Id == orgId);
+                var org = db.FirstOrDefault<Org>(p => p.Id == orgId);
                 entity.OrganId = org?.ParentId;
             }
             if (catetoryId == "Division")
