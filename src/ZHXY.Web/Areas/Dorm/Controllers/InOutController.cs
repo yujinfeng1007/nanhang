@@ -6,7 +6,7 @@ using ZHXY.Domain;
 
 namespace ZHXY.Web.Dorm.Controllers
 {
-    public class InOutController : ZhxyController
+    public class InOutController : BaseController
     {
 
         private LateReturnReportService LateReturnReportApp { get; }

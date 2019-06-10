@@ -11,7 +11,7 @@ namespace ZHXY.Web.SystemManage.Controllers
     /// 数据字典管理
     /// [OK]
     /// </summary>
-    public class ItemsDataController : ZhxyController
+    public class ItemsDataController : BaseController
     {
         private SysDicItemAppService App { get;}
 

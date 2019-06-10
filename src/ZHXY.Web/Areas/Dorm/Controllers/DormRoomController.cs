@@ -4,7 +4,7 @@ using System.Web.Mvc;
 namespace ZHXY.Web.Dorm.Controllers
 {
 
-    public class DormRoomController : ZhxyController
+    public class DormRoomController : BaseController
     {
         private DormRoomAppService App { get; }
         public DormRoomController(DormRoomAppService app) => App = app;

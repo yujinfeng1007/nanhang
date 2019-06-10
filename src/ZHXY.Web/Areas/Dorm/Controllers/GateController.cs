@@ -9,7 +9,7 @@ namespace ZHXY.Web.Dorm.Controllers
     /// <summary>
     /// 闸机管理
     /// </summary>
-    public class GateController : ZhxyController
+    public class GateController : BaseController
     {
         private GateAppService App { get; }
         public GateController(GateAppService app) => App = app;

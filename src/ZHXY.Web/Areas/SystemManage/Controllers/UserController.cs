@@ -9,7 +9,7 @@ namespace ZHXY.Web.SystemManage.Controllers
     /// 用户管理
     /// [OK]
     /// </summary>
-    public class UserController : ZhxyController
+    public class UserController : BaseController
     {
         private UserService App { get; }
 

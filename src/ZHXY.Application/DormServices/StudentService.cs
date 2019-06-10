@@ -17,7 +17,7 @@ namespace ZHXY.Application
 
         public StudentService()
         {
-            R = new ZhxyDbContext();
+            R = new EFContext();
         }   
         public dynamic GetByStudentNumber(string num)
         {

@@ -20,7 +20,7 @@ namespace TaskApi.NHExceptionReport
             //new PushAppMessage().PushReportMessage("48038@nchu.edu.cn", "Test Message", "");
             //DateTime Time = Convert.ToDateTime("2019-06-05 08:00:00");
             var Time = DateTime.Now;
-            var dbContext = new ZhxyDbContext();
+            var dbContext = new EFContext();
             //测试阶段：  只推给 罗尉平 老师
             var leaderList = dbContext.Set<OrgLeader>().Where(p => p.UserId.Equals("c769eb3d87d6f7468133840f055bc9e6")).ToList();
             var PushList = new List<ZhxyPush>();

@@ -11,8 +11,8 @@ namespace ZHXY.Api.Controllers
     /// </summary>
     public class DataViewController : BaseApiController
     {
-        private RelevanceService rApp = new RelevanceService(new ZhxyDbContext());
-        private DeviceService app = new DeviceService(new ZhxyDbContext());
+        private RelevanceService rApp = new RelevanceService(new EFContext());
+        private DeviceService app = new DeviceService(new EFContext());
         //private DormBuildingService app = new DormBuildingService(new ZhxyRepository());
 
         /// <summary>

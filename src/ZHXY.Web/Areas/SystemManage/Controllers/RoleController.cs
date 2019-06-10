@@ -10,7 +10,7 @@ namespace ZHXY.Web.SystemManage.Controllers
     /// <summary>
     /// 角色管理
     /// </summary>
-    public class RoleController : ZhxyController
+    public class RoleController : BaseController
     {
         private SysRoleAppService App { get; }
         private SysUserRoleAppService sysUserRoleService { get; }

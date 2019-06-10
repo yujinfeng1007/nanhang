@@ -10,7 +10,7 @@ namespace ZHXY.Web.SystemManage.Controllers
     /// <summary>
     /// 按钮
     /// </summary>
-    public class ModuleButtonController : ZhxyController
+    public class ModuleButtonController : BaseController
     {
         private SysButtonAppService App { get; }
         private SysModuleAppService moduleAppService { get; }

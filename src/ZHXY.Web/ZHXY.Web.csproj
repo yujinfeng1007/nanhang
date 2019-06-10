@@ -263,7 +263,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="App_Start\ZhxyController.cs" />
+    <Compile Include="App_Start\BaseController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -1378,6 +1378,7 @@
     <Content Include="Scripts\i18n\zh-TW.js" />
     <Content Include="Scripts\jquery-2.1.1.min.map" />
     <None Include="Properties\PublishProfiles\发布到125.pubxml" />
+    <None Include="Properties\PublishProfiles\发布到E盘publish目录.pubxml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />

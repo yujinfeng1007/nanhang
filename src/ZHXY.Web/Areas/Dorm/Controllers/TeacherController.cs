@@ -3,7 +3,7 @@ using ZHXY.Application;
 
 namespace ZHXY.Web.Dorm.Controllers
 {
-    public class TeacherController : ZhxyController
+    public class TeacherController : BaseController
     {
 
         private TeacherService App { get; }

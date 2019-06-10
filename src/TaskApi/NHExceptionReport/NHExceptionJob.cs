@@ -22,7 +22,7 @@ namespace TaskApi.NHExceptionReport
             //DateTime QuartzTime = Convert.ToDateTime("2019-05-24 02:00:00");
             var QuartzTime = DateTime.Now;
             var TableName = "DHFLOW_" + QuartzTime.Year + QuartzTime.Month.ToString().PadLeft(2, '0');
-            var db = new ZhxyDbContext();
+            var db = new EFContext();
             var sw = new Stopwatch();
             sw.Start();
 
@@ -55,7 +55,7 @@ namespace TaskApi.NHExceptionReport
         /// <param name="QuartzTime"></param>
         /// <param name="moudle"></param>
         /// <param name="TableName"></param>
-        public void ProcessNoReturnException(DateTime QuartzTime, string TableName, List<string> LeaveListId, ZhxyDbContext db)
+        public void ProcessNoReturnException(DateTime QuartzTime, string TableName, List<string> LeaveListId, EFContext db)
         {
             //查看所有人员当天的最后一条记录
             var StartTimestamp = DateHelper.ConvertDateTimeInt(QuartzTime.AddDays(-1));
@@ -91,7 +91,7 @@ namespace TaskApi.NHExceptionReport
         /// <param name="QuartzTime"></param>
         /// <param name="moudle"></param>
         /// <param name="TableName"></param>
-        public void ProcessLateReturnException(DateTime QuartzTime, string TableName, List<string> LeaveListId, ZhxyDbContext db)
+        public void ProcessLateReturnException(DateTime QuartzTime, string TableName, List<string> LeaveListId, EFContext db)
         {
             //查看所有人员23:00到凌晨2点的最后一条记录
             var StartTime = QuartzTime.AddDays(-1).Date.AddHours(WorkDayLateReturnTime);
@@ -135,7 +135,7 @@ namespace TaskApi.NHExceptionReport
         /// <param name="QuartzTime"></param>
         /// <param name="moudle"></param>
         /// <param name="TableName"></param>
-        public void ProcessNotOutException(DateTime QuartzTime, string TableName, ZhxyDbContext db)
+        public void ProcessNotOutException(DateTime QuartzTime, string TableName, EFContext db)
         {
             //查看所有人员当天的最后一条记录
             var StartTimestamp = DateHelper.ConvertDateTimeInt(QuartzTime.Date.AddDays(-(int) QuartzTime.Day+1));

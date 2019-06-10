@@ -15,7 +15,7 @@ namespace ZHXY.Application
     {
         public UserToGateService(DbContext r) : base(r) { }
 
-        public UserToGateService() => R = new ZhxyDbContext();
+        public UserToGateService() => R = new EFContext();
 
         public void SendUserHeadIco(string[] userId)
         {

@@ -5,15 +5,12 @@ using System.Web.Mvc;
 namespace ZHXY.Web.Dorm.Controllers
 {
 
-    public class InOutReceiveController : ZhxyController
+    public class InOutReceiveController : BaseController
 	{
 		private InOutReceiveAppService App { get; }
 
-        public InOutReceiveController(InOutReceiveAppService inOutApp)
-        {
-            App = inOutApp;
-        }
-		
+        public InOutReceiveController(InOutReceiveAppService app) => App = app;
+
         [HttpGet]
         public ActionResult GetGridJson(Pagination pagination, string keyword)
         {

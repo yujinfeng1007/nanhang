@@ -13,7 +13,7 @@ namespace ZHXY.Web
 {
     [LoginAuthentication]
     [ProcessMvcError]
-    public abstract class ZhxyController : Controller
+    public abstract class BaseController : Controller
     {
         #region property
 

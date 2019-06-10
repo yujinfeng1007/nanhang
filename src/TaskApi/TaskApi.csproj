@@ -93,11 +93,6 @@
     <Compile Include="NH\Student_Organ.cs" />
     <Compile Include="NH\TeacherInfo.cs" />
     <Compile Include="NH\Teacher_Organ.cs" />
-    <Compile Include="Organize\OrgModel.cs" />
-    <Compile Include="Organize\ResultModel.cs" />
-    <Compile Include="Organize\SynOrgJob.cs" />
-    <Compile Include="Organize\SynUserService.cs" />
-    <Compile Include="Organize\UserModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceRunner.cs" />

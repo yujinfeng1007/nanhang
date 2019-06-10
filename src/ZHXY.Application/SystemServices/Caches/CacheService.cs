@@ -12,7 +12,7 @@ namespace ZHXY.Application
     /// </summary>
     public class CacheService : AppService
     {
-        public static DbContext Db => new ZhxyDbContext();
+        public static DbContext Db => new EFContext();
         
         /// <summary>
         /// 岗位缓存
@@ -22,7 +22,7 @@ namespace ZHXY.Application
         {
 
             //var dutyApp = new DutyService(new ZhxyDbContext());
-            var data = new SysDicItemAppService(new ZhxyDbContext()).GetItemList("Duty");
+            var data = new SysDicItemAppService(new EFContext()).GetItemList("Duty");
             var dictionary = new Dictionary<string, object>();
 
             foreach (var item in data)
@@ -55,7 +55,7 @@ namespace ZHXY.Application
         /// <returns>  </returns>
         public static object GetRoleList()
         {
-            var roleApp = new SysRoleAppService(new ZhxyDbContext());
+            var roleApp = new SysRoleAppService(new EFContext());
             var data = roleApp.GetList();
             var dictionary = new Dictionary<string, object>();
             foreach (var item in data)
@@ -83,9 +83,9 @@ namespace ZHXY.Application
         /// <returns>  </returns>
         public static object GetDataItemList()
         {
-            var itemDetails = new SysDicItemAppService(new ZhxyDbContext()).GetList();
+            var itemDetails = new SysDicItemAppService(new EFContext()).GetList();
             var dic = new Dictionary<string, object>();
-            foreach (var item in new SysDicAppService(new ZhxyDbContext()).GetList())
+            foreach (var item in new SysDicAppService(new EFContext()).GetList())
             {
                 var tempDictionary = new Dictionary<string, string>();
                 var details = itemDetails.FindAll(t => t.F_ItemId.Equals(item.F_Id));
@@ -143,7 +143,7 @@ namespace ZHXY.Application
 
         public static object GetMenuListByType(string clientType)
         {
-            var app = new SysRoleAuthorizeAppService(new ZhxyDbContext());
+            var app = new SysRoleAuthorizeAppService(new EFContext());
             if (Operator.GetCurrent().IsSystem)
             {
                 return ToMenuJson(app.GetMenuList("0", clientType), "0");
@@ -190,7 +190,7 @@ namespace ZHXY.Application
         {
             //var roleId = OperatorProvider.Current.RoleId;
             var roles = Operator.GetCurrent().Roles;
-            var app = new SysRoleAuthorizeAppService(new ZhxyDbContext());
+            var app = new SysRoleAuthorizeAppService(new EFContext());
             var data = new List<SysButton>();
             foreach (var e in roles)
             {

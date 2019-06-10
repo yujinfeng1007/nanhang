@@ -11,7 +11,7 @@ namespace ZHXY.Web.SystemManage.Controllers
     /// <summary>
     /// 机构管理
     /// </summary>
-    public class OrganizeController : ZhxyController
+    public class OrganizeController : BaseController
     {
         private OrgService App { get; }
         private UserService UserApp { get; }

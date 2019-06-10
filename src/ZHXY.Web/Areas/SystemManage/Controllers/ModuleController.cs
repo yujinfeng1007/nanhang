@@ -11,7 +11,7 @@ namespace ZHXY.Web.SystemManage.Controllers
     /// <summary>
     /// 菜单管理
     /// </summary>
-    public class ModuleController : ZhxyController
+    public class ModuleController : BaseController
     {
         private SysModuleAppService App { get; }
         public ModuleController(SysModuleAppService app) => App = app;

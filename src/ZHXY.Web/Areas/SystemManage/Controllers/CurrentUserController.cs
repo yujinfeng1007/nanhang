@@ -6,7 +6,7 @@ using ZHXY.Domain;
 
 namespace ZHXY.Web.SystemManage.Controllers
 {
-    public class CurrentUserController : ZhxyController
+    public class CurrentUserController : BaseController
     {
         private StudentService studentService { get; }
         private TeacherService App { get; }

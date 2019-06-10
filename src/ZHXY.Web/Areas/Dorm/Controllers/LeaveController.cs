@@ -9,7 +9,7 @@ namespace ZHXY.Web.Dorm.Controllers
     /// <summary>
     /// 请假控制器
     /// </summary>
-    public class LeaveController : ZhxyController
+    public class LeaveController : BaseController
     {
 
         public async Task<ViewResult> ApproveForm() => await Task.Run(() => View());

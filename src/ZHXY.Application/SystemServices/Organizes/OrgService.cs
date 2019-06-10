@@ -14,7 +14,7 @@ namespace ZHXY.Application
     /// </summary>
     public class OrgService : AppService
     {
-        public OrgService() => R = new ZhxyDbContext();
+        public OrgService() => R = new EFContext();
         public OrgService(DbContext r) => R = r;
         public List<Org> GetList()
         {

@@ -10,7 +10,7 @@ namespace ZHXY.Application
         public VisitDormLimitService(DbContext r) : base(r)
         {
         }
-        public VisitDormLimitService() => R = new ZhxyDbContext();
+        public VisitDormLimitService() => R = new EFContext();
         public object GetGridJson(Pagination pagination, string F_Building, string F_Floor)
         {
             var DormInfoQuery = Read<DormRoom>();

@@ -3,10 +3,10 @@ using System.Reflection;
 
 namespace ZHXY.Domain
 {
-    public class ZhxyDbContext : DbContext
+    public class EFContext : DbContext
     {
        
-        public ZhxyDbContext() : base("default")
+        public EFContext() : base("default")
         {
             Configuration.ValidateOnSaveEnabled = false;
             Configuration.LazyLoadingEnabled = true;

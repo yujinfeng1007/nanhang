@@ -9,12 +9,11 @@ using ZHXY.Common;
 namespace ZHXY.Web.Dorm.Controllers
 {
     //报表统计控制器
-    public class ReportController : ZhxyController
+    public class ReportController : BaseController
     {
         private LateReturnReportService LateReturnReportApp { get; }
         
         private NoReturnReportService NoReturnReportApp { get; }
-
         private NoOutReportService NoOutReportApp { get; }
         private OriginalReportService OriginalReportApp { get; }
         public ReportController(LateReturnReportService app_1, OriginalReportService app_2, NoReturnReportService app_3, NoOutReportService app_4)

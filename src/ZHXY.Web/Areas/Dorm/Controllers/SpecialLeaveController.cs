@@ -8,7 +8,7 @@ namespace ZHXY.Web.Dorm.Controllers
     /// <summary>
     /// 不计考勤请假控制器
     /// </summary>
-    public class SpecialLeaveController : ZhxyController
+    public class SpecialLeaveController : BaseController
     {
         public ILeaveService App { get; }
         public SpecialLeaveController(ILeaveService app) => App = app;

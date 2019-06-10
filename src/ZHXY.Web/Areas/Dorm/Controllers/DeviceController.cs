@@ -6,7 +6,7 @@ using ZHXY.Domain;
 
 namespace ZHXY.Web.Dorm.Controllers
 {
-    public class DeviceController : ZhxyController
+    public class DeviceController : BaseController
     {
         private DeviceService App { get; }
 

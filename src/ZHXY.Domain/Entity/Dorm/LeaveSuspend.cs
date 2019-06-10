@@ -14,7 +14,7 @@ namespace ZHXY.Domain
         /// <summary>
         /// 销假天数
         /// </summary>
-        public int Days { get; set; }
+        public decimal Days { get; set; }
 
         /// <summary>
         /// 销假时间

@@ -9,7 +9,7 @@ namespace ZHXY.Web.SystemManage.Controllers
     /// <summary>
     /// 角色授权
     /// </summary>
-    public class RoleAuthorizeController : ZhxyController
+    public class RoleAuthorizeController : BaseController
     {
         private SysModuleAppService moduleService { get; }
         private SysRoleAuthorizeAppService roleAuthorizeService { get; }

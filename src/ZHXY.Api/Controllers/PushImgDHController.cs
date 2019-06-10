@@ -15,7 +15,7 @@ namespace ZHXY.Api.Controllers
         {
             string MoudleFilePath = "C:\\人员信息Moudle.xlsx";
             string DataFilePath = "C:\\人员信息(学生).xlsx";
-            var moudle = new ZhxyDbContext();
+            var moudle = new EFContext();
             List<DHStudentMoudle> MoudleList = new List<DHStudentMoudle>();
             var DormStudentInfos = moudle.Set<Student>().GroupJoin(moudle.Set<DormStudent>(), p => p.Id, s => s.StudentId, (stu, dorm) => dorm.DefaultIfEmpty().Select( o => new DHStudentMoudle
             {
@@ -57,7 +57,7 @@ namespace ZHXY.Api.Controllers
         {
             string MoudleFilePath = "C:\\人员信息Moudle.xlsx";
             string DataFilePath = "C:\\人员信息(教师).xlsx";
-            var moudle = new ZhxyDbContext();
+            var moudle = new EFContext();
             var DormTeacherInfos = moudle.Set<Teacher>().AsNoTracking().Select(p => new DHTeacherMoudle
             {
                 TeacherNo = p.JobNumber,
