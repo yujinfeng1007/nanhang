@@ -103,7 +103,6 @@
     <Compile Include="AppService.cs" />
     <Compile Include="DormManage\SemesterService.cs" />
     <Compile Include="DormManage\StudentService.cs" />
-    <Compile Include="SystemManage\DbBackupService.cs" />
     <Compile Include="SystemManage\FilterIpService.cs" />
     <Compile Include="SystemManage\LogService.cs" />
     <Compile Include="SystemManage\OrgService.cs" />

@@ -100,7 +100,6 @@
     <Compile Include="EntityConfig\Dorm\SemesterMap.cs" />
     <Compile Include="EntityConfig\Dorm\StudentMap.cs" />
     <Compile Include="EntityConfig\Dorm\TeacherMap.cs" />
-    <Compile Include="EntityConfig\System\DbBackupMap.cs" />
     <Compile Include="EntityConfig\System\FilterIPMap.cs" />
     <Compile Include="EntityConfig\System\LogMap.cs" />
     <Compile Include="EntityConfig\System\PlaceAreaMap.cs" />
@@ -132,7 +131,6 @@
     <Compile Include="Entity\System\Area.cs" />
     <Compile Include="Entity\System\Org.cs" />
     <Compile Include="Entity\System\User.cs" />
-    <Compile Include="Entity\System\DbBackup.cs" />
     <Compile Include="Entity\System\FilterIp.cs" />
     <Compile Include="Entity\System\SysLog.cs" />
     <Compile Include="Entity\Dorm\Building.cs" />
