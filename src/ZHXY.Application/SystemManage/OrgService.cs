@@ -97,6 +97,20 @@ namespace ZHXY.Application
             DelAndSave<Org>(id);
         }
 
-
+        public Dictionary<string, object> GetOrganizeListByCache()
+        {
+            if (!RedisCache.KeyExists(SysConsts.DATAITEMS))
+            {
+                var data = GetList();
+                var dictionary = new Dictionary<string, object>();
+                foreach (var item in data)
+                {
+                    var fieldItem = new { encode = item.Code, fullname = item.Name };
+                    dictionary.Add(item.Id, fieldItem);
+                }
+                RedisCache.Set(SysConsts.ORGANIZE, dictionary);
+            }
+            return RedisCache.Get<Dictionary<string, object>>(SysConsts.ORGANIZE);
+        }
     }
 }

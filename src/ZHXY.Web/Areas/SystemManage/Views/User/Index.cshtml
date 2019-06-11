@@ -3,7 +3,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <script>
-    let org_id = "";
+    let orgId = "";
     $(function () {
         $('#layout').layout({
             west: { size: '25%' }
@@ -40,13 +40,13 @@
     }
 
     function DispalyGrid(rowid) {
-        org_id = rowid;
+        orgId = rowid;
         $('#btn_search').trigger("click");
     }
     function gridList() {
         let $gridList = $("#gridList");
         $gridList.dataGrid({
-            url: "/SystemManage/User/GetGridJson",
+            url: "/SystemManage/User/List",
             height: $(window).height(),
             autoGridHeight: function () {
                 return $(window).height() - 225
@@ -76,7 +76,7 @@
         });
         $("#btn_search").click(function () {
             $gridList.jqGrid('setGridParam', {
-                postData: { keyword: $("#txt_keyword").val(), org_id: org_id, duty_id: $("#duty_id").val() }
+                postData: { keyword: $("#txt_keyword").val(), orgId: orgId, dutyId: $("#duty_id").val() }
             }).trigger('reloadGrid');
         });
     }

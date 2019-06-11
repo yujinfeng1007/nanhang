@@ -10,17 +10,15 @@
     });
     function treeView() {
         $("#itemTree").treeview({
-            url: "/SystemManage/ItemsType/GetTreeJson",
+            url: "/SystemManage/ItemsType/GetTree",
             onnodeclick: function (item) {
                 $("#txt_keyword").val('');
                 $("#EnCode").text("字典编号：" + item.value + " | 字典ID:" + $("#itemTree").getCurrentNode().id);
                 $('#btn_search').trigger("click");
-                //console.log($("#gridList").attr("aria-describedby"));
             }
         });
     }
     function gridList() {
-        //var F_EnCode = $("#itemTree").getCurrentNode().value;
         var $gridList = $("#gridList");
         $gridList.dataGrid({
             height: $(window).height() - 96,
@@ -29,34 +27,15 @@
             },
             rowNum: -1,
             colModel: [
-                { label: "主键", name: "F_Id", hidden: true, key: true },
-                //{ label: "主键", name: "F_Id", key: true, width: 255, align: 'left' },
-                //{ label: "字典编号", name: "F_EnCode", width: 150, align: 'left', value: F_EnCode },
-                { label: '名称', name: 'F_ItemName', width: 150, align: 'left' },
-                { label: '编号', name: 'F_ItemCode', width: 150, align: 'left' },
-                { label: '排序', name: 'F_SortCode', width: 80, align: 'center' },
-                {
-                    label: "默认", name: "F_IsDefault", width: 60, align: "center",
-                    formatter: function (cellvalue) {
-                        return cellvalue == true ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
-                    }
-                },
-                {
-                    label: '创建时间', name: 'F_CreatorTime', width: 80, align: 'left',
-                    formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' }
-                },
-                //{
-                //    label: "有效", name: "F_EnabledMark", width: 60, align: "center",
-                //    formatter: function (cellvalue) {
-                //        return cellvalue == true ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
-                //    }
-                //},
-                { label: "备注", name: "F_Description", index: "F_Description", width: 200, align: "left", sortable: false }
+                { label: "主键", name: "id", hidden: true, key: true },
+                { label: '名称', name: 'name', width: 150, align: 'left' },
+                { label: '编号', name: 'code', width: 150, align: 'left' },
+                { label: '排序', name: 'sort', width: 80, align: 'center' },
             ]
         });
         $("#btn_search").click(function () {
             $gridList.jqGrid('setGridParam', {
-                url: "/SystemManage/ItemsData/GetGridJson",
+                url: "/SystemManage/ItemsData/List",
                 postData: { itemId: $("#itemTree").getCurrentNode().id, keyword: $("#txt_keyword").val() },
             }).trigger('reloadGrid');
         });

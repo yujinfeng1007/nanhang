@@ -25,15 +25,13 @@ namespace ZHXY.Web.SystemManage.Controllers
 
         [HttpGet]
 
-        public ActionResult GetGridJson(Pagination p, string keyword, string org_id, string duty_id)
+        public ActionResult List(Pagination p, string keyword, string orgId, string dutyId)
         {
-            var rows = App.GetList(p, keyword, org_id, duty_id);
+            var rows = App.GetList(p, keyword, orgId, dutyId);
             return Result.PagingRst(rows, p.Records, p.Total);
         }
 
-
         [HttpGet]
-
         public ActionResult GetFormJsonByOrg(string F_DutyId)
         {
             var data = App.GetByOrg(F_DutyId);

@@ -46,6 +46,7 @@
     <Compile Include="BuildingService\BuildingView.cs" />
     <Compile Include="BuildingService\UpdateBuildingDto.cs" />
     <Compile Include="ReportService\GetOriginalListByDateParms.cs" />
+    <Compile Include="RoleService\AuthorizeActionModel.cs" />
     <Compile Include="VersionService\CheckVersionInput.cs" />
     <Compile Include="DormRuleService\UpdateDormRuleDto.cs" />
     <Compile Include="FaceService\FaceApprovalDto.cs" />
@@ -97,7 +98,7 @@
     <Compile Include="[Public]\SelectTree.cs" />
     <Compile Include="[Public]\ViewTree.cs" />
     <Compile Include="UserService\AddUserDto.cs" />
-    <Compile Include="UserService\CheckBoxSelectModel.cs" />
+    <Compile Include="[Public]\CheckBox.cs" />
     <Compile Include="UserService\UpdateUserDto.cs" />
     <Compile Include="UserService\UserView.cs" />
     <Compile Include="VisitorService\VisitorApplyDto.cs" />

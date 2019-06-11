@@ -5,60 +5,62 @@ using System.Linq;
 
 using ZHXY.Common;
 using ZHXY.Domain;
+using ZHXY.Web.Shared;
+
 namespace ZHXY.Application
 {
-    public class SysRoleAuthorizeAppService : AppService
+    public class RoleAuthorizeService : AppService
     {
-        public SysRoleAuthorizeAppService(DbContext r) : base(r)
+        public RoleAuthorizeService(DbContext r) : base(r)
         {
         }
 
-        public List<SysRoleAuthorize> GetList(string ObjectId) =>Read<SysRoleAuthorize>(t => t.F_ObjectId == ObjectId).ToList();
+        public List<RoleAuthorize> GetList(string ObjectId) =>Read<RoleAuthorize>(t => t.ObjectId == ObjectId).ToList();
 
-        public List<SysModule> GetMenuList(string roleId,string clientType)
+        public List<Module> GetMenuList(string roleId,string clientType)
         {
-            var data = new List<SysModule>();
+            var data = new List<Module>();
             if (Operator.GetCurrent().IsSystem)
             {
-                data = Read<SysModule>().ToList();
+                data = Read<Module>().ToList();
             }
             else
             {
-                var moduledata = Read<SysModule>(t=>t.F_BelongSys== clientType).ToList();
-                var authorizedata = Read<SysRoleAuthorize>(t => t.F_ObjectId == roleId && t.F_ItemType == 1).ToList();
+                var moduledata = Read<Module>(t=>t.BelongSys== clientType).ToList();
+                var authorizedata = Read<RoleAuthorize>(t => t.ObjectId == roleId && t.ItemType == 1).ToList();
                 foreach (var item in authorizedata)
                 {
-                    var moduleEntity = moduledata.Find(t => t.F_Id == item.F_ItemId);
+                    var moduleEntity = moduledata.Find(t => t.Id == item.ItemId);
                     if (moduleEntity != null)
                     {
                         data.Add(moduleEntity);
                     }
                 }
             }
-            return data.OrderBy(t => t.F_SortCode).ToList();
+            return data.OrderBy(t => t.Sort).ToList();
         }
 
-        public List<SysButton> GetButtonList(string roleId)
+        public List<Button> GetButtonList(string roleId)
         {
-            var data = new List<SysButton>();
+            var data = new List<Button>();
             if (Operator.GetCurrent().IsSystem)
             {
-                data = Read<SysButton>().ToList();
+                data = Read<Button>().ToList();
             }
             else
             {
-                var buttondata = Read<SysButton>().ToList();
-                var authorizedata = Read<SysRoleAuthorize>(t => t.F_ObjectId == roleId && t.F_ItemType == 2).ToList();
+                var buttondata = Read<Button>().ToList();
+                var authorizedata = Read<RoleAuthorize>(t => t.ObjectId == roleId && t.ItemType == 2).ToList();
                 foreach (var item in authorizedata)
                 {
-                    var moduleButtonEntity = buttondata.Find(t => t.F_Id == item.F_ItemId);
+                    var moduleButtonEntity = buttondata.Find(t => t.Id == item.ItemId);
                     if (moduleButtonEntity != null)
                     {
                         data.Add(moduleButtonEntity);
                     }
                 }
             }
-            return data.OrderBy(t => t.F_SortCode).ToList();
+            return data.OrderBy(t => t.Sort).ToList();
         }
 
         public bool ActionValidate(string roleId, string moduleId, string action)
@@ -67,22 +69,22 @@ namespace ZHXY.Application
             var cachedata = RedisCache.Get<List<AuthorizeActionModel>>("authorizeurldata_" + roleId);
             if (cachedata == null)
             {
-                var moduledata = Read<SysModule>().ToList();
-                var buttondata = Read<SysButton>().ToList();
-                var authorizedata =Read<SysRoleAuthorize>(t => t.F_ObjectId == roleId).ToList();
+                var moduledata = Read<Module>().ToList();
+                var buttondata = Read<Button>().ToList();
+                var authorizedata =Read<RoleAuthorize>(t => t.ObjectId == roleId).ToList();
                 foreach (var item in authorizedata)
                 {
-                    if (item.F_ItemType == 1)
+                    if (item.ItemType == 1)
                     {
-                        var moduleEntity = moduledata.Find(t => t.F_Id == item.F_ItemId);
+                        var moduleEntity = moduledata.Find(t => t.Id == item.ItemId);
                         if (moduleEntity != null)
-                            authorizeurldata.Add(new AuthorizeActionModel { F_Id = moduleEntity.F_Id, F_UrlAddress = moduleEntity.F_UrlAddress });
+                            authorizeurldata.Add(new AuthorizeActionModel { F_Id = moduleEntity.Id, F_UrlAddress = moduleEntity.Url });
                     }
-                    else if (item.F_ItemType == 2)
+                    else if (item.ItemType == 2)
                     {
-                        var moduleButtonEntity = buttondata.Find(t => t.F_Id == item.F_ItemId);
+                        var moduleButtonEntity = buttondata.Find(t => t.Id == item.ItemId);
                         if (moduleButtonEntity != null)
-                            authorizeurldata.Add(new AuthorizeActionModel { F_Id = moduleButtonEntity.F_ModuleId, F_UrlAddress = moduleButtonEntity.F_UrlAddress });
+                            authorizeurldata.Add(new AuthorizeActionModel { F_Id = moduleButtonEntity.ModuleId, F_UrlAddress = moduleButtonEntity.Url });
                     }
                 }
                 RedisCache.Set("authorizeurldata_" + roleId, authorizeurldata, DateTime.Now.AddMinutes(5));
@@ -105,11 +107,5 @@ namespace ZHXY.Application
             }
             return false;
         }
-    }
-
-    public class AuthorizeActionModel
-    {
-        public string F_Id { set; get; }
-        public string F_UrlAddress { set; get; }
     }
 }

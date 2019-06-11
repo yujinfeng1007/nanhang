@@ -14,8 +14,8 @@ namespace ZHXY.Web.SystemManage.Controllers
     /// </summary>
     public class ModuleController : BaseController
     {
-        private SysModuleAppService App { get; }
-        public ModuleController(SysModuleAppService app) => App = app;
+        private MenuService App { get; }
+        public ModuleController(MenuService app) => App = app;
 
         [HttpGet]
         
@@ -26,9 +26,9 @@ namespace ZHXY.Web.SystemManage.Controllers
             foreach (var item in data)
             {
                 var treeModel = new SelectTree();
-                treeModel.Id = item.F_Id;
-                treeModel.Text = item.F_FullName;
-                treeModel.ParentId = item.F_ParentId;
+                treeModel.Id = item.Id;
+                treeModel.Text = item.Name;
+                treeModel.ParentId = item.ParentId;
                 treeList.Add(treeModel);
             }
             return Content(treeList.TreeSelectJson());
@@ -36,31 +36,31 @@ namespace ZHXY.Web.SystemManage.Controllers
 
         [HttpGet]
         
-        public ActionResult GetTree(string keyword, string F_BelongSys)
+        public ActionResult GetTree(string keyword, string belongSys)
         {
             var data = App.GetList();
             if (!string.IsNullOrEmpty(keyword))
             {
-                if (!string.IsNullOrEmpty(F_BelongSys))
-                    data = data.TreeWhere(t => t.F_FullName.Contains(keyword) && t.F_BelongSys == F_BelongSys);
+                if (!string.IsNullOrEmpty(belongSys))
+                    data = data.TreeWhere(t => t.Name.Contains(keyword) && t.BelongSys == belongSys);
                 else
-                    data = data.TreeWhere(t => t.F_FullName.Contains(keyword));
+                    data = data.TreeWhere(t => t.Name.Contains(keyword));
             }
-            else if (!string.IsNullOrEmpty(F_BelongSys))
+            else if (!string.IsNullOrEmpty(belongSys))
             {
-                data = data.TreeWhere(t => t.F_BelongSys == F_BelongSys);
+                data = data.TreeWhere(t => t.BelongSys == belongSys);
             }
 
             var treeList = new List<GridTree>();
             foreach (var item in data)
             {
                 var treeModel = new GridTree();
-                var hasChildren = data.Count(t => t.F_ParentId == item.F_Id) == 0 ? false : true;
-                treeModel.Id = item.F_Id;
+                var hasChildren = data.Count(t => t.ParentId == item.Id) == 0 ? false : true;
+                treeModel.Id = item.Id;
                 treeModel.IsLeaf = hasChildren;
-                treeModel.ParentId = item.F_ParentId;
+                treeModel.ParentId = item.ParentId;
                 treeModel.Expanded = false;
-                treeModel.EntityJson = item.ToJson();
+                treeModel.EntityJson = item.Serialize();
                 treeList.Add(treeModel);
             }
             return Result.PagingRst(treeList.TreeGridJson().Deserialize<object>());
@@ -70,16 +70,16 @@ namespace ZHXY.Web.SystemManage.Controllers
         
         public ActionResult GetFormJson(string keyValue)
         {
-            var data = App.GetForm(keyValue);
+            var data = App.GetById(keyValue);
             return Content(data.ToJson());
         }
 
         [HttpPost]
         
         [ValidateAntiForgeryToken]
-        public ActionResult SubmitForm(SysModule moduleEntity, string keyValue)
+        public ActionResult SubmitForm(Module moduleEntity, string keyValue)
         {
-            App.SubmitForm(moduleEntity, keyValue);
+            App.Submit(moduleEntity, keyValue);
             RedisCache.Clear();
             return Result.Success();
         }
@@ -90,7 +90,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteForm(string keyValue)
         {
-            App.DeleteForm(keyValue);
+            App.Delete(keyValue);
             RedisCache.Clear();
             return Result.Success();
         }

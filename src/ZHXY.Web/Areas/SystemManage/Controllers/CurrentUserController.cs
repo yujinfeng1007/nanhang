@@ -8,18 +8,17 @@ namespace ZHXY.Web.SystemManage.Controllers
 {
     public class CurrentUserController : BaseController
     {
-        private StudentService studentService { get; }
-        private TeacherService App { get; }
-
-        private UserService userService { get; }
-        private OrgService orgService { get;  }        
+        private StudentService StuApp { get; }
+        private TeacherService TeacherApp { get; }
+        private UserService UserApp { get; }
+        private OrgService OrgApp { get;  }        
         public CurrentUserController(TeacherService app
             , OrgService org,StudentService student, UserService user)
         {
-            orgService = org;
-            studentService = student;
-            App = app;
-            userService = user;
+            OrgApp = org;
+            StuApp = student;
+            TeacherApp = app;
+            UserApp = user;
         }
 
         [HttpGet]
@@ -31,10 +30,10 @@ namespace ZHXY.Web.SystemManage.Controllers
             if (user != null && user.IsSystem)
                 user.DutyId = "admin";
             //老师用户绑定班级
-            var classes = App.GetBindClass(user.Id);            
-            var orgName = orgService.GetById(user.OrganId)?.Name;
+            var classes = TeacherApp.GetBindClass(user.Id);            
+            var orgName = OrgApp.GetById(user.OrganId)?.Name;
             //缓存原因，重新取用户最新头像
-            var userLatest = userService.GetById(user.Id);
+            var userLatest = UserApp.GetById(user.Id);
             return Content(new
             {
                 Duty= user.DutyId,
@@ -61,20 +60,20 @@ namespace ZHXY.Web.SystemManage.Controllers
                 }).ToList(),
                 UserId = user.Id,
                 OrgName = orgName,//机构名称
-                Num = getNum(user.DutyId,user.Id)//学工号
+                Num = GetNum(user.DutyId,user.Id)//学工号
 
             }.ToJson());
         }
-        private string getNum(string dutyId, string userId)
+        private string GetNum(string dutyId, string userId)
         {
             if (dutyId.Contains("student"))
             {
-                var stu =studentService.Read<Student>(p => p.UserId == userId).FirstOrDefault();
+                var stu =StuApp.Read<Student>(p => p.UserId == userId).FirstOrDefault();
                 return stu?.StudentNumber;
             }
             if (dutyId.Contains("teacher"))
             {
-                var tea =App. Read<Teacher>(p => p.UserId == userId).FirstOrDefault();
+                var tea =TeacherApp. Read<Teacher>(p => p.UserId == userId).FirstOrDefault();
                return tea?.JobNumber;
             }
             return "";

@@ -156,7 +156,6 @@
             }
             return false;
         },
-        // add by ben ����ҳ���д��±�ǩ
         iframe_addTab: function (dataId, dataUrl, menuName) {
             $("#header-nav>ul>li.open").removeClass("open");
             if (dataId != "") {

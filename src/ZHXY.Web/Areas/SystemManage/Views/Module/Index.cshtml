@@ -4,8 +4,8 @@
 }
 <script>
     $(function () {
-        $("#F_BelongSys").bindSelect({
-            dictionary: 'F_BelongSys'
+        $("#belongSys").bindSelect({
+            dictionary: 'belong_sys'
         })
         gridList();
     })
@@ -14,21 +14,21 @@
         $gridList.dataGrid({
             treeGrid: true,
             treeGridModel: "adjacency",
-            ExpandColumn: "F_UrlAddress",
+            ExpandColumn: "url",
             url: "/SystemManage/Module/GetTree",
             height: $(window).height() - 96,
             colModel: [
-                { label: "主键", name: "F_Id", hidden: true, key: true },
-                { label: '名称', name: 'F_FullName', width: 200, align: 'left' },
-                { label: '连接', name: 'F_UrlAddress', width: 260, align: 'left' },
-                //{
-                //    label: "隶属系统", name: "F_BelongSys", width: 80, align: "center",
-                //    formatter: function (cellvalue) {
-                //        return top.clients.dataItems["F_BelongSys"][cellvalue] == null ? "" : top.clients.dataItems["F_BelongSys"][cellvalue];
-                //    }
-                //},
+                { label: "主键", name: "id", hidden: true, key: true },
+                { label: '名称', name: 'name', width: 200, align: 'left' },
+                { label: '连接', name: 'url', width: 260, align: 'left' },
                 {
-                    label: '目标', name: 'F_Target', width: 80, align: 'center',
+                    label: "隶属系统", name: "belongSys", width: 80, align: "center",
+                    formatter: function (cellvalue) {
+                        return top.clients.dataItems["belong_sys"][cellvalue] == null ? "" : top.clients.dataItems["belong_sys"][cellvalue];
+                    }
+                },
+                {
+                    label: '目标', name: 'target', width: 80, align: 'center',
                     formatter: function (cellvalue) {
                         if (cellvalue == "expand") {
                             return "无页面";
@@ -42,35 +42,29 @@
                     }
                 },
                 {
-                    label: "菜单", name: "F_IsMenu", width: 60, align: "center",
+                    label: "菜单", name: "isMenu", width: 60, align: "center",
                     formatter: function (cellvalue) {
                         return cellvalue == true ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
                     }
                 },
                 {
-                    label: "展开", name: "F_IsExpand", width: 60, align: "center",
+                    label: "展开", name: "isExpand", width: 60, align: "center",
                     formatter: function (cellvalue) {
                         return cellvalue == true ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
                     }
                 },
+              
                 {
-                    label: "公共", name: "F_IsPublic", width: 60, align: "center",
-                    formatter: function (cellvalue) {
-                        return cellvalue == true ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
-                    }
-                },
-                {
-                    label: "有效", name: "F_EnabledMark", width: 60, align: "center",
+                    label: "有效", name: "enabled", width: 60, align: "center",
                     formatter: function (cellvalue) {
                         return cellvalue == 1 ? "<i class=\"fa fa-toggle-on\"></i>" : "<i class=\"fa fa-toggle-off\"></i>";
                     }
-                },
-                { label: '介绍', name: 'F_Description', width: 300, align: 'left' }
+                }
             ]
         });
         $("#btn_search").click(function () {
             $gridList.jqGrid('setGridParam', {
-                postData: { keyword: $("#txt_keyword").val(), F_BelongSys: $("#F_BelongSys").val() },
+                postData: { keyword: $("#txt_keyword").val(), belongSys: $("#belongSys").val() },
             }).trigger('reloadGrid');
         });
     }
@@ -160,7 +154,7 @@
                 <th class="formTitle">搜索：</th>
                 <td>
                     <div class="input-group" style="margin-right:10px;width:200px;">
-                        <select id="F_BelongSys" name="F_BelongSys" class="form-control required">
+                        <select id="belongSys" name="belongSys" class="form-control required">
                             <option value="">请选择</option>
                         </select>
                     </div>

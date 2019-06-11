@@ -41,61 +41,62 @@ $.fn.removeClassPrefix=function(prefix)
 /**
  * 加载导航条
  * */
-function GetLoadNav() {
-    var data = top.clients.authorizeMenu;
-    console.log(top.clients.authorizeMenu);
-    var _html = "";
-    $.each(data, function (i) {
-        var row = data[i];
-        if (row.F_ParentId == "0" && row.F_EnabledMark) {
-            _html += '<li>';
-            _html += '<a data-id="' + row.F_Id + '" href="#" class="dropdown-toggle"><i class="' + row.F_Icon + '"></i><span>' + row.F_FullName + '</span><i class="fa fa-angle-right drop-icon"></i></a>';
-            var childNodes = row.ChildNodes;
-            if (childNodes.length > 0) {
-                _html += '<ul class="submenu">';
-                $.each(childNodes, function (i) {
-                    var subrow = childNodes[i];
-                    var thirdChild = subrow.ChildNodes;
-                    _html += '<li>';
-                    _html += '<a class="dropdown-toggle" data-id="' + subrow.F_Id + '" href="' + subrow.F_UrlAddress + '" data-index="' + subrow.F_SortCode + '">' + subrow.F_FullName + '</a>';
-                    if (thirdChild.length > 0) {
-                        _html += '<ul class="submenu">';
-                        $.each(thirdChild, function (n) {
-                            var thirdNode = thirdChild[n];
-                            _html += '<li>';
-                            _html += '<a class="menuItem" data-id="' + thirdNode.F_Id + '" href="' + thirdNode.F_UrlAddress + '" data-index="' + thirdNode.F_SortCode + '">' + thirdNode.F_FullName + '</a>';
-                            _html += '</li>'
-                        });
-                        _html += '</ul>'
-                    }
-                    _html += '<i class="fa fa-angle-right drop-icon"></i>';
-                    _html += '</li>';
-                });
-                _html += '</ul>';
-            }
-            _html += '</li>';
-        }
-    });
-    $("#sidebar-nav ul").prepend(_html);
-}
+//function GetLoadNav() {
+//    let data = top.clients.authorizeMenu;
+//    let _html = "";
+//    $.each(data, function (i) {
+//        var row = data[i];
+//        if (row.ParentId == "0" && row.Enabled) {
+//            _html += '<li>';
+//            _html += '<a data-id="' + row.Id + '" href="#" class="dropdown-toggle"><i class="' + row.Icon + '"></i><span>' + row.Name + '</span><i class="fa fa-angle-right drop-icon"></i></a>';
+//            let childNodes = row.ChildNodes;
+//            if (childNodes.length > 0) {
+//                _html += '<ul class="submenu">';
+//                $.each(childNodes, function (i) {
+//                    let subrow = childNodes[i];
+//                    let thirdChild = subrow.ChildNodes;
+//                    _html += '<li>';
+//                    _html += '<a class="dropdown-toggle" data-id="' + subrow.Id + '" href="' + subrow.Url + '" data-index="' + subrow.Sort + '">' + subrow.Name + '</a>';
+//                    if (thirdChild.length > 0) {
+//                        _html += '<ul class="submenu">';
+//                        $.each(thirdChild, function (n) {
+//                            let thirdNode = thirdChild[n];
+//                            _html += '<li>';
+//                            _html += '<a class="menuItem" data-id="' + thirdNode.Id + '" href="' + thirdNode.Url + '" data-index="' + thirdNode.Sort + '">' + thirdNode.Name + '</a>';
+//                            _html += '</li>'
+//                        });
+//                        _html += '</ul>'
+//                    }
+//                    _html += '<i class="fa fa-angle-right drop-icon"></i>';
+//                    _html += '</li>';
+//                });
+//                _html += '</ul>';
+//            }
+//            _html += '</li>';
+//        }
+//    });
+//    $("#sidebar-nav ul").prepend(_html);
+//}
 
 /**
  * 加载菜单
  * */
 function menuTree() {
-    var data = top.clients.authorizeMenu;
+    let data = top.clients.authorizeMenu;
     data = _.filter(data, function (n) {
-        return n.F_BelongSys === '1'
+        return n.BelongSys === '1'
     });
-    var _menu = getTree(data);
+    let _menu = getTree(data);
+
     $("#sidebar-nav ul").prepend(_menu);
+
     function getTree(dt) {
         var menu = '';
-        for (var i = 0, len = dt.length; i < len; i++) {
-            if (dt[i].F_ParentId == "0" && dt[i].F_EnabledMark) {
-                menu += '<li><a data-id="' + dt[i].F_Id + '" href="#" class="dropdown-toggle"><i class="' + dt[i].F_Icon + '"></i><span>' + dt[i].F_FullName + '</span><i class="fa fa-angle-right drop-icon"></i></a>'
+        for (let i = 0, len = dt.length; i < len; i++) {
+            if (dt[i].ParentId == "0" && dt[i].Enabled) {
+                menu += '<li><a data-id="' + dt[i].Id + '" href="#" class="dropdown-toggle"><i class="' + dt[i].Icon + '"></i><span>' + dt[i].Name + '</span><i class="fa fa-angle-right drop-icon"></i></a>'
             } else {
-                menu += '<li><a href="' + (dt[i].F_UrlAddress || '#') + '" class="' + (dt[i].ChildNodes.length > 0 ? 'dropdown-toggle' : 'menuItem') + '" data-index="' + dt[i].F_SortCode + '" data-id="' + dt[i].F_Id + '">' + dt[i].F_FullName + '' + (dt[i].ChildNodes.length ? '<i class="fa fa-angle-right drop-icon"></i>' : '') + '</a>';
+                menu += '<li><a href="' + (dt[i].Url || '#') + '" class="' + (dt[i].ChildNodes.length > 0 ? 'dropdown-toggle' : 'menuItem') + '" data-index="' + dt[i].Sort + '" data-id="' + dt[i].Id + '">' + dt[i].Name + '' + (dt[i].ChildNodes.length ? '<i class="fa fa-angle-right drop-icon"></i>' : '') + '</a>';
             }
             if (dt[i].ChildNodes) {
                 menu += '<ul class="submenu">';

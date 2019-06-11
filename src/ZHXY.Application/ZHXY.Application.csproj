@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IAppService.cs" />
+    <Compile Include="SystemManage\RoleAuthorizeService.cs" />
     <Compile Include="Tools\HttpHelper.cs" />
     <Compile Include="WebCore\Extensions\TreeHelper.cs" />
     <Compile Include="Connected Services\PushService\Reference.cs">
@@ -72,10 +73,8 @@
     <Compile Include="Tools\GetImageBase64Str.cs" />
     <Compile Include="Tools\MQMoudle.cs" />
     <Compile Include="Tools\PersonMoudle.cs" />
-    <Compile Include="SystemManage\SysDicAppService.cs" />
-    <Compile Include="SystemManage\SysDicItemAppService.cs" />
-    <Compile Include="SystemManage\SysButtonAppService.cs" />
-    <Compile Include="SystemManage\SysModuleAppService.cs" />
+    <Compile Include="SystemManage\DicService.cs" />
+    <Compile Include="SystemManage\MenuService.cs" />
     <Compile Include="DormManage\InOutReceiveAppService.cs" />
     <Compile Include="DormManage\LateReturnReportService.cs" />
     <Compile Include="DormManage\NoOutReportService.cs" />
@@ -88,12 +87,9 @@
     <Compile Include="DormManage\MessageAppService.cs" />
     <Compile Include="DormManage\PerformanceAppService.cs" />
     <Compile Include="DormManage\ReportAppService.cs" />
-    <Compile Include="SystemManage\CacheService.cs" />
     <Compile Include="SystemManage\RelevanceService.cs" />
     <Compile Include="SystemManage\OrgLeaderService.cs" />
-    <Compile Include="SystemManage\SysRoleAppService.cs" />
-    <Compile Include="SystemManage\SysRoleAuthorizeAppService.cs" />
-    <Compile Include="SystemManage\SysUserRoleAppService.cs" />
+    <Compile Include="SystemManage\RoleService.cs" />
     <Compile Include="WebCore\Extensions\DIHelper.cs" />
     <Compile Include="WebCore\Filters\CompressMvcResultAttribute.cs" />
     <Compile Include="WebCore\Filters\CompressWebApiResultAttribute.cs" />

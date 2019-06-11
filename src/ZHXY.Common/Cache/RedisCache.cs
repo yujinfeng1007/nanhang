@@ -15,6 +15,8 @@ namespace ZHXY.Common
             return exists ? CacheDb.StringGet(key).ToString().Deserialize<T>() : null;
         }
 
+        public static bool KeyExists(string key) => CacheDb.KeyExists(key);
+
         public static bool Set<T>(string key, T value) where T : class => CacheDb.StringSet(key, value.Serialize(), DefaultExpiry);
 
         public static bool Set<T>(string key, T value, DateTime expireTime) where T : class => CacheDb.StringSet(key, value.Serialize(), expireTime - DateTime.Now);

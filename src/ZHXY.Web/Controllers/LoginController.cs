@@ -19,13 +19,8 @@ namespace ZHXY.Web.Controllers
     public class LoginController : Controller
     {
         private UserService UserApp { get; }
-        public SysUserRoleAppService userRoleAppService { get; }
 
-        public LoginController( UserService userApp, SysUserRoleAppService userRoleService)
-        {
-            UserApp = userApp;
-            userRoleAppService = userRoleService;
-        }
+        public LoginController(UserService userApp) => UserApp = userApp;
 
         #region view
 
@@ -122,38 +117,38 @@ namespace ZHXY.Web.Controllers
             try
             {
                 CheckVerifyCode(code);
-                var userEntity = UserApp.CheckLogin(username, password);
+                var user = UserApp.CheckLogin(username, password);
                 var duty = string.Empty;
-                if (userEntity != null)
+                if (user != null)
                 {
                     var operatorModel = new CurrentUser();
-                    operatorModel.Id = userEntity.Id;
-                    operatorModel.Account = userEntity.Account;
-                    operatorModel.Name = userEntity.Name;
-                    operatorModel.SetUp = userEntity.SetUp;
-                    operatorModel.OrganId = userEntity.OrganId;
-                    operatorModel.HeadIcon = userEntity.HeadIcon;
+                    operatorModel.Id = user.Id;
+                    operatorModel.Account = user.Account;
+                    operatorModel.Name = user.Name;
+                    operatorModel.SetUp = user.SetUp;
+                    operatorModel.OrganId = user.OrganId;
+                    operatorModel.HeadIcon = user.HeadIcon;
                     operatorModel.Ip = Net.Ip;
                     operatorModel.IpLocation = Net.GetLocation(operatorModel.Ip);
                     operatorModel.LoginTime = DateTime.Now;
                     operatorModel.LoginToken = DESEncryptHelper.Encrypt(Guid.NewGuid().ToString());
-                    operatorModel.MobilePhone = userEntity.MobilePhone;
-                    if (userEntity.Account == "admin")
+                    operatorModel.MobilePhone = user.MobilePhone;
+                    if (user.Account == "admin")
                     {
                         duty = "admin";
                         operatorModel.IsSystem = true;
                     }
                     else
                     {
-                        duty = userEntity.DutyId;// DutyApp.GetCode(userEntity.DutyId);
+                        duty = user.DutyId;
                         operatorModel.IsSystem = false;
                     }
 
-                    operatorModel.Roles = userRoleAppService.GetListByUserId(userEntity.Id).Select(t => t.F_Role).ToArray();
-                    operatorModel.DutyId = userEntity.DutyId;
+                    operatorModel.Roles = UserApp.GetUserRoles(user.Id);
+                    operatorModel.DutyId = user.DutyId;
                     Operator.Set(operatorModel);
-                    logEntity.Account = userEntity.Account;
-                    logEntity.NickName = userEntity.Name;
+                    logEntity.Account = user.Account;
+                    logEntity.NickName = user.Name;
                     logEntity.Result = true;
                     logEntity.Description = "登录成功";
 

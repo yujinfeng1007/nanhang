@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using ZHXY.Application;
 using ZHXY.Common;
@@ -13,28 +13,22 @@ namespace ZHXY.Web.SystemManage.Controllers
     /// </summary>
     public class RoleController : BaseController
     {
-        private SysRoleAppService App { get; }
-        private SysUserRoleAppService sysUserRoleService { get; }
-        public RoleController(SysRoleAppService app, SysUserRoleAppService sysUserRoleAppService)
-        {
-            sysUserRoleService = sysUserRoleAppService;
-            App = app;
-        }
+        private RoleService App { get; }
+        public RoleController(RoleService app) => App = app;
+
         [HttpGet]
-        
         public ActionResult GetSelectJson(string F_RoleId)
         {
             var list = new List<object>();
             var data = App.GetListByRoleId(F_RoleId);
             foreach (var item in data)
             {
-                list.Add(new { id = item.F_Id, text = item.F_FullName });
+                list.Add(new { id = item.Id, text = item.Name });
             }
             return Content(list.ToJson());
         }
 
         [HttpGet]
-        
         public ActionResult GetFullNameById(string F_Id)
         {
             var data = App.GetListById(F_Id);
@@ -42,46 +36,33 @@ namespace ZHXY.Web.SystemManage.Controllers
         }
 
         [HttpGet]
-        
-        public ActionResult GetGridJson(Pagination pagination, string keyword)
+        public ActionResult List(Pagination p, string keyword)
         {
-            pagination.Sidx = "F_CreatorTime desc";
-            var data = new
-            {
-                rows = App.GetList(pagination, keyword),
-                total = pagination.Total,
-                page = pagination.Page,
-                records = pagination.Records
-            };
-            return Content(data.ToJson());
+            var data = App.GetList(p, keyword);
+            return Result.PagingRst(data,p.Records,p.Total);
         }
 
         [HttpGet]
-        
         public ActionResult GetCheckBoxJson(string keyword)
         {
-            var data = App.GetList();
-            var checkedBox = sysUserRoleService.GetListByUserId(keyword);
-            var roleIds = string.Empty;
-            foreach (var s in checkedBox)
+            var allRoles = App.GetList();
+            var userRoles = App.GetUserRoles(keyword);
+            var list = new List<CheckBox>();
+            foreach (var role in allRoles)
             {
-                roleIds += s.F_Role + ",";
-            }
-            var list = new List<CheckBoxSelectModel>();
-            foreach (var r in data)
-            {
-                var fieldItem = new CheckBoxSelectModel();
-                fieldItem.value = r.F_Id;
-                fieldItem.text = r.F_FullName;
-                if (roleIds.IndexOf(r.F_Id, StringComparison.Ordinal) != -1)
-                    fieldItem.ifChecked = true;
+                var fieldItem = new CheckBox
+                {
+                    Value = role.Id,
+                    Text = role.Name,
+                    IfChecked = userRoles.Contains(role.Id)
+                };
                 list.Add(fieldItem);
             }
             return Content(list.ToJson());
         }
 
         [HttpGet]
-        
+
         public ActionResult GetFormJson(string keyValue)
         {
             var data = App.Get(keyValue);
@@ -89,21 +70,21 @@ namespace ZHXY.Web.SystemManage.Controllers
         }
 
         [HttpPost]
-        
+
         [ValidateAntiForgeryToken]
-        public ActionResult SubmitForm(SysRole roleEntity, string permissionIds2, string permissionIds3, string permissionIds4, string orgids, string keyValue)
+        public ActionResult SubmitForm(Role roleEntity, string permissionIds2, string permissionIds3, string permissionIds4, string orgids, string keyValue)
         {
-            if ("Diy".Equals(roleEntity.F_Data_Type))
-                roleEntity.F_Data_Deps = orgids;
+            if ("Diy".Equals(roleEntity.DataType))
+                roleEntity.DataDeps = orgids;
             else
-                roleEntity.F_Data_Deps = string.Empty;
+                roleEntity.DataDeps = string.Empty;
             App.SubmitForm(roleEntity, permissionIds2.Split(','), permissionIds3.Split(','), permissionIds4.Split(','), keyValue);
             RedisCache.Clear();
             return Result.Success();
         }
 
         [HttpPost]
-        
+
         [HandlerAuthorize]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteForm(string keyValue)
@@ -117,6 +98,6 @@ namespace ZHXY.Web.SystemManage.Controllers
             return Result.Success();
         }
 
-       
+
     }
 }

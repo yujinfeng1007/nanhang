@@ -298,7 +298,7 @@ namespace ZHXY.Application
                     CreatedTime = DateTime.Now
                 });
             }
-            AddRange<LeaveOrder>(list);
+            AddRange(list);
             SaveChanges();
         }
 

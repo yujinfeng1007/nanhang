@@ -12,13 +12,13 @@ namespace ZHXY.Web.SystemManage.Controllers
     /// </summary>
     public class RoleAuthorizeController : BaseController
     {
-        private SysModuleAppService moduleService { get; }
-        private SysRoleAuthorizeAppService roleAuthorizeService { get; }
-        private SysButtonAppService buttonService { get; }
+        private MenuService moduleService { get; }
+        private RoleAuthorizeService roleAuthorizeService { get; }
+        private MenuService buttonService { get; }
 
-        public RoleAuthorizeController(SysModuleAppService moduleAppService,
-            SysRoleAuthorizeAppService roleAuthorizeAppService,
-            SysButtonAppService buttonAppService)
+        public RoleAuthorizeController(MenuService moduleAppService,
+            RoleAuthorizeService roleAuthorizeAppService,
+            MenuService buttonAppService)
         {
             moduleService = moduleAppService;
             roleAuthorizeService = roleAuthorizeAppService;
@@ -29,10 +29,10 @@ namespace ZHXY.Web.SystemManage.Controllers
             var moduledata = moduleService.GetList();
             if (!string.IsNullOrEmpty(BeLong))
             {
-                moduledata = moduleService.GetList().Where(t => t.F_BelongSys.Equals(BeLong)).ToList();
+                moduledata = moduleService.GetList().Where(t => t.BelongSys.Equals(BeLong)).ToList();
             }
-            var buttondata = buttonService.GetList();
-            var authorizedata = new List<SysRoleAuthorize>();
+            var buttondata = buttonService.GetButtonList();
+            var authorizedata = new List<RoleAuthorize>();
             if (!string.IsNullOrEmpty(roleId))
             {
                 authorizedata = roleAuthorizeService.GetList(roleId);
@@ -41,33 +41,33 @@ namespace ZHXY.Web.SystemManage.Controllers
             foreach (var item in moduledata)
             {
                 var tree = new ViewTree();
-                var hasChildren = moduledata.Count(t => t.F_ParentId == item.F_Id) == 0 ? false : true;
-                tree.Id = item.F_Id;
-                tree.Text = item.F_FullName;
-                tree.Value = item.F_EnCode;
-                tree.ParentId = item.F_ParentId;
+                var hasChildren = moduledata.Count(t => t.ParentId == item.Id) == 0 ? false : true;
+                tree.Id = item.Id;
+                tree.Text = item.Name;
+                tree.Value = item.Code;
+                tree.ParentId = item.ParentId;
                 tree.Isexpand = true;
                 tree.Complete = true;
                 tree.Showcheck = true;
-                tree.Checkstate = authorizedata.Count(t => t.F_ItemId == item.F_Id);
+                tree.Checkstate = authorizedata.Count(t => t.ItemId == item.Id);
                 tree.HasChildren = true;
-                tree.Img = item.F_Icon == string.Empty ? string.Empty : item.F_Icon;
+                tree.Img = item.Icon == string.Empty ? string.Empty : item.Icon;
                 treeList.Add(tree);
             }
             foreach (var item in buttondata)
             {
                 var tree = new ViewTree();
-                var hasChildren = buttondata.Count(t => t.F_ParentId == item.F_Id) == 0 ? false : true;
-                tree.Id = item.F_Id;
-                tree.Text = item.F_FullName;
-                tree.Value = item.F_EnCode;
-                tree.ParentId = item.F_ParentId == "0" ? item.F_ModuleId : item.F_ParentId;
+                var hasChildren = buttondata.Count(t => t.ParentId == item.Id) == 0 ? false : true;
+                tree.Id = item.Id;
+                tree.Text = item.Name;
+                tree.Value = item.Code;
+                tree.ParentId = item.ParentId == "0" ? item.ModuleId : item.ParentId;
                 tree.Isexpand = true;
                 tree.Complete = true;
                 tree.Showcheck = true;
-                tree.Checkstate = authorizedata.Count(t => t.F_ItemId == item.F_Id);
+                tree.Checkstate = authorizedata.Count(t => t.ItemId == item.Id);
                 tree.HasChildren = hasChildren;
-                tree.Img = item.F_Icon == string.Empty ? string.Empty : item.F_Icon;
+                tree.Img = item.Icon == string.Empty ? string.Empty : item.Icon;
                 treeList.Add(tree);
             }
             return Content(treeList.TreeViewJson());

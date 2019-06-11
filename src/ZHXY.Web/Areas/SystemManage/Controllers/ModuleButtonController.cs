@@ -13,25 +13,25 @@ namespace ZHXY.Web.SystemManage.Controllers
     /// </summary>
     public class ModuleButtonController : BaseController
     {
-        private SysButtonAppService App { get; }
-        private SysModuleAppService moduleAppService { get; }
-        public ModuleButtonController(SysButtonAppService app, SysModuleAppService moduleService)
+        private MenuService App { get; }
+        private MenuService ModuleApp { get; }
+        public ModuleButtonController(MenuService app, MenuService moduleService)
         {
             App = app;
-            moduleAppService = moduleService;
+            ModuleApp = moduleService;
         }
         [HttpGet]
         
         public ActionResult GetTreeSelectJson(string moduleId)
         {
-            var data = App.GetList(moduleId);
+            var data = App.GetButtonList(moduleId);
             var treeList = new List<SelectTree>();
             foreach (var item in data)
             {
                 var treeModel = new SelectTree();
-                treeModel.Id = item.F_Id;
-                treeModel.Text = item.F_FullName;
-                treeModel.ParentId = item.F_ParentId;
+                treeModel.Id = item.Id;
+                treeModel.Text = item.Name;
+                treeModel.ParentId = item.ParentId;
                 treeList.Add(treeModel);
             }
             return Content(treeList.TreeSelectJson());
@@ -41,15 +41,15 @@ namespace ZHXY.Web.SystemManage.Controllers
         
         public ActionResult GetTreeGridJson(string moduleId)
         {
-            var data = App.GetList(moduleId);
+            var data = App.GetButtonList(moduleId);
             var treeList = new List<GridTree>();
             foreach (var item in data)
             {
                 var treeModel = new GridTree();
-                var hasChildren = data.Count(t => t.F_ParentId == item.F_Id) == 0 ? false : true;
-                treeModel.Id = item.F_Id;
+                var hasChildren = data.Count(t => t.ParentId == item.Id) == 0 ? false : true;
+                treeModel.Id = item.Id;
                 treeModel.IsLeaf = hasChildren;
-                treeModel.ParentId = item.F_ParentId;
+                treeModel.ParentId = item.ParentId;
                 treeModel.Expanded = hasChildren;
                 treeModel.EntityJson = item.ToJson();
                 treeList.Add(treeModel);
@@ -61,18 +61,18 @@ namespace ZHXY.Web.SystemManage.Controllers
         
         public ActionResult GetFormJson(string keyValue)
         {
-            var data = App.GetForm(keyValue);
+            var data = App.GetButtonById(keyValue);
             return Content(data.ToJson());
         }
 
         [HttpPost]
         
         [ValidateAntiForgeryToken]
-        public ActionResult SubmitForm(SysButton moduleButtonEntity, string keyValue)
+        public ActionResult SubmitForm(Button moduleButtonEntity, string keyValue)
         {
-            App.SubmitForm(moduleButtonEntity, keyValue);
+            App.SubmitButton(moduleButtonEntity, keyValue);
             RedisCache.Clear();
-            RedisCache.Set( SysConsts.AUTHORIZEBUTTON, CacheService.GetMenuButtonList());
+            RedisCache.Set( SysConsts.AUTHORIZEBUTTON, ModuleApp.GetMenuButtonList());
             return Result.Success();
         }
 
@@ -81,7 +81,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteForm(string keyValue)
         {
-            App.DeleteForm(keyValue);
+            App.DeleteButton(keyValue);
             RedisCache.Clear();
             return Result.Success();
         }
@@ -93,17 +93,17 @@ namespace ZHXY.Web.SystemManage.Controllers
         
         public ActionResult GetCloneButtonTreeJson()
         {
-            var moduledata = moduleAppService.GetList();
-            var buttondata = App.GetList();
+            var moduledata = ModuleApp.GetList();
+            var buttondata = App.GetButtonList();
             var treeList = new List<ViewTree>();
             foreach (var item in moduledata)
             {
                 var tree = new ViewTree();
-                var hasChildren = moduledata.Count(t => t.F_ParentId == item.F_Id) == 0 ? false : true;
-                tree.Id = item.F_Id;
-                tree.Text = item.F_FullName;
-                tree.Value = item.F_EnCode;
-                tree.ParentId = item.F_ParentId;
+                var hasChildren = moduledata.Count(t => t.ParentId == item.Id) == 0 ? false : true;
+                tree.Id = item.Id;
+                tree.Text = item.Name;
+                tree.Value = item.Code;
+                tree.ParentId = item.ParentId;
                 tree.Isexpand = true;
                 tree.Complete = true;
                 tree.HasChildren = true;
@@ -112,25 +112,25 @@ namespace ZHXY.Web.SystemManage.Controllers
             foreach (var item in buttondata)
             {
                 var tree = new ViewTree();
-                var hasChildren = buttondata.Count(t => t.F_ParentId == item.F_Id) == 0 ? false : true;
-                tree.Id = item.F_Id;
-                tree.Text = item.F_FullName;
-                tree.Value = item.F_EnCode;
-                if (item.F_ParentId == "0")
+                var hasChildren = buttondata.Count(t => t.ParentId == item.Id) == 0 ? false : true;
+                tree.Id = item.Id;
+                tree.Text = item.Name;
+                tree.Value = item.Code;
+                if (item.ParentId == "0")
                 {
-                    tree.ParentId = item.F_ModuleId;
+                    tree.ParentId = item.ModuleId;
                 }
                 else
                 {
-                    tree.ParentId = item.F_ParentId;
+                    tree.ParentId = item.ParentId;
                 }
                 tree.Isexpand = true;
                 tree.Complete = true;
                 tree.Showcheck = true;
                 tree.HasChildren = hasChildren;
-                if (item.F_Icon != string.Empty)
+                if (item.Icon != string.Empty)
                 {
-                    tree.Img = item.F_Icon;
+                    tree.Img = item.Icon;
                 }
                 treeList.Add(tree);
             }

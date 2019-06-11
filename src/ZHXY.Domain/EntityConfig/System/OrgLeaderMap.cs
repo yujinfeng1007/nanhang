@@ -2,9 +2,9 @@
 
 namespace ZHXY.Domain
 {
-    public class SysOrgLeaderMap : EntityTypeConfiguration<OrgLeader>
+    public class OrgLeaderMap : EntityTypeConfiguration<OrgLeader>
     {
-        public SysOrgLeaderMap()
+        public OrgLeaderMap()
         {
             ToTable("zhxy_org_leader");
             HasKey(t => new { t.OrgId, t.UserId });

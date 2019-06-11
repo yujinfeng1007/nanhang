@@ -97,7 +97,7 @@ namespace ZHXY.Web.Controllers
             var list = (from user in query
                         join org in App.Read<Org>() on user.OrganId equals org.Id into orgJoin
                         from org in orgJoin.DefaultIfEmpty()
-                        join role in App.Read<SysRole>() on user.DutyId equals role.F_Id into roleJoin
+                        join role in App.Read<Role>() on user.DutyId equals role.Id into roleJoin
                         from role in roleJoin.DefaultIfEmpty()
                         select new
                         {
@@ -105,7 +105,7 @@ namespace ZHXY.Web.Controllers
                             RealName = user.Name,
                             OrgId = org.Id ?? "",
                             OrgName = org.Name ?? "",
-                            Duty = role.F_FullName
+                            Duty = role.Name
                         }
 
                         ).ToList();

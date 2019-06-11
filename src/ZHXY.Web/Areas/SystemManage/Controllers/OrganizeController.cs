@@ -16,12 +16,12 @@ namespace ZHXY.Web.SystemManage.Controllers
     {
         private OrgService App { get; }
         private UserService UserApp { get; }
-        private SysRoleAppService RoleApp { get; }
+        private RoleService RoleApp { get; }
 
-        public OrganizeController(OrgService app, UserService userApp, SysRoleAppService roleApp)
+        public OrganizeController(OrgService app, UserService userApp, RoleService roleApp)
         {
             App = app;
-            UserApp = UserApp;
+            UserApp = userApp;
             RoleApp = roleApp;
         }
 
@@ -93,7 +93,7 @@ namespace ZHXY.Web.SystemManage.Controllers
             var role = RoleApp.Get(keyword);
             if (!role.IsEmpty())
             {
-                data_deeps = role.F_Data_Deps;
+                data_deeps = role.DataDeps;
             }
             else
             {

@@ -15,12 +15,7 @@ namespace ZHXY.Application
     /// </summary>
     public class UserService : AppService
     {
-        private SysUserRoleAppService userRoleAppService { get; }
         public UserService(DbContext r) : base(r) { }
-        public UserService(DbContext r, SysUserRoleAppService userRoleService) : base(r)
-        {
-            userRoleAppService = userRoleService;
-        }
 
         public List<UserView> GetList(Pagination pag, string orgId, string keyword)
         {
@@ -87,14 +82,14 @@ namespace ZHXY.Application
                 AddAndSave(user);
             }
 
-            var userRoles = new List<SysUserRole>();
+            var userRoles = new List<UserRole>();
             if (!string.IsNullOrEmpty(F_RoleId))
             {
                 var roles = F_RoleId.Split(',');
-                userRoles.AddRange(from r in roles where !r.IsEmpty() select new SysUserRole { F_Id = Guid.NewGuid().ToString("N").ToUpper(), F_Role = r, F_User = keyValue });
+                userRoles.AddRange(from r in roles where !r.IsEmpty() select new UserRole { RoleId = r, UserId = keyValue });
             }
-            Del<SysUserRole>(t => t.F_User == keyValue);
-            AddRange<SysUserRole>(userRoles);
+            Del<UserRole>(t => t.UserId == keyValue);
+            AddRange(userRoles);
 
             SaveChanges();
         }
@@ -125,7 +120,7 @@ namespace ZHXY.Application
             cuser.LoginToken = DESEncryptHelper.Encrypt(Guid.NewGuid().ToString());
             cuser.Ip = Net.Ip;
             cuser.IpLocation = Net.GetLocation(cuser.Ip);
-            cuser.Roles = userRoleAppService.GetListByUserId(user.Id).Select(t => t.F_Role).ToArray();
+            cuser.Roles = GetUserRoles(user.Id); 
             if (cuser.Account == "admin")
             {
                 cuser.DutyId = "admin";
@@ -136,9 +131,9 @@ namespace ZHXY.Application
 
         public bool VerifyPwd(string userId, string password)
         {
-            var userLogin = Read<User>(p => p.Id.Equals(userId)).Select(p => new { p.Secretkey, p.Password }).FirstOrDefaultAsync().Result;
-            var dbPassword = Md5EncryptHelper.Encrypt(DESEncryptHelper.Encrypt(password.ToLower(), userLogin.Secretkey).ToLower(), 32).ToLower();
-            return dbPassword == userLogin.Password;
+            var user = Read<User>(p => p.Id.Equals(userId)).Select(p => new { p.Secretkey, p.Password }).FirstOrDefaultAsync().Result;
+            var dbPassword = Md5EncryptHelper.Encrypt(DESEncryptHelper.Encrypt(password.ToLower(), user.Secretkey).ToLower(), 32).ToLower();
+            return dbPassword == user.Password;
         }
 
         public dynamic GetByOrg(string orgId, string keyword = null)
@@ -160,5 +155,12 @@ namespace ZHXY.Application
             user.Password = Md5EncryptHelper.Encrypt(DESEncryptHelper.Encrypt(Md5EncryptHelper.Encrypt(userPassword, 32).ToLower(), user.Secretkey).ToLower(), 32).ToLower();
             SaveChanges();
         }
+
+        /// <summary>
+        /// 获取用户的角色id
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public string[] GetUserRoles(string userId) => Read<UserRole>(t => t.UserId == userId).Select(p => p.RoleId).ToArray();
     }
 }

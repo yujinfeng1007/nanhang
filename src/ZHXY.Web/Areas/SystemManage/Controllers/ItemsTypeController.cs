@@ -14,23 +14,28 @@ namespace ZHXY.Web.SystemManage.Controllers
     /// </summary>
     public class ItemsTypeController : BaseController
     {
-        private SysDicAppService App { get; }
+        private DicService App { get; }
+        private DicService DicItemApp { get; }
 
-        public ItemsTypeController(SysDicAppService app) => App = app;
+        public ItemsTypeController(DicService app,DicService dicItemApp)
+        {
+            App = app;
+            DicItemApp = dicItemApp;
+        }
 
         [HttpGet]
         
         public ActionResult GetTreeSelectJson()
         {
-            var data = App.GetList();
+            var data = App.GetAll();
             var treeList = new List<SelectTree>();
             foreach (var item in data)
             {
                 var treeModel = new SelectTree
                 {
-                    Id = item.F_Id,
-                    Text = item.F_FullName,
-                    ParentId = item.F_ParentId
+                    Id = item.Id,
+                    Text = item.Name,
+                    ParentId = item.ParentId
                 };
                 treeList.Add(treeModel);
             }
@@ -39,18 +44,18 @@ namespace ZHXY.Web.SystemManage.Controllers
 
         [HttpGet]
         
-        public ActionResult GetTreeJson()
+        public ActionResult GetTree()
         {
-            var data = App.GetList();
+            var data = App.GetAll();
             var treeList = new List<ViewTree>();
             foreach (var item in data)
             {
                 var tree = new ViewTree();
-                var hasChildren = data.Count(t => t.F_ParentId == item.F_Id) != 0;
-                tree.Id = item.F_Id;
-                tree.Text = item.F_FullName;
-                tree.Value = item.F_EnCode;
-                tree.ParentId = item.F_ParentId;
+                var hasChildren = data.Count(t => t.ParentId == item.Id) != 0;
+                tree.Id = item.Id;
+                tree.Text = item.Name;
+                tree.Value = item.Code;
+                tree.ParentId = item.ParentId;
                 tree.Isexpand = true;
                 tree.Complete = true;
                 tree.HasChildren = hasChildren;
@@ -63,15 +68,15 @@ namespace ZHXY.Web.SystemManage.Controllers
         
         public ActionResult GetTreeGridJson()
         {
-            var data = App.GetList();
+            var data = App.GetAll();
             var treeList = new List<GridTree>();
             foreach (var item in data)
             {
                 var treeModel = new GridTree();
-                var hasChildren = data.Count(t => t.F_ParentId == item.F_Id) != 0;
-                treeModel.Id = item.F_Id;
+                var hasChildren = data.Count(t => t.ParentId == item.Id) != 0;
+                treeModel.Id = item.Id;
                 treeModel.IsLeaf = hasChildren;
-                treeModel.ParentId = item.F_ParentId;
+                treeModel.ParentId = item.ParentId;
                 treeModel.Expanded = hasChildren;
                 treeModel.EntityJson = item.ToJson();
                 treeList.Add(treeModel);
@@ -83,18 +88,18 @@ namespace ZHXY.Web.SystemManage.Controllers
         
         public ActionResult GetFormJson(string keyValue)
         {
-            var data = App.GetForm(keyValue);
+            var data = App.GetById(keyValue);
             return Content(data.ToJson());
         }
 
         [HttpPost]
         
         [ValidateAntiForgeryToken]
-        public ActionResult SubmitForm(SysDic itemsEntity, string keyValue)
+        public ActionResult SubmitForm(Dic itemsEntity, string keyValue)
         {
-            App.SubmitForm(itemsEntity, keyValue);
+            App.Submit(itemsEntity, keyValue);
             RedisCache.Remove(SysConsts.DATAITEMS);
-            RedisCache.Set(SysConsts.DATAITEMS, CacheService.GetDataItemList());
+            RedisCache.Set(SysConsts.DATAITEMS, DicItemApp.GetDataItemList());
             return Result.Success();
         }
 
@@ -103,9 +108,9 @@ namespace ZHXY.Web.SystemManage.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteForm(string keyValue)
         {
-            App.DeleteForm(keyValue);
+            App.Delete(keyValue);
             RedisCache.Remove(SysConsts.DATAITEMS);
-            RedisCache.Set( SysConsts.DATAITEMS, CacheService.GetDataItemList());
+            RedisCache.Set( SysConsts.DATAITEMS, DicItemApp.GetDataItemList());
             return Result.Success();
         }
     }

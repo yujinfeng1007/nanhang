@@ -335,20 +335,20 @@ namespace TaskApi.Job
         public void ProcessSchoolTeacherSysUserRole(EFContext db, NHModel newDb)
         {
             var newData = newDb.Set<TeacherInfo>().AsNoTracking().Select(p => p.teacherId).ToList();
-            var oldData = db.Set<SysUserRole>().AsNoTracking().Select(p => p.F_User).ToList();
+            var oldData = db.Set<UserRole>().AsNoTracking().Select(p => p.UserId).ToList();
             var AddData = newData.Except(oldData).ToList();
-            var ListData = new List<SysUserRole>();
+            var ListData = new List<UserRole>();
             if(null != AddData && AddData.Count() > 0)
             {
                 foreach(var s in AddData)
                 {
-                    var r = new SysUserRole();
-                    r.F_User = s;
-                    r.F_Role = "teacher";
+                    var r = new UserRole();
+                    r.UserId = s;
+                    r.RoleId = "teacher";
                     ListData.Add(r);
                 }
             }
-            db.Set<SysUserRole>().AddRange(ListData);
+            db.Set<UserRole>().AddRange(ListData);
             db.SaveChanges();
         }
 
@@ -662,20 +662,20 @@ namespace TaskApi.Job
         public void ProcessStudentSysUserRole(EFContext db, NHModel newDb)
         {
             var newData = newDb.Set<StudentInfo>().AsNoTracking().Select(p => p.studentId).ToList();
-            var oldData = db.Set<SysUserRole>().AsNoTracking().Select(p => p.F_User).ToList();
+            var oldData = db.Set<UserRole>().AsNoTracking().Select(p => p.UserId).ToList();
             var AddData = newData.Except(oldData).ToList();
-            var ListData = new List<SysUserRole>();
+            var ListData = new List<UserRole>();
             if (null != AddData && AddData.Count() > 0)
             {
                 foreach (var s in AddData)
                 {
-                    var r = new SysUserRole();
-                    r.F_User = s;
-                    r.F_Role = "student";
+                    var r = new UserRole();
+                    r.UserId = s;
+                    r.RoleId = "student";
                     ListData.Add(r);
                 }
             }
-            db.Set<SysUserRole>().AddRange(ListData);
+            db.Set<UserRole>().AddRange(ListData);
             db.SaveChanges();
         }
 

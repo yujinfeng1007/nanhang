@@ -1230,7 +1230,6 @@ $.fn.bindCheckBox = function(options) {
                     }
                     $element.append($checkbox)
                 });
-                //$element.find('.ckbox:first-child input').attr('required', 'required')
             }
         });
     }
@@ -1308,8 +1307,6 @@ $.fn.dataGrid = function(options) {
             }
         }
         var $operate = $element.parents('.gridPanel').parent().find('.operate');
-        //by ben
-        //var $operate = $(".operate");
         var length = grid.length;
         $('.operate .first span').html(length)
         if (length > 0) {
@@ -1344,8 +1341,6 @@ $.fn.dataGrid = function(options) {
         var length = $(this).jqGrid("getGridParam", "selarrrow").length;
         $('.operate .first span').html(length)
         var $operate = $element.parents('.gridPanel').parent().find('.operate');
-        //by ben
-        //var $operate = $(".operate");
         if (length > 0) {
             if (length !== 1) {
                 $operate.find('#NF-edit, #NF-Details, #NF-revisepassword').addClass('disabled');
