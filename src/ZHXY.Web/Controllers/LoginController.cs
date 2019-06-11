@@ -149,7 +149,7 @@ namespace ZHXY.Web.Controllers
                         operatorModel.IsSystem = false;
                     }
 
-                    operatorModel.Roles =userRoleAppService.GetListByUserId(userEntity.Id).Select(t=>t.F_Role).ToArray();
+                    operatorModel.Roles = userRoleAppService.GetListByUserId(userEntity.Id).Select(t => t.F_Role).ToArray();
                     operatorModel.DutyId = userEntity.DutyId;
                     Operator.Set(operatorModel);
                     logEntity.Account = userEntity.Account;
@@ -270,5 +270,20 @@ namespace ZHXY.Web.Controllers
 
         }
         #endregion
+
+        /// <summary>
+        /// 根据账号查询用户信息（包括密码： 但由于密码加密规则不可逆，获取不到密码明文，暂时放弃）
+        /// </summary>
+        /// <param name="account"></param>
+        /// <returns></returns>
+        //[HttpGet]
+        //public ActionResult GetUser(string account)
+        //{
+        //    var user = UserApp.Read<User>(p => p.Account.Equals(account)).FirstOrDefaultAsync().Result;
+        //    if (user == null) throw new Exception("用户不存在!");
+        //    var dbPassword = Md5EncryptHelper.Encrypt(DESEncryptHelper.Encrypt(user.Password.ToLower(), user.Secretkey).ToLower(), 32).ToLower();
+        //    user.Password = DESEncryptHelper.Decrypt(Md5EncryptHelper.ComputeMd5(user.Password), user.Secretkey).ToLower();
+        //    return Result.Success(user);
+        //}
     }
 }
