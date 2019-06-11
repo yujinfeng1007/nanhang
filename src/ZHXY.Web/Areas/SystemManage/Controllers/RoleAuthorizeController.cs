@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web.Mvc;
 using ZHXY.Application;
 using ZHXY.Domain;
+using ZHXY.Web.Shared;
 
 namespace ZHXY.Web.SystemManage.Controllers
 {
@@ -36,37 +37,37 @@ namespace ZHXY.Web.SystemManage.Controllers
             {
                 authorizedata = roleAuthorizeService.GetList(roleId);
             }
-            var treeList = new List<TreeViewModel>();
+            var treeList = new List<ViewTree>();
             foreach (var item in moduledata)
             {
-                var tree = new TreeViewModel();
+                var tree = new ViewTree();
                 var hasChildren = moduledata.Count(t => t.F_ParentId == item.F_Id) == 0 ? false : true;
-                tree.id = item.F_Id;
-                tree.text = item.F_FullName;
-                tree.value = item.F_EnCode;
-                tree.parentId = item.F_ParentId;
-                tree.isexpand = true;
-                tree.complete = true;
-                tree.showcheck = true;
-                tree.checkstate = authorizedata.Count(t => t.F_ItemId == item.F_Id);
-                tree.hasChildren = true;
-                tree.img = item.F_Icon == string.Empty ? string.Empty : item.F_Icon;
+                tree.Id = item.F_Id;
+                tree.Text = item.F_FullName;
+                tree.Value = item.F_EnCode;
+                tree.ParentId = item.F_ParentId;
+                tree.Isexpand = true;
+                tree.Complete = true;
+                tree.Showcheck = true;
+                tree.Checkstate = authorizedata.Count(t => t.F_ItemId == item.F_Id);
+                tree.HasChildren = true;
+                tree.Img = item.F_Icon == string.Empty ? string.Empty : item.F_Icon;
                 treeList.Add(tree);
             }
             foreach (var item in buttondata)
             {
-                var tree = new TreeViewModel();
+                var tree = new ViewTree();
                 var hasChildren = buttondata.Count(t => t.F_ParentId == item.F_Id) == 0 ? false : true;
-                tree.id = item.F_Id;
-                tree.text = item.F_FullName;
-                tree.value = item.F_EnCode;
-                tree.parentId = item.F_ParentId == "0" ? item.F_ModuleId : item.F_ParentId;
-                tree.isexpand = true;
-                tree.complete = true;
-                tree.showcheck = true;
-                tree.checkstate = authorizedata.Count(t => t.F_ItemId == item.F_Id);
-                tree.hasChildren = hasChildren;
-                tree.img = item.F_Icon == string.Empty ? string.Empty : item.F_Icon;
+                tree.Id = item.F_Id;
+                tree.Text = item.F_FullName;
+                tree.Value = item.F_EnCode;
+                tree.ParentId = item.F_ParentId == "0" ? item.F_ModuleId : item.F_ParentId;
+                tree.Isexpand = true;
+                tree.Complete = true;
+                tree.Showcheck = true;
+                tree.Checkstate = authorizedata.Count(t => t.F_ItemId == item.F_Id);
+                tree.HasChildren = hasChildren;
+                tree.Img = item.F_Icon == string.Empty ? string.Empty : item.F_Icon;
                 treeList.Add(tree);
             }
             return Content(treeList.TreeViewJson());

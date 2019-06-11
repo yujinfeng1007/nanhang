@@ -43,12 +43,12 @@ namespace TaskApi.DH
 
             //第二次鉴权（带上签名）
             var md5 = MD5.Create();
-            var temp = Md5Tool.Md532(Constants.DAHUA_LOGIN_PASSWORD); //把密码生成32位小写加密字符串
-            temp = Md5Tool.Md532(Constants.DAHUA_LOGIN_USERNAME + temp); //继续加密
-            temp = Md5Tool.Md532(temp); //继续加密
-            temp = Md5Tool.Md532(Constants.DAHUA_LOGIN_USERNAME + ":" + Realm + ":" + temp); // 继续加密 (后续会用到这个值)
+            var temp = Constants.DAHUA_LOGIN_PASSWORD.ComputeMd5(); //把密码生成32位小写加密字符串
+            temp = (Constants.DAHUA_LOGIN_USERNAME + temp).ComputeMd5(); //继续加密
+            temp = temp.ComputeMd5(); //继续加密
+            temp =(Constants.DAHUA_LOGIN_USERNAME + ":" + Realm + ":" + temp).ComputeMd5(); // 继续加密 (后续会用到这个值)
             X_SUBJECT_TEMP = temp;
-            var signature = Md5Tool.Md532(temp + ":" + RandomKey);// 最终签名
+            var signature = (temp + ":" + RandomKey).ComputeMd5();// 最终签名
 
             var SecondDic = new Dictionary<string, string>();
             SecondDic.Add("userName", Constants.DAHUA_LOGIN_USERNAME);
@@ -74,7 +74,7 @@ namespace TaskApi.DH
         /// </summary>
         public static string DHUpdate()
         {
-            var signature = Md5Tool.Md532(X_SUBJECT_TEMP + ":" + X_SUBJECT_TOKEN); //生成签名
+            var signature = (X_SUBJECT_TEMP + ":" + X_SUBJECT_TOKEN).ComputeMd5(); //生成签名
             var dic = new Dictionary<string, string>();
             dic.Add("signature", signature);
             var response = HttpHelper.ExecutePost(Constants.UPDATE_TOKEN_URI, JsonConvert.SerializeObject(dic), X_SUBJECT_TOKEN);

@@ -1,5 +1,6 @@
 ﻿using ZHXY.Application;
 using System.Web.Mvc;
+using ZHXY.Web.Shared;
 
 namespace ZHXY.Web.Dorm.Controllers
 {

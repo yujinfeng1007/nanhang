@@ -2,6 +2,7 @@
 using ZHXY.Application;
 using ZHXY.Common;
 using ZHXY.Domain;
+using ZHXY.Web.Shared;
 
 namespace ZHXY.Web.SystemManage.Controllers
 {

@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using ZHXY.Application;
+using ZHXY.Web.Shared;
+
 namespace ZHXY.Web.SystemManage.Controllers
 {
     public class LogController : BaseController
@@ -11,7 +13,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         public async Task<ViewResult> LoginHis() => await Task.Run(() => View());
 
         [HttpGet]
-        public ActionResult Load(GetLogListDto input)
+        public ActionResult Load(Pagination input)
         {
             var list = App.Load(input);
             return Result.PagingRst(list, input.Records, input.Total);

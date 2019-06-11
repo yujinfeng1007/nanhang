@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using ZHXY.Application;
 using ZHXY.Common;
 using ZHXY.Domain;
+using ZHXY.Web.Shared;
 
 namespace ZHXY.Web.SystemManage.Controllers
 {
@@ -24,13 +25,13 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult GetTreeSelectJson(string moduleId)
         {
             var data = App.GetList(moduleId);
-            var treeList = new List<TreeSelectModel>();
+            var treeList = new List<SelectTree>();
             foreach (var item in data)
             {
-                var treeModel = new TreeSelectModel();
-                treeModel.id = item.F_Id;
-                treeModel.text = item.F_FullName;
-                treeModel.parentId = item.F_ParentId;
+                var treeModel = new SelectTree();
+                treeModel.Id = item.F_Id;
+                treeModel.Text = item.F_FullName;
+                treeModel.ParentId = item.F_ParentId;
                 treeList.Add(treeModel);
             }
             return Content(treeList.TreeSelectJson());
@@ -41,16 +42,16 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult GetTreeGridJson(string moduleId)
         {
             var data = App.GetList(moduleId);
-            var treeList = new List<TreeGridModel>();
+            var treeList = new List<GridTree>();
             foreach (var item in data)
             {
-                var treeModel = new TreeGridModel();
+                var treeModel = new GridTree();
                 var hasChildren = data.Count(t => t.F_ParentId == item.F_Id) == 0 ? false : true;
-                treeModel.id = item.F_Id;
-                treeModel.isLeaf = hasChildren;
-                treeModel.parentId = item.F_ParentId;
-                treeModel.expanded = hasChildren;
-                treeModel.entityJson = item.ToJson();
+                treeModel.Id = item.F_Id;
+                treeModel.IsLeaf = hasChildren;
+                treeModel.ParentId = item.F_ParentId;
+                treeModel.Expanded = hasChildren;
+                treeModel.EntityJson = item.ToJson();
                 treeList.Add(treeModel);
             }
             return Content(treeList.TreeGridJson());
@@ -94,42 +95,42 @@ namespace ZHXY.Web.SystemManage.Controllers
         {
             var moduledata = moduleAppService.GetList();
             var buttondata = App.GetList();
-            var treeList = new List<TreeViewModel>();
+            var treeList = new List<ViewTree>();
             foreach (var item in moduledata)
             {
-                var tree = new TreeViewModel();
+                var tree = new ViewTree();
                 var hasChildren = moduledata.Count(t => t.F_ParentId == item.F_Id) == 0 ? false : true;
-                tree.id = item.F_Id;
-                tree.text = item.F_FullName;
-                tree.value = item.F_EnCode;
-                tree.parentId = item.F_ParentId;
-                tree.isexpand = true;
-                tree.complete = true;
-                tree.hasChildren = true;
+                tree.Id = item.F_Id;
+                tree.Text = item.F_FullName;
+                tree.Value = item.F_EnCode;
+                tree.ParentId = item.F_ParentId;
+                tree.Isexpand = true;
+                tree.Complete = true;
+                tree.HasChildren = true;
                 treeList.Add(tree);
             }
             foreach (var item in buttondata)
             {
-                var tree = new TreeViewModel();
+                var tree = new ViewTree();
                 var hasChildren = buttondata.Count(t => t.F_ParentId == item.F_Id) == 0 ? false : true;
-                tree.id = item.F_Id;
-                tree.text = item.F_FullName;
-                tree.value = item.F_EnCode;
+                tree.Id = item.F_Id;
+                tree.Text = item.F_FullName;
+                tree.Value = item.F_EnCode;
                 if (item.F_ParentId == "0")
                 {
-                    tree.parentId = item.F_ModuleId;
+                    tree.ParentId = item.F_ModuleId;
                 }
                 else
                 {
-                    tree.parentId = item.F_ParentId;
+                    tree.ParentId = item.F_ParentId;
                 }
-                tree.isexpand = true;
-                tree.complete = true;
-                tree.showcheck = true;
-                tree.hasChildren = hasChildren;
+                tree.Isexpand = true;
+                tree.Complete = true;
+                tree.Showcheck = true;
+                tree.HasChildren = hasChildren;
                 if (item.F_Icon != string.Empty)
                 {
-                    tree.img = item.F_Icon;
+                    tree.Img = item.F_Icon;
                 }
                 treeList.Add(tree);
             }

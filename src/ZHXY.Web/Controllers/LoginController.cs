@@ -8,6 +8,7 @@ using ZHXY.Application;
 using ZHXY.Domain;
 using ZHXY.Common;
 using System.Linq;
+using ZHXY.Web.Shared;
 
 namespace ZHXY.Web.Controllers
 {
@@ -78,7 +79,7 @@ namespace ZHXY.Web.Controllers
                     IPAddress = Net.Ip,
                     IPAddressName = Net.GetLocation(Net.Ip),
                     ModuleName = "系统登录",
-                    Type = DbLogType.Exit.ToString(),
+                    Type = "退出",
                     Account = Operator.GetCurrent().Account,
                     UserId = Operator.GetCurrent().Id,
                     NickName = Operator.GetCurrent().Name,
@@ -114,7 +115,7 @@ namespace ZHXY.Web.Controllers
             var logEntity = new AddLogDto
             {
                 ModuleName = "系统登录",
-                Type = DbLogType.Login.ToString(),
+                Type = "登录",
                 IPAddress = Net.Ip,
                 IPAddressName = Net.GetLocation(Net.Ip),
             };

@@ -4,6 +4,7 @@ using System.IO;
 using System.Web.Mvc;
 using ZHXY.Application;
 using ZHXY.Common;
+using ZHXY.Web.Shared;
 
 namespace ZHXY.Web.Dorm.Controllers
 {
@@ -80,7 +81,7 @@ namespace ZHXY.Web.Dorm.Controllers
         /// 提交访客信息
         /// </summary>
         [HttpPost]
-        public ActionResult SubmitVisitor(VisitorApplySubmitDto input)
+        public ActionResult SubmitVisitor(VisitorApplyDto input)
         {
             var img = ConfigurationManager.AppSettings["NH_DEFAULT_IMG"];
             return Result.Success(App.Submit(input, img));

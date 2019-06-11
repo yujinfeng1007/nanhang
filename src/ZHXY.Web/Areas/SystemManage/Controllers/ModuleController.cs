@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using ZHXY.Application;
 using ZHXY.Common;
 using ZHXY.Domain;
+using ZHXY.Web.Shared;
 
 namespace ZHXY.Web.SystemManage.Controllers
 {
@@ -21,13 +22,13 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult GetTreeSelectJson()
         {
             var data = App.GetList();
-            var treeList = new List<TreeSelectModel>();
+            var treeList = new List<SelectTree>();
             foreach (var item in data)
             {
-                var treeModel = new TreeSelectModel();
-                treeModel.id = item.F_Id;
-                treeModel.text = item.F_FullName;
-                treeModel.parentId = item.F_ParentId;
+                var treeModel = new SelectTree();
+                treeModel.Id = item.F_Id;
+                treeModel.Text = item.F_FullName;
+                treeModel.ParentId = item.F_ParentId;
                 treeList.Add(treeModel);
             }
             return Content(treeList.TreeSelectJson());
@@ -50,16 +51,16 @@ namespace ZHXY.Web.SystemManage.Controllers
                 data = data.TreeWhere(t => t.F_BelongSys == F_BelongSys);
             }
 
-            var treeList = new List<TreeGridModel>();
+            var treeList = new List<GridTree>();
             foreach (var item in data)
             {
-                var treeModel = new TreeGridModel();
+                var treeModel = new GridTree();
                 var hasChildren = data.Count(t => t.F_ParentId == item.F_Id) == 0 ? false : true;
-                treeModel.id = item.F_Id;
-                treeModel.isLeaf = hasChildren;
-                treeModel.parentId = item.F_ParentId;
-                treeModel.expanded = false;
-                treeModel.entityJson = item.ToJson();
+                treeModel.Id = item.F_Id;
+                treeModel.IsLeaf = hasChildren;
+                treeModel.ParentId = item.F_ParentId;
+                treeModel.Expanded = false;
+                treeModel.EntityJson = item.ToJson();
                 treeList.Add(treeModel);
             }
             return Result.PagingRst(treeList.TreeGridJson().Deserialize<object>());

@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Mvc;
 using ZHXY.Application;
+using ZHXY.Web.Shared;
 
 namespace ZHXY.Web.Dorm.Controllers
 {
@@ -18,7 +19,7 @@ namespace ZHXY.Web.Dorm.Controllers
         #region HttpPost
 
         [HttpPost]
-        public async Task<ActionResult> Add(CreateDormBuildingDto dto)
+        public async Task<ActionResult> Add(AddBuildingDto dto)
         {
 
             await App.AddAsync(dto);
@@ -33,7 +34,7 @@ namespace ZHXY.Web.Dorm.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Update(UpdateDormBuildingDto dto)
+        public async Task<ActionResult> Update(UpdateBuildingDto dto)
         {
             await App.UpdAsync(dto);
             return Result.Success();

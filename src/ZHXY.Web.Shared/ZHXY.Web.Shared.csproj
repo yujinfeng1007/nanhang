@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{98086FAE-943D-4BC6-A41D-7B71522420DA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ZHXY.Web.Shared</RootNamespace>
+    <AssemblyName>ZHXY.Web.Shared</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BuildingService\AddBuildingDto.cs" />
+    <Compile Include="BuildingService\BuildingView.cs" />
+    <Compile Include="BuildingService\UpdateBuildingDto.cs" />
+    <Compile Include="ReportService\GetOriginalListByDateParms.cs" />
+    <Compile Include="VersionService\CheckVersionInput.cs" />
+    <Compile Include="DormRuleService\UpdateDormRuleDto.cs" />
+    <Compile Include="FaceService\FaceApprovalDto.cs" />
+    <Compile Include="FaceService\FaceListView.cs" />
+    <Compile Include="FaceService\FaceRequestDto.cs" />
+    <Compile Include="FaceService\FaceApprovalListInput.cs" />
+    <Compile Include="FilterIpService\AddFilterIpDto.cs" />
+    <Compile Include="FilterIpService\UpdateFilterIpDto.cs" />
+    <Compile Include="GateService\AddGateDto.cs" />
+    <Compile Include="GateService\GateDto.cs" />
+    <Compile Include="GateService\GateView.cs" />
+    <Compile Include="GateService\SyncGateDto.cs" />
+    <Compile Include="GateService\UpdateGateDto.cs" />
+    <Compile Include="HolidayService\AddHolidayDto.cs" />
+    <Compile Include="HolidayService\UpdateHolidayDto.cs" />
+    <Compile Include="LeaveService\AddApproverDto.cs" />
+    <Compile Include="LeaveService\ApproveDetailView.cs" />
+    <Compile Include="LeaveService\BulkLeaveDto.cs" />
+    <Compile Include="LeaveService\CancelHolidayDto.cs" />
+    <Compile Include="LeaveService\CancellableLeaveView.cs" />
+    <Compile Include="LeaveService\ContactGroupView.cs" />
+    <Compile Include="LeaveService\ContactView.cs" />
+    <Compile Include="LeaveService\GetApprovalListDto.cs" />
+    <Compile Include="LeaveService\GetCancelListDto.cs" />
+    <Compile Include="LeaveService\GetLeaveHistoryDto.cs" />
+    <Compile Include="LeaveService\GetSpecialLeaveDto.cs" />
+    <Compile Include="LeaveService\LeaveApprovalDto.cs" />
+    <Compile Include="LeaveService\LeaveApproveView.cs" />
+    <Compile Include="LeaveService\LeaveListView.cs" />
+    <Compile Include="LeaveService\LeaveRequestDto.cs" />
+    <Compile Include="LeaveService\OneKeyApprovalDto.cs" />
+    <Compile Include="LogService\AddLogDto.cs" />
+    <Compile Include="MessageService\OrgHeadView.cs" />
+    <Compile Include="MessageService\SetOrgHeadDto.cs" />
+    <Compile Include="OrgService\AddOrgDto.cs" />
+    <Compile Include="OrgService\AddOrRemoveOrgLeaderDto.cs" />
+    <Compile Include="OrgService\UpdateOrgDto.cs" />
+    <Compile Include="[Public]\Pagination.cs" />
+    <Compile Include="PerformanceService\BuildingAccessDetailView.cs" />
+    <Compile Include="PerformanceService\BuildingAccessStatisticsView.cs" />
+    <Compile Include="PerformanceService\GetBuildingAccessDetailDto.cs" />
+    <Compile Include="PerformanceService\GetBuildingAccessStatisticsDto.cs" />
+    <Compile Include="PerformanceService\GetLoginDetailDto.cs" />
+    <Compile Include="PerformanceService\GetLoginStatisticsDto.cs" />
+    <Compile Include="PerformanceService\LoginDetailView.cs" />
+    <Compile Include="PerformanceService\LoginStatisticsView.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="[Public]\GridTree.cs" />
+    <Compile Include="[Public]\SelectTree.cs" />
+    <Compile Include="[Public]\ViewTree.cs" />
+    <Compile Include="UserService\AddUserDto.cs" />
+    <Compile Include="UserService\CheckBoxSelectModel.cs" />
+    <Compile Include="UserService\UpdateUserDto.cs" />
+    <Compile Include="UserService\UserView.cs" />
+    <Compile Include="VisitorService\VisitorApplyDto.cs" />
+    <Compile Include="VisitorService\VisitorApprovalDto.cs" />
+    <Compile Include="VisitorService\VisitorApprovalListDto.cs" />
+    <Compile Include="VisitorService\VisitorListView.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.2</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ZHXY.Common\ZHXY.Common.csproj">
+      <Project>{db19ce03-c307-43fe-a209-08aa4ae10e21}</Project>
+      <Name>ZHXY.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
