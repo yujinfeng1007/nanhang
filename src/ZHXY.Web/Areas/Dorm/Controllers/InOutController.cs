@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web.Mvc;
 using ZHXY.Application;
 using ZHXY.Domain;
+using ZHXY.Web.Shared;
 
 namespace ZHXY.Web.Dorm.Controllers
 {
@@ -23,11 +24,11 @@ namespace ZHXY.Web.Dorm.Controllers
             NoOutReportApp = app_4;
         }
         [HttpGet]
-        public ActionResult GetOriginalListBydate(GetOriginalListBydateParms parms)
+        public ActionResult GetOriginalListByDate(GetOriginalListByDateParms parms)
         {
-            if (string.IsNullOrEmpty(parms.date))  throw new System.Exception("请输入日期");
+            if (string.IsNullOrEmpty(parms.Date))  throw new System.Exception("请输入日期");
             var pagination = new Pagination() { Page = parms.PageIndex, Rows = parms.PageSize };
-            var list = OriginalReportApp.GetOriginalListBydate(pagination, parms.userId, parms.date);
+            var list = OriginalReportApp.GetOriginalListBydate(pagination, parms.UserId, parms.Date);
             return Result.PagingRst(list, pagination.Records,pagination.Total);
         }
         /// <summary>
@@ -194,7 +195,6 @@ namespace ZHXY.Web.Dorm.Controllers
              {
                  name = p.Name,
                  className = p.Organ?.Name,
-                 // address = p.Dorm?.Area + p.Dorm?.UnitNumber+ p.Dorm?.BuildingId + p.Dorm?.FloorNumber+p.Dorm?.Title,
                  address = p.Dorm?.Title,
                  date = p.InTime,
                  record = p.F_Time
@@ -218,7 +218,6 @@ namespace ZHXY.Web.Dorm.Controllers
               {
                   name = p.Name,
                   className = p.Organ.Name,
-                  //address = p.Dorm?.Area + p.Dorm?.UnitNumber + p.Dorm?.BuildingId + p.Dorm?.FloorNumber + p.Dorm?.Title,
                   address = p.Dorm?.Title,
                   date = p.OutTime,
                   count = p.DayCount
@@ -240,7 +239,6 @@ namespace ZHXY.Web.Dorm.Controllers
               {
                   name = p.Name,
                   className = p.Organ.Name,
-                  //address = p.Dorm?.Area + p.Dorm?.UnitNumber + p.Dorm?.BuildingId + p.Dorm?.FloorNumber + p.Dorm?.Title,
                   address = p.Dorm?.Title,
                   date = p.InTime,
                   count = p.Time
@@ -289,23 +287,5 @@ namespace ZHXY.Web.Dorm.Controllers
             return Result.Success(data);
         }
     }
-    public class GetOriginalListBydateParms
-    {
-        /// <summary>
-        /// 页数
-        /// </summary>
-        public int PageIndex { get; set; } = 1;
-        /// <summary>
-        /// 页面行数
-        /// </summary>
-        public int PageSize { get; set; } = 15;
-        /// <summary>
-        /// 日期
-        /// </summary>
-        public string date { get; set; }
-        /// <summary>
-        /// 用户Id
-        /// </summary>
-        public string userId { get; set; }
-    }
+    
 }

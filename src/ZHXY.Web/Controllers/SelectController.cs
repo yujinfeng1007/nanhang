@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using ZHXY.Application;using ZHXY.Domain;
 using ZHXY.Common;
+using ZHXY.Web.Shared;
 
 namespace ZHXY.Web.Controllers
 {

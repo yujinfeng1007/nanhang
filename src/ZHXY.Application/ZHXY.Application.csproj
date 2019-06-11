@@ -46,122 +46,55 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base\IAppService.cs" />
-    <Compile Include="Base\TreeHelper.cs" />
+    <Compile Include="IAppService.cs" />
+    <Compile Include="Tools\HttpHelper.cs" />
+    <Compile Include="WebCore\Extensions\TreeHelper.cs" />
     <Compile Include="Connected Services\PushService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="DormServices\Buildings\DeviceService.cs" />
-    <Compile Include="DormServices\Buildings\IDeviceService.cs" />
-    <Compile Include="DormServices\Buildings\XFTXService.cs" />
-    <Compile Include="DormServices\Buildings\Dto\CreateDormBuildingDto.cs" />
-    <Compile Include="DormServices\Buildings\Dto\DormBuildingUserView.cs" />
-    <Compile Include="DormServices\Buildings\Dto\DormBuildingView.cs" />
-    <Compile Include="DormServices\Buildings\Dto\UpdateDormBuildingDto.cs" />
-    <Compile Include="DormServices\Buildings\DormBuildingService.cs" />
-    <Compile Include="DormServices\DH\DHAccount.cs" />
-    <Compile Include="DormServices\DormRules\Dto\UpdateDormRuleDto.cs" />
-    <Compile Include="DormServices\Face\Dto\FaceListView.cs" />
-    <Compile Include="DormServices\Face\Dto\FaceApprovalDto.cs" />
-    <Compile Include="DormServices\Face\Dto\FaceRequestDto.cs" />
-    <Compile Include="DormServices\Face\Dto\GetFaceApprovalListDto.cs" />
-    <Compile Include="DormServices\Face\FaceService.cs" />
-    <Compile Include="DormServices\Gates\BatchUserToGateService.cs" />
-    <Compile Include="DormServices\Gates\Dto\AddGateDto.cs" />
-    <Compile Include="DormServices\Gates\Dto\GateDto.cs" />
-    <Compile Include="DormServices\Gates\Dto\GateView.cs" />
-    <Compile Include="DormServices\Gates\Dto\SyncGateDto.cs" />
-    <Compile Include="DormServices\Gates\Dto\UpdateGateDto.cs" />
-    <Compile Include="DormServices\Gates\GateAppService.cs" />
-    <Compile Include="DormServices\DormRules\DormRuleService.cs" />
-    <Compile Include="DormServices\DormRooms\DormRoomAppService.cs" />
-    <Compile Include="DormServices\Gates\UserToGateService.cs" />
-    <Compile Include="DormServices\Holiday\Dto\AddHolidayDto.cs" />
-    <Compile Include="DormServices\Holiday\Dto\UpdateHolidayDto.cs" />
-    <Compile Include="DormServices\Holiday\HolidayAppService.cs" />
-    <Compile Include="DormServices\Leave\ILeaveService.cs" />
-    <Compile Include="DormServices\Leave\LeaveServiceExt.cs" />
-    <Compile Include="DormServices\NH\PushAppMessage.cs" />
-    <Compile Include="DormServices\Performances\Dto\BuildingAccessStatisticsView.cs" />
-    <Compile Include="DormServices\tools\Constants.cs" />
-    <Compile Include="DormServices\tools\GetImageBase64Str.cs" />
-    <Compile Include="DormServices\tools\HttpHelper.cs" />
-    <Compile Include="DormServices\tools\Md5Tool.cs" />
-    <Compile Include="DormServices\tools\MQMoudle.cs" />
-    <Compile Include="DormServices\tools\PersonMoudle.cs" />
-    <Compile Include="DormServices\Visitors\Dto\VisitorApprovalDto.cs" />
-    <Compile Include="DormServices\Visitors\Dto\VisitorApprovalListDto.cs" />
-    <Compile Include="DormServices\Visitors\Dto\VisitorListView.cs" />
-    <Compile Include="SystemServices\Dics\Dto\CreateDicItemDto.cs" />
-    <Compile Include="SystemServices\Dics\Dto\DicItemView.cs" />
-    <Compile Include="SystemServices\Dics\SysDicAppService.cs" />
-    <Compile Include="SystemServices\Dics\SysDicItemAppService.cs" />
-    <Compile Include="SystemServices\Modules\Dto\CreateModuleDto.cs" />
-    <Compile Include="SystemServices\Modules\Dto\ModuleView.cs" />
-    <Compile Include="SystemServices\Modules\Dto\UpdateModuleDto.cs" />
-    <Compile Include="SystemServices\Modules\SysButtonAppService.cs" />
-    <Compile Include="SystemServices\Modules\SysModuleAppService.cs" />
-    <Compile Include="DormServices\Reports\InOutReceiveAppService.cs" />
-    <Compile Include="DormServices\Reports\LateReturnReportService.cs" />
-    <Compile Include="DormServices\Reports\NoOutReportService.cs" />
-    <Compile Include="DormServices\Reports\NoReturnReportService.cs" />
-    <Compile Include="DormServices\Reports\OriginalReportService.cs" />
-    <Compile Include="DormServices\Reports\ReportHelper.cs" />
-    <Compile Include="DormServices\VisitDormLimitService.cs" />
-    <Compile Include="DormServices\Visitors\VisitorService.cs" />
-    <Compile Include="DormServices\Leave\Dto\AddApproverDto.cs" />
-    <Compile Include="DormServices\Leave\Dto\CancelHolidayDto.cs" />
-    <Compile Include="DormServices\Leave\Dto\CancellableLeaveView.cs" />
-    <Compile Include="DormServices\Leave\Dto\ContactGroupView.cs" />
-    <Compile Include="DormServices\Leave\Dto\ContactView.cs" />
-    <Compile Include="DormServices\Leave\Dto\ApproveDetailView.cs" />
-    <Compile Include="DormServices\Leave\Dto\BulkLeaveDto.cs" />
-    <Compile Include="DormServices\Leave\Dto\GetApprovalListDto.cs" />
-    <Compile Include="DormServices\Leave\Dto\GetCancelListDto.cs" />
-    <Compile Include="DormServices\Leave\Dto\GetLeaveHistoryDto.cs" />
-    <Compile Include="DormServices\Leave\Dto\GetSpecialLeaveDto.cs" />
-    <Compile Include="DormServices\Leave\Dto\LeaveApprovalDto.cs" />
-    <Compile Include="DormServices\Leave\Dto\LeaveApproveView.cs" />
-    <Compile Include="DormServices\Leave\Dto\OneKeyApprovalDto.cs" />
-    <Compile Include="DormServices\Leave\LeaveService.cs" />
-    <Compile Include="DormServices\Leave\Dto\LeaveRequestDto.cs" />
-    <Compile Include="DormServices\Leave\Dto\LeaveListView.cs" />
-    <Compile Include="DormServices\Messages\Dto\OrgHeadView.cs" />
-    <Compile Include="DormServices\Messages\Dto\SetOrgHeadDto.cs" />
-    <Compile Include="DormServices\Messages\MessageAppService.cs" />
-    <Compile Include="DormServices\Performances\Dto\BuildingAccessDetailView.cs" />
-    <Compile Include="DormServices\Performances\Dto\GetBuildingAccessStatisticsDto.cs" />
-    <Compile Include="DormServices\Performances\Dto\GetLoginDetailDto.cs" />
-    <Compile Include="DormServices\Performances\Dto\GetLoginStatisticsDto.cs" />
-    <Compile Include="DormServices\Performances\Dto\LoginDetailView.cs" />
-    <Compile Include="DormServices\Performances\Dto\LoginStatisticsView.cs" />
-    <Compile Include="DormServices\Performances\Dto\GetBuildingAccessDetailDto.cs" />
-    <Compile Include="DormServices\Performances\PerformanceAppService.cs" />
-    <Compile Include="DormServices\Reports\ReportAppService.cs" />
-    <Compile Include="DormServices\Visitors\Dto\VisitorApplySubmitDto.cs" />
-    <Compile Include="Base\SysConsts.cs" />
-    <Compile Include="SystemServices\Caches\CacheService.cs" />
-    <Compile Include="SystemServices\Filters\Dto\AddFilterIpDto.cs" />
-    <Compile Include="SystemServices\Filters\Dto\UpdateFilterIpDto.cs" />
-    <Compile Include="SystemServices\Logs\Dto\AddLogDto.cs" />
-    <Compile Include="SystemServices\Logs\Dto\GetLogListDto.cs" />
-    <Compile Include="SystemServices\Relevances\RelevanceService.cs" />
-    <Compile Include="SystemServices\Organizes\Dto\AddOrRemoveOrgLeaderDto.cs" />
-    <Compile Include="SystemServices\Organizes\OrgLeaderService.cs" />
-    <Compile Include="RequestDto\Api\CheckVersionInput.cs" />
-    <Compile Include="RequestDto\Api\StudentLeaveInput.cs" />
-    <Compile Include="RequestDto\BaseApiInput.cs" />
-    <Compile Include="SystemServices\Roles\Dto\CreateRoleDto.cs" />
-    <Compile Include="SystemServices\Roles\Dto\RoleView.cs" />
-    <Compile Include="SystemServices\Roles\SysRoleAppService.cs" />
-    <Compile Include="SystemServices\Roles\SysRoleAuthorizeAppService.cs" />
-    <Compile Include="SystemServices\Users\Dto\AddUserDto.cs" />
-    <Compile Include="SystemServices\Users\Dto\UpdateUserDto.cs" />
-    <Compile Include="SystemServices\Users\Dto\UserData.cs" />
-    <Compile Include="SystemServices\Users\SysUserRoleAppService.cs" />
-    <Compile Include="WebCore\DIHelper.cs" />
+    <Compile Include="DormManage\DeviceService.cs" />
+    <Compile Include="DormManage\IDeviceService.cs" />
+    <Compile Include="DormManage\DormBuildingService.cs" />
+    <Compile Include="DH\DHAccount.cs" />
+    <Compile Include="DormManage\FaceService.cs" />
+    <Compile Include="DormManage\BatchUserToGateService.cs" />
+    <Compile Include="DormManage\GateAppService.cs" />
+    <Compile Include="DormManage\DormRuleService.cs" />
+    <Compile Include="DormManage\DormRoomAppService.cs" />
+    <Compile Include="DormManage\UserToGateService.cs" />
+    <Compile Include="DormManage\HolidayAppService.cs" />
+    <Compile Include="DormManage\ILeaveService.cs" />
+    <Compile Include="DormManage\LeaveServiceExt.cs" />
+    <Compile Include="NH\PushAppMessage.cs" />
+    <Compile Include="Tools\Constants.cs" />
+    <Compile Include="Tools\GetImageBase64Str.cs" />
+    <Compile Include="Tools\MQMoudle.cs" />
+    <Compile Include="Tools\PersonMoudle.cs" />
+    <Compile Include="SystemManage\SysDicAppService.cs" />
+    <Compile Include="SystemManage\SysDicItemAppService.cs" />
+    <Compile Include="SystemManage\SysButtonAppService.cs" />
+    <Compile Include="SystemManage\SysModuleAppService.cs" />
+    <Compile Include="DormManage\InOutReceiveAppService.cs" />
+    <Compile Include="DormManage\LateReturnReportService.cs" />
+    <Compile Include="DormManage\NoOutReportService.cs" />
+    <Compile Include="DormManage\NoReturnReportService.cs" />
+    <Compile Include="DormManage\OriginalReportService.cs" />
+    <Compile Include="DormManage\ReportHelper.cs" />
+    <Compile Include="DormManage\VisitDormLimitService.cs" />
+    <Compile Include="DormManage\VisitorService.cs" />
+    <Compile Include="DormManage\LeaveService.cs" />
+    <Compile Include="DormManage\MessageAppService.cs" />
+    <Compile Include="DormManage\PerformanceAppService.cs" />
+    <Compile Include="DormManage\ReportAppService.cs" />
+    <Compile Include="SystemManage\CacheService.cs" />
+    <Compile Include="SystemManage\RelevanceService.cs" />
+    <Compile Include="SystemManage\OrgLeaderService.cs" />
+    <Compile Include="SystemManage\SysRoleAppService.cs" />
+    <Compile Include="SystemManage\SysRoleAuthorizeAppService.cs" />
+    <Compile Include="SystemManage\SysUserRoleAppService.cs" />
+    <Compile Include="WebCore\Extensions\DIHelper.cs" />
     <Compile Include="WebCore\Filters\CompressMvcResultAttribute.cs" />
     <Compile Include="WebCore\Filters\CompressWebApiResultAttribute.cs" />
     <Compile Include="WebCore\Filters\ProcessApiExceptionFilter.cs" />
@@ -169,33 +102,22 @@
     <Compile Include="WebCore\Filters\LoginAuthentication.cs" />
     <Compile Include="WebCore\Filters\ProcessMvcErrorAttribute.cs" />
     <Compile Include="WebCore\Filters\ValidationApiParamterFilter.cs" />
-    <Compile Include="SystemServices\Users\Dto\CheckBoxSelectModel.cs" />
-    <Compile Include="WebCore\Response\Pagination.cs" />
-    <Compile Include="WebCore\Response\PaginationExt.cs" />
-    <Compile Include="WebCore\Response\ResponseResult.cs" />
-    <Compile Include="Base\AppService.cs" />
-    <Compile Include="DormServices\Semesters\SemesterService.cs" />
-    <Compile Include="DormServices\StudentService.cs" />
-    <Compile Include="SystemServices\DatabaseBackup\DbBackupService.cs" />
-    <Compile Include="SystemServices\Organizes\Dto\OrganizeListView.cs" />
-    <Compile Include="SystemServices\Filters\FilterIpService.cs" />
-    <Compile Include="SystemServices\Logs\LogService.cs" />
-    <Compile Include="SystemServices\Organizes\Dto\AddOrgDto.cs" />
-    <Compile Include="SystemServices\Organizes\Dto\OrganizeView.cs" />
-    <Compile Include="SystemServices\Organizes\Dto\UpdateOrgDto.cs" />
-    <Compile Include="SystemServices\Organizes\OrgService.cs" />
-    <Compile Include="SystemServices\Users\Dto\UserView.cs" />
-    <Compile Include="SystemServices\Users\UserService.cs" />
-    <Compile Include="DormServices\TeacherService.cs" />
-    <Compile Include="Base\DbLogType.cs" />
+    <Compile Include="WebCore\Extensions\PaginationExt.cs" />
+    <Compile Include="WebCore\Extensions\ResponseResult.cs" />
+    <Compile Include="AppService.cs" />
+    <Compile Include="DormManage\SemesterService.cs" />
+    <Compile Include="DormManage\StudentService.cs" />
+    <Compile Include="SystemManage\DbBackupService.cs" />
+    <Compile Include="SystemManage\FilterIpService.cs" />
+    <Compile Include="SystemManage\LogService.cs" />
+    <Compile Include="SystemManage\OrgService.cs" />
+    <Compile Include="SystemManage\UserService.cs" />
+    <Compile Include="DormManage\TeacherService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WebCore\Response\TreeGrid\TreeGrid.cs" />
-    <Compile Include="WebCore\Response\TreeGrid\TreeGridModel.cs" />
-    <Compile Include="WebCore\Response\TreeView\TreeViewExt.cs" />
-    <Compile Include="WebCore\Response\TreeView\TreeViewModel.cs" />
-    <Compile Include="WebCore\Response\Tree\TreeQuery.cs" />
-    <Compile Include="WebCore\Response\Tree\TreeSelect.cs" />
-    <Compile Include="WebCore\Response\Tree\TreeSelectModel.cs" />
+    <Compile Include="WebCore\Extensions\TreeGridExt.cs" />
+    <Compile Include="WebCore\Extensions\TreeViewExt.cs" />
+    <Compile Include="WebCore\Extensions\TreeQuery.cs" />
+    <Compile Include="WebCore\Extensions\TreeSelectExt.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Autofac">
@@ -291,6 +213,10 @@
       <Project>{7DC886CD-B8A0-44E8-AADD-57FCB0CFECB8}</Project>
       <Name>ZHXY.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ZHXY.Web.Shared\ZHXY.Web.Shared.csproj">
+      <Project>{98086FAE-943D-4BC6-A41D-7B71522420DA}</Project>
+      <Name>ZHXY.Web.Shared</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -359,6 +285,7 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

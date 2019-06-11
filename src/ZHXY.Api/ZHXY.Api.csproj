@@ -218,6 +218,10 @@
       <Project>{7DC886CD-B8A0-44E8-AADD-57FCB0CFECB8}</Project>
       <Name>ZHXY.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ZHXY.Web.Shared\ZHXY.Web.Shared.csproj">
+      <Project>{98086FAE-943D-4BC6-A41D-7B71522420DA}</Project>
+      <Name>ZHXY.Web.Shared</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\Microsoft.DependencyValidation.Analyzers.0.10.0\analyzers\dotnet\cs\Microsoft.DependencyValidation.Analyzers.resources.dll" />

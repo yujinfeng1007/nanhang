@@ -4,6 +4,7 @@ using System.IO;
 using System.Web.Mvc;
 using ZHXY.Application;
 using ZHXY.Common;
+using ZHXY.Web.Shared;
 
 namespace ZHXY.Web.Dorm.Controllers
 {
@@ -49,8 +50,7 @@ namespace ZHXY.Web.Dorm.Controllers
         /// 获取头像审批列表
         /// </summary>
         [HttpGet]
-        public ActionResult GetList(GetFaceApprovalListDto input) {
-            //input.CurrentUserId = Operator.GetCurrent().Id;
+        public ActionResult GetList(FaceApprovalListInput input) {
             var data = App.GetFaceApprovalList(input);          
             return Result.PagingRst(data, input.Records, input.Total);
         }

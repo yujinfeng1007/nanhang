@@ -8,7 +8,7 @@ namespace ZHXY.Common
     /// <summary>
     ///     MD5加密
     /// </summary>
-    public class Md5EncryptHelper
+    public static class Md5EncryptHelper
     {
         /// <summary>
         ///     MD5加密
@@ -50,7 +50,7 @@ namespace ZHXY.Common
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
-        public static string ComputeMd5(string str)
+        public static string ComputeMd5(this string str)
         {
             var md5 = new MD5CryptoServiceProvider();
             byte[] bytValue, bytHash;

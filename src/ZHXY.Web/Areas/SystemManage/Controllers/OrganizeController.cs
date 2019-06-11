@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using ZHXY.Application;
 using ZHXY.Common;
+using ZHXY.Web.Shared;
 
 namespace ZHXY.Web.SystemManage.Controllers
 {
@@ -47,15 +48,15 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult GetTreeSelectJson()
         {
             var data = App.GetList();
-            var treeList = new List<TreeSelectModel>();
+            var treeList = new List<SelectTree>();
             foreach (var item in data)
             {
-                var treeModel = new TreeSelectModel
+                var treeModel = new SelectTree
                 {
-                    id = item.Id,
-                    text = item.Name,
-                    parentId = item.ParentId,
-                    data = item
+                    Id = item.Id,
+                    Text = item.Name,
+                    ParentId = item.ParentId,
+                    Data = item
                 };
                 treeList.Add(treeModel);
             }
@@ -99,23 +100,23 @@ namespace ZHXY.Web.SystemManage.Controllers
                 var user = UserApp.GetById(keyword);
             }
 
-            var treeList = new List<TreeViewModel>();
+            var treeList = new List<ViewTree>();
             foreach (var item in data)
             {
-                var tree = new TreeViewModel();
+                var tree = new ViewTree();
                 var hasChildren = data.Count(t => t.ParentId == item.Id) != 0;
-                tree.id = item.Id;
-                tree.text = item.Name;
-                tree.value = item.Code;
-                tree.parentId = item.ParentId;
-                tree.isexpand = true;
-                tree.complete = false;
-                tree.hasChildren = hasChildren;
-                tree.showcheck = true;
+                tree.Id = item.Id;
+                tree.Text = item.Name;
+                tree.Value = item.Code;
+                tree.ParentId = item.ParentId;
+                tree.Isexpand = true;
+                tree.Complete = false;
+                tree.HasChildren = hasChildren;
+                tree.Showcheck = true;
                 if (!data_deeps.IsEmpty() && (data_deeps.IndexOf(item.Id, StringComparison.Ordinal) != -1))
-                    tree.checkstate = 1;
+                    tree.Checkstate = 1;
                 else
-                    tree.checkstate = 0;
+                    tree.Checkstate = 0;
                 treeList.Add(tree);
             }
             return Content(treeList.TreeViewJson());
@@ -127,16 +128,16 @@ namespace ZHXY.Web.SystemManage.Controllers
             var data = App.GetList();
             if (!string.IsNullOrEmpty(keyword))
                 data = data.TreeWhere(t => t.Name.Contains(keyword));
-            var treeList = new List<TreeGridModel>();
+            var treeList = new List<GridTree>();
             foreach (var item in data)
             {
-                var treeModel = new TreeGridModel();
+                var treeModel = new GridTree();
                 var hasChildren = data.Count(t => t.ParentId == item.Id) != 0;
-                treeModel.id = item.Id;
-                treeModel.isLeaf = hasChildren;
-                treeModel.parentId = item.ParentId;
-                treeModel.expanded = false;
-                treeModel.entityJson = item.Serialize();
+                treeModel.Id = item.Id;
+                treeModel.IsLeaf = hasChildren;
+                treeModel.ParentId = item.ParentId;
+                treeModel.Expanded = false;
+                treeModel.EntityJson = item.Serialize();
                 treeList.Add(treeModel);
             }
             return Result.PagingRst(treeList.TreeGridJson().Deserialize<object>());

@@ -80,8 +80,6 @@
     <Compile Include="Redis\RedisHelper.cs" />
     <Compile Include="Validate\RegularRule.cs" />
     <Compile Include="Captcha\CaptchaGenerator.cs" />
-    <Compile Include="Web\Pagination.cs" />
-    <Compile Include="Web\PaginationExt.cs" />
     <Compile Include="Web\WebHelper.cs" />
   </ItemGroup>
   <ItemGroup>

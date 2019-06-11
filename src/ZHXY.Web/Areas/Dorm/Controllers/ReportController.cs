@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web.Mvc;
 using ZHXY.Application;
 using ZHXY.Common;
+using ZHXY.Web.Shared;
 
 namespace ZHXY.Web.Dorm.Controllers
 {
@@ -106,16 +107,10 @@ namespace ZHXY.Web.Dorm.Controllers
         [HttpGet]
         public ActionResult GetOriginalList(Pagination pagination, string studentNum, string startTime, string endTime)
         {
-            //StudentService stuApp = new StudentService();
-            //var stuList= stuApp.GetList();
-            //var dormList= new DormStudentAppService().GetList();
-
             var list = OriginalReportApp.GetOriginalList(pagination, studentNum, startTime, endTime).Select(p =>
             {
                 var student = OriginalReportApp.GetOrganIdByStuNum(p.Code);
                 var dorm = OriginalReportApp.GetDormStuById(student?.Id);
-                //var student = stuList.FirstOrDefault(t => t.F_StudentNum.Equals(p.Code));
-                //var data = dormList.FirstOrDefault(t => t.F_Student_ID.Equals(student?.F_Id));
                 return new
                 {
                     p.Code,
@@ -126,14 +121,6 @@ namespace ZHXY.Web.Dorm.Controllers
                     DormNum = dorm?.DormInfo?.Title,
                     InOut = p.InOut == "0" ? "进" : "出",
                     Time = DateHelper.GetTime(p.SwipDate)
-                    //p.ChannelName,
-                    //p.DepartmentName,                    
-                    //DormName = data?.F_Memo,
-                    //p.CardNum,
-                    //p.Tel,
-                    //Gender = p.Gender == "1" ? "女" : "男",
-                    //p.InOut,
-                    //p.Date
                 };
             }).ToList();
             return Result.PagingRst(list, pagination.Records, pagination.Total);
