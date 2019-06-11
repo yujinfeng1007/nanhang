@@ -287,11 +287,13 @@
     <Content Include="Content\img\cover\cover1.jpg" />
     <Content Include="Content\img\cover\cover2.jpg" />
     <Content Include="Content\img\cover\cover3.jpg" />
+    <Content Include="Content\img\cover\cover4.jpg" />
     <Content Include="Content\img\cy-reward-title-bg.jpg" />
     <Content Include="Content\img\default-logo.png" />
     <Content Include="Content\img\file.png" />
     <Content Include="Content\img\file.svg" />
     <Content Include="Content\img\fileico_v5.png" />
+    <Content Include="Content\img\mima.png" />
     <Content Include="Content\img\radio1.jpg" />
     <Content Include="Content\img\radio2.jpg" />
     <Content Include="Content\img\samples\angelina-300.jpg" />
@@ -316,7 +318,9 @@
     <Content Include="Content\img\samples\scarlett-300.jpg" />
     <Content Include="Content\img\sso-login.jpg" />
     <Content Include="Content\img\teacher-checkbox.png" />
+    <Content Include="Content\img\wbk.png" />
     <Content Include="Content\img\wechat.jpg" />
+    <Content Include="Content\img\zh.png" />
     <Content Include="Content\js\bootstrap-fileinput-master\css\fileinput-rtl.css" />
     <Content Include="Content\js\bootstrap-fileinput-master\css\fileinput-rtl.min.css" />
     <Content Include="Content\js\bootstrap-fileinput-master\css\fileinput.css" />

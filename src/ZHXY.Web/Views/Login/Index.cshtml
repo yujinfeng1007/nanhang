@@ -18,7 +18,7 @@
     <div class="self-container">
         <div class="self-form">
             <div class="title">智慧校园</div>
-            <form action="">
+            <div >
                 <div class="user">
                     <img src="../../Content/img/zh.png" alt="user" /><input type="text" id="txt_account" name="user" placeholder="用户名/手机号/邮箱">
                 </div>
@@ -34,7 +34,7 @@
                 <div class="submit">
                     <input type="submit" id="login_button" style="cursor:pointer" value="登录">
                 </div>
-            </form>
+            </div>
         </div>
         <img src="../../Content/img/wbk.png" alt="wbk" class="wbk" contextmenu="return false">
     </div>
@@ -78,6 +78,16 @@
         </div>
     </div>*@
     <script type="text/javascript">
+        //window.onload = function () {
+        //document.querySelector('#login_button').onclick = function () {   
+        //    var xhr =new XMLHttpRequest()
+        //    var form = new FormData()
+        //    form.append('username', 'admin')
+        //    form.append('password', '0000')
+        //    xhr.open('post', 'localhost:8100/Login/CheckLoginType')
+        //    xhr.send(form)
+        //    }
+        //}
         (function ($) {
             $.login = {
                 formMessage: function (msg) {
