@@ -8,13 +8,38 @@
     <link href="~/Content/css/framework-font.css" rel="stylesheet" />
     <link href="~/Content/css/framework-login.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/Content/js/swiper-4.4.2/dist/css/swiper.min.css">
+    <link href="~/Content/css/index.css" rel="stylesheet" />
     <script src="~/Scripts/jquery-2.1.1.min.js"></script>
     <script src="~/Scripts/jquery.cookie-1.4.1.min.js"></script>
     <script src="~/Content/js/md5/jquery.md5.js"></script>
     <script src="~/Content/js/swiper-4.4.2/dist/js/swiper.min.js"></script>
 </head>
 <body>
-    <div class="wrapper">
+    <div class="self-container">
+        <div class="self-form">
+            <div class="title">智慧校园</div>
+            <form action="">
+                <div class="user">
+                    <img src="../../Content/img/zh.png" alt="user" /><input type="text" id="txt_account" name="user" placeholder="用户名/手机号/邮箱">
+                </div>
+                <div class="user">
+                    <img src="../../Content/img/mima.png" alt="user" /><input type="password" id="txt_password" name="password" placeholder="请输入登录密码">
+                </div>
+                <div class="codeWrap">
+                    <input class="code" id="txt_code" maxlength="4" type="text" placeholder="验证码" >                   
+                     @*<img id="imgcode" class="authcode" src="~/Login/GetAuthCode" style="width:40%;height:100%;" alt="验证码" />*@
+                    
+                    <img class="yzcode" src="~/Login/GetAuthCode" alt="yzm" />
+                </div>
+                <div class="submit">
+                    <input type="submit" id="login_button" style="cursor:pointer" value="登录">
+                </div>
+            </form>
+        </div>
+        <img src="../../Content/img/wbk.png" alt="wbk" class="wbk" contextmenu="return false">
+    </div>
+
+    @*<div class="wrapper">
         <div class="swiper-container">
             <div class="swiper-wrapper">
                 <div style="background-image: url('/Content/img/cover/cover1.jpg')" class="swiper-slide"></div>
@@ -23,9 +48,9 @@
             </div>
         </div>
         <div class="container">
-            <div class="logo">
+            <div class="logo">*@
                 @*<img alt="logo" src="~/Content/img/logo.jpg" />*@
-                <span style="font-size:30px;color:white;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">智慧校园<span style="font-size:20px"></span></span>
+                @*<span style="font-size:30px;color:white;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">智慧校园<span style="font-size:20px"></span></span>
             </div>
             <div class="form-container">
                 <form class="form">
@@ -51,7 +76,7 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div>*@
     <script type="text/javascript">
         (function ($) {
             $.login = {
@@ -77,7 +102,7 @@
                         //    return false;
                     } else {
                         $("#login_button").attr('disabled', 'disabled').find('span').html("loading...");
-                        sessionStorage.setItem("school_code",$("#txt_belongSchool").val());
+                        sessionStorage.setItem("school_code", $("#txt_belongSchool").val());
                         $.ajax({
                             url: "/Login/CheckLoginType",
                             data: { username: $.trim($username.val()), password: $.md5($.trim($password.val())), code: $.trim($code.val()), schoolCode: $("#txt_belongSchool").val() },
@@ -142,7 +167,7 @@
                     var schoolCode = $("#txt_belongSchool").val();
                     $.cookie("school_code", schoolCode, { expires: 7, path: '/' });
                     top.$.cookie("school_code", schoolCode, { expires: 7, path: '/' });
-                    
+
                 });
 
                 var mySwiper = new Swiper('.swiper-container', {

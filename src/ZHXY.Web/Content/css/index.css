@@ -1,0 +1,176 @@
+body {
+    background-image: url(../../Content/img/cover/cover4.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center center;
+    background-size: cover;
+}
+
+html {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+
+}
+
+.self-container {
+    width: 408px;
+    height: 390px;
+    margin: auto;
+    position: relative;
+    top: 50%;
+    transform: translate(0, -50%);
+    -webkit-transform: translate(0, -50%);
+}
+
+.self-container .self-form {
+    position: absolute;
+    
+    height: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+    .self-container .self-form .title {
+        color: #fff;
+        font-size: 20px;
+        padding-bottom: 5px;
+    }
+
+    .self-container .self-form input {
+        height: 100%;
+        background: none;
+        border: none;
+        padding: 0;
+        padding-left: 5px;
+        font-size: 8px;
+        display: block;
+    }
+
+        .self-container .self-form input:focus {
+            outline: none
+        }
+
+    .self-container .self-form .user img {
+        padding: 0 3px;
+        width: 9px;
+        height: 9px;
+    }
+
+    .self-container .self-form .user,
+    .self-container .self-form .submit {
+        display: flex;
+        align-items: center;
+        margin: 5px auto;
+        position: relative;
+        width: 155px;
+        height: 24px;
+        background: #fff;
+        text-align: left;
+        border-radius: 2px;
+    }
+
+    .self-container .self-form .codeWrap {
+        margin: 5px auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 155px;
+        height: 24px;
+        text-align: left;
+    }
+
+.self-container .codeWrap .code {
+
+    width: 55%;
+    background: #fff;
+    height: 100%;
+    border-radius: 2px;
+}
+
+    .self-container .self-form .submit {
+        overflow: hidden;
+        background: #15D0CC;
+    }
+
+        .self-container .self-form .submit input {
+            display: block;
+            width: 100%;
+            height: 100%;
+            color: #fff;
+        }
+
+            .self-container .self-form .submit input:hover {
+                background: #ccc;
+            }
+
+.yzcode {
+    width: 40%;
+    height: 100%;
+    background: #fff;
+    vertical-align: middle;
+    margin-bottom: 1px;
+    border-radius: 2px;
+
+}
+@media screen and (min-width:960px){
+    .self-container .self-form .title {
+        font-size: 24px;
+        padding-bottom: 15px;
+    }
+    .self-container .self-form .user,
+    .self-container .self-form .submit,
+    .self-container .self-form .codeWrap {
+        width: 200px;
+        height: 30px;
+    }
+    .self-container .self-form input {
+        font-size: 12px;
+    }
+    .wbk,.self-container {
+    width: 570px;
+    height: 500px;
+    }
+    
+}
+@media screen and (min-width:1200px){
+    .self-container .wbk{
+        width: 600px;
+        height: 500px;
+    }
+    .self-container .self-form {
+        width: auto;
+    }
+        .self-container .self-form .user img {
+            padding: 0;
+            padding-left: 8px;
+            width: auto;
+            height: 12px;
+        }
+        .self-container .self-form .title {
+            font-size: 28px;
+        }
+        .self-container .self-form .user,
+        .self-container .self-form .submit,
+        .self-container .self-form .codeWrap {
+            width: 240px;
+            height: 30px;
+            border-radius: 8px;
+        }
+            .self-container .self-form .codeWrap .code, .yzcode {
+                border-radius: 5px;
+                overflow: hidden;
+            }
+        .self-container .self-form input {
+            font-size: 14px;
+        }
+   
+
+}
