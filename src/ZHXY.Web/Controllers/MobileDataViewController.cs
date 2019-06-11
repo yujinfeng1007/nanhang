@@ -6,7 +6,7 @@ namespace ZHXY.Web.Controllers
 {
     public class MobileDataViewController : Controller
     {
-        private ReportAppService app = new ReportAppService(new ZhxyDbContext());
+        private ReportAppService app = new ReportAppService(new EFContext());
 
         /// <summary>
         /// 学生移动端首页数据接口

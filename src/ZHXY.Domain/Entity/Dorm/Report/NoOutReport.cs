@@ -47,7 +47,7 @@ namespace ZHXY.Domain
 
        
 
-        public virtual Organ Organ { get; set; }
+        public virtual Org Organ { get; set; }
         public virtual DormRoom Dorm{ get; set; }
         
     }

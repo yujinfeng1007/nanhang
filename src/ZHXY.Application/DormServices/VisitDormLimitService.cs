@@ -10,7 +10,7 @@ namespace ZHXY.Application
         public VisitDormLimitService(DbContext r) : base(r)
         {
         }
-        public VisitDormLimitService() => R = new ZhxyDbContext();
+        public VisitDormLimitService() => R = new EFContext();
         public object GetGridJson(Pagination pagination, string F_Building, string F_Floor)
         {
             var DormInfoQuery = Read<DormRoom>();
@@ -45,7 +45,7 @@ namespace ZHXY.Application
                 temp.DormNo,
                 stu.Name,
                 stu.GradeId
-            }).Join(Read<Organ>(), p => p.GradeId, s => s.Id, (temp, organ) => new {
+            }).Join(Read<Org>(), p => p.GradeId, s => s.Id, (temp, organ) => new {
                 Total_Limit = temp.TotalLimit,
                 Usable_Limit = temp.UsableLimit,
                 F_Build = temp.BuildNo,
@@ -97,7 +97,7 @@ namespace ZHXY.Application
         //查询学院
         public object FindOrgan(string OrganName)
         {
-            var query = Read((Organ p) => p.ParentId.Equals("2"));
+            var query = Read((Org p) => p.ParentId.Equals("2"));
             if (null != OrganName && !"".Equals(OrganName))
             {
                 query.Where(p => p.Name.Contains(OrganName));
@@ -108,7 +108,7 @@ namespace ZHXY.Application
         //查询年级
         public object FindOrganGrade(string OrganId, string GradeName)
         {
-            var query = Read((Organ p) => p.ParentId.Equals(OrganId));
+            var query = Read((Org p) => p.ParentId.Equals(OrganId));
             if (null != GradeName && !"".Equals(GradeName))
             {
                 query.Where(p => p.Name.Contains(GradeName));
@@ -119,7 +119,7 @@ namespace ZHXY.Application
         //查询分院
         public object FindOrganCourts(string GradeId, string CourtName)
         {
-            var query = Read((Organ p) => p.ParentId.Equals(GradeId));
+            var query = Read((Org p) => p.ParentId.Equals(GradeId));
             if (null != CourtName && !"".Equals(CourtName))
             {
                 query.Where(p => p.Name.Contains(CourtName));
@@ -130,7 +130,7 @@ namespace ZHXY.Application
         //查询班级
         public object FindOrganClass(string CourtsId, string ClassName)
         {
-            var query = Read((Organ p) => p.ParentId.Equals(CourtsId));
+            var query = Read((Org p) => p.ParentId.Equals(CourtsId));
             if (null != ClassName && !"".Equals(ClassName))
             {
                 query.Where(p => p.Name.Contains(ClassName));

@@ -90,7 +90,7 @@ namespace ZHXY.Application
             }
             return  Read(expression).ToList();
         }
-        public List<object> GetListByDivisList(List<Organ> divisList,List<Organ> classList, string startTime, string endTime)
+        public List<object> GetListByDivisList(List<Org> divisList,List<Org> classList, string startTime, string endTime)
         {
             var expression = ExtLinq.True<LateReturnReport>();
             if (!string.IsNullOrEmpty(startTime))

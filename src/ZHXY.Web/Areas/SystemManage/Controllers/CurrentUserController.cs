@@ -6,7 +6,7 @@ using ZHXY.Domain;
 
 namespace ZHXY.Web.SystemManage.Controllers
 {
-    public class CurrentUserController : ZhxyController
+    public class CurrentUserController : BaseController
     {
         private StudentService studentService { get; }
         private TeacherService App { get; }
@@ -55,7 +55,7 @@ namespace ZHXY.Web.SystemManage.Controllers
                 //user.Classes,
                 Classes = classes.Select(p => new {
                     Id = p.Id,
-                    CategoryId = p.CategoryId,
+                    CategoryId = p.Type,
                     Name = p.Name,
                     ParentName = p.Parent.Name
                 }).ToList(),

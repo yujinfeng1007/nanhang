@@ -7,7 +7,7 @@ using ZHXY.Common;
 
 namespace ZHXY.Web.Dorm.Controllers
 {
-    public class FaceController : ZhxyController
+    public class FaceController : BaseController
     {
        
         public FaceService App { get; }

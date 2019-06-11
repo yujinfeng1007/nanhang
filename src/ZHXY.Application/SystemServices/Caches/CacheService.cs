@@ -12,7 +12,7 @@ namespace ZHXY.Application
     /// </summary>
     public class CacheService : AppService
     {
-        public static DbContext Db => new ZhxyDbContext();
+        public static DbContext Db => new EFContext();
         
         /// <summary>
         /// 岗位缓存
@@ -22,7 +22,7 @@ namespace ZHXY.Application
         {
 
             //var dutyApp = new DutyService(new ZhxyDbContext());
-            var data = new SysDicItemAppService(new ZhxyDbContext()).GetItemList("Duty");
+            var data = new SysDicItemAppService(new EFContext()).GetItemList("Duty");
             var dictionary = new Dictionary<string, object>();
 
             foreach (var item in data)
@@ -39,12 +39,12 @@ namespace ZHXY.Application
 
         public static Dictionary<string, object> GetDutyListByCache()
         {
-            if (RedisCache.Get<Dictionary<string, object>>(Consts.DUTY).IsEmpty())
+            if (RedisCache.Get<Dictionary<string, object>>(SysConsts.DUTY).IsEmpty())
             {
-                RedisCache.Set(Consts.DUTY,(Dictionary<string, object>)GetDutyList());
+                RedisCache.Set(SysConsts.DUTY,(Dictionary<string, object>)GetDutyList());
             }
 
-            return RedisCache.Get<Dictionary<string, object>>(Consts.DUTY);
+            return RedisCache.Get<Dictionary<string, object>>(SysConsts.DUTY);
         }
 
 
@@ -55,7 +55,7 @@ namespace ZHXY.Application
         /// <returns>  </returns>
         public static object GetRoleList()
         {
-            var roleApp = new SysRoleAppService(new ZhxyDbContext());
+            var roleApp = new SysRoleAppService(new EFContext());
             var data = roleApp.GetList();
             var dictionary = new Dictionary<string, object>();
             foreach (var item in data)
@@ -68,12 +68,12 @@ namespace ZHXY.Application
 
         public static Dictionary<string, object> GetRoleListByCache()
         {
-            if (RedisCache.Get<Dictionary<string, object>>(Consts.ROLE).IsEmpty())
+            if (RedisCache.Get<Dictionary<string, object>>(SysConsts.ROLE).IsEmpty())
             {
-                RedisCache.Set(Consts.ROLE, (Dictionary<string, object>)GetRoleList());
+                RedisCache.Set(SysConsts.ROLE, (Dictionary<string, object>)GetRoleList());
             }
 
-            return RedisCache.Get<Dictionary<string, object>>(Consts.ROLE);
+            return RedisCache.Get<Dictionary<string, object>>(SysConsts.ROLE);
         }
 
 
@@ -83,9 +83,9 @@ namespace ZHXY.Application
         /// <returns>  </returns>
         public static object GetDataItemList()
         {
-            var itemDetails = new SysDicItemAppService(new ZhxyDbContext()).GetList();
+            var itemDetails = new SysDicItemAppService(new EFContext()).GetList();
             var dic = new Dictionary<string, object>();
-            foreach (var item in new SysDicAppService(new ZhxyDbContext()).GetList())
+            foreach (var item in new SysDicAppService(new EFContext()).GetList())
             {
                 var tempDictionary = new Dictionary<string, string>();
                 var details = itemDetails.FindAll(t => t.F_ItemId.Equals(item.F_Id));
@@ -107,12 +107,12 @@ namespace ZHXY.Application
 
         public static Dictionary<string, object> GetDataItemListByCache()
         {
-            if (RedisCache.Get<Dictionary<string, object>>(Consts.DATAITEMS).IsEmpty())
+            if (RedisCache.Get<Dictionary<string, object>>(SysConsts.DATAITEMS).IsEmpty())
             {
-                RedisCache.Set(Consts.DATAITEMS, (Dictionary<string, object>)GetDataItemList());
+                RedisCache.Set(SysConsts.DATAITEMS, (Dictionary<string, object>)GetDataItemList());
             }
 
-            return RedisCache.Get<Dictionary<string, object>>(Consts.DATAITEMS);
+            return RedisCache.Get<Dictionary<string, object>>(SysConsts.DATAITEMS);
         }
 
 
@@ -127,7 +127,7 @@ namespace ZHXY.Application
             var dictionary = new Dictionary<string, object>();
             foreach (var item in data)
             {
-                var fieldItem = new { encode = item.EnCode, fullname = item.Name };
+                var fieldItem = new { encode = item.Code, fullname = item.Name };
                 dictionary.Add(item.Id, fieldItem);
             }
             return dictionary;
@@ -135,15 +135,15 @@ namespace ZHXY.Application
 
         public static Dictionary<string, object> GetOrganizeListByCache()
         {
-            RedisCache.Remove(Consts.ORGANIZE);
-            RedisCache.Set(Consts.ORGANIZE, GetOrganizeList());
-            return RedisCache.Get<Dictionary<string, object>>(Consts.ORGANIZE);
+            RedisCache.Remove(SysConsts.ORGANIZE);
+            RedisCache.Set(SysConsts.ORGANIZE, GetOrganizeList());
+            return RedisCache.Get<Dictionary<string, object>>(SysConsts.ORGANIZE);
         }
 
 
         public static object GetMenuListByType(string clientType)
         {
-            var app = new SysRoleAuthorizeAppService(new ZhxyDbContext());
+            var app = new SysRoleAuthorizeAppService(new EFContext());
             if (Operator.GetCurrent().IsSystem)
             {
                 return ToMenuJson(app.GetMenuList("0", clientType), "0");
@@ -190,7 +190,7 @@ namespace ZHXY.Application
         {
             //var roleId = OperatorProvider.Current.RoleId;
             var roles = Operator.GetCurrent().Roles;
-            var app = new SysRoleAuthorizeAppService(new ZhxyDbContext());
+            var app = new SysRoleAuthorizeAppService(new EFContext());
             var data = new List<SysButton>();
             foreach (var e in roles)
             {

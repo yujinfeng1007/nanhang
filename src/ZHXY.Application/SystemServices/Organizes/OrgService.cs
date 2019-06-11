@@ -14,29 +14,29 @@ namespace ZHXY.Application
     /// </summary>
     public class OrgService : AppService
     {
-        public OrgService() => R = new ZhxyDbContext();
+        public OrgService() => R = new EFContext();
         public OrgService(DbContext r) => R = r;
-        public List<Organ> GetList()
+        public List<Org> GetList()
         {
-            return Read<Organ>().ToListAsync().Result;
+            return Read<Org>().ToListAsync().Result;
         }
 
-        public List<Organ> GetListById(string keyword = null)
+        public List<Org> GetListById(string keyword = null)
         {
-            var query = Read<Organ>();
+            var query = Read<Org>();
             query = string.IsNullOrEmpty(keyword) ? query : query.Where(t => t.Id.Contains(keyword));
-            return query.OrderBy(t => t.SortCode).ToListAsync().Result;
+            return query.OrderBy(t => t.Sort).ToListAsync().Result;
         }
         /// <summary>
         /// 取出所有子机构
         /// </summary>
-        public List<Organ> GetListByParentId(string parentId = null)
+        public List<Org> GetListByParentId(string parentId = null)
         {
-            var list = new List<Organ>();
-            var query = Read<Organ>();
+            var list = new List<Org>();
+            var query = Read<Org>();
             if (!string.IsNullOrEmpty(parentId))
             {
-                list = query.Where(t => t.ParentId == parentId ).OrderBy(t => t.SortCode).ToListAsync().Result;
+                list = query.Where(t => t.ParentId == parentId ).OrderBy(t => t.Sort).ToListAsync().Result;
                 if (true)
                 {
                     foreach (var org in list)
@@ -47,40 +47,40 @@ namespace ZHXY.Application
             }
             return list;
         }
-        public string GetClassInfosByDivisId(string divisId, ref List<Organ> classList)
+        public string GetClassInfosByDivisId(string divisId, ref List<Org> classList)
         {
-            var sysOrganizeList = Read<Organ>();
+            var sysOrganizeList = Read<Org>();
             var divis = sysOrganizeList.FirstOrDefault(p => p.Id.Equals(divisId));
             if (divis == null) throw new Exception("未找到该学部");
             var gradeList = sysOrganizeList.Where(p => p.ParentId.Equals(divisId)).Select(p => p.Id).ToList();
             classList = sysOrganizeList.Where(p => gradeList.Contains(p.ParentId)).ToList();
             return divis.Name;
         }
-        public void GetClassInfosByGradeId(string gradeId, ref List<Organ> classList, ref List<Organ> divisList)
+        public void GetClassInfosByGradeId(string gradeId, ref List<Org> classList, ref List<Org> divisList)
         {
-            var sysOrganizeList = Read<Organ>();
+            var sysOrganizeList = Read<Org>();
             divisList = sysOrganizeList.Where(p => p.ParentId.Equals(gradeId)).ToList();
             var divisIds = divisList.Select(p => p.Id).ToList();
             classList = sysOrganizeList.Where(p => divisIds.Contains(p.ParentId)).ToList();
         }
-        public Organ GetById(string id) => Get<Organ>(id);
+        public Org GetById(string id) => Get<Org>(id);
 
         public void Add(AddOrgDto dto)
         {
-            var org = dto.MapTo<Organ>();
+            var org = dto.MapTo<Org>();
             AddAndSave(org);
         }
 
         public void Update(UpdateOrgDto dto)
         {
-            var org = Get<Organ>(dto.Id);
+            var org = Get<Org>(dto.Id);
             dto.MapTo(org);
             SaveChanges();
         }
 
-        public List<Organ> GetListByOrgId(string orgIds)
+        public List<Org> GetListByOrgId(string orgIds)
         {
-            var query = Read<Organ>();
+            var query = Read<Org>();
             if (string.IsNullOrEmpty(orgIds))
             {
                 var arrIds = orgIds.Split(',');
@@ -92,8 +92,8 @@ namespace ZHXY.Application
 
         public void Delete(string id)
         {
-            if (Read<Organ>(t => t.ParentId.Equals(id)).Any()) throw new Exception("删除失败！操作的对象包含了下级数据。");
-            DelAndSave<Organ>(id);
+            if (Read<Org>(t => t.ParentId.Equals(id)).Any()) throw new Exception("删除失败！操作的对象包含了下级数据。");
+            DelAndSave<Org>(id);
         }
 
 

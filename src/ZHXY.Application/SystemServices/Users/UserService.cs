@@ -29,15 +29,15 @@ namespace ZHXY.Application
             return query.Paging(pag).ToListAsync().Result.MapToList<UserView>();
         }
 
-        public List<User> GetList(Pagination pagination, string keyword, string F_DepartmentId, string F_DutyId, string F_CreatorTime_Start, string F_CreatorTime_Stop)
+        public List<User> GetList(Pagination pagination, string keyword, string orgId, string dutyId)
         {
             var query = Read<User>(p => p.Account != "admin");
             query = string.IsNullOrWhiteSpace(keyword) ? query : query.Where(p => p.Account.Contains(keyword) || p.Name.Contains(keyword) || p.MobilePhone.Contains(keyword));
-            query = string.IsNullOrWhiteSpace(F_DutyId) ? query : query.Where(p => p.DutyId.Equals(F_DutyId));
+            query = string.IsNullOrWhiteSpace(dutyId) ? query : query.Where(p => p.DutyId.Equals(dutyId));
 
-            if (!string.IsNullOrEmpty(F_DepartmentId))
+            if (!string.IsNullOrEmpty(orgId))
             {
-                query = query.Where(p => p.OrganId.Equals(F_DepartmentId));
+                query = query.Where(p => p.OrganId.Equals(orgId));
             }
 
             pagination.Records = query.CountAsync().Result;

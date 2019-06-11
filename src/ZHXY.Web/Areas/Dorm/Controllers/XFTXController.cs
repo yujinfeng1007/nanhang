@@ -8,7 +8,7 @@ namespace ZHXY.Web.Dorm.Controllers
     /// <summary>
     /// 下发头像控制器
     /// </summary>
-    public class XFTXController : ZhxyController
+    public class XFTXController : BaseController
     {
         private UserToGateService App { get; }
 

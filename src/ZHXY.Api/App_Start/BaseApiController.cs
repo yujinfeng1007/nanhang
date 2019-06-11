@@ -8,7 +8,7 @@ namespace ZHXY.Api
     /// <summary>
     /// 控制器基类
     /// </summary>
-    [ValidationParamterFilter]
+    [ValidationApiParamterFilter]
     [ProcessApiExceptionFilter]
     [CompressWebApiResultAttribute]
     public abstract class BaseApiController : ApiController

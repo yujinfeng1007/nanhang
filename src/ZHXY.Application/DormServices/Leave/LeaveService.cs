@@ -223,41 +223,12 @@ namespace ZHXY.Application
                 CreatedTime = a.CreatedTime
             }).OrderByDescending(p => p.CreatedTime).ToListAsync().Result;
             var now = DateTime.Now.Date;
-
-            foreach (var item in list)
-            {
-                if (Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result == -1).Any())
-                {
-                    item.ApprovalStatus = "已审批";
-                    continue;
-                }
-                if (item.LeaveDays <= 3)
-                {
-                    item.ApprovalStatus = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result != 0).Any() ? "已审批" : "未审批";
-                    if (item.ApprovalStatus == "未审批") item.Approver = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result == 0 && p.ApproveLevel == 1).Select(p => p.Approver.Name).ToArray();
-                    continue;
-                }
-                if (item.LeaveDays > 3)
-                {
-                    if (Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.ApproveLevel == 2).Any())
-                    {
-                        item.ApprovalStatus = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result != 0 && p.ApproveLevel == 2).Any() ? "已审批" : "未审批";
-                        if (item.ApprovalStatus == "未审批") item.Approver = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result == 0 && p.ApproveLevel == 2).Select(p => p.Approver.Name).ToArray();
-                    }
-                    else
-                    {
-                        item.ApprovalStatus = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result != 0).Any() ? "已审批" : "未审批";
-                        if (item.ApprovalStatus == "未审批") item.Approver = Read<LeaveApprove>(p => p.OrderId.Equals(item.Id) && p.Result == 0 && p.ApproveLevel == 1).Select(p => p.Approver.Name).ToArray();
-                    }
-                    continue;
-                }
-            }
-
+            SetViewStatus(ref list);
             list.ForEach(item =>
             {
                 var canceled = Read<LeaveSuspend>(p => p.OrderId.Equals(item.Id)).Any();
                 item.Canceled = canceled;
-                item.Cancelable = item.ApprovalStatus == "已审批" && item.EndOfTime.Date > now && !canceled;
+                item.Cancelable = item.ApprovalStatus == "2" && item.EndOfTime.Date > now && !canceled;
             });
             return list;
         }
@@ -364,7 +335,7 @@ namespace ZHXY.Application
         {
             var query = Read<Student>();
             if (string.IsNullOrEmpty(orgId)) return null;
-            var orgs = Read<Organ>(p => p.ParentId.Equals(orgId)).Select(p => p.Id).ToListAsync().Result;
+            var orgs = Read<Org>(p => p.ParentId.Equals(orgId)).Select(p => p.Id).ToListAsync().Result;
             orgs?.Add(orgId);
             query = query.Where(p => orgs.Contains(p.ClassId));
             query = string.IsNullOrEmpty(keyword) ? query : query.Where(p => p.Name.Contains(keyword));

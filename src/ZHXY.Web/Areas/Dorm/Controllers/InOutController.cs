@@ -6,7 +6,7 @@ using ZHXY.Domain;
 
 namespace ZHXY.Web.Dorm.Controllers
 {
-    public class InOutController : ZhxyController
+    public class InOutController : BaseController
     {
 
         private LateReturnReportService LateReturnReportApp { get; }
@@ -261,7 +261,7 @@ namespace ZHXY.Web.Dorm.Controllers
             var objlist = new List<object>();
 
             var sysApp = new OrgService();
-            var classList = new List<Organ>();
+            var classList = new List<Org>();
             var name = sysApp.GetClassInfosByDivisId(divisId,ref classList);
             var list = LateReturnReportApp.GetListByClassList(classList.Select(p=>p.Id).ToList(), startTime, endTime);
             var group = list.GroupBy(p => p.Class);
@@ -282,8 +282,8 @@ namespace ZHXY.Web.Dorm.Controllers
         {
             var objlist = new List<object>();
             var sysApp = new OrgService();
-            var classList = new List<Organ>();
-            var divisList = new List<Organ>();
+            var classList = new List<Org>();
+            var divisList = new List<Org>();
             sysApp.GetClassInfosByGradeId(gradeId, ref classList,ref divisList);
             var data = LateReturnReportApp.GetListByDivisList(divisList,classList, startTime, endTime);
             return Result.Success(data);

@@ -97,9 +97,6 @@
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="EntityFramework.Extended, Version=6.0.0.0, Culture=neutral, PublicKeyToken=05b7e29bdd433584, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.Extended.6.1.0.168\lib\net45\EntityFramework.Extended.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework.Extensions, Version=0.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.Extensions.0.0.2\lib\net40\EntityFramework.Extensions.dll</HintPath>
     </Reference>
@@ -109,9 +106,6 @@
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=1.1.0.145, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpZipLib.1.1.0\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
-    </Reference>
-    <Reference Include="Jquery.Validate.Additional, Version=1.0.0.0, Culture=neutral, PublicKeyToken=59909c5448c71b00, processorArchitecture=MSIL">
-      <HintPath>..\packages\jquery.validate.china.1.0.5\lib\net45\Jquery.Validate.Additional.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
@@ -260,7 +254,6 @@
     <Compile Include="Areas\SystemManage\Controllers\RoleController.cs" />
     <Compile Include="Areas\SystemManage\Controllers\UserController.cs" />
     <Compile Include="Areas\SystemManage\SystemManageAreaRegistration.cs" />
-    <Compile Include="Controllers\ClientDataController.cs" />
     <Compile Include="Controllers\MobileDataViewController.cs" />
     <Compile Include="Controllers\SelectController.cs" />
     <Compile Include="Controllers\FileController.cs" />
@@ -270,15 +263,11 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="App_Start\ZhxyController.cs" />
+    <Compile Include="App_Start\BaseController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Content Include="Content\bootstrap-theme.css" />
-    <Content Include="Content\bootstrap-theme.min.css" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\css\framework-font.css" />
     <Content Include="Content\css\framework-ui.css" />
     <Content Include="Content\css\framework-login.css" />
@@ -289,7 +278,6 @@
     <Content Include="Content\css\select2.min.css" />
     <Content Include="Content\dots.css" />
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
-    <Content Include="Content\fonts\gijgo-material.svg" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\fonts\weathericons-regular-webfont.svg" />
     <Content Include="Content\img\ajax-loader.gif" />
@@ -301,24 +289,9 @@
     <Content Include="Content\img\cover\cover3.jpg" />
     <Content Include="Content\img\cy-reward-title-bg.jpg" />
     <Content Include="Content\img\default-logo.png" />
-    <Content Include="Content\img\diy\1_close.png" />
-    <Content Include="Content\img\diy\1_open.png" />
-    <Content Include="Content\img\diy\2.png" />
-    <Content Include="Content\img\diy\3.png" />
-    <Content Include="Content\img\diy\4.png" />
-    <Content Include="Content\img\diy\5.png" />
-    <Content Include="Content\img\diy\6.png" />
-    <Content Include="Content\img\diy\7.png" />
-    <Content Include="Content\img\diy\8.png" />
-    <Content Include="Content\img\diy\9.png" />
     <Content Include="Content\img\file.png" />
     <Content Include="Content\img\file.svg" />
     <Content Include="Content\img\fileico_v5.png" />
-    <Content Include="Content\img\line_conn.gif" />
-    <Content Include="Content\img\line_conn.png" />
-    <Content Include="Content\img\loading.gif" />
-    <Content Include="Content\img\metro.gif" />
-    <Content Include="Content\img\metro.png" />
     <Content Include="Content\img\radio1.jpg" />
     <Content Include="Content\img\radio2.jpg" />
     <Content Include="Content\img\samples\angelina-300.jpg" />
@@ -344,8 +317,6 @@
     <Content Include="Content\img\sso-login.jpg" />
     <Content Include="Content\img\teacher-checkbox.png" />
     <Content Include="Content\img\wechat.jpg" />
-    <Content Include="Content\img\zTreeStandard.gif" />
-    <Content Include="Content\img\zTreeStandard.png" />
     <Content Include="Content\js\bootstrap-fileinput-master\css\fileinput-rtl.css" />
     <Content Include="Content\js\bootstrap-fileinput-master\css\fileinput-rtl.min.css" />
     <Content Include="Content\js\bootstrap-fileinput-master\css\fileinput.css" />
@@ -507,31 +478,25 @@
     <Content Include="Areas\Dorm\Views\Holiday\Index.cshtml" />
     <Content Include="Areas\SystemManage\Views\Log\Index.cshtml" />
     <Content Include="Areas\SystemManage\Views\Log\LoginHis.cshtml" />
-    <Content Include="Content\fonts\gijgo-material.woff" />
-    <Content Include="Content\fonts\gijgo-material.ttf" />
-    <Content Include="Content\fonts\gijgo-material.eot" />
     <Content Include="Content\js\framework-clientdata.js" />
     <Content Include="Content\js\handlebars\handlebars-runtime.js" />
     <Content Include="Content\js\handlebars\handlebars.js" />
     <Content Include="Content\js\index.js" />
     <Content Include="Content\js\layout\jquery.layout.js" />
     <Content Include="Content\js\loading\pace.min.js" />
-    <Content Include="Content\js\lodash\lodash.js" />
+    <Content Include="Scripts\lodash.js" />
     <Content Include="Content\js\md5\jquery.md5.js" />
-    <Content Include="Content\js\select2\select2.min.css" />
-    <Content Include="Content\js\select2\select2.min.js" />
-    <Content Include="Content\js\validate\jquery.validate.min.js" />
-    <Content Include="Content\js\validate\message_zh.js" />
+    <Content Include="Scripts\validate\jquery.validate.min.js" />
+    <Content Include="Scripts\validate\message_zh.js" />
     <Content Include="Content\js\wizard\wizard.css" />
     <Content Include="Content\js\wizard\wizard.js" />
-    <Content Include="Content\js\zoom\zoom.css" />
-    <Content Include="Content\js\zoom\zoom.js" />
+    <Content Include="Content\css\zoom.css" />
+    <Content Include="Scripts\zoom.js" />
     <Content Include="Scripts\echarts\close%402x.png" />
     <Content Include="Scripts\echarts\close.png" />
     <Content Include="Scripts\echarts\echarts.min.js" />
     <Content Include="Scripts\echarts\refresh%402x.png" />
     <Content Include="Scripts\echarts\refresh.png" />
-    <Content Include="Scripts\main.js" />
     <Content Include="Areas\SystemManage\Views\ModuleButton\CloneButton.cshtml" />
     <Content Include="Areas\SystemManage\Views\ModuleButton\Details.cshtml" />
     <Content Include="Areas\SystemManage\Views\ModuleButton\Form.cshtml" />
@@ -678,7 +643,6 @@
     <Content Include="Content\js\webuploader\webuploader.withoutimage.min.js" />
     <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\img\arrow-sprite.png" />
     <Content Include="Content\img\clear.gif" />
@@ -704,8 +668,6 @@
     <Content Include="Content\img\login-bg.png" />
     <Content Include="Content\img\logo.jpg" />
     <Content Include="Content\img\up_02.png" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\highcharts\6.2.0\css\highcharts.css" />
     <Content Include="Scripts\highcharts\6.2.0\css\themes\dark-unica.css" />
     <Content Include="Scripts\highcharts\6.2.0\css\themes\grid-light.css" />
@@ -1356,10 +1318,6 @@
     <Content Include="Scripts\highcharts\6.2.0\themes\sunset.src.js" />
     <Content Include="Content\img\icon_16_3\Thumbs.db" />
     <Content Include="Content\img\ico_16_2\Thumbs.db" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Scripts\i18n\af.js" />
     <Content Include="Scripts\i18n\ar.js" />
     <Content Include="Scripts\i18n\az.js" />
@@ -1422,6 +1380,7 @@
     <Content Include="Scripts\jquery-2.1.1.min.map" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\发布到125.pubxml" />
+    <None Include="Properties\PublishProfiles\发布到E盘publish目录.pubxml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
@@ -1434,7 +1393,6 @@
     <Content Include="Areas\SystemManage\Views\OrgLeader\Index.cshtml" />
     <Content Include="Views\Shared\_Index_Heads.cshtml" />
     <Content Include="Views\Shared\_Layout_Heads.cshtml" />
-    <Content Include="Views\Shared\_My.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_Layout.cshtml" />

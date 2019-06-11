@@ -12,7 +12,7 @@ namespace TaskApi.DH
         public void Execute(IJobExecutionContext context)
         {
             Console.WriteLine(" ************  开始执行南航项目：访客撤控 ： " + DateTime.Now);
-            var db = new ZhxyDbContext();
+            var db = new EFContext();
             var dateTime = DateTime.Now;
             var ApplyList = db.Set<VisitorApply>().Where(p => dateTime > p.VisitEndTime && p.SurveyStatus == "0" && p.DhId != null).ToList();
             foreach(var apply in ApplyList)

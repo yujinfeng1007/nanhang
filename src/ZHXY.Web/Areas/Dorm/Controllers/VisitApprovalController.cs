@@ -5,7 +5,7 @@ using ZHXY.Common;
 
 namespace ZHXY.Web.Dorm.Controllers
 {
-    public class VisitApprovalController : ZhxyController
+    public class VisitApprovalController : BaseController
     {
         private VisitorService App { get; }
 

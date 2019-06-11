@@ -52,10 +52,10 @@ namespace ZHXY.Application
         }
 
         //获取班主任所绑定的班级
-        public List<Organ> GetBindClass(string teacherId) {
+        public List<Org> GetBindClass(string teacherId) {
             //var classIds = Read<Relevance>(p => p.Name.Equals(Relation.ClassLeader) && p.SecondKey.Equals(teacherId)).Select(p => p.FirstKey).ToArray();
             var classIds = Read<OrgLeader>(p => p.UserId.Equals(teacherId)).Select(p => p.OrgId).ToArray();
-            var lists = Read<Organ>(p => classIds.Contains(p.Id)).ToList(); 
+            var lists = Read<Org>(p => classIds.Contains(p.Id)).ToList(); 
             return lists;
 
         }

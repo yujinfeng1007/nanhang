@@ -25,7 +25,7 @@
         /// <summary>
         /// 班级和班主任的关系
         /// </summary>
-        public static string ClassLeader { get; } = $"{nameof(Organ)}{Separator}{nameof(Teacher)}";
+        public static string ClassLeader { get; } = $"{nameof(Org)}{Separator}{nameof(Teacher)}";
 
 
         ///// <summary>

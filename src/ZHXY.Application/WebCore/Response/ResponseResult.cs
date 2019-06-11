@@ -42,7 +42,7 @@ namespace ZHXY.Application
             return new ContentResult { Content = new { rows, records, total, state = ResultState.Success }.Serialize(), ContentEncoding = Encoding.UTF8, ContentType = "application/json" };
         }
 
-        public static ActionResult PagingRst<T>(this List<T> rows)
+        public static ActionResult PagingRst(this object rows)
         {
             return new ContentResult { Content = new { rows, state = ResultState.Success }.Serialize(), ContentEncoding = Encoding.UTF8, ContentType = "application/json" };
         }

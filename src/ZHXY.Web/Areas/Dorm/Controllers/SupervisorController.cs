@@ -7,7 +7,7 @@ namespace ZHXY.Web.Dorm.Controllers
     /// <summary>
     /// 通过宿管查询宿管相关楼栋和楼栋学生相关信息
     /// </summary>
-    public class SupervisorController : ZhxyController
+    public class SupervisorController : BaseController
     {
         private VisitorService App { get; }
 

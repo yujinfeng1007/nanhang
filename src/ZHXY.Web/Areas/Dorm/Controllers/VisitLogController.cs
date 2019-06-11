@@ -7,7 +7,7 @@ using ZHXY.Common;
 
 namespace ZHXY.Web.Dorm.Controllers
 {
-    public class VisitLogController : ZhxyController
+    public class VisitLogController : BaseController
     {
         private VisitorService App { get; }
 

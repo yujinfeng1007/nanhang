@@ -17,7 +17,7 @@ namespace TaskApi.Job
         private ILog Logger { get; } = LogManager.GetLogger(typeof(NanHangJob));
         public void Execute(IJobExecutionContext context)
         {
-            var db = new ZhxyDbContext();
+            var db = new EFContext();
             Console.WriteLine("************************************        开始同步南航师生信息       ************************************");
             ProcessOrgInfo(db); //同步教师组织机构信息
             ProcessOrgInfoStu(db); //同步学生组织机构信息
@@ -32,7 +32,7 @@ namespace TaskApi.Job
         /// 处理同步学生信息 学生信息同步6张表
         /// 分别为： School_Students，Sys_User，Sys_User_Role，Sys_UserLogOn，Dorm_DormStudent，Dorm_Dorm
         /// </summary>
-        public void ProcessStudent(ZhxyDbContext db)
+        public void ProcessStudent(EFContext db)
         {
             Console.WriteLine("南航项目：开始同步学生信息 --> " + DateTime.Now.ToLocalTime());
             var sw = new Stopwatch();
@@ -61,7 +61,7 @@ namespace TaskApi.Job
         /// 处理同步教师信息
         /// 此方法分别更新四张表，分别是：School_Teachers，Sys_User，Sys_User_Role，Sys_UserLogOn
         /// </summary>
-        public void ProcessTeacher(ZhxyDbContext db)
+        public void ProcessTeacher(EFContext db)
         {
             Console.WriteLine("南航项目：开始同步教师信息 --> " + DateTime.Now.ToLocalTime());
             var sw = new Stopwatch();
@@ -82,7 +82,7 @@ namespace TaskApi.Job
         /// <summary>
         /// 处理同步组织机构信息
         /// </summary>
-        public void ProcessOrgInfo(ZhxyDbContext db)
+        public void ProcessOrgInfo(EFContext db)
         {
             Console.WriteLine("开始同步教师组织机构信息: 南航项目 --> " + DateTime.Now.ToLocalTime());
             var sw = new Stopwatch();
@@ -91,17 +91,17 @@ namespace TaskApi.Job
             var newDb = new NHModel();
             var newData = newDb.Set<Teacher_Organ>().AsNoTracking().Select(p => new OrganMoudle { Id = p.OrgId, Name = p.OrgName, ParentId = p.ParentOrgId, EnCode = p.OrgId }).ToList();
             //获取生产环境数据库数据集
-            var oldData = db.Set<Organ>().AsNoTracking().Select(p => new OrganMoudle { Id = p.Id, Name = p.Name, ParentId = p.ParentId, EnCode = p.EnCode }).ToList();
+            var oldData = db.Set<Org>().AsNoTracking().Select(p => new OrganMoudle { Id = p.Id, Name = p.Name, ParentId = p.ParentId, EnCode = p.Code }).ToList();
             var addList = newData.Except(oldData).ToList(); //取差集 （新增和修改数据）
 
             var idList = oldData.Select(p => p.Id).ToList();
-            var endList = new List<Organ>();
+            var endList = new List<Org>();
             foreach (var org in addList)
             {
                 if (org.ParentId == null) { org.ParentId = "3"; }
                 if (idList.Contains(org.Id))
                 {
-                    db.Set<Organ>().Where(p => p.Id.Equals(org.Id)).Update(p => new Organ
+                    db.Set<Org>().Where(p => p.Id.Equals(org.Id)).Update(p => new Org
                     {
                         ParentId = org.ParentId,
                         Name = org.Name
@@ -109,18 +109,18 @@ namespace TaskApi.Job
                 }
                 else
                 {
-                    endList.Add(new Organ()
+                    endList.Add(new Org()
                     {
                         Id = org.Id,
                         Name = org.Name,
                         ParentId = org.ParentId,
-                        EnCode = org.EnCode
+                        Code = org.EnCode
                     });
                 }
             }
             //newDb.BulkDelete(newDb.OrganizationInfoes.ToList()); //操作完成后，删除取出来的数据
             //oldDb.BulkInsert(endList);
-            db.Set<Organ>().AddRange(endList);
+            db.Set<Org>().AddRange(endList);
             db.SaveChanges();
             newDb.Dispose();
             sw.Stop();
@@ -130,7 +130,7 @@ namespace TaskApi.Job
         /// <summary>
         /// 处理同步组织机构信息（学生组织结构）
         /// </summary>
-        public void ProcessOrgInfoStu(ZhxyDbContext db)
+        public void ProcessOrgInfoStu(EFContext db)
         {
             Console.WriteLine("开始同步学生组织机构信息: 南航项目 --> " + DateTime.Now.ToLocalTime());
             var sw = new Stopwatch();
@@ -139,16 +139,16 @@ namespace TaskApi.Job
             var newDb = new NHModel();
             var newData = newDb.Set<Student_Organ>().AsNoTracking().Select(p => new OrganMoudle { Id = p.OrgId, Name = p.OrgName, ParentId = p.ParentOrgId, EnCode = p.OrgId }).ToList();
             //获取生产环境数据库数据集
-            var oldData = db.Set<Organ>().AsNoTracking().Select(p => new OrganMoudle { Id = p.Id, Name = p.Name, ParentId = p.ParentId, EnCode = p.EnCode }).ToList();
+            var oldData = db.Set<Org>().AsNoTracking().Select(p => new OrganMoudle { Id = p.Id, Name = p.Name, ParentId = p.ParentId, EnCode = p.Code }).ToList();
             var addList = newData.Except(oldData).ToList(); //取差集 （新增和修改数据）
             var idList = oldData.Select(p => p.Id).ToList();
-            var endList = new List<Organ>();
+            var endList = new List<Org>();
             foreach (var org in addList)
             {
                 if (org.ParentId == null) { org.ParentId = "2"; }
                 if (idList.Contains(org.Id))
                 {
-                    db.Set<Organ>().Where(p => p.Id.Equals(org.Id)).Update(p => new Organ
+                    db.Set<Org>().Where(p => p.Id.Equals(org.Id)).Update(p => new Org
                     {
                         ParentId = org.ParentId,
                         Name = org.Name
@@ -156,17 +156,17 @@ namespace TaskApi.Job
                 }
                 else
                 {
-                    endList.Add(new Organ() {
+                    endList.Add(new Org() {
                         Id = org.Id,
                         Name = org.Name,
                         ParentId = org.ParentId,
-                        EnCode = org.EnCode
+                        Code = org.EnCode
                     });
                 }
             }
             //newDb.BulkDelete(newDb.OrganizationInfo_stu.ToList()); //操作完成后，删除取出来的数据
             //oldDb.BulkInsert(endList);
-            db.Set<Organ>().AddRange(endList);
+            db.Set<Org>().AddRange(endList);
             db.SaveChanges();
             newDb.Dispose();
             sw.Stop();
@@ -176,7 +176,7 @@ namespace TaskApi.Job
         /// <summary>
         /// 同步之后的表，添加各个登记的标识：
         /// </summary>
-        public void ProcessSysOrgan(ZhxyDbContext db)
+        public void ProcessSysOrgan(EFContext db)
         {
             //修改学生年级的 F_CategoryId 为 "Division"
             var UpdateDivSql = "UPDATE organ2 set organ2.category_id='Division' from [dbo].[zhxy_organ] organ1  left join zhxy_organ organ2 on organ2.p_id=organ1.id where organ1.p_id='2'";
@@ -195,7 +195,7 @@ namespace TaskApi.Job
         /// </summary>
         /// <param name="oldDb"></param>
         /// <param name="newData"></param>
-        public void ProcessSchoolTeacherInfo(ZhxyDbContext db, NHModel newDb)
+        public void ProcessSchoolTeacherInfo(EFContext db, NHModel newDb)
         {
             //获取学校的数据集
             var newData = newDb.Set<TeacherInfo>().AsNoTracking().Select(p => new TeacherMoudle
@@ -270,7 +270,7 @@ namespace TaskApi.Job
         /// </summary>
         /// <param name="db"></param>
         /// <param name="newData"></param>
-        public void ProcessSchoolTeacherSysUser(ZhxyDbContext db, NHModel newDb)
+        public void ProcessSchoolTeacherSysUser(EFContext db, NHModel newDb)
         {
             var newData = newDb.Set<TeacherInfo>().AsNoTracking().Select(p => new UserMoudle
             {
@@ -332,7 +332,7 @@ namespace TaskApi.Job
         /// </summary>
         /// <param name="db"></param>
         /// <param name="newDb"></param>
-        public void ProcessSchoolTeacherSysUserRole(ZhxyDbContext db, NHModel newDb)
+        public void ProcessSchoolTeacherSysUserRole(EFContext db, NHModel newDb)
         {
             var newData = newDb.Set<TeacherInfo>().AsNoTracking().Select(p => p.teacherId).ToList();
             var oldData = db.Set<SysUserRole>().AsNoTracking().Select(p => p.F_User).ToList();
@@ -357,7 +357,7 @@ namespace TaskApi.Job
         /// </summary>
         /// <param name="oldDb"></param>
         /// <param name="newDb"></param>
-        public void ProcessSchoolStudentInfo(ZhxyDbContext oldDb, NHModel newDb)
+        public void ProcessSchoolStudentInfo(EFContext oldDb, NHModel newDb)
         {
             var newData = newDb.Set<StudentInfo>().AsNoTracking().Select(p => new StudentMoudle
             {
@@ -409,8 +409,8 @@ namespace TaskApi.Job
                 student.CredType = stu.CredType;
                 student.CredNumber = stu.CredNumber;
                 student.MobilePhone = stu.MobilePhone;
-                student.GradeId = oldDb.Set<Organ>().AsNoTracking().Where(p => p.Id.Equals(stu.ClassId)).Select(p => p.ParentId).FirstOrDefault();
-                student.DivisId = oldDb.Set<Organ>().AsNoTracking().Where(p => p.Id.Equals(stu.GradeId)).Select(p => p.ParentId).FirstOrDefault();
+                student.GradeId = oldDb.Set<Org>().AsNoTracking().Where(p => p.Id.Equals(stu.ClassId)).Select(p => p.ParentId).FirstOrDefault();
+                student.DivisId = oldDb.Set<Org>().AsNoTracking().Where(p => p.Id.Equals(stu.GradeId)).Select(p => p.ParentId).FirstOrDefault();
             }
             oldDb.SaveChanges();
             DataList = DataList.Where(p => !Ids.Contains(p.Id)).ToList();
@@ -478,8 +478,8 @@ namespace TaskApi.Job
                         CredNumber = stu.CredNumber,
                         MobilePhone = stu.MobilePhone,
                         FacePic = stu.FacePic,
-                        GradeId = oldDb.Set<Organ>().AsNoTracking().Where(p => p.Id.Equals(stu.ClassId)).Select(p => p.ParentId).FirstOrDefault(),
-                        DivisId =  oldDb.Set<Organ>().AsNoTracking().Where(p => p.Id.Equals(stu.GradeId)).Select(p => p.ParentId).FirstOrDefault()
+                        GradeId = oldDb.Set<Org>().AsNoTracking().Where(p => p.Id.Equals(stu.ClassId)).Select(p => p.ParentId).FirstOrDefault(),
+                        DivisId =  oldDb.Set<Org>().AsNoTracking().Where(p => p.Id.Equals(stu.GradeId)).Select(p => p.ParentId).FirstOrDefault()
             });
                 //}
             }
@@ -492,7 +492,7 @@ namespace TaskApi.Job
         /// </summary>
         /// <param name="db"></param>
         /// <param name="newDb"></param>
-        public void ProcessSchoolStudentSysUser(ZhxyDbContext db, NHModel newDb)
+        public void ProcessSchoolStudentSysUser(EFContext db, NHModel newDb)
         {
             var newData = newDb.Set<StudentInfo>().AsNoTracking().Select(p => new UserMoudle
             {
@@ -567,7 +567,7 @@ namespace TaskApi.Job
         /// </summary>
         /// <param name="db"></param>
         /// <param name="newDb"></param>
-        public void ProcessSchoolStudentDormInfo(ZhxyDbContext db, NHModel newDb)
+        public void ProcessSchoolStudentDormInfo(EFContext db, NHModel newDb)
         {
             var newData = newDb.Set<StudentInfo>().AsNoTracking().Select(p => new DormStudentMoudle {
                 StudentId = p.studentId,
@@ -659,7 +659,7 @@ namespace TaskApi.Job
         /// </summary>
         /// <param name="db"></param>
         /// <param name="newDb"></param>
-        public void ProcessStudentSysUserRole(ZhxyDbContext db, NHModel newDb)
+        public void ProcessStudentSysUserRole(EFContext db, NHModel newDb)
         {
             var newData = newDb.Set<StudentInfo>().AsNoTracking().Select(p => p.studentId).ToList();
             var oldData = db.Set<SysUserRole>().AsNoTracking().Select(p => p.F_User).ToList();
@@ -679,7 +679,7 @@ namespace TaskApi.Job
             db.SaveChanges();
         }
 
-        public static PersonMoudle contactMoudleStudent(ZhxyDbContext oldDb, string id)
+        public static PersonMoudle contactMoudleStudent(EFContext oldDb, string id)
         {
             var sql = "SELECT NULL\n" +
                 "\taccessCardsn,\n" +
@@ -727,7 +727,7 @@ namespace TaskApi.Job
             return oldDb.Database.SqlQuery<PersonMoudle>(sql).FirstOrDefault();
         }
 
-        public static PersonMoudle contackMoudleTeacher(ZhxyDbContext oldDb, string id)
+        public static PersonMoudle contackMoudleTeacher(EFContext oldDb, string id)
         {
             var sql = "SELECT \n" +
                 "       NULL accessCardsn,\n" +

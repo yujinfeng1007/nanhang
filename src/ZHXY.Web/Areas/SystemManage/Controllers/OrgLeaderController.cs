@@ -6,7 +6,7 @@ namespace ZHXY.Web.SystemManage.Controllers
     /// <summary>
     /// 机构负责人
     /// </summary>
-    public class OrgLeaderController : ZhxyController
+    public class OrgLeaderController : BaseController
     {
         private OrgLeaderService App { get; }
 

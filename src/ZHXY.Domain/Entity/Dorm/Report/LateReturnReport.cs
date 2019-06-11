@@ -42,7 +42,7 @@ namespace ZHXY.Domain
         /// 晚归时长
         /// </summary>
         public decimal F_Time { get; set; }
-        public virtual Organ Organ { get; set; }
+        public virtual Org Organ { get; set; }
         public virtual DormRoom Dorm { get; set; }
 
     }

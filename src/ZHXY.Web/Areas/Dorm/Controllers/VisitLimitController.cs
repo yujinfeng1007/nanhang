@@ -1,16 +1,12 @@
 ﻿using System.Web.Mvc;
 using ZHXY.Application;
 using ZHXY.Common;
-using HttpGetAttribute = System.Web.Http.HttpGetAttribute;
-using HttpPostAttribute = System.Web.Http.HttpPostAttribute;
-
 namespace ZHXY.Web.Dorm.Controllers
 {
-    public class VisitLimitController : ZhxyController
+    public class VisitLimitController : BaseController
     {
 
         private VisitDormLimitService service => new VisitDormLimitService();
-        // GET: api/VisitLimit
         public ActionResult GetGridJson(Pagination pagination, string F_Building, string F_Floor)
         {
             var data = new

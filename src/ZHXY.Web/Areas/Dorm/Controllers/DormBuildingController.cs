@@ -7,7 +7,7 @@ namespace ZHXY.Web.Dorm.Controllers
     /// <summary>
     /// 楼栋管理
     /// </summary>
-    public class DormBuildingController : ZhxyController
+    public class DormBuildingController : BaseController
     {
         private DormBuildingService App { get; }
 

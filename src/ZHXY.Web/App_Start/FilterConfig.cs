@@ -14,7 +14,9 @@ namespace ZHXY.Web
         /// <param name="filters"></param>
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
+            filters.Add(new ProcessMvcErrorAttribute());
             filters.Add(new CompressMvcResultAttribute());
+            
         }
     }
 

@@ -3,24 +3,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <script>
-    var F_DepartmentId = "";
+    let org_id = "";
     $(function () {
         $('#layout').layout({
             west: { size: '25%' }
         });
         treeView();
         gridList();
-        //$("#F_DepartmentId").bindSelect({
-        //    url: "/SystemManage/Organize/GetTreeSelectJson",
-        //    displayBlank: false
-        //});
-        //$("#F_SysAreaId").bindSelect({
-        //    url: "/SystemManage/Area/GetTreeSelectJson",
-        //});
-        //$("#F_Gender").bindSelect({
-        //  dictionary: '104'
-        //})
-        $("#F_DutyId").bindSelect({
+        $("#duty_id").bindSelect({
             dictionary: "Duty"
         });
       
@@ -30,17 +20,17 @@
         $gridList.dataGrid({
             treeGrid: true,
             treeGridModel: "adjacency",
-            ExpandColumn: "EnCode",
-            url: "/SystemManage/Organize/GetTreeGridJson",
+            ExpandColumn: "code",
+            url: "/SystemManage/Organize/GetTree",
             height: $(window).height(),
             autoGridHeight: function () {
                 return $(window).height()
             },
             colModel: [
-                { label: '机构名称', name: 'Name', width: 100, align: 'left' },
-                { label: '编号', name: 'EnCode', width: 150, align: 'left', hidden: true },
-                { label: "主键", name: "Id", width: 150, align: 'left', key: true, hidden: true },
-                { label: '名称', name: 'Name', width: 200, align: 'left', hidden: true },
+                { label: '机构名称', name: 'name', width: 100, align: 'left' },
+                { label: '编号', name: 'code', width: 150, align: 'left', hidden: true },
+                { label: "主键", name: "id", width: 150, align: 'left', key: true, hidden: true },
+                { label: '名称', name: 'name', width: 200, align: 'left', hidden: true },
             ],
             onCustomSelectRow: DispalyGrid,
             multiselect: false,
@@ -50,12 +40,11 @@
     }
 
     function DispalyGrid(rowid) {
-        F_DepartmentId = rowid;
+        org_id = rowid;
         $('#btn_search').trigger("click");
     }
     function gridList() {
         let $gridList = $("#gridList");
-        //console.log($('.gridPanel'))
         $gridList.dataGrid({
             url: "/SystemManage/User/GetGridJson",
             height: $(window).height(),
@@ -63,30 +52,31 @@
                 return $(window).height() - 225
             },
             colModel: [
-                { label: '主键', name: 'Id', hidden: true },
-                { label: '帐户', name: 'Account', width: 80, align: 'left' },
-                { label: '姓名', name: 'Name', width: 80, align: 'left' },
+                { label: '主键', name: 'id', hidden: true },
+                { label: '帐户', name: 'account', width: 80, align: 'left' },
+                { label: '姓名', name: 'name', width: 80, align: 'left' },
                 {
-                    label: '岗位', name: 'DutyId', width: 80, align: 'left',
+                    label: '岗位', name: 'dutyId', width: 80, align: 'left',
                     formatter: function (cellvalue, options, rowObject) {
                         return top.clients.duty[cellvalue] == null ? "" : top.clients.duty[cellvalue].fullname;
                     }
                 },
                 {
-                    label: '隶属机构', name: 'OrganId', width: 80, align: 'left',
+                    label: '隶属机构', name: 'organId', width: 80, align: 'left',
                     formatter: function (cellvalue, options, rowObject) {
                         return top.clients.organize[cellvalue] == null ? "" : top.clients.organize[cellvalue].fullname;
                     }
                 },
-                { label: '手机号码', name: 'MobilePhone', width: 80, align: 'left' }
+                { label: '手机号码', name: 'mobilePhone', width: 80, align: 'left' }
             ],
             pager: "#gridPager",
-            sortname: 'Id desc',
+            sortname: 'id',
+            sortorder: 'desc',
             viewrecords: true
         });
         $("#btn_search").click(function () {
             $gridList.jqGrid('setGridParam', {
-                postData: { keyword: $("#txt_keyword").val(), F_DepartmentId: F_DepartmentId, F_DutyId: $("#F_DutyId").val() }//, F_CreatorTime_Start: $("#F_CreatorTime_Start").val(), F_CreatorTime_Stop: $("#F_CreatorTime_Stop").val() },
+                postData: { keyword: $("#txt_keyword").val(), org_id: org_id, duty_id: $("#duty_id").val() }
             }).trigger('reloadGrid');
         });
     }
@@ -249,8 +239,6 @@
                     <a class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
                 </div>
                 <div class="btn-group"> <a id="NF-add" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_add()"><i class="fa fa-plus"></i>新建用户</a> </div>
-                @*<div class="btn-group"><a id="NF-export" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_export()"><i class="fa fa-arrow-down"></i>导出用户</a></div>
-                <div class="btn-group"><a id="NF-import" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_import()"><i class="fa fa-arrow-up"></i>导入用户</a></div>*@
                 <div class="operate">
                     <ul class="nav nav-pills">
                         <li class="first">已选中<span>1</span>项</li>
@@ -259,9 +247,6 @@
                         <li><a id="NF-Details" authorize="yes" onclick="btn_details()"><i class="fa fa-search-plus"></i>查看用户</a></li>
                         <li class="split"></li>
                         <li><a id="NF-revisepassword" authorize="yes" onclick="btn_revisepassword()"><i class="fa fa-key"></i>密码重置</a></li>
-                        @*<li class="split"></li>
-                        <li><a class="multi-edit" id="NF-disabled" authorize="yes" onclick="btn_disabled()"><i class="fa fa-stop-circle"></i>禁用</a></li>
-                        <li><a class="multi-edit" id="NF-enabled" authorize="yes" onclick="btn_enabled()"><i class="fa fa-play-circle"></i>启用</a></li>*@
                     </ul>
                     <a href="javascript:;" class="close"></a>
                 </div>
@@ -270,20 +255,10 @@
             <div class="search">
                 <ul>
                     <li class="formTitle">搜索：</li>
-                    @*<li>
-                        <div class="input-group" style="margin-top:1px">
-                            <input id="F_CreatorTime_Start" name="F_CreatorTime_Start" type="text" class="form-control input-wdatepicker" onfocus="WdatePicker()" placeholder="创建时间开始" />
-                        </div>
-                    </li>
-                    <li><div class="input-group" style="width:10px">--</div></li>
-                    <li>
-                        <div class="input-group" style="margin-right:10px;margin-top:1px">
-                            <input id="F_CreatorTime_Stop" name="F_CreatorTime_Stop" type="text" class="form-control input-wdatepicker" onfocus="WdatePicker()" placeholder="创建时间结束" />
-                        </div>
-                    </li>*@
+                  
                     <li>
                         <div class="input-group" style="margin-right:10px;width:170px;">
-                            <select id="F_DutyId" name="F_DutyId" class="form-control">
+                            <select id="duty_id" name="duty_id" class="form-control">
                                 <option value="">选择岗位</option>
                             </select>
                         </div>

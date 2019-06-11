@@ -15,7 +15,7 @@ namespace ZHXY.Application
 
         public LogService()
         {
-            R = new ZhxyDbContext();
+            R = new EFContext();
         }
         public void AddLog(AddLogDto input)
         {

@@ -10,7 +10,7 @@ namespace ZHXY.Web.SystemManage.Controllers
     /// <summary>
     /// 按钮
     /// </summary>
-    public class ModuleButtonController : ZhxyController
+    public class ModuleButtonController : BaseController
     {
         private SysButtonAppService App { get; }
         private SysModuleAppService moduleAppService { get; }
@@ -71,7 +71,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         {
             App.SubmitForm(moduleButtonEntity, keyValue);
             RedisCache.Clear();
-            RedisCache.Set( Consts.AUTHORIZEBUTTON, CacheService.GetMenuButtonList());
+            RedisCache.Set( SysConsts.AUTHORIZEBUTTON, CacheService.GetMenuButtonList());
             return Result.Success();
         }
 
@@ -81,10 +81,7 @@ namespace ZHXY.Web.SystemManage.Controllers
         public ActionResult DeleteForm(string keyValue)
         {
             App.DeleteForm(keyValue);
-            //RedisCache.RemoveCache(Cons.AUTHORIZEBUTTON);
-            //RedisCache.WriteCache(MvcApplication.GetMenuButtonList(), Cons.AUTHORIZEBUTTON);
             RedisCache.Clear();
-            //RedisCache.WriteCache(MvcApplication.GetMenuButtonList(), Cons.AUTHORIZEBUTTON);
             return Result.Success();
         }
 
@@ -145,7 +142,6 @@ namespace ZHXY.Web.SystemManage.Controllers
         {
             App.SubmitCloneButton(moduleId, Ids);
             RedisCache.Clear();
-            //RedisCache.WriteCache(MvcApplication.GetMenuButtonList(), Cons.AUTHORIZEBUTTON);
             return Result.Success();
         }
     }

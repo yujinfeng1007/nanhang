@@ -20,7 +20,7 @@ namespace TaskApi.NHExceptionReport
             //new PushAppMessage().PushReportMessage("48038@nchu.edu.cn", "Test Message", "");
             //DateTime Time = Convert.ToDateTime("2019-06-05 08:00:00");
             var Time = DateTime.Now;
-            var dbContext = new ZhxyDbContext();
+            var dbContext = new EFContext();
             //测试阶段：  只推给 罗尉平 老师
             var leaderList = dbContext.Set<OrgLeader>().Where(p => p.UserId.Equals("c769eb3d87d6f7468133840f055bc9e6")).ToList();
             var PushList = new List<ZhxyPush>();
@@ -29,7 +29,7 @@ namespace TaskApi.NHExceptionReport
                 var Ids = new HashSet<string>(); //当前组织机构下属所有组织机构的ID集合
                 var OrgId = leader.OrgId;
                 var UserId = leader.UserId;
-                var OrgIds = dbContext.Set<Organ>().Where(p => p.ParentId.Equals(OrgId)).Select(p => p.Id).ToList();
+                var OrgIds = dbContext.Set<Org>().Where(p => p.ParentId.Equals(OrgId)).Select(p => p.Id).ToList();
                 if (null == OrgIds || OrgIds.Count() == 0)
                 {
                     continue;
@@ -37,7 +37,7 @@ namespace TaskApi.NHExceptionReport
                 foreach (var id in OrgIds)
                 {
                     Ids.Add(id);
-                    var SonOrgIds = dbContext.Set<Organ>().Where(p => p.ParentId.Equals(id)).Select(p => p.Id).ToList();
+                    var SonOrgIds = dbContext.Set<Org>().Where(p => p.ParentId.Equals(id)).Select(p => p.Id).ToList();
                     if (null == SonOrgIds || SonOrgIds.Count() == 0)
                     {
                         continue;
@@ -45,7 +45,7 @@ namespace TaskApi.NHExceptionReport
                     foreach (var sid in SonOrgIds)
                     {
                         Ids.Add(sid);
-                        var SonOfSonOrgIds = dbContext.Set<Organ>().Where(p => p.ParentId.Equals(sid)).Select(p => p.Id).ToList();
+                        var SonOfSonOrgIds = dbContext.Set<Org>().Where(p => p.ParentId.Equals(sid)).Select(p => p.Id).ToList();
                         if (null == SonOfSonOrgIds || SonOfSonOrgIds.Count() == 0)
                         {
                             continue;
@@ -53,7 +53,7 @@ namespace TaskApi.NHExceptionReport
                         foreach (var ssid in SonOfSonOrgIds)
                         {
                             Ids.Add(sid);
-                            var SonOfSonOfSonIds = dbContext.Set<Organ>().Where(p => p.ParentId.Equals(ssid)).Select(p => p.Id).ToList();
+                            var SonOfSonOfSonIds = dbContext.Set<Org>().Where(p => p.ParentId.Equals(ssid)).Select(p => p.Id).ToList();
                             if (null == SonOfSonOfSonIds || SonOfSonOfSonIds.Count() == 0)
                             {
                                 continue;

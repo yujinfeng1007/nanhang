@@ -123,8 +123,8 @@ namespace ZHXY.Application
             SaveChanges();
             //审批同意则更新头像并下发
             if (input.IsAgreed) {
-                new UserService(new ZhxyDbContext()).UpdIco(face.ApplicantId, face.ApproveImg);
-                new StudentService(new ZhxyDbContext()).UpdIco(face.ApplicantId, face.ApproveImg);                
+                new UserService(new EFContext()).UpdIco(face.ApplicantId, face.ApproveImg);
+                new StudentService(new EFContext()).UpdIco(face.ApplicantId, face.ApproveImg);                
                 new UserToGateService().SendUserHeadIco(new string[] { face.ApplicantId });
                 Console.WriteLine();
             }
